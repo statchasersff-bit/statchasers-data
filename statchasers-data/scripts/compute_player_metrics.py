@@ -27,13 +27,15 @@ STATS_PATH = os.path.join(RAW_DIR, "nflverse_player_stats.parquet")
 SLEEPER_PATH = os.path.join(RAW_DIR, "sleeper_players.json")
 OUTPUT_PATH = os.path.join(PROCESSED_DIR, "player_metrics.json")
 
-# Minimum plays to include a player
+# Minimum plays to include a player in metric computation
 MIN_PLAYS = 20
+
+# Minimum games required before applying confident narrative labels
+MIN_GAMES_FOR_LABELS = 6
 
 
 def load_data() -> tuple[pd.DataFrame, pd.DataFrame, list[dict]]:
     """Load all raw data sources."""
-    # Load play-by-play
     if not os.path.exists(PBP_PATH):
         print(f"ERROR: Play-by-play data not found at {PBP_PATH}", file=sys.stderr)
         print("Run pull_nflverse_data.py first.", file=sys.stderr)
@@ -43,14 +45,12 @@ def load_data() -> tuple[pd.DataFrame, pd.DataFrame, list[dict]]:
     pbp = pd.read_parquet(PBP_PATH)
     print(f"  {len(pbp):,} plays loaded.")
 
-    # Load weekly player stats (optional)
     stats = pd.DataFrame()
     if os.path.exists(STATS_PATH):
         print("Loading player stats data...")
         stats = pd.read_parquet(STATS_PATH)
         print(f"  {len(stats):,} player-week records loaded.")
 
-    # Load Sleeper players
     if not os.path.exists(SLEEPER_PATH):
         print(f"ERROR: Sleeper player data not found at {SLEEPER_PATH}", file=sys.stderr)
         print("Run pull_sleeper_players.py first.", file=sys.stderr)
@@ -80,10 +80,21 @@ def safe_pct(numerator: float, denominator: float, scale: float = 100.0) -> floa
     return round((numerator / denominator) * scale, 2)
 
 
-def classify_career_arc(epa_per_play: float, snap_share: float, age: int | None) -> str:
-    """Classify player career arc based on efficiency and age."""
+def classify_career_arc(
+    epa_per_play: float,
+    snap_share: float,
+    age: int | None,
+    games: int,
+) -> str | None:
+    """
+    Classify player career arc based on efficiency, age, and sample size.
+    Returns None when age is unavailable.
+    Returns 'Insufficient Data' when sample is too small to draw conclusions.
+    """
     if age is None:
-        return "Unknown"
+        return None
+    if games < MIN_GAMES_FOR_LABELS:
+        return "Insufficient Data"
     if age <= 24 and epa_per_play > 0.05:
         return "Ascending"
     if age <= 28 and epa_per_play > 0.0:
@@ -95,39 +106,70 @@ def classify_career_arc(epa_per_play: float, snap_share: float, age: int | None)
     return "Developing"
 
 
-def classify_three_year_context(pos: str, epa_per_play: float, snap_share: float) -> str:
-    """Assign a three-year narrative label based on position and metrics."""
+def classify_three_year_context(
+    pos: str,
+    epa_per_play: float,
+    snap_share: float,
+    games: int,
+) -> str | None:
+    """
+    Assign a three-year narrative label based on position, metrics, and sample size.
+    Returns None when the sample is too small to support a meaningful label.
+    'Elite' labels require both strong metrics AND sufficient game count.
+    """
+    if games < MIN_GAMES_FOR_LABELS:
+        return None
+
+    # Require a full half-season (9+ games) before using 'Elite' tier labels
+    elite_qualified = games >= 9
+
     if pos == "QB":
-        if epa_per_play > 0.15:
+        if epa_per_play > 0.15 and elite_qualified:
             return "Elite QB1 trajectory"
         if epa_per_play > 0.05:
             return "Solid starter with upside"
+        if epa_per_play > 0.0:
+            return "Serviceable starter"
         return "Backup / streaming option"
+
     if pos == "WR":
-        if epa_per_play > 0.12 and snap_share > 75:
+        if epa_per_play > 0.12 and snap_share > 75 and elite_qualified:
             return "Elite WR1 trajectory"
-        if snap_share > 60:
+        if epa_per_play > 0.06 and snap_share > 60:
             return "WR2 with WR1 upside"
-        return "Rotational / emerging role"
+        if snap_share > 50:
+            return "Rotational / emerging role"
+        return "Depth / situational role"
+
     if pos == "RB":
-        if snap_share > 60 and epa_per_play > 0.0:
+        if snap_share > 60 and epa_per_play > 0.0 and elite_qualified:
             return "Workhorse back"
         if snap_share > 40:
             return "Timeshare back with value"
         return "Change-of-pace / specialty role"
+
     if pos == "TE":
-        if epa_per_play > 0.10 and snap_share > 65:
+        if epa_per_play > 0.10 and snap_share > 65 and elite_qualified:
             return "Elite TE1 trajectory"
-        return "TE2 / blocking specialist"
-    return "Developing role"
+        if epa_per_play > 0.0 and snap_share > 50:
+            return "Receiving TE with upside"
+        return "Blocking / depth TE"
+
+    return None
 
 
 def classify_sustainability(
     success_rate: float,
     usage_volatility: float,
     role_stability: float,
-) -> str:
-    """Evaluate whether a player's production level is sustainable."""
+    games: int,
+) -> str | None:
+    """
+    Evaluate whether a player's production level is sustainable.
+    Returns None for insufficient sample.
+    """
+    if games < MIN_GAMES_FOR_LABELS:
+        return None
     if success_rate > 52 and usage_volatility < 8 and role_stability > 7:
         return "Sustainable"
     if success_rate > 45 and usage_volatility < 12:
@@ -170,7 +212,7 @@ def compute_receiving_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
     if targets.empty:
         return pd.DataFrame()
 
-    # Total team air yards per game for share calculations
+    # Team air yards per game for share calculations
     team_air_yards = (
         targets.groupby(["posteam", "game_id"])["air_yards"]
         .sum()
@@ -208,12 +250,9 @@ def compute_receiving_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
     ).reset_index()
 
     grouped.rename(columns={"receiver_player_name": "player_name"}, inplace=True)
-    grouped["pos"] = rec_plays.groupby("receiver_player_name")["play_type"].first().apply(
-        lambda _: "WR"
-    ).values
+    grouped["pos"] = "WR"
     grouped["team"] = rec_plays.groupby("receiver_player_name")["posteam"].last().values
 
-    # Attach team context for share calculations
     grouped = grouped.merge(
         team_air_yards.reset_index(), left_on="team", right_on="posteam", how="left"
     ).drop(columns=["posteam"], errors="ignore")
@@ -232,10 +271,12 @@ def compute_rushing_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
     if rush_plays.empty:
         return pd.DataFrame()
 
-    # Identify goal-line carries (inside the 5)
-    rush_plays["goal_line_carry"] = rush_plays.get("yardline_100", pd.Series(dtype=float)).apply(
-        lambda x: 1 if pd.notna(x) and x <= 5 else 0
-    )
+    if "yardline_100" in rush_plays.columns:
+        rush_plays["goal_line_carry"] = rush_plays["yardline_100"].apply(
+            lambda x: 1 if pd.notna(x) and x <= 5 else 0
+        )
+    else:
+        rush_plays["goal_line_carry"] = 0
 
     grouped = rush_plays.groupby("rusher_player_name").agg(
         attempts=("rush_attempt", "sum"),
@@ -257,52 +298,56 @@ def compute_rushing_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
 
 
 def compute_weekly_trends(pbp: pd.DataFrame, player_name: str) -> dict:
-    """Compute rolling weekly usage trends for a player."""
-    player_plays = pbp[
-        (pbp.get("passer_player_name", pd.Series()) == player_name) |
-        (pbp.get("receiver_player_name", pd.Series()) == player_name) |
-        (pbp.get("rusher_player_name", pd.Series()) == player_name)
-    ]
+    """
+    Compute rolling weekly usage trends for a player.
+    All trend values are returned as floats (not formatted strings).
+    Fields that cannot be computed are returned as None.
+    """
+    mask = pd.Series(False, index=pbp.index)
+    for col in ["passer_player_name", "receiver_player_name", "rusher_player_name"]:
+        if col in pbp.columns:
+            mask |= (pbp[col] == player_name)
+
+    player_plays = pbp[mask]
 
     if player_plays.empty or "week" not in player_plays.columns:
         return {
-            "rollingSnapTrend": "0.0%",
-            "rollingTargetTrend": "0.0%",
-            "usageVolatility": 0.0,
-            "roleStability": 5.0,
-            "routeGrowth": "0.0%",
+            "rollingSnapTrend": None,
+            "rollingTargetTrend": None,
+            "usageVolatility": None,
+            "roleStability": None,
+            "routeGrowth": None,
         }
 
     weekly_plays = player_plays.groupby("week").size().reset_index(name="plays")
 
     if len(weekly_plays) < 4:
+        std_val = float(weekly_plays["plays"].std()) if len(weekly_plays) > 1 else 0.0
         return {
-            "rollingSnapTrend": "0.0%",
-            "rollingTargetTrend": "0.0%",
-            "usageVolatility": round(float(weekly_plays["plays"].std() or 0), 2),
-            "roleStability": 5.0,
-            "routeGrowth": "0.0%",
+            "rollingSnapTrend": None,
+            "rollingTargetTrend": None,
+            "usageVolatility": round(std_val, 2),
+            "roleStability": None,
+            "routeGrowth": None,
         }
 
     plays_arr = weekly_plays["plays"].values
-    # Rolling 4-week trend: compare last 4 weeks average vs prior 4 weeks
     n = len(plays_arr)
-    last4 = plays_arr[max(n - 4, 0):].mean()
-    prior4 = plays_arr[max(n - 8, 0):max(n - 4, 0)].mean() if n > 4 else last4
+    last4 = float(plays_arr[max(n - 4, 0):].mean())
+    prior4 = float(plays_arr[max(n - 8, 0):max(n - 4, 0)].mean()) if n > 4 else last4
 
-    snap_trend_pct = ((last4 - prior4) / (prior4 + 1e-9)) * 100
-    volatility = float(np.std(plays_arr))
-    # Role stability: inverse of coefficient of variation, scaled 1-10
+    snap_trend_pct = round(((last4 - prior4) / (prior4 + 1e-9)) * 100, 2)
+    volatility = round(float(np.std(plays_arr)), 2)
     mean_plays = float(np.mean(plays_arr))
     cv = volatility / (mean_plays + 1e-9)
     role_stability = round(max(1.0, min(10.0, 10.0 - cv * 10)), 1)
 
     return {
-        "rollingSnapTrend": f"{snap_trend_pct:+.1f}%",
-        "rollingTargetTrend": f"{snap_trend_pct * 0.8:+.1f}%",
-        "usageVolatility": round(volatility, 2),
+        "rollingSnapTrend": snap_trend_pct,
+        "rollingTargetTrend": round(snap_trend_pct * 0.8, 2),
+        "usageVolatility": volatility,
         "roleStability": role_stability,
-        "routeGrowth": f"{snap_trend_pct * 0.6:+.1f}%",
+        "routeGrowth": round(snap_trend_pct * 0.6, 2),
     }
 
 
@@ -322,14 +367,22 @@ def compute_metrics(
     print("Computing rushing metrics...")
     rushing = compute_rushing_metrics(pbp)
 
-    # Team-level totals for share calculations
     team_rush_attempts = (
         pbp[pbp["rush_attempt"] == 1].groupby("posteam")["rush_attempt"].sum()
     )
 
+    # Pre-compute red zone totals once for efficiency
+    rz_col = "yardline_100" in pbp.columns
+    if rz_col:
+        rz_pbp = pbp[pbp["yardline_100"] <= 20]
+        total_rz = len(rz_pbp)
+    else:
+        rz_pbp = pd.DataFrame()
+        total_rz = 0
+
     all_players = []
 
-    # ----- Pass catchers (WR / TE / RB receiving) -----
+    # --- Pass catchers (WR / TE / RB receiving) ---
     for _, row in receiving.iterrows():
         name = row["player_name"]
         if pd.isna(name):
@@ -350,50 +403,47 @@ def compute_metrics(
         air_yards = float(row.get("air_yards_total", 0))
         deep_tgts = int(row.get("deep_targets", 0))
         explosive = int(row.get("explosive_plays", 0))
+        touchdowns = int(row.get("touchdowns", 0))
+        yards_total = float(row.get("yards_gained_total", 0))
 
-        epa_per_play = round(total_epa / attempts, 3) if attempts else 0
+        epa_per_play = round(total_epa / attempts, 3) if attempts else 0.0
         success_rate = safe_pct(successful, attempts)
         explosive_rate = safe_pct(explosive, attempts)
         deep_target_rate = safe_pct(deep_tgts, attempts)
 
-        # Team air yards for share
-        team_air_yds = float(row.get("team_air_yards_per_game", 1) or 1) * games
-        team_targets = float(row.get("team_targets_per_game", 1) or 1) * games
-        air_yards_share = safe_pct(air_yards, team_air_yds)
-        target_share = safe_pct(attempts, team_targets)
+        team_air_yds = float(row.get("team_air_yards_per_game", 0) or 0) * games
+        team_tgts = float(row.get("team_targets_per_game", 0) or 0) * games
+        air_yards_share = safe_pct(air_yards, team_air_yds) if team_air_yds > 0 else None
+        target_share = safe_pct(attempts, team_tgts) if team_tgts > 0 else None
 
-        # WOPR = 1.5 * target_share + 0.7 * air_yards_share
-        wopr = round(1.5 * (target_share / 100) + 0.7 * (air_yards_share / 100), 3)
+        # WOPR = 1.5 * target_share + 0.7 * air_yards_share (requires both)
+        if target_share is not None and air_yards_share is not None:
+            wopr = round(1.5 * (target_share / 100) + 0.7 * (air_yards_share / 100), 3)
+        else:
+            wopr = None
 
-        snap_share = min(99.9, round(target_share * 2.8, 1))  # Approximation
-        snap_trend_val = (snap_share - 70) * 0.3
-        snap_trend = f"{snap_trend_val:+.1f}%"
+        snap_share = min(99.9, round((target_share or 0) * 2.8, 1))
+        snap_trend_val = round((snap_share - 70) * 0.3, 2)
 
-        # Red zone
-        rz_plays = pbp[
-            (pbp.get("receiver_player_name", pd.Series()) == name) &
-            (pbp.get("yardline_100", pd.Series(dtype=float)) <= 20)
-        ]
-        rz_targets = len(rz_plays)
-        total_rz = pbp[pbp.get("yardline_100", pd.Series(dtype=float)) <= 20].shape[0]
-        red_zone_util = safe_pct(rz_targets, total_rz)
+        # Red zone utilization
+        if rz_col and total_rz > 0 and "receiver_player_name" in rz_pbp.columns:
+            rz_targets = int((rz_pbp["receiver_player_name"] == name).sum())
+            red_zone_util = safe_pct(rz_targets, total_rz)
+        else:
+            red_zone_util = None
 
-        # Touchdowns over expected (simplified)
-        touchdowns = int(row.get("touchdowns", 0))
         expected_tds = round(attempts * 0.05, 1)
         td_over_expected = round(touchdowns - expected_tds, 2)
 
-        # Fantasy points over expected (rough approximation)
-        yards_total = float(row.get("yards_gained_total", 0))
         actual_fp = yards_total * 0.1 + touchdowns * 6
-        expected_fp = actual_fp * 0.82  # simplified baseline
-        fpoe = round(actual_fp - expected_fp, 2)
-
-        career_arc = classify_career_arc(epa_per_play, snap_share, age)
-        three_year = classify_three_year_context(pos, epa_per_play, snap_share)
+        fpoe = round(actual_fp * 0.18, 2)
 
         usage_vol = round(float(np.random.uniform(3, 12)), 2)
         role_stab = round(float(np.random.uniform(6, 10)), 1)
+
+        career_arc = classify_career_arc(epa_per_play, snap_share, age, games)
+        three_year = classify_three_year_context(pos, epa_per_play, snap_share, games)
+        sustainability = classify_sustainability(success_rate, usage_vol, role_stab, games)
 
         trends = compute_weekly_trends(pbp, name)
 
@@ -404,12 +454,12 @@ def compute_metrics(
             "age": age,
             "games": games,
             "snapShare": snap_share,
-            "targetShare": round(target_share, 1),
-            "airYardsShare": round(air_yards_share, 1),
+            "targetShare": round(target_share, 1) if target_share is not None else None,
+            "airYardsShare": round(air_yards_share, 1) if air_yards_share is not None else None,
             "wopr": wopr,
-            "redZoneUtil": round(red_zone_util, 1),
+            "redZoneUtil": round(red_zone_util, 1) if red_zone_util is not None else None,
             "goalLineCarries": 0,
-            "snapTrend": snap_trend,
+            "snapTrend": snap_trend_val,
             "threeYearContext": three_year,
             "careerArc": career_arc,
             "epaPlay": epa_per_play,
@@ -419,7 +469,7 @@ def compute_metrics(
             "explosivePlayRate": explosive_rate,
             "breakawayRunRate": 0.0,
             "deepTargetRate": round(deep_target_rate, 1),
-            "sustainability": classify_sustainability(success_rate, usage_vol, role_stab),
+            "sustainability": sustainability,
             "rollingSnapTrend": trends["rollingSnapTrend"],
             "rollingTargetTrend": trends["rollingTargetTrend"],
             "usageVolatility": trends["usageVolatility"],
@@ -428,13 +478,12 @@ def compute_metrics(
         }
         all_players.append(player_obj)
 
-    # ----- Rushers (RB / QB rushing) -----
+    # --- Rushers (RB / FB) ---
     for _, row in rushing.iterrows():
         name = row["player_name"]
         if pd.isna(name):
             continue
 
-        # Skip if already captured as a receiver with more plays
         if any(p["player"] == name for p in all_players):
             continue
 
@@ -454,31 +503,29 @@ def compute_metrics(
         breakaway = int(row.get("breakaway_runs", 0))
         gl_carries = int(row.get("goal_line_carries", 0))
         touchdowns = int(row.get("touchdowns", 0))
+        yards_total = float(row.get("yards_gained_total", 0))
 
-        epa_per_play = round(total_epa / attempts, 3) if attempts else 0
+        epa_per_play = round(total_epa / attempts, 3) if attempts else 0.0
         success_rate = safe_pct(successful, attempts)
         explosive_rate = safe_pct(explosive, attempts)
         breakaway_rate = safe_pct(breakaway, attempts)
 
-        # Snap/usage share from team rush attempts
         team_rushes = float(team_rush_attempts.get(team, attempts))
         snap_share = min(99.9, round(safe_pct(attempts, team_rushes) * 1.5, 1))
-
-        snap_trend_val = (snap_share - 50) * 0.2
-        snap_trend = f"{snap_trend_val:+.1f}%"
+        snap_trend_val = round((snap_share - 50) * 0.2, 2)
 
         expected_tds = round(attempts * 0.04, 1)
         td_over_expected = round(touchdowns - expected_tds, 2)
 
-        yards_total = float(row.get("yards_gained_total", 0))
         actual_fp = yards_total * 0.1 + touchdowns * 6
         fpoe = round(actual_fp * 0.18, 2)
 
         usage_vol = round(float(np.random.uniform(4, 14)), 2)
         role_stab = round(float(np.random.uniform(5, 9)), 1)
 
-        career_arc = classify_career_arc(epa_per_play, snap_share, age)
-        three_year = classify_three_year_context(pos, epa_per_play, snap_share)
+        career_arc = classify_career_arc(epa_per_play, snap_share, age, games)
+        three_year = classify_three_year_context(pos, epa_per_play, snap_share, games)
+        sustainability = classify_sustainability(success_rate, usage_vol, role_stab, games)
 
         trends = compute_weekly_trends(pbp, name)
 
@@ -489,12 +536,13 @@ def compute_metrics(
             "age": age,
             "games": games,
             "snapShare": snap_share,
-            "targetShare": 0.0,
-            "airYardsShare": 0.0,
-            "wopr": 0.0,
-            "redZoneUtil": round(safe_pct(gl_carries, max(gl_carries * 5, 1)), 1),
+            # Opportunity metrics are null for pure rushers — not meaningful without target data
+            "targetShare": None,
+            "airYardsShare": None,
+            "wopr": None,
+            "redZoneUtil": None,
             "goalLineCarries": gl_carries,
-            "snapTrend": snap_trend,
+            "snapTrend": snap_trend_val,
             "threeYearContext": three_year,
             "careerArc": career_arc,
             "epaPlay": epa_per_play,
@@ -503,17 +551,18 @@ def compute_metrics(
             "fpoe": fpoe,
             "explosivePlayRate": explosive_rate,
             "breakawayRunRate": round(breakaway_rate, 1),
-            "deepTargetRate": 0.0,
-            "sustainability": classify_sustainability(success_rate, usage_vol, role_stab),
+            "deepTargetRate": None,
+            "sustainability": sustainability,
             "rollingSnapTrend": trends["rollingSnapTrend"],
-            "rollingTargetTrend": "0.0%",
+            # Target/route trends are null for pure rushers
+            "rollingTargetTrend": None,
             "usageVolatility": trends["usageVolatility"],
             "roleStability": trends["roleStability"],
-            "routeGrowth": "0.0%",
+            "routeGrowth": None,
         }
         all_players.append(player_obj)
 
-    # ----- Quarterbacks -----
+    # --- Quarterbacks ---
     for _, row in passing.iterrows():
         name = row["player_name"]
         if pd.isna(name):
@@ -537,9 +586,8 @@ def compute_metrics(
         explosive = int(row.get("explosive_plays", 0))
         deep_tgts = int(row.get("deep_targets", 0))
         touchdowns = int(row.get("touchdowns", 0))
-        air_yards = float(row.get("air_yards_total", 0))
 
-        epa_per_play = round(total_epa / attempts, 3) if attempts else 0
+        epa_per_play = round(total_epa / attempts, 3) if attempts else 0.0
         success_rate = safe_pct(successful, attempts)
         explosive_rate = safe_pct(explosive, attempts)
         deep_target_rate = safe_pct(deep_tgts, attempts)
@@ -547,14 +595,15 @@ def compute_metrics(
         expected_tds = round(attempts * 0.055, 1)
         td_over_expected = round(touchdowns - expected_tds, 2)
 
-        snap_share = 95.0  # QBs are on field nearly every snap
-        snap_trend = "+0.0%"
+        snap_share = 95.0
+        snap_trend_val = 0.0
 
         usage_vol = round(float(np.random.uniform(1, 5)), 2)
         role_stab = round(float(np.random.uniform(8, 10)), 1)
 
-        career_arc = classify_career_arc(epa_per_play, snap_share, age)
-        three_year = classify_three_year_context(pos, epa_per_play, snap_share)
+        career_arc = classify_career_arc(epa_per_play, snap_share, age, games)
+        three_year = classify_three_year_context(pos, epa_per_play, snap_share, games)
+        sustainability = classify_sustainability(success_rate, usage_vol, role_stab, games)
 
         trends = compute_weekly_trends(pbp, name)
 
@@ -565,12 +614,13 @@ def compute_metrics(
             "age": age,
             "games": games,
             "snapShare": snap_share,
-            "targetShare": 0.0,
-            "airYardsShare": round(air_yards / max(air_yards, 1) * 100, 1),
-            "wopr": 0.0,
-            "redZoneUtil": 0.0,
+            # Receiver opportunity metrics are not meaningful for QBs
+            "targetShare": None,
+            "airYardsShare": None,
+            "wopr": None,
+            "redZoneUtil": None,
             "goalLineCarries": 0,
-            "snapTrend": snap_trend,
+            "snapTrend": snap_trend_val,
             "threeYearContext": three_year,
             "careerArc": career_arc,
             "epaPlay": epa_per_play,
@@ -578,14 +628,15 @@ def compute_metrics(
             "tdOverExpected": td_over_expected,
             "fpoe": round(epa_per_play * attempts * 0.3, 2),
             "explosivePlayRate": explosive_rate,
-            "breakawayRunRate": 0.0,
+            "breakawayRunRate": None,
             "deepTargetRate": round(deep_target_rate, 1),
-            "sustainability": classify_sustainability(success_rate, usage_vol, role_stab),
+            "sustainability": sustainability,
             "rollingSnapTrend": trends["rollingSnapTrend"],
-            "rollingTargetTrend": "N/A",
+            # Target / route trends are not applicable for QBs
+            "rollingTargetTrend": None,
             "usageVolatility": trends["usageVolatility"],
             "roleStability": trends["roleStability"],
-            "routeGrowth": "N/A",
+            "routeGrowth": None,
         }
         all_players.append(player_obj)
 

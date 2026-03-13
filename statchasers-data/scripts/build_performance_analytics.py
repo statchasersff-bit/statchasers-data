@@ -11,6 +11,7 @@ Output: output/performance_analytics_latest.json
 """
 
 import json
+import math
 import os
 import sys
 from datetime import datetime, timezone
@@ -23,17 +24,34 @@ METRICS_PATH = os.path.join(PROCESSED_DIR, "player_metrics.json")
 LATEST_OUTPUT = os.path.join(OUTPUT_DIR, "performance_analytics_latest.json")
 SEASON_OUTPUT = os.path.join(OUTPUT_DIR, "performance_analytics_2025.json")
 
-# Current season identifier
 CURRENT_SEASON = 2025
 
-# Fields that must be present and non-null for a player to be exported
+# Fields required to be non-null before a player is exported
 REQUIRED_FIELDS = ["player", "team", "pos", "games"]
 
 # Minimum games to appear in the output
 MIN_GAMES = 2
 
-# Positions to include in the export
+# Valid positions for export
 VALID_POSITIONS = {"QB", "RB", "WR", "TE"}
+
+# String sentinel values that should be coerced to null in output
+NULL_SENTINELS = {"N/A", "n/a", "Unknown", "unknown", ""}
+
+# Numeric fields that must always be float | null — never a string
+NUMERIC_FIELDS = [
+    "snapShare", "targetShare", "airYardsShare", "wopr",
+    "redZoneUtil", "epaPlay", "successRate", "tdOverExpected",
+    "fpoe", "explosivePlayRate", "breakawayRunRate", "deepTargetRate",
+    "usageVolatility", "roleStability",
+    "snapTrend", "rollingSnapTrend", "rollingTargetTrend", "routeGrowth",
+]
+
+# Integer fields
+INTEGER_FIELDS = ["games", "goalLineCarries"]
+
+# String label fields — null is allowed, but string sentinels must be cleaned
+LABEL_FIELDS = ["threeYearContext", "careerArc", "sustainability"]
 
 
 def load_metrics() -> list[dict]:
@@ -51,86 +69,156 @@ def load_metrics() -> list[dict]:
 
 
 def validate_player(player: dict) -> bool:
-    """Check that a player record has all required fields."""
+    """Check that a player record has all required fields and meets minimum thresholds."""
     for field in REQUIRED_FIELDS:
         if field not in player or player[field] is None:
             return False
     if player.get("pos") not in VALID_POSITIONS:
         return False
-    if int(player.get("games", 0)) < MIN_GAMES:
+    try:
+        if int(player["games"]) < MIN_GAMES:
+            return False
+    except (ValueError, TypeError):
         return False
     return True
 
 
+def coerce_numeric(value, field: str) -> float | None:
+    """
+    Coerce a value to float, or None if it cannot be converted or is a sentinel.
+    Also returns None for NaN and Inf values which are invalid in JSON.
+    """
+    if value is None:
+        return None
+    if isinstance(value, str):
+        if value in NULL_SENTINELS:
+            return None
+        # Strip trailing % signs from any legacy string trend values
+        stripped = value.strip().rstrip("%")
+        try:
+            result = float(stripped)
+        except ValueError:
+            return None
+    else:
+        try:
+            result = float(value)
+        except (ValueError, TypeError):
+            return None
+
+    # Reject non-finite floats — they are invalid in JSON
+    if not math.isfinite(result):
+        return None
+
+    return round(result, 3)
+
+
+def coerce_label(value) -> str | None:
+    """Coerce a label field to string | None, mapping sentinel strings to null."""
+    if value is None:
+        return None
+    if isinstance(value, str) and value in NULL_SENTINELS:
+        return None
+    return value if isinstance(value, str) else None
+
+
 def clean_player(player: dict) -> dict:
-    """Ensure all expected fields are present with correct types."""
-    defaults = {
-        "player": "Unknown",
-        "team": "UNK",
-        "pos": "UNK",
-        "age": None,
-        "games": 0,
-        "snapShare": 0.0,
-        "targetShare": 0.0,
-        "airYardsShare": 0.0,
-        "wopr": 0.0,
-        "redZoneUtil": 0.0,
-        "goalLineCarries": 0,
-        "snapTrend": "+0.0%",
-        "threeYearContext": "Unknown",
-        "careerArc": "Unknown",
-        "epaPlay": 0.0,
-        "successRate": 0.0,
-        "tdOverExpected": 0.0,
-        "fpoe": 0.0,
-        "explosivePlayRate": 0.0,
-        "breakawayRunRate": 0.0,
-        "deepTargetRate": 0.0,
-        "sustainability": "Unknown",
-        "rollingSnapTrend": "+0.0%",
-        "rollingTargetTrend": "+0.0%",
-        "usageVolatility": 0.0,
-        "roleStability": 0.0,
-        "routeGrowth": "+0.0%",
-    }
-    cleaned = {**defaults, **player}
+    """
+    Normalize a player record for frontend-safe output:
+    - Numeric fields → float | null (never string, never NaN/Inf)
+    - Integer fields → int | null
+    - Label fields → string | null (sentinel strings → null)
+    - age → int | null (null is valid; frontend should render as em dash)
+    - Position-inappropriate nulls are preserved as null (not coerced to 0.0)
+    """
+    cleaned = dict(player)
 
-    # Ensure numeric types
-    for field in ["snapShare", "targetShare", "airYardsShare", "wopr",
-                  "redZoneUtil", "epaPlay", "successRate", "tdOverExpected",
-                  "fpoe", "explosivePlayRate", "breakawayRunRate",
-                  "deepTargetRate", "usageVolatility", "roleStability"]:
+    # Age: keep null as null; coerce to int if present
+    age = cleaned.get("age")
+    if age is None:
+        cleaned["age"] = None
+    else:
         try:
-            cleaned[field] = round(float(cleaned[field] or 0), 3)
+            cleaned["age"] = int(age)
         except (ValueError, TypeError):
-            cleaned[field] = 0.0
+            cleaned["age"] = None
 
-    for field in ["games", "goalLineCarries"]:
-        try:
-            cleaned[field] = int(cleaned[field] or 0)
-        except (ValueError, TypeError):
-            cleaned[field] = 0
+    # Numeric fields
+    for field in NUMERIC_FIELDS:
+        cleaned[field] = coerce_numeric(cleaned.get(field), field)
+
+    # Integer fields
+    for field in INTEGER_FIELDS:
+        val = cleaned.get(field)
+        if val is None:
+            cleaned[field] = None
+        else:
+            try:
+                cleaned[field] = int(val)
+            except (ValueError, TypeError):
+                cleaned[field] = None
+
+    # Label fields
+    for field in LABEL_FIELDS:
+        cleaned[field] = coerce_label(cleaned.get(field))
+
+    # Ensure player / team / pos are clean strings
+    cleaned["player"] = str(cleaned.get("player", "")).strip() or None
+    cleaned["team"] = str(cleaned.get("team", "")).strip() or None
+    cleaned["pos"] = str(cleaned.get("pos", "")).strip() or None
 
     return cleaned
 
 
-def sort_players(players: list[dict]) -> list[dict]:
-    """Sort players by position priority, then by EPA/play descending."""
+def _sort_key(player: dict):
+    """
+    Position-aware sort key for consistent, intentional ordering:
+      1. Position group: QB → WR → RB → TE
+      2. Within each group, rank by the most relevant opportunity/efficiency signal:
+         - QB:    EPA/play (higher = better)
+         - WR/TE: WOPR (higher = better), then target share
+         - RB:    snap share (higher = better), then EPA/play
+    """
     pos_order = {"QB": 0, "WR": 1, "RB": 2, "TE": 3}
-    return sorted(
-        players,
-        key=lambda p: (pos_order.get(p.get("pos", ""), 99), -(p.get("epaPlay") or 0))
-    )
+    pos = player.get("pos", "")
+    pos_rank = pos_order.get(pos, 99)
+
+    epa = player.get("epaPlay") or 0.0
+    wopr = player.get("wopr") or 0.0
+    target_share = player.get("targetShare") or 0.0
+    snap_share = player.get("snapShare") or 0.0
+
+    if pos == "QB":
+        secondary = -epa
+    elif pos in ("WR", "TE"):
+        secondary = (-wopr, -target_share)
+    elif pos == "RB":
+        secondary = (-snap_share, -epa)
+    else:
+        secondary = (-epa,)
+
+    # Flatten secondary into a tuple for consistent comparison
+    if not isinstance(secondary, tuple):
+        secondary = (secondary,)
+
+    return (pos_rank,) + secondary
+
+
+def sort_players(players: list[dict]) -> list[dict]:
+    """Sort players by position group then by strongest usage/efficiency profile."""
+    return sorted(players, key=_sort_key)
 
 
 def build_output(players: list[dict]) -> dict:
-    """Wrap player array with metadata envelope."""
-    now = datetime.now(timezone.utc).isoformat()
+    """Wrap the player array with a frontend-ready metadata envelope."""
+    now = datetime.now(timezone.utc)
+    iso_now = now.isoformat()
+
     return {
         "meta": {
-            "generated_at": now,
             "season": CURRENT_SEASON,
-            "player_count": len(players),
+            "playerCount": len(players),
+            "updatedAt": iso_now,
+            "generatedAt": iso_now,
             "source": "StatChasers Data Pipeline",
         },
         "players": players,
@@ -138,18 +226,17 @@ def build_output(players: list[dict]) -> dict:
 
 
 def write_output(data: dict, path: str) -> None:
-    """Write JSON output to file."""
+    """Write compact JSON output to file."""
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
-        json.dump(data, f, separators=(",", ":"))  # Compact JSON for web delivery
+        json.dump(data, f, separators=(",", ":"))
     size_kb = os.path.getsize(path) / 1024
-    print(f"Wrote {path} ({size_kb:.1f} KB, {data['meta']['player_count']} players)")
+    print(f"Wrote {path} ({size_kb:.1f} KB, {data['meta']['playerCount']} players)")
 
 
 def main():
     raw_players = load_metrics()
 
-    # Validate and clean each record
     valid_players = []
     skipped = 0
     for player in raw_players:
@@ -160,19 +247,15 @@ def main():
 
     print(f"Valid players: {len(valid_players)} | Skipped: {skipped}")
 
-    # Sort for consistent ordering
     sorted_players = sort_players(valid_players)
-
-    # Build output payload
     output = build_output(sorted_players)
 
-    # Write both output files
     write_output(output, LATEST_OUTPUT)
     write_output(output, SEASON_OUTPUT)
 
     print("Performance analytics build complete.")
-    print(f"\nFrontend can fetch from:")
-    print(f"  https://raw.githubusercontent.com/<your-org>/statchasers-data/main/output/performance_analytics_latest.json")
+    print("\nFrontend can fetch from:")
+    print("  https://raw.githubusercontent.com/<your-org>/statchasers-data/main/output/performance_analytics_latest.json")
 
 
 if __name__ == "__main__":
