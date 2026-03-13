@@ -131,8 +131,8 @@ def build_abbreviated_lookup(sleeper_players: list[dict]) -> dict[str, str]:
     Build an abbreviated-name -> full-name lookup so nflverse PBP names
     (e.g. 'J.Chase') resolve to canonical Sleeper names ('Ja'Marr Chase').
 
-    Ambiguous abbreviations (two active players with the same abbrev) are
-    dropped so we never silently assign the wrong name.
+    Unambiguous abbreviations only (exactly one Sleeper player maps to that
+    abbrev).  Ambiguous ones are handled by build_team_disambiguation().
     """
     counts: dict[str, int] = {}
     mapping: dict[str, str] = {}
@@ -146,23 +146,60 @@ def build_abbreviated_lookup(sleeper_players: list[dict]) -> dict[str, str]:
     return {abbrev: full for abbrev, full in mapping.items() if counts[abbrev] == 1}
 
 
+def build_team_disambiguation(
+    sleeper_players: list[dict],
+) -> dict[str, dict[str, str]]:
+    """
+    For abbreviated names that map to more than one Sleeper player, build a
+    secondary lookup keyed by (abbrev -> {team -> full_name}).
+
+    Used by resolve_full_name when the primary lookup is ambiguous so that
+    "R.Wilson on PIT" → "Roman Wilson" and "R.Wilson on NYG" → "Russell Wilson"
+    even though both share the "R.Wilson" abbreviation.
+
+    Players without a team in Sleeper (cut / retired) are stored under key
+    None so they can still be matched if no team-specific match is found.
+    """
+    counts: dict[str, int] = {}
+    by_team: dict[str, dict] = {}
+    for p in sleeper_players:
+        full = p.get("full_name", "").strip()
+        if not full:
+            continue
+        abbrev = _nflverse_abbrev(full)
+        counts[abbrev] = counts.get(abbrev, 0) + 1
+        by_team.setdefault(abbrev, {})[p.get("team")] = full
+    return {abbrev: teams for abbrev, teams in by_team.items() if counts[abbrev] > 1}
+
+
 def resolve_full_name(
     pbp_name: str,
     player_lookup: dict[str, dict],
     abbreviated_lookup: dict[str, str],
+    team_disambig: dict[str, dict[str, str]] | None = None,
+    pbp_team: str | None = None,
 ) -> str:
     """
     Return the canonical Sleeper full name for a PBP player name.
 
     Resolution order:
     1. Direct match in Sleeper full-name lookup (already a full name).
-    2. Match via abbreviated-name lookup (PBP abbreviation -> Sleeper full name).
-    3. Fall back to the PBP name unchanged.
+    2. Unambiguous abbreviated-name lookup.
+    3. Team-based disambiguation for ambiguous abbreviations:
+       a. Exact team match (e.g. "R.Wilson" + "PIT" → "Roman Wilson").
+       b. Fallback to the None-team entry (cut/retired player with no team).
+    4. Return the PBP name unchanged.
     """
     if pbp_name in player_lookup:
         return pbp_name
     if pbp_name in abbreviated_lookup:
         return abbreviated_lookup[pbp_name]
+    if team_disambig and pbp_name in team_disambig:
+        teams = team_disambig[pbp_name]
+        if pbp_team and pbp_team in teams:
+            return teams[pbp_team]
+        if None in teams:
+            return teams[None]
     return pbp_name
 
 
@@ -714,6 +751,7 @@ def compute_metrics(
     """
     player_lookup = build_player_lookup(sleeper_players)
     abbreviated_lookup = build_abbreviated_lookup(sleeper_players)
+    team_disambig = build_team_disambiguation(sleeper_players)
 
     print("Computing career context from all seasons...")
     career_stats = compute_career_stats(pbp_all)
@@ -819,7 +857,10 @@ def compute_metrics(
         if attempts < MIN_PLAYS:
             continue
 
-        full_name = resolve_full_name(name, player_lookup, abbreviated_lookup)
+        full_name = resolve_full_name(
+            name, player_lookup, abbreviated_lookup,
+            team_disambig=team_disambig, pbp_team=str(row.get("team", "")),
+        )
         sleeper_info = player_lookup.get(full_name, {})
         sleeper_pos = sleeper_info.get("position", "")
         if sleeper_pos == "QB":
@@ -927,7 +968,10 @@ def compute_metrics(
         if pd.isna(name):
             continue
 
-        full_name = resolve_full_name(name, player_lookup, abbreviated_lookup)
+        full_name = resolve_full_name(
+            name, player_lookup, abbreviated_lookup,
+            team_disambig=team_disambig, pbp_team=str(row.get("team", "")),
+        )
         if any(p["player"] == full_name and p.get("pos") in ("RB", "FB") for p in all_players):
             continue
 
@@ -1024,7 +1068,10 @@ def compute_metrics(
         if pd.isna(name):
             continue
 
-        full_name = resolve_full_name(name, player_lookup, abbreviated_lookup)
+        full_name = resolve_full_name(
+            name, player_lookup, abbreviated_lookup,
+            team_disambig=team_disambig, pbp_team=str(row.get("team", "")),
+        )
         if any(p["player"] == full_name and p.get("pos") == "QB" for p in all_players):
             continue
 

@@ -60,16 +60,15 @@ def process_players(raw_players: dict) -> list[dict]:
         if position not in RELEVANT_POSITIONS:
             continue
 
-        # Skip players without a team (inactive/free agents)
-        team = player_data.get("team")
-        if not team:
-            continue
-
         full_name = player_data.get("full_name") or (
             f"{player_data.get('first_name', '')} {player_data.get('last_name', '')}".strip()
         )
+        if not full_name.strip():
+            continue
+
         birth_date = player_data.get("birth_date")
         age = compute_age(birth_date)
+        team = player_data.get("team")
 
         players.append({
             "player_id": player_id,
@@ -80,7 +79,8 @@ def process_players(raw_players: dict) -> list[dict]:
             "age": age,
         })
 
-    print(f"Processed {len(players)} active skill position players.")
+    active = sum(1 for p in players if p["team"])
+    print(f"Processed {len(players)} skill position players ({active} with active team).")
     return players
 
 
