@@ -508,6 +508,76 @@ def compute_rushing_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
 
 
 # ---------------------------------------------------------------------------
+# Route participation (from weekly player stats, 2025 season only)
+# ---------------------------------------------------------------------------
+
+def compute_route_participation(
+    stats: pd.DataFrame,
+    season: int,
+) -> dict[str, float | None]:
+    """
+    Compute route participation rate per player from the nflverse weekly
+    player stats dataset.
+
+    Route participation = routes_run / offensive_snaps × 100
+
+    Returns a dict keyed by player_display_name (full name) with float
+    values in percent form (e.g. 84.3), or None where snaps are zero.
+
+    If the required columns are missing from the stats DataFrame, logs a
+    warning and returns an empty dict so the pipeline never crashes.
+    """
+    if stats.empty:
+        print("WARNING: Player stats DataFrame is empty; routeParticipation will be null.", file=sys.stderr)
+        return {}
+
+    route_col = "receiving_routes_run"
+    if route_col not in stats.columns:
+        print(f"WARNING: '{route_col}' column not found in player stats; routeParticipation will be null.", file=sys.stderr)
+        return {}
+
+    snap_col = None
+    for candidate in ("offense_snaps", "snap_counts_offense"):
+        if candidate in stats.columns:
+            snap_col = candidate
+            break
+    if snap_col is None:
+        print("WARNING: No offensive snap column found in player stats; routeParticipation will be null.", file=sys.stderr)
+        return {}
+
+    name_col = "player_display_name" if "player_display_name" in stats.columns else "player_name"
+    if name_col not in stats.columns:
+        print("WARNING: No player name column found in player stats; routeParticipation will be null.", file=sys.stderr)
+        return {}
+
+    filtered = stats.copy()
+    if "season" in filtered.columns:
+        filtered = filtered[filtered["season"] == season]
+    if "season_type" in filtered.columns:
+        filtered = filtered[filtered["season_type"].isin(["REG", "POST"])]
+
+    filtered = filtered.dropna(subset=[name_col])
+
+    grouped = filtered.groupby(name_col).agg(
+        total_routes=(route_col, "sum"),
+        total_snaps=(snap_col, "sum"),
+    ).reset_index()
+
+    result: dict[str, float | None] = {}
+    for _, row in grouped.iterrows():
+        name = row[name_col]
+        snaps = float(row["total_snaps"])
+        routes = float(row["total_routes"])
+        if snaps > 0 and routes > 0:
+            result[name] = round((routes / snaps) * 100, 1)
+        else:
+            result[name] = None
+
+    print(f"  Route participation computed for {len(result)} players from {name_col}.")
+    return result
+
+
+# ---------------------------------------------------------------------------
 # Weekly trend computation (2025 season only)
 # ---------------------------------------------------------------------------
 
@@ -573,6 +643,7 @@ def compute_weekly_trends(pbp_2025: pd.DataFrame, player_name: str) -> dict:
 def compute_metrics(
     pbp_all: pd.DataFrame,
     pbp_2025: pd.DataFrame,
+    stats: pd.DataFrame,
     sleeper_players: list[dict],
 ) -> list[dict]:
     """
@@ -580,12 +651,16 @@ def compute_metrics(
 
     Dashboard metrics (games, shares, trends) → pbp_2025 only.
     Context labels (careerArc, threeYearContext) → career_stats from pbp_all.
+    Route participation → player stats for CURRENT_SEASON.
     """
     player_lookup = build_player_lookup(sleeper_players)
     abbreviated_lookup = build_abbreviated_lookup(sleeper_players)
 
     print("Computing career context from all seasons...")
     career_stats = compute_career_stats(pbp_all)
+
+    print("Computing route participation from player stats...")
+    route_participation = compute_route_participation(stats, CURRENT_SEASON)
 
     print(f"Computing 2025-season passing metrics...")
     passing = compute_passing_metrics(pbp_2025)
@@ -703,6 +778,7 @@ def compute_metrics(
             "redZoneUtil": round(red_zone_util, 1) if red_zone_util is not None else None,
             "goalLineCarries": 0,
             "snapTrend": snap_trend_val,
+            "routeParticipation": route_participation.get(full_name, route_participation.get(name)),
             "threeYearContext": three_year,
             "careerArc": career_arc,
             "epaPlay": epa_per_play,
@@ -792,6 +868,7 @@ def compute_metrics(
             "redZoneUtil": None,
             "goalLineCarries": gl_carries,
             "snapTrend": snap_trend_val,
+            "routeParticipation": None,
             "threeYearContext": three_year,
             "careerArc": career_arc,
             "epaPlay": epa_per_play,
@@ -875,6 +952,7 @@ def compute_metrics(
             "redZoneUtil": None,
             "goalLineCarries": 0,
             "snapTrend": snap_trend_val,
+            "routeParticipation": None,
             "threeYearContext": three_year,
             "careerArc": career_arc,
             "epaPlay": epa_per_play,
@@ -910,7 +988,7 @@ def save_metrics(players: list[dict]) -> None:
 
 def main():
     pbp_all, pbp_2025, stats, sleeper_players = load_data()
-    players = compute_metrics(pbp_all, pbp_2025, sleeper_players)
+    players = compute_metrics(pbp_all, pbp_2025, stats, sleeper_players)
     save_metrics(players)
     print("Metric computation complete.")
 

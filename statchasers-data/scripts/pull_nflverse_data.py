@@ -45,6 +45,15 @@ PBP_COLUMNS = [
     "qb_epa", "xyac_epa", "xreception_prob",
 ]
 
+STATS_COLUMNS = [
+    "player_id", "player_name", "player_display_name",
+    "position", "position_group", "recent_team",
+    "season", "week", "season_type",
+    "targets", "receptions",
+    "receiving_routes_run",
+    "offense_snaps", "snap_counts_offense",
+]
+
 SEASONS = [2024, 2025]
 
 
@@ -76,14 +85,16 @@ def fetch_play_by_play(seasons: list[int]) -> pl.DataFrame:
 
 
 def fetch_player_stats(seasons: list[int]) -> pl.DataFrame | None:
-    """Load weekly player stats from nflverse for snap count and target data."""
+    """Load weekly player stats from nflverse for snap count and route data."""
     all_frames = []
     for season in seasons:
         print(f"Loading player stats for {season} season...")
         try:
             stats = nfl.load_player_stats(seasons=[season])
+            available_cols = [c for c in STATS_COLUMNS if c in stats.columns]
+            stats = stats.select(available_cols)
             all_frames.append(stats)
-            print(f"  Loaded player stats for {season}.")
+            print(f"  Loaded player stats for {season} ({stats.height:,} rows, {len(available_cols)} cols).")
         except Exception as e:
             print(f"  WARNING: Could not load {season} player stats: {e}", file=sys.stderr)
 

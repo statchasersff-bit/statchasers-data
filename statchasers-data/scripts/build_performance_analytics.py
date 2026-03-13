@@ -41,7 +41,8 @@ NULL_SENTINELS = {"N/A", "n/a", "Unknown", "unknown", ""}
 # Numeric fields that must always be float | null — never a string
 NUMERIC_FIELDS = [
     "snapShare", "targetShare", "airYardsShare", "wopr",
-    "redZoneUtil", "epaPlay", "successRate", "tdOverExpected",
+    "redZoneUtil", "routeParticipation",
+    "epaPlay", "successRate", "tdOverExpected",
     "fpoe", "explosivePlayRate", "breakawayRunRate", "deepTargetRate",
     "usageVolatility", "roleStability",
     "snapTrend", "rollingSnapTrend", "rollingTargetTrend", "routeGrowth",
