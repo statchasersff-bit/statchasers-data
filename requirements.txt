@@ -4,4 +4,3 @@ nflreadpy
 numpy
 python-dateutil
 pyarrow
-polars

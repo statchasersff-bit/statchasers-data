@@ -4,6 +4,8 @@ pull_nflverse_data.py
 Fetches play-by-play and player stats data from nflverse via nflreadpy.
 Stores raw data as a Parquet file for efficient downstream processing.
 
+nflreadpy returns Polars DataFrames, so all filtering and I/O uses Polars.
+
 Output: data/raw/nflverse_play_by_play.parquet
         data/raw/nflverse_player_stats.parquet
 """
@@ -17,7 +19,11 @@ except ImportError:
     print("ERROR: nflreadpy is not installed. Run: pip install nflreadpy", file=sys.stderr)
     sys.exit(1)
 
-import pandas as pd
+try:
+    import polars as pl
+except ImportError:
+    print("ERROR: polars is not installed. Run: pip install polars", file=sys.stderr)
+    sys.exit(1)
 
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "raw")
 PBP_OUTPUT_PATH = os.path.join(OUTPUT_DIR, "nflverse_play_by_play.parquet")
@@ -42,7 +48,7 @@ PBP_COLUMNS = [
 SEASONS = [2024, 2025]
 
 
-def fetch_play_by_play(seasons: list[int]) -> pd.DataFrame:
+def fetch_play_by_play(seasons: list[int]) -> pl.DataFrame:
     """Load play-by-play data for given seasons from nflverse."""
     all_frames = []
     for season in seasons:
@@ -51,12 +57,12 @@ def fetch_play_by_play(seasons: list[int]) -> pd.DataFrame:
             pbp = nfl.load_pbp(seasons=[season])
             # Keep only columns that exist in this dataset
             available_cols = [c for c in PBP_COLUMNS if c in pbp.columns]
-            pbp = pbp[available_cols]
+            pbp = pbp.select(available_cols)
             # Filter to regular season and playoffs only
             if "season_type" in pbp.columns:
-                pbp = pbp[pbp["season_type"].isin(["REG", "POST"])]
+                pbp = pbp.filter(pl.col("season_type").is_in(["REG", "POST"]))
             all_frames.append(pbp)
-            print(f"  Loaded {len(pbp):,} plays for {season}.")
+            print(f"  Loaded {pbp.height:,} plays for {season}.")
         except Exception as e:
             print(f"  WARNING: Could not load {season} PBP data: {e}", file=sys.stderr)
 
@@ -64,18 +70,17 @@ def fetch_play_by_play(seasons: list[int]) -> pd.DataFrame:
         print("ERROR: No play-by-play data could be loaded.", file=sys.stderr)
         sys.exit(1)
 
-    combined = pd.concat(all_frames, ignore_index=True)
-    print(f"Total plays loaded: {len(combined):,}")
+    combined = pl.concat(all_frames, how="diagonal_relaxed")
+    print(f"Total plays loaded: {combined.height:,}")
     return combined
 
 
-def fetch_player_stats(seasons: list[int]) -> pd.DataFrame:
+def fetch_player_stats(seasons: list[int]) -> pl.DataFrame | None:
     """Load weekly player stats from nflverse for snap count and target data."""
     all_frames = []
     for season in seasons:
         print(f"Loading player stats for {season} season...")
         try:
-            # Try weekly player stats (includes snap data)
             stats = nfl.load_player_stats(seasons=[season])
             all_frames.append(stats)
             print(f"  Loaded player stats for {season}.")
@@ -84,18 +89,18 @@ def fetch_player_stats(seasons: list[int]) -> pd.DataFrame:
 
     if not all_frames:
         print("WARNING: No player stats loaded. Snap data will be approximated.", file=sys.stderr)
-        return pd.DataFrame()
+        return None
 
-    combined = pd.concat(all_frames, ignore_index=True)
+    combined = pl.concat(all_frames, how="diagonal_relaxed")
     return combined
 
 
-def save_parquet(df: pd.DataFrame, path: str, label: str) -> None:
-    """Save DataFrame to Parquet format."""
+def save_parquet(df: pl.DataFrame, path: str, label: str) -> None:
+    """Save Polars DataFrame to Parquet format."""
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    df.to_parquet(path, index=False, engine="pyarrow")
+    df.write_parquet(path)
     size_mb = os.path.getsize(path) / 1024 / 1024
-    print(f"Saved {label} to {path} ({size_mb:.1f} MB, {len(df):,} rows)")
+    print(f"Saved {label} to {path} ({size_mb:.1f} MB, {df.height:,} rows)")
 
 
 def main():
@@ -103,7 +108,7 @@ def main():
     save_parquet(pbp_df, PBP_OUTPUT_PATH, "play-by-play data")
 
     stats_df = fetch_player_stats(SEASONS)
-    if not stats_df.empty:
+    if stats_df is not None:
         save_parquet(stats_df, STATS_OUTPUT_PATH, "player stats")
 
     print("nflverse data pull complete.")
