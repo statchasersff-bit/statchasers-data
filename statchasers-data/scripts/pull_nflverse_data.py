@@ -1,13 +1,17 @@
 """
 pull_nflverse_data.py
 
-Fetches play-by-play and player stats data from nflverse via nflreadpy.
-Stores raw data as a Parquet file for efficient downstream processing.
+Fetches play-by-play, player stats, and PFR advanced stats from nflverse
+via nflreadpy.  Stores all data as Parquet files for efficient downstream
+processing.
 
 nflreadpy returns Polars DataFrames, so all filtering and I/O uses Polars.
 
 Output: data/raw/nflverse_play_by_play.parquet
         data/raw/nflverse_player_stats.parquet
+        data/raw/pfr_pass_advstats.parquet   (QB pressure / pocket data)
+        data/raw/pfr_rush_advstats.parquet   (RB broken tackles / YAC)
+        data/raw/pfr_rec_advstats.parquet    (WR/TE drops / broken tackles)
 """
 
 import os
@@ -25,9 +29,12 @@ except ImportError:
     print("ERROR: polars is not installed. Run: pip install polars", file=sys.stderr)
     sys.exit(1)
 
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "raw")
-PBP_OUTPUT_PATH = os.path.join(OUTPUT_DIR, "nflverse_play_by_play.parquet")
-STATS_OUTPUT_PATH = os.path.join(OUTPUT_DIR, "nflverse_player_stats.parquet")
+OUTPUT_DIR          = os.path.join(os.path.dirname(__file__), "..", "data", "raw")
+PBP_OUTPUT_PATH     = os.path.join(OUTPUT_DIR, "nflverse_play_by_play.parquet")
+STATS_OUTPUT_PATH   = os.path.join(OUTPUT_DIR, "nflverse_player_stats.parquet")
+PFR_PASS_PATH       = os.path.join(OUTPUT_DIR, "pfr_pass_advstats.parquet")
+PFR_RUSH_PATH       = os.path.join(OUTPUT_DIR, "pfr_rush_advstats.parquet")
+PFR_REC_PATH        = os.path.join(OUTPUT_DIR, "pfr_rec_advstats.parquet")
 
 # Columns to retain from play-by-play to reduce file size
 PBP_COLUMNS = [
@@ -113,6 +120,29 @@ def save_parquet(df: pl.DataFrame, path: str, label: str) -> None:
     print(f"Saved {label} to {path} ({size_mb:.1f} MB, {df.height:,} rows)")
 
 
+def fetch_pfr_advstats(seasons: list[int]) -> dict[str, pl.DataFrame]:
+    """
+    Load PFR (Pro Football Reference) advanced stats for pass, rush, and rec.
+    Returns a dict keyed by stat_type.  Missing or errored types get an empty
+    DataFrame so downstream code can safely handle absence.
+    """
+    results: dict[str, pl.DataFrame] = {}
+    for stat_type in ("pass", "rush", "rec"):
+        print(f"Loading PFR {stat_type} advstats for {seasons}...")
+        try:
+            df = nfl.load_pfr_advstats(seasons, stat_type=stat_type)
+            # Filter to REG + POST only (drop preseason if present)
+            if "game_type" in df.columns:
+                df = df.filter(pl.col("game_type").is_in(["REG", "POST"]))
+            results[stat_type] = df
+            print(f"  Loaded {df.height:,} rows ({stat_type}).")
+        except Exception as e:
+            print(f"  WARNING: Could not load PFR {stat_type} advstats: {e}",
+                  file=sys.stderr)
+            results[stat_type] = pl.DataFrame()
+    return results
+
+
 def main():
     pbp_df = fetch_play_by_play(SEASONS)
     save_parquet(pbp_df, PBP_OUTPUT_PATH, "play-by-play data")
@@ -120,6 +150,16 @@ def main():
     stats_df = fetch_player_stats(SEASONS)
     if stats_df is not None:
         save_parquet(stats_df, STATS_OUTPUT_PATH, "player stats")
+
+    pfr = fetch_pfr_advstats(SEASONS)
+    pfr_paths = {
+        "pass": PFR_PASS_PATH,
+        "rush": PFR_RUSH_PATH,
+        "rec":  PFR_REC_PATH,
+    }
+    for stat_type, df in pfr.items():
+        if not df.is_empty():
+            save_parquet(df, pfr_paths[stat_type], f"PFR {stat_type} advstats")
 
     print("nflverse data pull complete.")
 

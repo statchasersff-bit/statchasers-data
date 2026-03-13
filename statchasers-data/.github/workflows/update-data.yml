@@ -59,6 +59,9 @@ jobs:
           git add output/performance_analytics_latest.json
           git add output/performance_analytics_2025.json
           git add output/stat_explorer_qb.json
+          git add output/stat_explorer_rb.json
+          git add output/stat_explorer_wr.json
+          git add output/stat_explorer_te.json
           git add output/stat_explorer_latest.json
           git add data/raw/sleeper_players.json
 
