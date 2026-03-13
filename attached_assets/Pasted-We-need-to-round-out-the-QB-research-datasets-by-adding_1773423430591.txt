@@ -1,0 +1,235 @@
+We need to round out the QB research datasets by adding the remaining missing backend fields for Advanced Player Metrics, Efficiency Analytics, and QB rushing support in Stat Explorer.
+
+Important:
+- Keep Stat Explorer = raw data only
+- Keep Advanced Player Metrics = role / usage / context / stability
+- Keep Efficiency Analytics = performance per opportunity
+- Do not mix modeled labels into Stat Explorer
+
+Current ask:
+Please identify which of the following QB fields already exist upstream, map the ones that exist, and report which ones are still missing from the pipeline.
+
+--------------------------------------------------
+1) ADD QB RUSHING TO STAT EXPLORER
+--------------------------------------------------
+
+Please add a new "Rushing" group to the QB Stat Explorer payload with:
+
+- rush_att
+- rush_yds
+- rush_td
+
+Frontend labels:
+- RUSH ATT
+- RUSH YDS
+- RUSH TD
+
+These should be included in:
+- columns metadata
+- rows
+- coverage checks
+- defaultVisible=false initially unless coverage is strong
+
+Stat Explorer QB should now include these groups:
+
+Games
+- gp
+
+Passing
+- comp
+- att
+- pct
+- yds
+- ypa
+- td
+- int
+- air_yards
+- air_yards_per_att
+
+Deep Ball
+- pass_10_plus
+- pass_20_plus
+- pass_30_plus
+- pass_40_plus
+- pass_50_plus
+
+Misc
+- sacks
+- rz_att
+- passer_rating
+
+Rushing
+- rush_att
+- rush_yds
+- rush_td
+
+--------------------------------------------------
+2) ADVANCED PLAYER METRICS — MISSING QB FIELDS
+--------------------------------------------------
+
+We already have live:
+- player
+- team
+- age
+- gp
+- snap_pct
+- dropbacks_per_game
+- rush_att_per_game
+- rz_att
+- stability_score
+- volatility
+- snap_trend_4wk
+
+We still need backend support / pipeline support for these QB fields:
+
+Role & Usage
+- designed_rush_rate
+
+Opportunity
+- deep_attempt_rate
+- play_action_rate
+
+Career
+- experience_tier
+
+Scores
+- opportunity_score
+- usage_score
+- player_score
+
+Please check whether these fields already exist upstream under a different name.
+If they do, map them into the backend output.
+If they do not, report them clearly as not yet available from the pipeline.
+
+Preferred backend keys:
+- designed_rush_rate
+- deep_attempt_rate
+- play_action_rate
+- experience_tier
+- opportunity_score
+- usage_score
+- player_score
+
+Frontend labels:
+- Des. Rush %
+- Deep Att %
+- PA Rate
+- Exp. Tier
+- Opp Score
+- Usage Score
+- Player Score
+
+If these fields are unavailable, do NOT fake them. Return them only when real.
+
+--------------------------------------------------
+3) EFFICIENCY ANALYTICS — MISSING QB FIELDS
+--------------------------------------------------
+
+We already have live:
+- epa_per_play
+- success_rate
+- ypa
+- air_yards_per_att
+- fpoe
+- td_over_expectation
+- explosive_pass_rate
+- attempts
+- gp
+
+We still need backend support / pipeline support for:
+
+- cpoe
+- relative_efficiency
+- efficiency_score
+
+Please check whether these exist upstream under another name.
+
+Preferred backend keys:
+- cpoe
+- relative_efficiency
+- efficiency_score
+
+Frontend labels:
+- CPOE
+- Rel. Eff
+- Eff Score
+
+If they do not exist upstream yet, report them as missing rather than inventing placeholders.
+
+--------------------------------------------------
+4) RESPONSE / REPORTING REQUIREMENT
+--------------------------------------------------
+
+Please send back a field audit for QB with 3 buckets:
+
+A) Already live and mapped
+B) Exists upstream but needs mapping/renaming
+C) Missing from pipeline
+
+Format example:
+
+Stat Explorer QB
+- rush_att → exists upstream as qb_rush_attempts → map needed
+- rush_yds → missing
+- rush_td → exists and mapped
+
+Advanced Player Metrics QB
+- designed_rush_rate → missing
+- deep_attempt_rate → exists upstream as deep_rate
+- play_action_rate → missing
+- experience_tier → missing
+- opportunity_score → missing
+- usage_score → missing
+- player_score → missing
+
+Efficiency Analytics QB
+- cpoe → missing
+- relative_efficiency → missing
+- efficiency_score → missing
+
+--------------------------------------------------
+5) SCHEMA / OUTPUT RULES
+--------------------------------------------------
+
+For any field that is added:
+- include it in columns metadata
+- include label
+- include type
+- include group
+- include coverage
+- include defaultVisible
+
+Suggested groups:
+Stat Explorer:
+- games
+- passing
+- deep
+- misc
+- rushing
+
+Advanced Player Metrics:
+- identity
+- role_usage
+- opportunity
+- stability
+- career
+- scores
+
+Efficiency Analytics:
+- identity
+- core_efficiency
+- fantasy_efficiency
+- explosiveness
+- relative
+- sample_context
+
+Do not expose dead columns with zero coverage unless the frontend explicitly wants them hidden via metadata.
+Prefer returning accurate coverage so the frontend can decide.
+
+--------------------------------------------------
+6) NO PIPELINE GUESSING
+--------------------------------------------------
+
+Do not infer or fabricate fields just to complete the schema.
+Only map fields that are truly present and trustworthy.
+For anything absent, mark it missing so we can decide whether to calculate it later.

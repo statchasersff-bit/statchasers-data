@@ -46,10 +46,12 @@ NUMERIC_FIELDS = [
     "fpoe", "explosivePlayRate", "breakawayRunRate", "deepTargetRate",
     "usageVolatility", "roleStability",
     "snapTrend", "rollingSnapTrend", "rollingTargetTrend", "routeGrowth",
+    # QB-specific advanced fields
+    "dropbacksPerGame", "rushAttPerGame", "deepAttemptRate",
 ]
 
 # Integer fields
-INTEGER_FIELDS = ["games", "goalLineCarries"]
+INTEGER_FIELDS = ["games", "goalLineCarries", "rzAtt", "rushAtt", "rushYds", "rushTd"]
 
 # String label fields — null is allowed, but string sentinels must be cleaned
 LABEL_FIELDS = ["threeYearContext", "careerArc", "sustainability"]

@@ -426,6 +426,7 @@ def compute_passing_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
         deep_targets=("air_yards", lambda x: (x.dropna() >= 20).sum()),
         explosive_plays=("yards_gained", lambda x: (x >= 20).sum()),
         weeks=("week", "nunique"),
+        rz_attempts=("yardline_100", lambda x: (x.dropna() <= 20).sum()),
     ).reset_index()
     grouped.rename(columns={"passer_player_name": "player_name"}, inplace=True)
 
@@ -726,6 +727,21 @@ def compute_metrics(
         .items()
     }
 
+    # Pre-aggregate QB rushing stats (rush_attempt plays where the rusher is a QB).
+    # Uses the same abbreviated-name convention as passer_player_name so lookups match.
+    _qb_rush_plays = pbp_2025[pbp_2025["rush_attempt"] == 1]
+    qb_rush_agg: dict[str, dict] = {}
+    if not _qb_rush_plays.empty and "rusher_player_name" in _qb_rush_plays.columns:
+        qb_rush_agg = (
+            _qb_rush_plays.groupby("rusher_player_name")
+            .agg(
+                rush_att=("rush_attempt", "sum"),
+                rush_yds=("yards_gained",  "sum"),
+                rush_td= ("touchdown",     "sum"),
+            )
+            .to_dict("index")
+        )
+
     # Red zone context from 2025 only
     rz_col = "yardline_100" in pbp_2025.columns
     if rz_col:
@@ -974,6 +990,13 @@ def compute_metrics(
         explosive = int(row.get("explosive_plays", 0))
         deep_tgts = int(row.get("deep_targets", 0))
         touchdowns = int(row.get("touchdowns", 0))
+        rz_att_count = int(row.get("rz_attempts", 0))
+
+        # QB rushing stats (matched by the same abbreviated PBP name)
+        _rd      = qb_rush_agg.get(name, {})
+        rush_att = int(_rd.get("rush_att", 0))
+        rush_yds = int(_rd.get("rush_yds", 0))
+        rush_td  = int(_rd.get("rush_td",  0))
 
         epa_per_play = round(total_epa / attempts, 3) if attempts else 0.0
         success_rate = safe_pct(successful, attempts)
@@ -990,6 +1013,12 @@ def compute_metrics(
         team_dbs = int(team_dropbacks.get(team, max(1, qb_dbs)))
         snap_share = round(min(99.9, (qb_dbs / team_dbs) * 100), 1)
         snap_trend_val = 0.0
+
+        # Derived per-game / alias fields
+        dropbacks_per_game = round(qb_dbs / max(1, games), 1)
+        rush_att_per_game  = round(rush_att / max(1, games), 2)
+        # deep_attempt_rate: same metric as deepTargetRate exposed under the preferred key
+        deep_attempt_rate  = round(deep_target_rate, 1)
 
         trends = compute_weekly_trends(pbp_2025, name)
         usage_vol = trends["usageVolatility"] or 0.0
@@ -1021,14 +1050,22 @@ def compute_metrics(
             "tdOverExpected": td_over_expected,
             "fpoe": round(epa_per_play * attempts * 0.3, 2),
             "explosivePlayRate": explosive_rate,
-            "breakawayRunRate": None,     # not applicable for QBs
+            "breakawayRunRate": None,        # not applicable for QBs
             "deepTargetRate": round(deep_target_rate, 1),
             "sustainability": sustainability,
             "rollingSnapTrend": trends["rollingSnapTrend"],
-            "rollingTargetTrend": None,   # not applicable for QBs
+            "rollingTargetTrend": None,      # not applicable for QBs
             "usageVolatility": trends["usageVolatility"],
             "roleStability": trends["roleStability"],
-            "routeGrowth": None,          # not applicable for QBs
+            "routeGrowth": None,             # not applicable for QBs
+            # QB-specific advanced fields
+            "rzAtt": rz_att_count,
+            "rushAtt": rush_att,
+            "rushYds": rush_yds,
+            "rushTd": rush_td,
+            "dropbacksPerGame": dropbacks_per_game,
+            "rushAttPerGame": rush_att_per_game,
+            "deepAttemptRate": deep_attempt_rate,
         })
 
     print(f"Total players processed: {len(all_players)}")

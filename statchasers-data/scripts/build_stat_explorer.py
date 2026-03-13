@@ -86,41 +86,50 @@ class FieldDef(NamedTuple):
     key:             str
     label:           str
     type:            str   # string | number | decimal | percent
-    group:           str   # core | air | explosive | pressure | redZone | contact | receiving
+    group:           str   # games | passing | deep | misc | rushing | pressure | contact | receiving | air | explosive | redZone
     default_visible: bool
     description:     str
 
 
 # ── QB ──────────────────────────────────────────────────────────────────────
 QB_FIELDS: list[FieldDef] = [
-    FieldDef("player",            "PLAYER",  "string",  "core",     True,  "Player full name"),
-    FieldDef("team",              "TEAM",    "string",  "core",     True,  "Current team"),
-    FieldDef("position",          "POS",     "string",  "core",     False, "Position"),
-    FieldDef("gp",                "GP",      "number",  "core",     True,  "Games played"),
-    FieldDef("comp",              "COMP",    "number",  "core",     True,  "Completions"),
-    FieldDef("att",               "ATT",     "number",  "core",     True,  "Pass attempts (excludes sacks)"),
-    FieldDef("pct",               "PCT",     "percent", "core",     True,  "Completion percentage"),
-    FieldDef("yds",               "YDS",     "number",  "core",     True,  "Passing yards"),
-    FieldDef("ypa",               "Y/A",     "decimal", "core",     True,  "Yards per attempt"),
-    FieldDef("td",                "TD",      "number",  "core",     True,  "Passing touchdowns"),
-    FieldDef("int",               "INT",     "number",  "core",     True,  "Interceptions"),
-    FieldDef("sacks",             "SACK",    "number",  "core",     True,  "Times sacked"),
-    FieldDef("passer_rating",     "RTG",     "decimal", "core",     True,  "NFL passer rating"),
-    FieldDef("air_yards",         "AIR YDS", "number",  "air",      False, "Total air yards on all attempts"),
-    FieldDef("air_yards_per_att", "AIR/A",   "decimal", "air",      False, "Air yards per attempt"),
-    FieldDef("pass_10_plus",      "10+",     "number",  "explosive", False, "Completions of 10+ yards"),
-    FieldDef("pass_20_plus",      "20+",     "number",  "explosive", False, "Completions of 20+ yards"),
-    FieldDef("pass_30_plus",      "30+",     "number",  "explosive", False, "Completions of 30+ yards"),
-    FieldDef("pass_40_plus",      "40+",     "number",  "explosive", False, "Completions of 40+ yards"),
-    FieldDef("pass_50_plus",      "50+",     "number",  "explosive", False, "Completions of 50+ yards"),
-    FieldDef("rz_att",            "RZ ATT",  "number",  "redZone",  False, "Pass attempts from inside the 20"),
-    FieldDef("blitzes",           "BLITZ",   "number",  "pressure", False, "Times blitzed (PFR)"),
-    FieldDef("hurries",           "HURRY",   "number",  "pressure", False, "Times hurried (PFR)"),
-    FieldDef("knockdowns",        "HITS",    "number",  "pressure", False, "Times hit / knocked down (PFR)"),
-    FieldDef("pressures",         "PRESS",   "number",  "pressure", False, "Total times pressured (PFR)"),
-    FieldDef("poor_throws",       "BAD",     "number",  "pressure", False, "Bad / poor throws (PFR)"),
-    FieldDef("drops",             "DROP",    "number",  "pressure", False, "Dropped passes by receivers (PFR)"),
-    FieldDef("pocket_time",       "PKT T",   "decimal", "pressure", False, "Average time in pocket — NGS data (not yet available)"),
+    # identity
+    FieldDef("player",            "PLAYER",   "string",  "games",    True,  "Player full name"),
+    FieldDef("team",              "TEAM",     "string",  "games",    True,  "Current team"),
+    FieldDef("position",          "POS",      "string",  "games",    False, "Position"),
+    FieldDef("gp",                "GP",       "number",  "games",    True,  "Games played"),
+    # passing
+    FieldDef("comp",              "COMP",     "number",  "passing",  True,  "Completions"),
+    FieldDef("att",               "ATT",      "number",  "passing",  True,  "Pass attempts (excludes sacks)"),
+    FieldDef("pct",               "PCT",      "percent", "passing",  True,  "Completion percentage"),
+    FieldDef("yds",               "YDS",      "number",  "passing",  True,  "Passing yards"),
+    FieldDef("ypa",               "Y/A",      "decimal", "passing",  True,  "Yards per attempt"),
+    FieldDef("td",                "TD",       "number",  "passing",  True,  "Passing touchdowns"),
+    FieldDef("int",               "INT",      "number",  "passing",  True,  "Interceptions"),
+    FieldDef("air_yards",         "AIR YDS",  "number",  "passing",  False, "Total air yards on all attempts"),
+    FieldDef("air_yards_per_att", "AIR/A",    "decimal", "passing",  False, "Air yards per attempt"),
+    # deep ball
+    FieldDef("pass_10_plus",      "10+",      "number",  "deep",     False, "Completions of 10+ yards"),
+    FieldDef("pass_20_plus",      "20+",      "number",  "deep",     False, "Completions of 20+ yards"),
+    FieldDef("pass_30_plus",      "30+",      "number",  "deep",     False, "Completions of 30+ yards"),
+    FieldDef("pass_40_plus",      "40+",      "number",  "deep",     False, "Completions of 40+ yards"),
+    FieldDef("pass_50_plus",      "50+",      "number",  "deep",     False, "Completions of 50+ yards"),
+    # misc
+    FieldDef("sacks",             "SACK",     "number",  "misc",     True,  "Times sacked"),
+    FieldDef("passer_rating",     "RTG",      "decimal", "misc",     True,  "NFL passer rating"),
+    FieldDef("rz_att",            "RZ ATT",   "number",  "misc",     False, "Pass attempts from inside the 20"),
+    # rushing
+    FieldDef("rush_att",          "RUSH ATT", "number",  "rushing",  False, "Rushing attempts"),
+    FieldDef("rush_yds",          "RUSH YDS", "number",  "rushing",  False, "Rushing yards"),
+    FieldDef("rush_td",           "RUSH TD",  "number",  "rushing",  False, "Rushing touchdowns"),
+    # pressure (PFR)
+    FieldDef("blitzes",           "BLITZ",    "number",  "pressure", False, "Times blitzed (PFR)"),
+    FieldDef("hurries",           "HURRY",    "number",  "pressure", False, "Times hurried (PFR)"),
+    FieldDef("knockdowns",        "HITS",     "number",  "pressure", False, "Times hit / knocked down (PFR)"),
+    FieldDef("pressures",         "PRESS",    "number",  "pressure", False, "Total times pressured (PFR)"),
+    FieldDef("poor_throws",       "BAD",      "number",  "pressure", False, "Bad / poor throws (PFR)"),
+    FieldDef("drops",             "DROP",     "number",  "pressure", False, "Dropped passes by receivers (PFR)"),
+    FieldDef("pocket_time",       "PKT T",    "decimal", "pressure", False, "Average time in pocket — NGS data (not yet available)"),
 ]
 
 # ── RB ──────────────────────────────────────────────────────────────────────
@@ -422,8 +431,10 @@ def _aggregate_pfr_rec(pfr: pd.DataFrame | None) -> dict[str, dict]:
 
 def compute_qb_raw_stats(pbp: pd.DataFrame) -> pd.DataFrame:
     """
-    Compute rolling multi-season QB passing stats.
-    Sacks excluded from attempt counts to match official NFL/ESPN box scores.
+    Compute rolling multi-season QB passing AND rushing stats.
+    Sacks excluded from pass attempt counts to match official NFL/ESPN box scores.
+    QB rush stats are drawn from rush_attempt plays where rusher_player_name
+    matches the passer_player_name (same abbreviated-name convention in PBP).
     INT requires the 'interception' PBP column; treated as 0 if absent.
     """
     all_dropbacks = pbp[pbp["pass_attempt"] == 1].copy()
@@ -440,6 +451,21 @@ def compute_qb_raw_stats(pbp: pd.DataFrame) -> pd.DataFrame:
     )
     completions = official[official["complete_pass"] == 1].copy()
 
+    # Pre-aggregate QB rushing from the full PBP (rush_attempt plays).
+    # Matches on the same abbreviated name used for passer_player_name.
+    rush_plays = pbp[pbp["rush_attempt"] == 1]
+    qb_rush_agg: dict[str, dict] = {}
+    if not rush_plays.empty and "rusher_player_name" in rush_plays.columns:
+        qb_rush_agg = (
+            rush_plays.groupby("rusher_player_name")
+            .agg(
+                rush_att=("rush_attempt", "sum"),
+                rush_yds=("yards_gained",  "sum"),
+                rush_td= ("touchdown",     "sum"),
+            )
+            .to_dict("index")
+        )
+
     rows = []
     for name, grp in official.groupby("passer_player_name"):
         att  = len(grp)
@@ -453,7 +479,7 @@ def compute_qb_raw_stats(pbp: pd.DataFrame) -> pd.DataFrame:
         gp     = int(db_grp["game_id"].nunique())
 
         air_yds = round(float(grp["air_yards"].dropna().sum()), 1)
-        rz_att  = int((grp["yardline_100"] <= 20).sum()) if has_yardline else None
+        rz_att  = int((grp["yardline_100"].dropna() <= 20).sum()) if has_yardline else None
 
         comp_yds = completions.loc[
             completions["passer_player_name"] == name, "yards_gained"
@@ -464,27 +490,36 @@ def compute_qb_raw_stats(pbp: pd.DataFrame) -> pd.DataFrame:
         ypa         = round(yds  / att,        2) if att > 0 else 0.0
         air_per_att = round(air_yds / att,     2) if att > 0 else 0.0
 
+        # QB rushing stats
+        rd       = qb_rush_agg.get(name, {})
+        rush_att = int(rd.get("rush_att", 0))
+        rush_yds = int(rd.get("rush_yds", 0))
+        rush_td  = int(rd.get("rush_td",  0))
+
         rows.append({
-            "player_name":      name,
-            "team_pbp":         team,
-            "gp":               gp,
-            "comp":             comp,
-            "att":              att,
-            "pct":              pct,
-            "yds":              yds,
-            "ypa":              ypa,
-            "td":               td,
-            "int":              ints,
-            "sacks":            sacks,
-            "air_yards":        air_yds,
+            "player_name":       name,
+            "team_pbp":          team,
+            "gp":                gp,
+            "comp":              comp,
+            "att":               att,
+            "pct":               pct,
+            "yds":               yds,
+            "ypa":               ypa,
+            "td":                td,
+            "int":               ints,
+            "sacks":             sacks,
+            "air_yards":         air_yds,
             "air_yards_per_att": air_per_att,
-            "pass_10_plus":     int((comp_yds >= 10).sum()),
-            "pass_20_plus":     int((comp_yds >= 20).sum()),
-            "pass_30_plus":     int((comp_yds >= 30).sum()),
-            "pass_40_plus":     int((comp_yds >= 40).sum()),
-            "pass_50_plus":     int((comp_yds >= 50).sum()),
-            "rz_att":           rz_att,
-            "passer_rating":    _passer_rating(comp, att, yds, td, ints),
+            "pass_10_plus":      int((comp_yds >= 10).sum()),
+            "pass_20_plus":      int((comp_yds >= 20).sum()),
+            "pass_30_plus":      int((comp_yds >= 30).sum()),
+            "pass_40_plus":      int((comp_yds >= 40).sum()),
+            "pass_50_plus":      int((comp_yds >= 50).sum()),
+            "rz_att":            rz_att,
+            "passer_rating":     _passer_rating(comp, att, yds, td, ints),
+            "rush_att":          rush_att,
+            "rush_yds":          rush_yds,
+            "rush_td":           rush_td,
         })
 
     return pd.DataFrame(rows)
@@ -599,8 +634,6 @@ def _sanitize_qb(raw: dict, full_name: str, team: str,
         "ypa":                raw.get("ypa"),
         "td":                 raw.get("td"),
         "int":                raw.get("int"),
-        "sacks":              raw.get("sacks"),
-        "passer_rating":      raw.get("passer_rating"),
         "air_yards":          raw.get("air_yards"),
         "air_yards_per_att":  raw.get("air_yards_per_att"),
         "pass_10_plus":       raw.get("pass_10_plus"),
@@ -608,7 +641,12 @@ def _sanitize_qb(raw: dict, full_name: str, team: str,
         "pass_30_plus":       raw.get("pass_30_plus"),
         "pass_40_plus":       raw.get("pass_40_plus"),
         "pass_50_plus":       raw.get("pass_50_plus"),
+        "sacks":              raw.get("sacks"),
+        "passer_rating":      raw.get("passer_rating"),
         "rz_att":             raw.get("rz_att"),
+        "rush_att":           raw.get("rush_att", 0),
+        "rush_yds":           raw.get("rush_yds", 0),
+        "rush_td":            raw.get("rush_td",  0),
         "blitzes":            pfr_stats.get("blitzes"),
         "hurries":            pfr_stats.get("hurries"),
         "knockdowns":         pfr_stats.get("knockdowns"),
