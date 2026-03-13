@@ -46,15 +46,24 @@ NUMERIC_FIELDS = [
     "fpoe", "explosivePlayRate", "breakawayRunRate", "deepTargetRate",
     "usageVolatility", "roleStability",
     "snapTrend", "rollingSnapTrend", "rollingTargetTrend", "routeGrowth",
-    # QB-specific advanced fields
+    # QB-specific advanced and efficiency fields
     "dropbacksPerGame", "rushAttPerGame", "deepAttemptRate",
+    "ypa", "airYardsPerAtt",
+    "playActionRate", "scrambleRate", "designedRushRate",
+    # QB composite scores
+    "relativeEfficiency", "efficiencyScore", "opportunityScore",
+    "usageScore", "playerScore", "seasonAvgEpa",
 ]
 
 # Integer fields
-INTEGER_FIELDS = ["games", "goalLineCarries", "rzAtt", "rushAtt", "rushYds", "rushTd"]
+INTEGER_FIELDS = [
+    "games", "goalLineCarries",
+    "rzAtt", "rushAtt", "rushYds", "rushTd",
+    "careerGames",
+]
 
 # String label fields — null is allowed, but string sentinels must be cleaned
-LABEL_FIELDS = ["threeYearContext", "careerArc", "sustainability"]
+LABEL_FIELDS = ["threeYearContext", "careerArc", "sustainability", "experienceTier"]
 
 
 def load_metrics() -> list[dict]:
@@ -216,6 +225,17 @@ def build_output(players: list[dict]) -> dict:
     now = datetime.now(timezone.utc)
     iso_now = now.isoformat()
 
+    # Pull the season-average EPA baseline from any QB record that has it.
+    # This value is used by the frontend to annotate the relativeEfficiency tooltip.
+    qb_season_avg_epa: float | None = None
+    for p in players:
+        if p.get("pos") == "QB" and p.get("seasonAvgEpa") is not None:
+            try:
+                qb_season_avg_epa = float(p["seasonAvgEpa"])
+            except (ValueError, TypeError):
+                pass
+            break
+
     return {
         "meta": {
             "season": CURRENT_SEASON,
@@ -223,6 +243,7 @@ def build_output(players: list[dict]) -> dict:
             "updatedAt": iso_now,
             "generatedAt": iso_now,
             "source": "StatChasers Data Pipeline",
+            "qbSeasonAvgEpa": qb_season_avg_epa,
         },
         "players": players,
     }

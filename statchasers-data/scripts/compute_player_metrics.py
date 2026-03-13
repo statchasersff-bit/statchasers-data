@@ -390,6 +390,29 @@ def classify_sustainability(
 
 
 # ---------------------------------------------------------------------------
+# Experience tier
+# ---------------------------------------------------------------------------
+
+def classify_experience_tier(career_games: int) -> str:
+    """
+    Deterministic career-longevity tier based on total games played (all seasons).
+
+    Boundaries align with standard NFL contract phases:
+      < 16  → Rookie       (still on 1st-year contract / < 1 full season of starts)
+      16–47 → Early Career  (years 1-3, developing starter)
+      48–95 → Established  (years 3–6, prime contract window)
+      ≥ 96  → Veteran      (6+ seasons, deep experience)
+    """
+    if career_games < 16:
+        return "Rookie"
+    if career_games < 48:
+        return "Early Career"
+    if career_games < 96:
+        return "Established"
+    return "Veteran"
+
+
+# ---------------------------------------------------------------------------
 # Per-position metric aggregation (2025 season only)
 # ---------------------------------------------------------------------------
 
@@ -419,6 +442,7 @@ def compute_passing_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
     grouped = official.groupby("passer_player_name").agg(
         attempts=("pass_attempt", "sum"),
         completions=("complete_pass", "sum"),
+        yards_total=("yards_gained", "sum"),
         total_epa=("epa", "sum"),
         successful_plays=("success", "sum"),
         touchdowns=("touchdown", "sum"),
@@ -742,6 +766,36 @@ def compute_metrics(
             .to_dict("index")
         )
 
+    # play_action_rate — official pass plays where play_action == 1.
+    # Column only present after pull script is re-run with updated PBP_COLUMNS.
+    qb_play_action_map: dict[str, int] = {}
+    if "play_action" in pbp_2025.columns:
+        _pa_source = pbp_2025[
+            (pbp_2025["pass_attempt"] == 1) &
+            (pbp_2025["sack"].fillna(0) != 1) &
+            (pbp_2025["play_action"].fillna(0) == 1)
+        ]
+        qb_play_action_map = (
+            _pa_source.groupby("passer_player_name")["play_action"]
+            .count()
+            .to_dict()
+        )
+
+    # scramble_rate — plays flagged qb_scramble == 1 by rusher name.
+    # Scrambles are dropbacks where the QB ran rather than threw; they appear in
+    # the PBP as rush plays (rush_attempt==1, qb_scramble==1).
+    # designed_rush_rate = total_qb_rush - scrambles, exposed as a separate field.
+    # Column only present after pull script is re-run with updated PBP_COLUMNS.
+    qb_scramble_map: dict[str, int] = {}
+    if "qb_scramble" in pbp_2025.columns:
+        _sc_source = pbp_2025[pbp_2025["qb_scramble"].fillna(0) == 1]
+        if not _sc_source.empty and "rusher_player_name" in _sc_source.columns:
+            qb_scramble_map = (
+                _sc_source.groupby("rusher_player_name")["qb_scramble"]
+                .count()
+                .to_dict()
+            )
+
     # Red zone context from 2025 only
     rz_col = "yardline_100" in pbp_2025.columns
     if rz_col:
@@ -991,6 +1045,8 @@ def compute_metrics(
         deep_tgts = int(row.get("deep_targets", 0))
         touchdowns = int(row.get("touchdowns", 0))
         rz_att_count = int(row.get("rz_attempts", 0))
+        yards_total  = int(row.get("yards_total", 0))
+        air_yards_total = float(row.get("air_yards_total", 0))
 
         # QB rushing stats (matched by the same abbreviated PBP name)
         _rd      = qb_rush_agg.get(name, {})
@@ -998,18 +1054,18 @@ def compute_metrics(
         rush_yds = int(_rd.get("rush_yds", 0))
         rush_td  = int(_rd.get("rush_td",  0))
 
-        epa_per_play = round(total_epa / attempts, 3) if attempts else 0.0
-        success_rate = safe_pct(successful, attempts)
-        explosive_rate = safe_pct(explosive, attempts)
-        # deepTargetRate for QBs = their deep throw rate (meaningful, in percent form)
+        epa_per_play     = round(total_epa / attempts, 3) if attempts else 0.0
+        success_rate     = safe_pct(successful, attempts)
+        explosive_rate   = safe_pct(explosive, attempts)
         deep_target_rate = safe_pct(deep_tgts, attempts)
+        ypa              = round(yards_total / attempts, 2) if attempts else 0.0
+        air_yards_per_att = round(air_yards_total / attempts, 2) if attempts else 0.0
 
-        expected_tds = round(attempts * 0.055, 1)
+        expected_tds     = round(attempts * 0.055, 1)
         td_over_expected = round(touchdowns - expected_tds, 2)
 
         # Real QB snap share: this QB's dropbacks / team's total dropbacks × 100.
-        # Starters land 90-99%; spot-duty backups land proportionally lower.
-        qb_dbs  = qb_dropbacks_map.get(name, attempts)
+        qb_dbs   = qb_dropbacks_map.get(name, attempts)
         team_dbs = int(team_dropbacks.get(team, max(1, qb_dbs)))
         snap_share = round(min(99.9, (qb_dbs / team_dbs) * 100), 1)
         snap_trend_val = 0.0
@@ -1017,15 +1073,32 @@ def compute_metrics(
         # Derived per-game / alias fields
         dropbacks_per_game = round(qb_dbs / max(1, games), 1)
         rush_att_per_game  = round(rush_att / max(1, games), 2)
-        # deep_attempt_rate: same metric as deepTargetRate exposed under the preferred key
-        deep_attempt_rate  = round(deep_target_rate, 1)
+        deep_attempt_rate  = round(deep_target_rate, 1)   # same metric, preferred key
+
+        # play_action_rate and scramble_rate — None until pull script is re-run
+        # with the updated PBP_COLUMNS that include play_action and qb_scramble.
+        play_action_rate: float | None = None
+        scramble_rate: float | None    = None
+        designed_rush_rate: float | None = None
+        if qb_play_action_map:
+            pa_count = int(qb_play_action_map.get(name, 0))
+            play_action_rate = round(safe_pct(pa_count, qb_dbs), 1)
+        if qb_scramble_map:
+            sc_count = int(qb_scramble_map.get(name, 0))
+            scramble_rate    = round(safe_pct(sc_count, qb_dbs), 1)
+            # designed runs = total QB rushes minus scrambles
+            designed_rush_count = max(0, rush_att - sc_count)
+            designed_rush_rate  = round(safe_pct(designed_rush_count, qb_dbs), 1)
+
+        # Experience tier (uses career_games already computed from all-season PBP)
+        experience_tier = classify_experience_tier(career_games)
 
         trends = compute_weekly_trends(pbp_2025, name)
         usage_vol = trends["usageVolatility"] or 0.0
         role_stab = trends["roleStability"] or 9.0
 
-        career_arc = classify_career_arc(pos, age, career_epa_per_play, snap_share, career_games, games)
-        three_year = classify_three_year_context(pos, career_epa_per_play, snap_share, career_games, games)
+        career_arc    = classify_career_arc(pos, age, career_epa_per_play, snap_share, career_games, games)
+        three_year    = classify_three_year_context(pos, career_epa_per_play, snap_share, career_games, games)
         sustainability = classify_sustainability(success_rate, usage_vol, role_stab, games)
 
         all_players.append({
@@ -1066,7 +1139,101 @@ def compute_metrics(
             "dropbacksPerGame": dropbacks_per_game,
             "rushAttPerGame": rush_att_per_game,
             "deepAttemptRate": deep_attempt_rate,
+            "ypa": ypa,
+            "airYardsPerAtt": air_yards_per_att,
+            "careerGames": career_games,
+            "experienceTier": experience_tier,
+            # Scheme/role rates — None until pull_nflverse_data re-runs with new PBP_COLUMNS
+            "playActionRate": play_action_rate,
+            "scrambleRate": scramble_rate,
+            "designedRushRate": designed_rush_rate,
+            # Composite scores — filled in second pass after all QBs are collected
+            "relativeEfficiency": None,
+            "efficiencyScore": None,
+            "opportunityScore": None,
+            "usageScore": None,
+            "playerScore": None,
         })
+
+    # ─── Post-loop: QB composite scores ───────────────────────────────────────
+    # Composite scores need the full QB distribution for z-scores, so they are
+    # computed in a second pass after all QB records are collected.
+    _qbs = [p for p in all_players if p.get("pos") == "QB"]
+
+    if len(_qbs) >= 3:
+
+        def _extract(field: str) -> list[float]:
+            return [float(p.get(field) or 0) for p in _qbs]
+
+        def _z_scores(vals: list[float]) -> list[float]:
+            arr = np.array(vals, dtype=float)
+            std = float(arr.std())
+            if std < 1e-9:
+                return [0.0] * len(vals)
+            return list((arr - arr.mean()) / std)
+
+        def _clip_scale(z: float, clip: float = 2.5) -> float:
+            """Clamp z to [-clip, clip], then map linearly to [0, 100]."""
+            return round(max(0.0, min(100.0, (max(-clip, min(clip, z)) + clip) / (2 * clip) * 100)), 1)
+
+        # Season-average EPA/play used as baseline for relative_efficiency.
+        season_avg_epa = round(float(np.mean(_extract("epaPlay"))), 3)
+
+        # efficiency_score inputs (approved weights 0.35/0.25/0.15/0.10/0.10/0.05)
+        z_epa  = _z_scores(_extract("epaPlay"))
+        z_sr   = _z_scores(_extract("successRate"))
+        z_ypa  = _z_scores(_extract("ypa"))
+        z_air  = _z_scores(_extract("airYardsPerAtt"))
+        z_exp  = _z_scores(_extract("explosivePlayRate"))
+        z_tdo  = _z_scores(_extract("tdOverExpected"))
+
+        # opportunity_score inputs (approved weights 0.40/0.30/0.20/0.10)
+        z_snap = _z_scores(_extract("snapShare"))
+        z_dbpg = _z_scores(_extract("dropbacksPerGame"))
+        z_rz   = _z_scores(_extract("rzAtt"))
+        z_rapg = _z_scores(_extract("rushAttPerGame"))
+
+        # usage_score inputs (approved weights 0.45/0.30/0.20/0.05; volatility negated)
+        z_stab  = _z_scores(_extract("roleStability"))
+        z_vol   = _z_scores(_extract("usageVolatility"))
+        z_trend = _z_scores(_extract("rollingSnapTrend"))
+        z_dar   = _z_scores(_extract("deepAttemptRate"))
+
+        for qi, qb in enumerate(_qbs):
+            rel_eff = round(float(qb.get("epaPlay") or 0) - season_avg_epa, 3)
+
+            eff_raw = (
+                0.35 * z_epa[qi]  +
+                0.25 * z_sr[qi]   +
+                0.15 * z_ypa[qi]  +
+                0.10 * z_air[qi]  +
+                0.10 * z_exp[qi]  +
+                0.05 * z_tdo[qi]
+            )
+            opp_raw = (
+                0.40 * z_snap[qi] +
+                0.30 * z_dbpg[qi] +
+                0.20 * z_rz[qi]   +
+                0.10 * z_rapg[qi]
+            )
+            usg_raw = (
+                0.45 *  z_stab[qi]  +
+                0.30 * (-z_vol[qi]) +   # lower volatility = better
+                0.20 *  z_trend[qi] +
+                0.05 *  z_dar[qi]
+            )
+
+            eff_score = _clip_scale(eff_raw)
+            opp_score = _clip_scale(opp_raw)
+            usg_score = _clip_scale(usg_raw)
+            p_score   = round(0.45 * eff_score + 0.35 * opp_score + 0.20 * usg_score, 1)
+
+            qb["relativeEfficiency"] = rel_eff
+            qb["efficiencyScore"]    = eff_score
+            qb["opportunityScore"]   = opp_score
+            qb["usageScore"]         = usg_score
+            qb["playerScore"]        = p_score
+            qb["seasonAvgEpa"]       = season_avg_epa   # baseline for tooltip
 
     print(f"Total players processed: {len(all_players)}")
     return all_players

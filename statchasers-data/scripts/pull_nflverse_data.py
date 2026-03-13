@@ -50,6 +50,8 @@ PBP_COLUMNS = [
     "goal_to_go", "yardline_100",
     "third_down_converted", "fourth_down_converted",
     "qb_epa", "xyac_epa", "xreception_prob",
+    # QB scheme/role columns — used for play_action_rate and scramble_rate
+    "play_action", "qb_scramble",
 ]
 
 STATS_COLUMNS = [
