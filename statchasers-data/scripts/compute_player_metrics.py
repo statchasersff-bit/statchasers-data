@@ -710,6 +710,22 @@ def compute_metrics(
         pbp_2025[pbp_2025["rush_attempt"] == 1].groupby("posteam")["rush_attempt"].sum()
     )
 
+    # Team dropbacks from 2025 only (all pass_attempt==1, including sacks)
+    # Used as the denominator for QB snap share so backups get realistic values
+    # instead of the old hardcoded 95%.
+    team_dropbacks = (
+        pbp_2025[pbp_2025["pass_attempt"] == 1].groupby("posteam")["pass_attempt"].sum()
+    )
+
+    # Pre-aggregate QB dropbacks (including sacks) as the numerator
+    qb_dropbacks_map: dict[str, int] = {
+        str(k): int(v)
+        for k, v in pbp_2025[pbp_2025["pass_attempt"] == 1]
+        .groupby("passer_player_name")["pass_attempt"]
+        .sum()
+        .items()
+    }
+
     # Red zone context from 2025 only
     rz_col = "yardline_100" in pbp_2025.columns
     if rz_col:
@@ -968,7 +984,11 @@ def compute_metrics(
         expected_tds = round(attempts * 0.055, 1)
         td_over_expected = round(touchdowns - expected_tds, 2)
 
-        snap_share = 95.0   # QBs are on the field every offensive snap
+        # Real QB snap share: this QB's dropbacks / team's total dropbacks × 100.
+        # Starters land 90-99%; spot-duty backups land proportionally lower.
+        qb_dbs  = qb_dropbacks_map.get(name, attempts)
+        team_dbs = int(team_dropbacks.get(team, max(1, qb_dbs)))
+        snap_share = round(min(99.9, (qb_dbs / team_dbs) * 100), 1)
         snap_trend_val = 0.0
 
         trends = compute_weekly_trends(pbp_2025, name)
