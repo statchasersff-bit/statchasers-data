@@ -821,6 +821,9 @@ def compute_metrics(
 
         full_name = resolve_full_name(name, player_lookup, abbreviated_lookup)
         sleeper_info = player_lookup.get(full_name, {})
+        sleeper_pos = sleeper_info.get("position", "")
+        if sleeper_pos == "QB":
+            continue
         team = str(row.get("team", sleeper_info.get("team", "UNK")))
         pos = sleeper_info.get("position", row.get("pos", "WR"))
         age = sleeper_info.get("age")
@@ -925,7 +928,7 @@ def compute_metrics(
             continue
 
         full_name = resolve_full_name(name, player_lookup, abbreviated_lookup)
-        if any(p["player"] == full_name for p in all_players):
+        if any(p["player"] == full_name and p.get("pos") in ("RB", "FB") for p in all_players):
             continue
 
         sleeper_info = player_lookup.get(full_name, {})
@@ -1022,7 +1025,7 @@ def compute_metrics(
             continue
 
         full_name = resolve_full_name(name, player_lookup, abbreviated_lookup)
-        if any(p["player"] == full_name for p in all_players):
+        if any(p["player"] == full_name and p.get("pos") == "QB" for p in all_players):
             continue
 
         attempts = int(row.get("attempts", 0))
