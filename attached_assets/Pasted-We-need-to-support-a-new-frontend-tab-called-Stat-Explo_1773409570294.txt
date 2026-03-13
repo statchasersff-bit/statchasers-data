@@ -1,0 +1,136 @@
+We need to support a new frontend tab called "Stat Explorer" for the Research Menu / player research experience.
+
+Goal:
+Create a backend-ready raw-stat layer that exposes transparent advanced football stats by position, without modeled labels or interpretation fields.
+
+Important product rule:
+Stat Explorer is the raw-data layer.
+Advanced Metrics remains the modeled / intelligence layer.
+Do not mix them.
+
+What I need from the backend:
+
+1. Create a position-aware Stat Explorer response shape
+- Support QB first
+- Structure it so RB / WR / TE can be added the same way later
+- Use one shared response pattern with position-specific field maps
+
+2. Use the existing loaded analytics dataset as the source of truth
+- Do not create a separate ingestion source
+- Reuse the current performance analytics / player analytics pipeline data
+- Build a clean transform layer specifically for Stat Explorer output
+
+3. Expose only raw or near-raw stats
+For QB, include fields like:
+- player
+- team
+- position
+- gp
+- comp
+- att
+- pct
+- yds
+- ypa
+- air_yards
+- air_yards_per_att
+- pass_10_plus
+- pass_20_plus
+- pass_30_plus
+- pass_40_plus
+- pass_50_plus
+- pocket_time
+- sacks
+- knockdowns
+- hurries
+- blitzes
+- poor_throws
+- drops
+- rz_att
+- passer_rating
+
+Do NOT expose modeled display fields in this endpoint such as:
+- careerArc
+- threeYearContext
+- role labels
+- trajectory labels
+- custom archetypes
+- anything interpretive
+
+4. Add field availability / quality checks
+- If a field is absent for essentially all players, do not include it in the returned schema metadata
+- We already found routeParticipation is 0/464 and should not drive a visible column
+- Backend should help frontend avoid dead columns by returning only valid/usable fields per position, or by returning coverage metadata per field
+
+5. Return schema metadata with the rows
+Ideal response pattern:
+
+{
+  "position": "QB",
+  "sampleLabel": "Rolling Multi-Season",
+  "pipelineYear": 2025,
+  "columns": [
+    { "key": "gp", "label": "GP", "type": "number", "coverage": 1 },
+    { "key": "comp", "label": "COMP", "type": "number", "coverage": 1 },
+    { "key": "pct", "label": "PCT", "type": "percent", "coverage": 1 },
+    ...
+  ],
+  "rows": [...]
+}
+
+This lets the frontend render the table from backend-provided schema instead of hardcoding every column forever.
+
+6. Normalize naming and formatting hints
+Use clean backend field names, for example:
+- gp instead of g
+- ypa instead of y_a
+- air_yards_per_att instead of air_a if possible
+- passer_rating instead of rtg if possible
+
+Frontend can still display short labels like:
+- GP
+- Y/A
+- AIR/A
+- RTG
+
+But backend should use readable canonical keys.
+
+7. Clarify sample scope in the response
+We confirmed this is not single-season data.
+Josh Allen at 37 GP proves this is rolling multi-season.
+So include metadata such as:
+- sampleLabel: "Rolling Multi-Season"
+- maybe sampleWindow if detectable
+- pipelineYear: 2025
+
+Do not label this as current season only.
+
+8. Keep this as a transform/output change, not a pipeline rewrite
+- No need to rework the analytics generation yet
+- Just create a reliable raw-stat API layer on top of the current dataset
+- Preserve current data loading and update flow
+
+9. Build QB first, but architect for expansion
+After QB, we want to add:
+- RB Stat Explorer
+- WR Stat Explorer
+- TE Stat Explorer
+
+So please structure the code around:
+- per-position field maps
+- shared response format
+- reusable validation / coverage logic
+
+Suggested backend helper structure:
+- buildStatExplorerDataset(position, rawAnalytics)
+- getStatExplorerFieldMap(position)
+- computeFieldCoverage(rows)
+- buildStatExplorerColumns(position, rows)
+- sanitizeStatExplorerRow(position, row)
+
+Expected outcome:
+A frontend-consumable Stat Explorer endpoint or module that delivers:
+- raw advanced stats only
+- position-aware columns
+- rolling-sample metadata
+- no noisy modeled labels
+- no dead columns

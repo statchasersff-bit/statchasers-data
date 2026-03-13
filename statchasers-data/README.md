@@ -22,15 +22,18 @@ statchasers-data/
 │   ├── pull_sleeper_players.py      # Step 1: Fetch player metadata from Sleeper API
 │   ├── pull_nflverse_data.py        # Step 2: Download play-by-play from nflverse
 │   ├── compute_player_metrics.py    # Step 3: Compute all advanced metrics
-│   └── build_performance_analytics.py  # Step 4: Assemble and export final JSON
+│   ├── build_performance_analytics.py  # Step 4: Assemble Advanced Metrics JSON
+│   └── build_stat_explorer.py       # Step 5: Assemble Stat Explorer JSON (raw-stat layer)
 │
 ├── data/
 │   ├── raw/                         # Raw source data (not committed except Sleeper JSON)
 │   └── processed/                   # Intermediate computed metrics
 │
 ├── output/
-│   ├── performance_analytics_latest.json  # Always the most current data
-│   └── performance_analytics_2025.json    # Season-specific snapshot
+│   ├── performance_analytics_latest.json  # Advanced Metrics — modeled / intelligence layer
+│   ├── performance_analytics_2025.json    # Season-specific snapshot
+│   ├── stat_explorer_qb.json             # Stat Explorer — QB raw counting stats
+│   └── stat_explorer_latest.json         # Stat Explorer — all positions (union)
 │
 ├── requirements.txt
 ├── README.md
@@ -83,6 +86,7 @@ python scripts/pull_sleeper_players.py
 python scripts/pull_nflverse_data.py
 python scripts/compute_player_metrics.py
 python scripts/build_performance_analytics.py
+python scripts/build_stat_explorer.py
 ```
 
 Each script can also be run individually for debugging.
@@ -91,8 +95,13 @@ Each script can also be run individually for debugging.
 
 After running, the output directory will contain:
 
+**Advanced Metrics (modeled intelligence layer):**
 - `output/performance_analytics_latest.json` — current season data
 - `output/performance_analytics_2025.json` — 2025 season snapshot
+
+**Stat Explorer (raw-stat layer):**
+- `output/stat_explorer_qb.json` — QB raw counting stats with schema metadata
+- `output/stat_explorer_latest.json` — all positions (union file)
 
 ---
 
@@ -102,7 +111,7 @@ The workflow at `.github/workflows/update-data.yml`:
 
 - **Schedule**: Runs every **Tuesday at 6 AM UTC** (covers Monday Night Football data)
 - **Manual trigger**: Can be run on-demand via the GitHub Actions UI
-- **Steps**: Installs dependencies → runs all 4 scripts in order → commits updated JSON back to the repo
+- **Steps**: Installs dependencies → runs all 5 scripts in order → commits updated JSON back to the repo
 
 ### Setting up the workflow
 
@@ -114,10 +123,26 @@ The workflow at `.github/workflows/update-data.yml`:
 
 ## Frontend Integration
 
-The StatChasers frontend fetches data via:
+### Two separate layers
+
+| Layer | Endpoint | Purpose |
+|---|---|---|
+| **Advanced Metrics** | `output/performance_analytics_latest.json` | Modeled intelligence — EPA, trends, labels, archetypes |
+| **Stat Explorer** | `output/stat_explorer_qb.json` | Raw counting stats — no labels, no interpretation |
+
+Do not mix these. Advanced Metrics drives the Performance Analytics tab; Stat Explorer drives the Research Menu / Stat Explorer tab.
+
+### Advanced Metrics endpoint
 
 ```
 https://raw.githubusercontent.com/<your-org>/statchasers-data/main/output/performance_analytics_latest.json
+```
+
+### Stat Explorer endpoints
+
+```
+https://raw.githubusercontent.com/<your-org>/statchasers-data/main/output/stat_explorer_qb.json
+https://raw.githubusercontent.com/<your-org>/statchasers-data/main/output/stat_explorer_latest.json
 ```
 
 ### Output format
@@ -163,6 +188,60 @@ https://raw.githubusercontent.com/<your-org>/statchasers-data/main/output/perfor
   ]
 }
 ```
+
+### Stat Explorer output format
+
+The Stat Explorer response is schema-driven — the frontend renders its table entirely from the `columns` array rather than hardcoding every field.
+
+```json
+{
+  "position": "QB",
+  "sampleLabel": "Rolling Multi-Season",
+  "sampleWindow": "2024–2025",
+  "pipelineYear": 2025,
+  "generatedAt": "2026-03-13T06:00:00+00:00",
+  "playerCount": 87,
+  "columns": [
+    { "key": "gp",          "label": "GP",     "type": "number",  "coverage": 1.0 },
+    { "key": "comp",        "label": "COMP",   "type": "number",  "coverage": 1.0 },
+    { "key": "att",         "label": "ATT",    "type": "number",  "coverage": 1.0 },
+    { "key": "pct",         "label": "PCT",    "type": "percent", "coverage": 1.0 },
+    { "key": "yds",         "label": "YDS",    "type": "number",  "coverage": 1.0 },
+    { "key": "ypa",         "label": "Y/A",    "type": "decimal", "coverage": 1.0 },
+    { "key": "td",          "label": "TD",     "type": "number",  "coverage": 1.0 },
+    { "key": "int",         "label": "INT",    "type": "number",  "coverage": 1.0 },
+    { "key": "sacks",       "label": "SACK",   "type": "number",  "coverage": 1.0 },
+    { "key": "passer_rating","label": "RTG",   "type": "decimal", "coverage": 1.0 }
+  ],
+  "rows": [
+    {
+      "player": "Josh Allen",
+      "team": "BUF",
+      "position": "QB",
+      "gp": 37,
+      "comp": 737,
+      "att": 1109,
+      "pct": 66.5,
+      "yds": 8597,
+      "ypa": 7.75,
+      "td": 61,
+      "int": 18,
+      "sacks": 63,
+      "air_yards": 8692.0,
+      "air_yards_per_att": 7.84,
+      "pass_10_plus": 328,
+      "pass_20_plus": 126,
+      "pass_30_plus": 49,
+      "pass_40_plus": 22,
+      "pass_50_plus": 10,
+      "rz_att": 167,
+      "passer_rating": 105.3
+    }
+  ]
+}
+```
+
+**Coverage field:** Each column includes a `coverage` value from `0.0` to `1.0` representing the fraction of rows with a non-null value. Columns below 1% coverage are automatically excluded from the `columns` array so the frontend never renders a dead column. This guards against future fields (e.g., `pocket_time`) that are added to the schema before the data source is available.
 
 ---
 

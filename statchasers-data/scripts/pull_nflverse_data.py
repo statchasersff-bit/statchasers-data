@@ -35,7 +35,7 @@ PBP_COLUMNS = [
     "posteam", "defteam", "play_type",
     "yards_gained", "air_yards", "yards_after_catch",
     "epa", "success", "touchdown",
-    "pass_attempt", "rush_attempt", "complete_pass", "incomplete_pass", "sack",
+    "pass_attempt", "rush_attempt", "complete_pass", "incomplete_pass", "sack", "interception",
     "passer_player_id", "passer_player_name",
     "rusher_player_id", "rusher_player_name",
     "receiver_player_id", "receiver_player_name",
