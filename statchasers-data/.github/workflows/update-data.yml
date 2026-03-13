@@ -1,0 +1,68 @@
+name: Update StatChasers Data
+
+on:
+  # Run every Tuesday at 6 AM UTC during the NFL season (Sep - Feb)
+  schedule:
+    - cron: "0 6 * * 2"
+
+  # Allow manual runs at any time
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Pull Sleeper player data
+        run: python scripts/pull_sleeper_players.py
+
+      - name: Pull nflverse play-by-play data
+        run: python scripts/pull_nflverse_data.py
+
+      - name: Compute player metrics
+        run: python scripts/compute_player_metrics.py
+
+      - name: Build performance analytics output
+        run: python scripts/build_performance_analytics.py
+
+      - name: Commit and push updated JSON
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # Stage generated output files only
+          git add output/performance_analytics_latest.json
+          git add output/performance_analytics_2025.json
+          git add data/raw/sleeper_players.json
+
+          # Only commit if there are actual changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit. Data is already up to date."
+          else
+            TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
+            git commit -m "chore: update performance analytics data [${TIMESTAMP}]"
+            git push
+            echo "Data updated and pushed successfully."
+          fi

@@ -1,0 +1,282 @@
+Create a new Python project called statchasers-data.
+
+This project will act as the data pipeline for the StatChasers fantasy football analytics platform. Its purpose is to automatically pull NFL data from multiple sources, compute advanced player metrics, and output clean JSON files that my frontend analytics dashboards can consume.
+
+The frontend website will not process raw play-by-play data, so this pipeline must precompute all player-level metrics and export them in lightweight JSON format.
+
+Project Goal
+
+The pipeline should:
+
+Pull player identity and roster data from the Sleeper API
+
+Pull play-by-play or player-level data from nflverse / nflfastR datasets
+
+Process the data into player-level analytics metrics
+
+Export the results as JSON files
+
+Automatically update via GitHub Actions on a schedule
+
+The final JSON outputs will power the StatChasers Performance Analytics dashboard.
+
+Repository Structure
+
+Create the following folder structure:
+
+statchasers-data
+│
+├── scripts/
+│   ├── pull_sleeper_players.py
+│   ├── pull_nflverse_data.py
+│   ├── compute_player_metrics.py
+│   └── build_performance_analytics.py
+│
+├── data/
+│   ├── raw/
+│   └── processed/
+│
+├── output/
+│   ├── performance_analytics_latest.json
+│   └── performance_analytics_2025.json
+│
+├── requirements.txt
+├── README.md
+└── .github/workflows/update-data.yml
+Dependencies
+
+Add a requirements.txt with:
+
+pandas
+requests
+nflreadpy
+numpy
+python-dateutil
+
+These will be used to fetch and process NFL data.
+
+Data Sources
+Sleeper API
+
+Use Sleeper's API to fetch player metadata.
+
+Endpoint:
+
+https://api.sleeper.app/v1/players/nfl
+
+Fields needed:
+
+player_id
+full_name
+team
+position
+birth_date
+
+Compute:
+
+age
+team
+position
+player name
+
+Save this as:
+
+data/raw/sleeper_players.json
+nflverse Data
+
+Use nflreadpy to load play-by-play or player stats data for a season.
+
+Example season:
+
+2024
+2025
+
+Pull fields necessary to compute:
+
+EPA
+success rate
+yards gained
+air yards
+targets
+rush attempts
+touchdowns
+explosive plays
+
+Store raw dataset in:
+
+data/raw/nflverse_play_by_play.parquet
+Metrics to Compute
+
+The pipeline must compute the metrics used by the StatChasers Performance Analytics page.
+
+Each player object must contain the following fields.
+
+Core Identity Fields
+player
+team
+pos
+age
+games
+Advanced Player Metrics
+snapShare
+targetShare
+airYardsShare
+wopr
+redZoneUtil
+goalLineCarries
+snapTrend
+threeYearContext
+careerArc
+
+Where possible compute using real data.
+
+If historical context is missing, populate with reasonable placeholders.
+
+Efficiency Metrics
+
+Compute or approximate where possible:
+
+epaPlay
+successRate
+tdOverExpected
+fpoe
+explosivePlayRate
+breakawayRunRate
+deepTargetRate
+sustainability
+
+These can initially be simple calculations derived from nflverse play-by-play.
+
+Example:
+
+epaPlay = total EPA / plays
+successRate = successful plays / total plays
+explosivePlayRate = plays > 20 yards / total plays
+Usage Trend Metrics
+
+Calculate trend metrics from weekly data.
+
+rollingSnapTrend
+rollingTargetTrend
+usageVolatility
+roleStability
+routeGrowth
+
+These should be computed using the most recent weeks of data.
+
+Final Output Schema
+
+Each player should produce an object like this:
+
+{
+  "player": "Ja'Marr Chase",
+  "team": "CIN",
+  "pos": "WR",
+  "age": 24,
+  "games": 17,
+  "snapShare": 89.4,
+  "targetShare": 29.1,
+  "airYardsShare": 41.3,
+  "wopr": 0.78,
+  "redZoneUtil": 31.2,
+  "goalLineCarries": 0,
+  "snapTrend": "+7.4%",
+  "threeYearContext": "Elite WR1 trajectory",
+  "careerArc": "Ascending",
+  "epaPlay": 0.18,
+  "successRate": 57.2,
+  "tdOverExpected": 3.1,
+  "fpoe": 18.4,
+  "explosivePlayRate": 14.7,
+  "breakawayRunRate": 6.5,
+  "deepTargetRate": 22.1,
+  "sustainability": "Sustainable",
+  "rollingSnapTrend": "+9.1%",
+  "rollingTargetTrend": "+5.4%",
+  "usageVolatility": 4.2,
+  "roleStability": 8.9,
+  "routeGrowth": "+6.8%"
+}
+Output Files
+
+The pipeline should export:
+
+Latest data
+output/performance_analytics_latest.json
+Season-specific data
+output/performance_analytics_2025.json
+
+These files should contain arrays of player objects.
+
+GitHub Actions Automation
+
+Create a workflow file:
+
+.github/workflows/update-data.yml
+
+This workflow should:
+
+Run on schedule (every Tuesday during season)
+
+Install Python dependencies
+
+Run all scripts
+
+Generate updated JSON output
+
+Commit the updated JSON files back to the repo
+
+Frontend Compatibility
+
+The JSON output must be optimized for web dashboards.
+
+Requirements:
+
+lightweight
+
+clean player objects
+
+no raw play-by-play
+
+no unnecessary fields
+
+optimized for quick fetch requests
+
+The StatChasers frontend will fetch this file using:
+
+https://raw.githubusercontent.com/statchasers-data/main/output/performance_analytics_latest.json
+Code Requirements
+
+The code should:
+
+be modular
+
+separate data ingestion from metric computation
+
+include clear comments
+
+handle API errors gracefully
+
+allow easy addition of future metrics
+
+avoid loading unnecessary full datasets when possible
+
+README
+
+Create a README explaining:
+
+project purpose
+
+data sources
+
+how to run scripts locally
+
+how the GitHub Actions workflow updates the dataset
+
+Important Notes
+
+Do NOT build a web interface in this repo.
+
+This project is strictly a data processing pipeline.
+
+The final goal is to produce clean player analytics JSON files for the StatChasers website.

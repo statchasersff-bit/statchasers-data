@@ -1,0 +1,7 @@
+pandas
+requests
+nflreadpy
+numpy
+python-dateutil
+pyarrow
+fastparquet

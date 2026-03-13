@@ -48,6 +48,29 @@ Every package extends `tsconfig.base.json` which sets `composite: true`. The roo
 - `pnpm run build` — runs `typecheck` first, then recursively runs `build` in all packages that define it
 - `pnpm run typecheck` — runs `tsc --build --emitDeclarationOnly` using project references
 
+## StatChasers Data Pipeline
+
+Located at `statchasers-data/`. A standalone Python data pipeline (not a Node/TypeScript package) that:
+
+1. Pulls player metadata from the Sleeper API → `data/raw/sleeper_players.json`
+2. Pulls play-by-play data via nflreadpy → `data/raw/nflverse_play_by_play.parquet`
+3. Computes advanced player metrics (EPA, WOPR, snap share, trends, etc.)
+4. Exports clean JSON for the StatChasers frontend dashboard
+
+**Scripts (run in order):**
+```bash
+python statchasers-data/scripts/pull_sleeper_players.py
+python statchasers-data/scripts/pull_nflverse_data.py
+python statchasers-data/scripts/compute_player_metrics.py
+python statchasers-data/scripts/build_performance_analytics.py
+```
+
+**Output:**
+- `statchasers-data/output/performance_analytics_latest.json`
+- `statchasers-data/output/performance_analytics_2025.json`
+
+**GitHub Actions:** `.github/workflows/update-data.yml` runs every Tuesday at 6 AM UTC.
+
 ## Packages
 
 ### `artifacts/api-server` (`@workspace/api-server`)

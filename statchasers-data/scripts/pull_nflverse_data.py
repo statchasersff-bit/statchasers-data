@@ -1,0 +1,113 @@
+"""
+pull_nflverse_data.py
+
+Fetches play-by-play and player stats data from nflverse via nflreadpy.
+Stores raw data as a Parquet file for efficient downstream processing.
+
+Output: data/raw/nflverse_play_by_play.parquet
+        data/raw/nflverse_player_stats.parquet
+"""
+
+import os
+import sys
+
+try:
+    import nflreadpy as nfl
+except ImportError:
+    print("ERROR: nflreadpy is not installed. Run: pip install nflreadpy", file=sys.stderr)
+    sys.exit(1)
+
+import pandas as pd
+
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "raw")
+PBP_OUTPUT_PATH = os.path.join(OUTPUT_DIR, "nflverse_play_by_play.parquet")
+STATS_OUTPUT_PATH = os.path.join(OUTPUT_DIR, "nflverse_player_stats.parquet")
+
+# Columns to retain from play-by-play to reduce file size
+PBP_COLUMNS = [
+    "play_id", "game_id", "season", "week", "season_type",
+    "posteam", "defteam", "play_type",
+    "yards_gained", "air_yards", "yards_after_catch",
+    "epa", "success", "touchdown",
+    "pass_attempt", "rush_attempt", "complete_pass", "incomplete_pass",
+    "passer_player_id", "passer_player_name",
+    "rusher_player_id", "rusher_player_name",
+    "receiver_player_id", "receiver_player_name",
+    "pass_location", "route",
+    "goal_to_go", "yardline_100",
+    "third_down_converted", "fourth_down_converted",
+    "qb_epa", "xyac_epa", "xreception_prob",
+]
+
+SEASONS = [2024, 2025]
+
+
+def fetch_play_by_play(seasons: list[int]) -> pd.DataFrame:
+    """Load play-by-play data for given seasons from nflverse."""
+    all_frames = []
+    for season in seasons:
+        print(f"Loading play-by-play data for {season} season...")
+        try:
+            pbp = nfl.load_pbp(seasons=[season])
+            # Keep only columns that exist in this dataset
+            available_cols = [c for c in PBP_COLUMNS if c in pbp.columns]
+            pbp = pbp[available_cols]
+            # Filter to regular season and playoffs only
+            if "season_type" in pbp.columns:
+                pbp = pbp[pbp["season_type"].isin(["REG", "POST"])]
+            all_frames.append(pbp)
+            print(f"  Loaded {len(pbp):,} plays for {season}.")
+        except Exception as e:
+            print(f"  WARNING: Could not load {season} PBP data: {e}", file=sys.stderr)
+
+    if not all_frames:
+        print("ERROR: No play-by-play data could be loaded.", file=sys.stderr)
+        sys.exit(1)
+
+    combined = pd.concat(all_frames, ignore_index=True)
+    print(f"Total plays loaded: {len(combined):,}")
+    return combined
+
+
+def fetch_player_stats(seasons: list[int]) -> pd.DataFrame:
+    """Load weekly player stats from nflverse for snap count and target data."""
+    all_frames = []
+    for season in seasons:
+        print(f"Loading player stats for {season} season...")
+        try:
+            # Try weekly player stats (includes snap data)
+            stats = nfl.load_player_stats(seasons=[season])
+            all_frames.append(stats)
+            print(f"  Loaded player stats for {season}.")
+        except Exception as e:
+            print(f"  WARNING: Could not load {season} player stats: {e}", file=sys.stderr)
+
+    if not all_frames:
+        print("WARNING: No player stats loaded. Snap data will be approximated.", file=sys.stderr)
+        return pd.DataFrame()
+
+    combined = pd.concat(all_frames, ignore_index=True)
+    return combined
+
+
+def save_parquet(df: pd.DataFrame, path: str, label: str) -> None:
+    """Save DataFrame to Parquet format."""
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    df.to_parquet(path, index=False, engine="pyarrow")
+    size_mb = os.path.getsize(path) / 1024 / 1024
+    print(f"Saved {label} to {path} ({size_mb:.1f} MB, {len(df):,} rows)")
+
+
+def main():
+    pbp_df = fetch_play_by_play(SEASONS)
+    save_parquet(pbp_df, PBP_OUTPUT_PATH, "play-by-play data")
+
+    stats_df = fetch_player_stats(SEASONS)
+    if not stats_df.empty:
+        save_parquet(stats_df, STATS_OUTPUT_PATH, "player stats")
+
+    print("nflverse data pull complete.")
+
+
+if __name__ == "__main__":
+    main()
