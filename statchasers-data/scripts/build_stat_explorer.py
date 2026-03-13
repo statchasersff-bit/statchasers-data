@@ -19,12 +19,22 @@ Data sources (all pre-pulled by pull_nflverse_data.py):
   data/raw/sleeper_players.json            — canonical full-name lookup
   data/processed/player_metrics.json       — team / position context
 
-Outputs:
+Outputs (per-season):
+  output/stat_explorer_qb_2023.json
+  output/stat_explorer_qb_2024.json
+  output/stat_explorer_qb_2025.json
+  output/stat_explorer_rb_{year}.json
+  output/stat_explorer_wr_{year}.json
+  output/stat_explorer_te_{year}.json
+
+Outputs (rolling multi-season):
   output/stat_explorer_qb.json
   output/stat_explorer_rb.json
   output/stat_explorer_wr.json
   output/stat_explorer_te.json
-  output/stat_explorer_latest.json         — all positions keyed by pos
+
+Union file:
+  output/stat_explorer_latest.json  — { seasons: {2023: {QB,RB,WR,TE}, ...}, rolling: {QB,RB,WR,TE} }
 """
 
 from __future__ import annotations
@@ -47,6 +57,7 @@ METRICS_PATH     = ROOT / "data" / "processed" / "player_metrics.json"
 OUTPUT_DIR       = ROOT / "output"
 
 PIPELINE_YEAR    = 2025
+SEASONS          = [2023, 2024, 2025]
 MIN_QB_ATT       = 10
 MIN_RB_CARRIES   = 15
 MIN_WR_TGT       = 15
@@ -314,6 +325,16 @@ def _load_pfr(path: Path) -> pd.DataFrame | None:
     except Exception as e:
         print(f"WARNING: Could not load {path.name}: {e}", file=sys.stderr)
         return None
+
+
+def _filter_pfr_by_season(pfr: pd.DataFrame | None, season: int) -> pd.DataFrame | None:
+    """Return rows for a single season, or the full frame if no season column exists."""
+    if pfr is None or pfr.empty:
+        return pfr
+    if "season" not in pfr.columns:
+        return pfr
+    filtered = pfr[pfr["season"] == season].reset_index(drop=True)
+    return filtered if not filtered.empty else None
 
 
 def _aggregate_pfr_pass(pfr: pd.DataFrame | None) -> dict[str, dict]:
@@ -814,44 +835,77 @@ def main() -> None:
               file=sys.stderr)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    all_positions: dict[str, dict] = {}
 
-    positions = [
-        ("QB", "stat_explorer_qb.json"),
-        ("RB", "stat_explorer_rb.json"),
-        ("WR", "stat_explorer_wr.json"),
-        ("TE", "stat_explorer_te.json"),
-    ]
+    pos_slugs = [("QB", "qb"), ("RB", "rb"), ("WR", "wr"), ("TE", "te")]
 
-    for pos, filename in positions:
-        print(f"Building {pos} Stat Explorer...")
+    all_by_season: dict[str, dict[str, dict]] = {}
+    all_rolling:   dict[str, dict]            = {}
+
+    # ── per-season files ─────────────────────────────────────────────────────
+    available_seasons = sorted(pbp["season"].dropna().unique().astype(int).tolist())
+    for season in available_seasons:
+        pbp_s      = pbp[pbp["season"] == season].reset_index(drop=True)
+        pfr_pass_s = _filter_pfr_by_season(pfr_pass, season)
+        pfr_rush_s = _filter_pfr_by_season(pfr_rush, season)
+        pfr_rec_s  = _filter_pfr_by_season(pfr_rec,  season)
+
+        if pbp_s.empty:
+            print(f"WARNING: No PBP data for {season} — skipping.", file=sys.stderr)
+            continue
+
+        print(f"\nBuilding {season} season...")
+        all_by_season[str(season)] = {}
+
+        for pos, slug in pos_slugs:
+            dataset = build_stat_explorer_dataset(
+                pos, pbp_s, sleeper_players, player_metrics,
+                pfr_pass=pfr_pass_s, pfr_rush=pfr_rush_s, pfr_rec=pfr_rec_s,
+            )
+            if not dataset:
+                print(f"  WARNING: No {pos} data for {season}.")
+                continue
+
+            filename = f"stat_explorer_{slug}_{season}.json"
+            out_path = OUTPUT_DIR / filename
+            with open(out_path, "w") as fh:
+                json.dump(dataset, fh, separators=(",", ":"))
+            kb = out_path.stat().st_size / 1024
+            print(f"  Wrote {filename}  ({kb:.1f} KB, {dataset['playerCount']} players)")
+            all_by_season[str(season)][pos] = dataset
+
+    # ── rolling multi-season files ────────────────────────────────────────────
+    print("\nBuilding rolling multi-season data...")
+    for pos, slug in pos_slugs:
         dataset = build_stat_explorer_dataset(
             pos, pbp, sleeper_players, player_metrics,
             pfr_pass=pfr_pass, pfr_rush=pfr_rush, pfr_rec=pfr_rec,
         )
         if not dataset:
-            print(f"  WARNING: No data produced for {pos}.")
+            print(f"  WARNING: No rolling {pos} data.")
             continue
 
+        filename = f"stat_explorer_{slug}.json"
         out_path = OUTPUT_DIR / filename
         with open(out_path, "w") as fh:
             json.dump(dataset, fh, separators=(",", ":"))
         kb = out_path.stat().st_size / 1024
         print(f"  Wrote {filename}  ({kb:.1f} KB, {dataset['playerCount']} players)")
-        all_positions[pos] = dataset
+        all_rolling[pos] = dataset
 
+    # ── union file ─────────────────────────────────────────────────────────────
+    union = {"seasons": all_by_season, "rolling": all_rolling}
     union_path = OUTPUT_DIR / "stat_explorer_latest.json"
     with open(union_path, "w") as fh:
-        json.dump(all_positions, fh, separators=(",", ":"))
+        json.dump(union, fh, separators=(",", ":"))
     kb = union_path.stat().st_size / 1024
-    print(f"  Wrote stat_explorer_latest.json  ({kb:.1f} KB)")
+    print(f"\n  Wrote stat_explorer_latest.json  ({kb:.1f} KB)")
 
     print("\nStat Explorer build complete.")
     base = "https://raw.githubusercontent.com/<your-org>/statchasers-data/main/output"
-    print("\nFrontend endpoints:")
-    for _, fn in positions:
-        print(f"  {base}/{fn}")
-    print(f"  {base}/stat_explorer_latest.json")
+    print("\nPer-season endpoints (example):")
+    for season in available_seasons:
+        print(f"  {base}/stat_explorer_qb_{season}.json")
+    print(f"\n  {base}/stat_explorer_latest.json  (all seasons + rolling)")
 
 
 if __name__ == "__main__":

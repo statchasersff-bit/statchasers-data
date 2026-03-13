@@ -60,7 +60,7 @@ STATS_COLUMNS = [
     "offense_snaps", "snap_counts_offense",
 ]
 
-SEASONS = [2024, 2025]
+SEASONS = [2023, 2024, 2025]
 
 
 def fetch_play_by_play(seasons: list[int]) -> pl.DataFrame:
