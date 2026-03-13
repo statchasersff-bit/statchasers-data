@@ -568,7 +568,7 @@ def compute_route_participation(
         name = row[name_col]
         snaps = float(row["total_snaps"])
         routes = float(row["total_routes"])
-        if snaps > 0 and routes > 0:
+        if snaps > 0:
             result[name] = round((routes / snaps) * 100, 1)
         else:
             result[name] = None
