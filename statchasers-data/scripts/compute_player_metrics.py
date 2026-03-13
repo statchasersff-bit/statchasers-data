@@ -1033,6 +1033,9 @@ def compute_metrics(
             continue
 
         sleeper_info = player_lookup.get(full_name, {})
+        sleeper_pos = sleeper_info.get("position", "")
+        if sleeper_pos and sleeper_pos in ("WR", "TE", "RB", "FB"):
+            continue
         team = str(row.get("team", sleeper_info.get("team", "UNK")))
         pos = "QB"
         age = sleeper_info.get("age")
