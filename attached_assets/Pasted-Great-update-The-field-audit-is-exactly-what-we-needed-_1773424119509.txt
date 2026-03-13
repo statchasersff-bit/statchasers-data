@@ -1,0 +1,83 @@
+Great update. The field audit is exactly what we needed.
+
+Please proceed with the following next-step backend priorities for QB:
+
+1. Keep the newly added live QB fields in the payloads:
+- rushAtt
+- rushYds
+- rushTd
+- dropbacksPerGame
+- rushAttPerGame
+- deepAttemptRate
+- rzAtt
+
+2. For frontend-facing schema metadata, please make sure these are grouped and labeled cleanly:
+
+Stat Explorer QB
+- games: gp
+- passing: comp, att, pct, yds, ypa, td, int, air_yards, air_yards_per_att
+- deep: pass_10_plus, pass_20_plus, pass_30_plus, pass_40_plus, pass_50_plus
+- misc: sacks, rzAtt, passer_rating
+- rushing: rushAtt, rushYds, rushTd
+- pressure: only include if/when real pressure fields exist with coverage
+
+Advanced Player Metrics QB
+- identity: player, team, age, gp
+- role_usage: snap_pct, dropbacksPerGame, rushAttPerGame
+- opportunity: rzAtt, deepAttemptRate
+- stability: stability_score, volatility, snap_trend_4wk
+- career: careerArc only if trustworthy
+- scores: leave out for now unless formulas are defined
+
+Efficiency Analytics QB
+- identity: player, team, gp, attempts
+- core_efficiency: epa_per_play, success_rate, ypa, air_yards_per_att
+- fantasy_efficiency: fpoe, td_over_expectation
+- explosiveness: explosive_pass_rate
+- relative: leave cpoe / relative_efficiency / efficiency_score out until real
+- sample_context: gp, attempts
+
+3. Do not emit placeholder empty columns by default for fields that are known-missing.
+If a field is not live, either:
+- omit it from columns metadata entirely, or
+- include it only if the frontend explicitly asks for roadmap placeholders
+
+For the live production tool, we prefer:
+less but real > more but empty
+
+4. Next backend work should focus on formula-defined fields, not source-data guessing.
+Please prepare proposals for the following formula-based QB fields:
+
+A) experience_tier
+Recommend a simple deterministic tiering system based on career games started or career GP.
+
+B) relative_efficiency
+Recommend a per-season or sample-window baseline approach using league-average QB EPA/play and/or success rate.
+
+C) efficiency_score
+Recommend a composite formula using currently live QB efficiency fields:
+- epa_per_play
+- success_rate
+- ypa
+- air_yards_per_att
+- fpoe
+- td_over_expectation
+- explosive_pass_rate
+
+D) opportunity_score / usage_score / player_score
+Recommend deterministic formulas using currently live QB profile fields:
+- snap_pct
+- dropbacksPerGame
+- rushAttPerGame
+- rzAtt
+- deepAttemptRate
+- stability_score
+- volatility
+- snap_trend_4wk
+
+Please do NOT implement these yet if formulas are undefined.
+Instead, propose formulas/weights first.
+
+5. For designed_rush_rate, play_action_rate, and cpoe:
+Please mark these as external-source-dependent and not currently available from our nflverse PBP pipeline.
+No workaround needed yet unless we intentionally add a new source.
