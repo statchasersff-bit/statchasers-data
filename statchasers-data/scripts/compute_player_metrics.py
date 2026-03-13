@@ -394,12 +394,29 @@ def classify_sustainability(
 # ---------------------------------------------------------------------------
 
 def compute_passing_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
-    """Compute per-QB metrics from 2025 pass plays."""
-    pass_plays = pbp[pbp["pass_attempt"] == 1].copy()
-    if pass_plays.empty:
+    """
+    Compute per-QB metrics from 2025 pass plays.
+
+    Sacks are excluded from attempt counts so the numbers match official
+    NFL/ESPN box-score statistics (which record sacks separately).
+    nflverse marks sacks as pass_attempt==1, so without this filter every
+    QB's attempt total would be inflated by their sack count.
+
+    Games are counted from all dropbacks (including sacks) so a game is
+    credited even if the QB was sacked on every play.
+    """
+    all_dropbacks = pbp[pbp["pass_attempt"] == 1].copy()
+    if all_dropbacks.empty:
         return pd.DataFrame()
 
-    grouped = pass_plays.groupby("passer_player_name").agg(
+    # Official pass attempts = dropbacks minus sacks
+    if "sack" in all_dropbacks.columns:
+        official = all_dropbacks[all_dropbacks["sack"] != 1]
+    else:
+        print("WARNING: 'sack' column not found in PBP; attempt counts will include sacks.", file=sys.stderr)
+        official = all_dropbacks
+
+    grouped = official.groupby("passer_player_name").agg(
         attempts=("pass_attempt", "sum"),
         completions=("complete_pass", "sum"),
         total_epa=("epa", "sum"),
@@ -408,13 +425,30 @@ def compute_passing_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
         air_yards_total=("air_yards", lambda x: x.dropna().sum()),
         deep_targets=("air_yards", lambda x: (x.dropna() >= 20).sum()),
         explosive_plays=("yards_gained", lambda x: (x >= 20).sum()),
-        games=("game_id", "nunique"),
         weeks=("week", "nunique"),
     ).reset_index()
-
     grouped.rename(columns={"passer_player_name": "player_name"}, inplace=True)
+
+    # games counted from all dropbacks so sack-only games still register
+    games_all = (
+        all_dropbacks.groupby("passer_player_name")["game_id"]
+        .nunique()
+        .rename("games")
+        .reset_index()
+        .rename(columns={"passer_player_name": "player_name"})
+    )
+    grouped = grouped.merge(games_all, on="player_name", how="left")
+    grouped["games"] = grouped["games"].fillna(0).astype(int)
+
+    team_last = (
+        all_dropbacks.groupby("passer_player_name")["posteam"]
+        .last()
+        .reset_index()
+        .rename(columns={"passer_player_name": "player_name", "posteam": "team"})
+    )
+    grouped = grouped.merge(team_last, on="player_name", how="left")
+    grouped["team"] = grouped["team"].fillna("UNK")
     grouped["pos"] = "QB"
-    grouped["team"] = pass_plays.groupby("passer_player_name")["posteam"].last().values
     return grouped
 
 
@@ -808,11 +842,18 @@ def compute_metrics(
         if any(p["player"] == full_name for p in all_players):
             continue
 
+        sleeper_info = player_lookup.get(full_name, {})
+        # QBs who also rush are processed in the QB loop with their full
+        # passing stats — if we let them through here their entire stat card
+        # would be built from rushing plays only (e.g. 22 carries instead of
+        # 212 pass attempts), producing wildly wrong EPA and success rate.
+        if sleeper_info.get("position") == "QB":
+            continue
+
         attempts = int(row.get("attempts", 0))
         if attempts < MIN_PLAYS:
             continue
 
-        sleeper_info = player_lookup.get(full_name, {})
         team = str(row.get("team", sleeper_info.get("team", "UNK")))
         pos = sleeper_info.get("position", "RB")
         age = sleeper_info.get("age")
