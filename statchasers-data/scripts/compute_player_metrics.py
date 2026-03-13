@@ -5,6 +5,11 @@ Reads raw nflverse play-by-play data and Sleeper player metadata,
 then computes all advanced player-level metrics needed for the
 StatChasers Performance Analytics dashboard.
 
+Season split strategy:
+  - Dashboard metrics (games, shares, trends, EPA) use 2025-only data.
+  - Context labels (threeYearContext, careerArc) use all available seasons
+    so veteran stars are classified correctly regardless of 2025 sample size.
+
 Input:  data/raw/nflverse_play_by_play.parquet
         data/raw/nflverse_player_stats.parquet (optional)
         data/raw/sleeper_players.json
@@ -27,23 +32,49 @@ STATS_PATH = os.path.join(RAW_DIR, "nflverse_player_stats.parquet")
 SLEEPER_PATH = os.path.join(RAW_DIR, "sleeper_players.json")
 OUTPUT_PATH = os.path.join(PROCESSED_DIR, "player_metrics.json")
 
-# Minimum plays to include a player in metric computation
+# The season whose data drives all dashboard (usage/share/trend) metrics
+CURRENT_SEASON = 2025
+
+# Minimum 2025-season plays to include a player
 MIN_PLAYS = 20
 
-# Minimum games required before applying confident narrative labels
+# Minimum 2025-season games before applying narrative labels
 MIN_GAMES_FOR_LABELS = 6
 
+# Minimum career games (all seasons) before applying "Elite" tier labels
+MIN_CAREER_GAMES_ELITE = 32
 
-def load_data() -> tuple[pd.DataFrame, pd.DataFrame, list[dict]]:
-    """Load all raw data sources."""
+
+# ---------------------------------------------------------------------------
+# Data loading
+# ---------------------------------------------------------------------------
+
+def load_data() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, list[dict]]:
+    """
+    Load all raw data sources.
+
+    Returns
+    -------
+    pbp_all   : DataFrame of all seasons (used for career-context labels)
+    pbp_2025  : DataFrame of CURRENT_SEASON only (used for dashboard metrics)
+    stats     : Weekly player stats (optional; may be empty)
+    sleeper_players : list of Sleeper player dicts
+    """
     if not os.path.exists(PBP_PATH):
         print(f"ERROR: Play-by-play data not found at {PBP_PATH}", file=sys.stderr)
         print("Run pull_nflverse_data.py first.", file=sys.stderr)
         sys.exit(1)
 
     print("Loading play-by-play data...")
-    pbp = pd.read_parquet(PBP_PATH)
-    print(f"  {len(pbp):,} plays loaded.")
+    pbp_all = pd.read_parquet(PBP_PATH)
+    print(f"  {len(pbp_all):,} total plays loaded ({pbp_all['season'].nunique() if 'season' in pbp_all.columns else '?'} seasons).")
+
+    if "season" in pbp_all.columns:
+        pbp_2025 = pbp_all[pbp_all["season"] == CURRENT_SEASON].copy()
+        print(f"  {len(pbp_2025):,} plays in {CURRENT_SEASON} season.")
+    else:
+        print(f"WARNING: No 'season' column found; treating all data as {CURRENT_SEASON}.", file=sys.stderr)
+        pbp_2025 = pbp_all.copy()
 
     stats = pd.DataFrame()
     if os.path.exists(STATS_PATH):
@@ -60,11 +91,15 @@ def load_data() -> tuple[pd.DataFrame, pd.DataFrame, list[dict]]:
         sleeper_players = json.load(f)
 
     print(f"  {len(sleeper_players)} Sleeper players loaded.")
-    return pbp, stats, sleeper_players
+    return pbp_all, pbp_2025, stats, sleeper_players
 
+
+# ---------------------------------------------------------------------------
+# Name resolution helpers
+# ---------------------------------------------------------------------------
 
 def build_player_lookup(sleeper_players: list[dict]) -> dict[str, dict]:
-    """Build a full-name->metadata lookup from Sleeper data."""
+    """Build a full-name -> metadata lookup from Sleeper data."""
     lookup = {}
     for p in sleeper_players:
         name = p.get("full_name", "").strip()
@@ -75,14 +110,13 @@ def build_player_lookup(sleeper_players: list[dict]) -> dict[str, dict]:
 
 def _nflverse_abbrev(full_name: str) -> str:
     """
-    Derive the nflverse-style abbreviated name from a full name.
+    Derive the nflverse-style abbreviated name from a Sleeper full name.
 
     nflverse uses 'FirstInitial.LastName', e.g.:
-      "Ja'Marr Chase"     -> "J.Chase"
-      "CeeDee Lamb"       -> "C.Lamb"
-      "Saquon Barkley"    -> "S.Barkley"
-      "D.J. Moore"        -> "D.Moore"   (first token is already initial-like)
-      "Travis Kelce"      -> "T.Kelce"
+      "Ja'Marr Chase"  -> "J.Chase"
+      "CeeDee Lamb"    -> "C.Lamb"
+      "Saquon Barkley" -> "S.Barkley"
+      "Travis Kelce"   -> "T.Kelce"
     """
     parts = full_name.strip().split()
     if len(parts) < 2:
@@ -94,17 +128,14 @@ def _nflverse_abbrev(full_name: str) -> str:
 
 def build_abbreviated_lookup(sleeper_players: list[dict]) -> dict[str, str]:
     """
-    Build an abbreviated-name -> full-name lookup so that nflverse PBP player
-    names (e.g. 'J.Chase') can be resolved to canonical Sleeper names
-    (e.g. "Ja'Marr Chase").
+    Build an abbreviated-name -> full-name lookup so nflverse PBP names
+    (e.g. 'J.Chase') resolve to canonical Sleeper names ('Ja'Marr Chase').
 
-    When two players share the same abbreviation (e.g. two players named
-    'J.Smith'), neither entry wins; both are dropped so we don't silently
-    assign the wrong name. The abbreviated name is kept as-is in that case.
+    Ambiguous abbreviations (two active players with the same abbrev) are
+    dropped so we never silently assign the wrong name.
     """
     counts: dict[str, int] = {}
     mapping: dict[str, str] = {}
-
     for p in sleeper_players:
         full = p.get("full_name", "").strip()
         if not full:
@@ -112,8 +143,6 @@ def build_abbreviated_lookup(sleeper_players: list[dict]) -> dict[str, str]:
         abbrev = _nflverse_abbrev(full)
         counts[abbrev] = counts.get(abbrev, 0) + 1
         mapping[abbrev] = full
-
-    # Remove ambiguous abbreviations that map to more than one player
     return {abbrev: full for abbrev, full in mapping.items() if counts[abbrev] == 1}
 
 
@@ -123,7 +152,7 @@ def resolve_full_name(
     abbreviated_lookup: dict[str, str],
 ) -> str:
     """
-    Return the canonical Sleeper full name for a given PBP player name.
+    Return the canonical Sleeper full name for a PBP player name.
 
     Resolution order:
     1. Direct match in Sleeper full-name lookup (already a full name).
@@ -137,85 +166,202 @@ def resolve_full_name(
     return pbp_name
 
 
+# ---------------------------------------------------------------------------
+# Math helpers
+# ---------------------------------------------------------------------------
+
 def safe_pct(numerator: float, denominator: float, scale: float = 100.0) -> float:
-    """Safe percentage calculation."""
+    """
+    Safe percentage calculation.  All share/rate fields in the output are
+    in percent form (e.g. 24.9, not 0.249).  WOPR is the only field that
+    intentionally stays on a 0-~1.5 index scale.
+    """
     if denominator == 0:
         return 0.0
     return round((numerator / denominator) * scale, 2)
 
 
+# ---------------------------------------------------------------------------
+# Career context computation (multi-season)
+# ---------------------------------------------------------------------------
+
+def compute_career_stats(pbp_all: pd.DataFrame) -> dict[str, dict]:
+    """
+    Batch-compute career-level context (all available seasons) for every
+    player appearing in the PBP data.
+
+    Returns a dict keyed by PBP abbreviated name, e.g. 'J.Chase'.
+    Values: { career_games: int, career_epa_per_play: float }
+
+    Used exclusively for threeYearContext and careerArc labels — not for
+    any current-season dashboard metric.
+    """
+    frames = []
+
+    def _agg(df: pd.DataFrame, name_col: str, play_col: str) -> pd.DataFrame:
+        if name_col not in df.columns or play_col not in df.columns:
+            return pd.DataFrame()
+        sub = df[df[play_col] == 1].dropna(subset=[name_col])
+        if sub.empty:
+            return pd.DataFrame()
+        return sub.groupby(name_col).agg(
+            career_games=("game_id", "nunique"),
+            career_epa_sum=("epa", "sum"),
+            career_plays=(play_col, "sum"),
+        ).reset_index().rename(columns={name_col: "pbp_name"})
+
+    frames.append(_agg(pbp_all, "passer_player_name", "pass_attempt"))
+    frames.append(_agg(pbp_all, "receiver_player_name", "pass_attempt"))
+    frames.append(_agg(pbp_all, "rusher_player_name", "rush_attempt"))
+
+    frames = [f for f in frames if not f.empty]
+    if not frames:
+        return {}
+
+    combined = pd.concat(frames, ignore_index=True)
+    # When a player appears in multiple groups (e.g. RB with carries and targets),
+    # keep the entry that has the most games (most representative of career).
+    combined = (
+        combined
+        .sort_values("career_games", ascending=False)
+        .drop_duplicates("pbp_name")
+    )
+    combined["career_epa_per_play"] = (
+        combined["career_epa_sum"] / combined["career_plays"].clip(lower=1)
+    ).round(3)
+
+    return {
+        row["pbp_name"]: {
+            "career_games": int(row["career_games"]),
+            "career_epa_per_play": float(row["career_epa_per_play"]),
+        }
+        for _, row in combined.iterrows()
+    }
+
+
+# ---------------------------------------------------------------------------
+# Classification functions
+# ---------------------------------------------------------------------------
+
+# Position-aware age thresholds:
+#   (ascending_max, peak_max, plateau_max)
+# Age <= ascending_max → Ascending (if productive)
+# ascending_max < age <= peak_max → Peak (if productive) / Stable
+# peak_max < age <= plateau_max → Plateau
+# age > plateau_max → Veteran or Declining
+_AGE_THRESHOLDS: dict[str, tuple[int, int, int]] = {
+    "QB": (26, 34, 37),   # QBs peak late and sustain longest
+    "WR": (25, 29, 32),   # WRs hit peak in late 20s
+    "RB": (24, 27, 30),   # RBs decline fastest
+    "TE": (25, 32, 34),   # TEs develop slowly, sustain long
+}
+
+
 def classify_career_arc(
-    epa_per_play: float,
-    snap_share: float,
+    pos: str,
     age: int | None,
-    games: int,
+    career_epa_per_play: float,
+    current_snap_share: float,
+    career_games: int,
+    current_games: int,
 ) -> str | None:
     """
-    Classify player career arc based on efficiency, age, and sample size.
-    Returns None when age is unavailable.
-    Returns 'Insufficient Data' when sample is too small to draw conclusions.
+    Position-aware career arc label using age curves and multi-season EPA.
+
+    - Returns None when age is unavailable.
+    - Returns 'Insufficient Data' when the current-season sample is too small.
+    - Uses career EPA (all seasons) so veterans aren't mislabeled by a
+      small 2025 sample.
+    - Never returns 'Developing' for a player with 30+ career games — they
+      are past the developing stage regardless of current-season metrics.
     """
     if age is None:
         return None
-    if games < MIN_GAMES_FOR_LABELS:
+    if current_games < MIN_GAMES_FOR_LABELS:
         return "Insufficient Data"
-    if age <= 24 and epa_per_play > 0.05:
-        return "Ascending"
-    if age <= 28 and epa_per_play > 0.0:
-        return "Peak"
-    if age >= 30 and epa_per_play < 0.0:
+
+    ascending_max, peak_max, plateau_max = _AGE_THRESHOLDS.get(pos, (25, 30, 33))
+
+    is_effective = career_epa_per_play > 0.02
+    is_positive = career_epa_per_play > 0.0
+    is_declining_epa = career_epa_per_play < -0.03
+    is_veteran = career_games >= 32
+
+    if age <= ascending_max:
+        if is_effective:
+            return "Ascending"
+        # A player with 30+ career games is no longer developing even if young
+        return "Stable" if is_veteran else "Developing"
+
+    if age <= peak_max:
+        if is_effective:
+            return "Peak"
+        if is_positive:
+            return "Stable"
+        return "Plateau"
+
+    if age <= plateau_max:
+        if is_effective:
+            return "Plateau"
+        if is_declining_epa:
+            return "Declining"
+        return "Veteran"
+
+    # Oldest bracket
+    if is_declining_epa:
         return "Declining"
-    if snap_share > 70:
-        return "Stable"
-    return "Developing"
+    return "Veteran"
 
 
 def classify_three_year_context(
     pos: str,
-    epa_per_play: float,
-    snap_share: float,
-    games: int,
+    career_epa_per_play: float,
+    current_snap_share: float,
+    career_games: int,
+    current_games: int,
 ) -> str | None:
     """
-    Assign a three-year narrative label based on position, metrics, and sample size.
-    Returns None when the sample is too small to support a meaningful label.
-    'Elite' labels require both strong metrics AND sufficient game count.
+    Multi-season narrative label for the threeYearContext field.
+
+    Uses career EPA (all seasons) + current-season snap share.
+    'Elite' labels require 32+ career games AND 9+ current-season games
+    so that small-sample or early-career players are never over-labelled.
     """
-    if games < MIN_GAMES_FOR_LABELS:
+    if current_games < MIN_GAMES_FOR_LABELS:
         return None
 
-    # Require a full half-season (9+ games) before using 'Elite' tier labels
-    elite_qualified = games >= 9
+    elite_qualified = career_games >= MIN_CAREER_GAMES_ELITE and current_games >= 9
+    starter_qualified = career_games >= 16
 
     if pos == "QB":
-        if epa_per_play > 0.15 and elite_qualified:
+        if career_epa_per_play > 0.15 and elite_qualified:
             return "Elite QB1 trajectory"
-        if epa_per_play > 0.05:
-            return "Solid starter with upside"
-        if epa_per_play > 0.0:
+        if career_epa_per_play > 0.08 and starter_qualified:
+            return "Solid franchise QB"
+        if career_epa_per_play > 0.0:
             return "Serviceable starter"
         return "Backup / streaming option"
 
     if pos == "WR":
-        if epa_per_play > 0.12 and snap_share > 75 and elite_qualified:
+        if career_epa_per_play > 0.12 and current_snap_share > 75 and elite_qualified:
             return "Elite WR1 trajectory"
-        if epa_per_play > 0.06 and snap_share > 60:
+        if career_epa_per_play > 0.06 and current_snap_share > 60 and starter_qualified:
             return "WR2 with WR1 upside"
-        if snap_share > 50:
+        if current_snap_share > 50:
             return "Rotational / emerging role"
         return "Depth / situational role"
 
     if pos == "RB":
-        if snap_share > 60 and epa_per_play > 0.0 and elite_qualified:
+        if current_snap_share > 60 and career_epa_per_play > 0.0 and elite_qualified:
             return "Workhorse back"
-        if snap_share > 40:
+        if current_snap_share > 40 and starter_qualified:
             return "Timeshare back with value"
         return "Change-of-pace / specialty role"
 
     if pos == "TE":
-        if epa_per_play > 0.10 and snap_share > 65 and elite_qualified:
+        if career_epa_per_play > 0.10 and current_snap_share > 65 and elite_qualified:
             return "Elite TE1 trajectory"
-        if epa_per_play > 0.0 and snap_share > 50:
+        if career_epa_per_play > 0.0 and current_snap_share > 50 and starter_qualified:
             return "Receiving TE with upside"
         return "Blocking / depth TE"
 
@@ -229,8 +375,8 @@ def classify_sustainability(
     games: int,
 ) -> str | None:
     """
-    Evaluate whether a player's production level is sustainable.
-    Returns None for insufficient sample.
+    Evaluate production sustainability from 2025-season data.
+    Returns None when the sample is too small.
     """
     if games < MIN_GAMES_FOR_LABELS:
         return None
@@ -243,10 +389,13 @@ def classify_sustainability(
     return "Regression Risk"
 
 
-def compute_passing_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
-    """Compute per-QB metrics from pass plays."""
-    pass_plays = pbp[pbp["pass_attempt"] == 1].copy()
+# ---------------------------------------------------------------------------
+# Per-position metric aggregation (2025 season only)
+# ---------------------------------------------------------------------------
 
+def compute_passing_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
+    """Compute per-QB metrics from 2025 pass plays."""
+    pass_plays = pbp[pbp["pass_attempt"] == 1].copy()
     if pass_plays.empty:
         return pd.DataFrame()
 
@@ -270,13 +419,12 @@ def compute_passing_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
 
 
 def compute_receiving_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
-    """Compute per-receiver metrics from pass plays."""
+    """Compute per-receiver metrics from 2025 pass plays."""
     targets = pbp[pbp["pass_attempt"] == 1].copy()
-
     if targets.empty:
         return pd.DataFrame()
 
-    # Team air yards per game for share calculations
+    # Team-level denominators (2025 only) for share calculations
     team_air_yards = (
         targets.groupby(["posteam", "game_id"])["air_yards"]
         .sum()
@@ -286,7 +434,6 @@ def compute_receiving_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
         .rename("team_air_yards_per_game")
     )
 
-    # Team targets per game for target share
     team_targets = (
         targets.groupby(["posteam", "game_id"])
         .size()
@@ -329,9 +476,8 @@ def compute_receiving_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
 
 
 def compute_rushing_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
-    """Compute per-rusher metrics from rush plays."""
+    """Compute per-rusher metrics from 2025 rush plays."""
     rush_plays = pbp[pbp["rush_attempt"] == 1].copy()
-
     if rush_plays.empty:
         return pd.DataFrame()
 
@@ -361,18 +507,22 @@ def compute_rushing_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
     return grouped
 
 
-def compute_weekly_trends(pbp: pd.DataFrame, player_name: str) -> dict:
+# ---------------------------------------------------------------------------
+# Weekly trend computation (2025 season only)
+# ---------------------------------------------------------------------------
+
+def compute_weekly_trends(pbp_2025: pd.DataFrame, player_name: str) -> dict:
     """
-    Compute rolling weekly usage trends for a player.
-    All trend values are returned as floats (not formatted strings).
+    Compute rolling weekly usage trends from 2025 data only.
+    All trend values are floats in percent form (e.g. +7.4 means +7.4%).
     Fields that cannot be computed are returned as None.
     """
-    mask = pd.Series(False, index=pbp.index)
+    mask = pd.Series(False, index=pbp_2025.index)
     for col in ["passer_player_name", "receiver_player_name", "rusher_player_name"]:
-        if col in pbp.columns:
-            mask |= (pbp[col] == player_name)
+        if col in pbp_2025.columns:
+            mask |= (pbp_2025[col] == player_name)
 
-    player_plays = pbp[mask]
+    player_plays = pbp_2025[mask]
 
     if player_plays.empty or "week" not in player_plays.columns:
         return {
@@ -400,6 +550,7 @@ def compute_weekly_trends(pbp: pd.DataFrame, player_name: str) -> dict:
     last4 = float(plays_arr[max(n - 4, 0):].mean())
     prior4 = float(plays_arr[max(n - 8, 0):max(n - 4, 0)].mean()) if n > 4 else last4
 
+    # Percent change between the two 4-week windows, already in percent form
     snap_trend_pct = round(((last4 - prior4) / (prior4 + 1e-9)) * 100, 2)
     volatility = round(float(np.std(plays_arr)), 2)
     mean_plays = float(np.mean(plays_arr))
@@ -415,43 +566,57 @@ def compute_weekly_trends(pbp: pd.DataFrame, player_name: str) -> dict:
     }
 
 
+# ---------------------------------------------------------------------------
+# Main metric assembly
+# ---------------------------------------------------------------------------
+
 def compute_metrics(
-    pbp: pd.DataFrame,
+    pbp_all: pd.DataFrame,
+    pbp_2025: pd.DataFrame,
     sleeper_players: list[dict],
 ) -> list[dict]:
-    """Main computation: combine all metric groups into per-player objects."""
+    """
+    Assemble per-player metric objects.
+
+    Dashboard metrics (games, shares, trends) → pbp_2025 only.
+    Context labels (careerArc, threeYearContext) → career_stats from pbp_all.
+    """
     player_lookup = build_player_lookup(sleeper_players)
-    # Maps nflverse abbreviated names (e.g. "J.Chase") to Sleeper full names
-    # (e.g. "Ja'Marr Chase") for all unambiguous players.
     abbreviated_lookup = build_abbreviated_lookup(sleeper_players)
 
-    print("Computing passing metrics...")
-    passing = compute_passing_metrics(pbp)
+    print("Computing career context from all seasons...")
+    career_stats = compute_career_stats(pbp_all)
 
-    print("Computing receiving metrics...")
-    receiving = compute_receiving_metrics(pbp)
+    print(f"Computing 2025-season passing metrics...")
+    passing = compute_passing_metrics(pbp_2025)
 
-    print("Computing rushing metrics...")
-    rushing = compute_rushing_metrics(pbp)
+    print(f"Computing 2025-season receiving metrics...")
+    receiving = compute_receiving_metrics(pbp_2025)
 
+    print(f"Computing 2025-season rushing metrics...")
+    rushing = compute_rushing_metrics(pbp_2025)
+
+    # Team rush attempts from 2025 only (for RB snap share denominator)
     team_rush_attempts = (
-        pbp[pbp["rush_attempt"] == 1].groupby("posteam")["rush_attempt"].sum()
+        pbp_2025[pbp_2025["rush_attempt"] == 1].groupby("posteam")["rush_attempt"].sum()
     )
 
-    # Pre-compute red zone totals once for efficiency
-    rz_col = "yardline_100" in pbp.columns
+    # Red zone context from 2025 only
+    rz_col = "yardline_100" in pbp_2025.columns
     if rz_col:
-        rz_pbp = pbp[pbp["yardline_100"] <= 20]
+        rz_pbp = pbp_2025[pbp_2025["yardline_100"] <= 20]
         total_rz = len(rz_pbp)
     else:
         rz_pbp = pd.DataFrame()
         total_rz = 0
 
-    all_players = []
+    all_players: list[dict] = []
 
-    # --- Pass catchers (WR / TE / RB receiving) ---
+    # -----------------------------------------------------------------------
+    # Pass catchers (WR / TE / RB receiving role)
+    # -----------------------------------------------------------------------
     for _, row in receiving.iterrows():
-        name = row["player_name"]  # PBP abbreviated name — used for PBP data lookups
+        name = row["player_name"]  # PBP abbreviated name
         if pd.isna(name):
             continue
 
@@ -459,7 +624,6 @@ def compute_metrics(
         if attempts < MIN_PLAYS:
             continue
 
-        # Resolve to canonical Sleeper full name for the output player field
         full_name = resolve_full_name(name, player_lookup, abbreviated_lookup)
         sleeper_info = player_lookup.get(full_name, {})
         team = str(row.get("team", sleeper_info.get("team", "UNK")))
@@ -467,6 +631,12 @@ def compute_metrics(
         age = sleeper_info.get("age")
         games = int(row.get("games", 1))
 
+        # Career context (all seasons)
+        ctx = career_stats.get(name, {"career_games": games, "career_epa_per_play": 0.0})
+        career_games = ctx["career_games"]
+        career_epa_per_play = ctx["career_epa_per_play"]
+
+        # 2025-season efficiency
         total_epa = float(row.get("total_epa", 0))
         successful = float(row.get("successful_plays", 0))
         air_yards = float(row.get("air_yards_total", 0))
@@ -480,21 +650,24 @@ def compute_metrics(
         explosive_rate = safe_pct(explosive, attempts)
         deep_target_rate = safe_pct(deep_tgts, attempts)
 
+        # 2025-season share metrics (all in percent form via safe_pct)
         team_air_yds = float(row.get("team_air_yards_per_game", 0) or 0) * games
         team_tgts = float(row.get("team_targets_per_game", 0) or 0) * games
         air_yards_share = safe_pct(air_yards, team_air_yds) if team_air_yds > 0 else None
         target_share = safe_pct(attempts, team_tgts) if team_tgts > 0 else None
 
-        # WOPR = 1.5 * target_share + 0.7 * air_yards_share (requires both)
+        # WOPR stays on 0-~1.5 index scale (not percent)
         if target_share is not None and air_yards_share is not None:
             wopr = round(1.5 * (target_share / 100) + 0.7 * (air_yards_share / 100), 3)
         else:
             wopr = None
 
+        # Approximate snap share from target share (percent scale)
         snap_share = min(99.9, round((target_share or 0) * 2.8, 1))
+        # snapTrend: percent-point change from the target-implied snap baseline
         snap_trend_val = round((snap_share - 70) * 0.3, 2)
 
-        # Red zone utilization
+        # Red zone utilization (2025 only, percent scale)
         if rz_col and total_rz > 0 and "receiver_player_name" in rz_pbp.columns:
             rz_targets = int((rz_pbp["receiver_player_name"] == name).sum())
             red_zone_util = safe_pct(rz_targets, total_rz)
@@ -507,16 +680,17 @@ def compute_metrics(
         actual_fp = yards_total * 0.1 + touchdowns * 6
         fpoe = round(actual_fp * 0.18, 2)
 
-        usage_vol = round(float(np.random.uniform(3, 12)), 2)
-        role_stab = round(float(np.random.uniform(6, 10)), 1)
+        # Trends from 2025 data only
+        trends = compute_weekly_trends(pbp_2025, name)
+        usage_vol = trends["usageVolatility"] or 0.0
+        role_stab = trends["roleStability"] or 5.0
 
-        career_arc = classify_career_arc(epa_per_play, snap_share, age, games)
-        three_year = classify_three_year_context(pos, epa_per_play, snap_share, games)
+        # Context labels use career data
+        career_arc = classify_career_arc(pos, age, career_epa_per_play, snap_share, career_games, games)
+        three_year = classify_three_year_context(pos, career_epa_per_play, snap_share, career_games, games)
         sustainability = classify_sustainability(success_rate, usage_vol, role_stab, games)
 
-        trends = compute_weekly_trends(pbp, name)
-
-        player_obj = {
+        all_players.append({
             "player": full_name,
             "team": team,
             "pos": pos,
@@ -544,16 +718,16 @@ def compute_metrics(
             "usageVolatility": trends["usageVolatility"],
             "roleStability": trends["roleStability"],
             "routeGrowth": trends["routeGrowth"],
-        }
-        all_players.append(player_obj)
+        })
 
-    # --- Rushers (RB / FB) ---
+    # -----------------------------------------------------------------------
+    # Pure rushers (RB / FB)
+    # -----------------------------------------------------------------------
     for _, row in rushing.iterrows():
-        name = row["player_name"]  # PBP abbreviated name — used for PBP data lookups
+        name = row["player_name"]
         if pd.isna(name):
             continue
 
-        # Resolve to canonical Sleeper full name before dedup check
         full_name = resolve_full_name(name, player_lookup, abbreviated_lookup)
         if any(p["player"] == full_name for p in all_players):
             continue
@@ -568,6 +742,10 @@ def compute_metrics(
         age = sleeper_info.get("age")
         games = int(row.get("games", 1))
 
+        ctx = career_stats.get(name, {"career_games": games, "career_epa_per_play": 0.0})
+        career_games = ctx["career_games"]
+        career_epa_per_play = ctx["career_epa_per_play"]
+
         total_epa = float(row.get("total_epa", 0))
         successful = float(row.get("successful_plays", 0))
         explosive = int(row.get("explosive_plays", 0))
@@ -581,6 +759,7 @@ def compute_metrics(
         explosive_rate = safe_pct(explosive, attempts)
         breakaway_rate = safe_pct(breakaway, attempts)
 
+        # Snap share from 2025 team rush attempts (percent scale)
         team_rushes = float(team_rush_attempts.get(team, attempts))
         snap_share = min(99.9, round(safe_pct(attempts, team_rushes) * 1.5, 1))
         snap_trend_val = round((snap_share - 50) * 0.2, 2)
@@ -591,23 +770,22 @@ def compute_metrics(
         actual_fp = yards_total * 0.1 + touchdowns * 6
         fpoe = round(actual_fp * 0.18, 2)
 
-        usage_vol = round(float(np.random.uniform(4, 14)), 2)
-        role_stab = round(float(np.random.uniform(5, 9)), 1)
+        trends = compute_weekly_trends(pbp_2025, name)
+        usage_vol = trends["usageVolatility"] or 0.0
+        role_stab = trends["roleStability"] or 5.0
 
-        career_arc = classify_career_arc(epa_per_play, snap_share, age, games)
-        three_year = classify_three_year_context(pos, epa_per_play, snap_share, games)
+        career_arc = classify_career_arc(pos, age, career_epa_per_play, snap_share, career_games, games)
+        three_year = classify_three_year_context(pos, career_epa_per_play, snap_share, career_games, games)
         sustainability = classify_sustainability(success_rate, usage_vol, role_stab, games)
 
-        trends = compute_weekly_trends(pbp, name)
-
-        player_obj = {
+        all_players.append({
             "player": full_name,
             "team": team,
             "pos": pos,
             "age": age,
             "games": games,
             "snapShare": snap_share,
-            # Opportunity metrics are null for pure rushers — not meaningful without target data
+            # Receiver opportunity metrics are null for pure rushers
             "targetShare": None,
             "airYardsShare": None,
             "wopr": None,
@@ -625,21 +803,20 @@ def compute_metrics(
             "deepTargetRate": None,
             "sustainability": sustainability,
             "rollingSnapTrend": trends["rollingSnapTrend"],
-            # Target/route trends are null for pure rushers
-            "rollingTargetTrend": None,
+            "rollingTargetTrend": None,   # not applicable for pure rushers
             "usageVolatility": trends["usageVolatility"],
             "roleStability": trends["roleStability"],
-            "routeGrowth": None,
-        }
-        all_players.append(player_obj)
+            "routeGrowth": None,          # not applicable for pure rushers
+        })
 
-    # --- Quarterbacks ---
+    # -----------------------------------------------------------------------
+    # Quarterbacks
+    # -----------------------------------------------------------------------
     for _, row in passing.iterrows():
-        name = row["player_name"]  # PBP abbreviated name — used for PBP data lookups
+        name = row["player_name"]
         if pd.isna(name):
             continue
 
-        # Resolve to canonical Sleeper full name before dedup check
         full_name = resolve_full_name(name, player_lookup, abbreviated_lookup)
         if any(p["player"] == full_name for p in all_players):
             continue
@@ -654,6 +831,10 @@ def compute_metrics(
         age = sleeper_info.get("age")
         games = int(row.get("games", 1))
 
+        ctx = career_stats.get(name, {"career_games": games, "career_epa_per_play": 0.0})
+        career_games = ctx["career_games"]
+        career_epa_per_play = ctx["career_epa_per_play"]
+
         total_epa = float(row.get("total_epa", 0))
         successful = float(row.get("successful_plays", 0))
         explosive = int(row.get("explosive_plays", 0))
@@ -663,31 +844,31 @@ def compute_metrics(
         epa_per_play = round(total_epa / attempts, 3) if attempts else 0.0
         success_rate = safe_pct(successful, attempts)
         explosive_rate = safe_pct(explosive, attempts)
+        # deepTargetRate for QBs = their deep throw rate (meaningful, in percent form)
         deep_target_rate = safe_pct(deep_tgts, attempts)
 
         expected_tds = round(attempts * 0.055, 1)
         td_over_expected = round(touchdowns - expected_tds, 2)
 
-        snap_share = 95.0
+        snap_share = 95.0   # QBs are on the field every offensive snap
         snap_trend_val = 0.0
 
-        usage_vol = round(float(np.random.uniform(1, 5)), 2)
-        role_stab = round(float(np.random.uniform(8, 10)), 1)
+        trends = compute_weekly_trends(pbp_2025, name)
+        usage_vol = trends["usageVolatility"] or 0.0
+        role_stab = trends["roleStability"] or 9.0
 
-        career_arc = classify_career_arc(epa_per_play, snap_share, age, games)
-        three_year = classify_three_year_context(pos, epa_per_play, snap_share, games)
+        career_arc = classify_career_arc(pos, age, career_epa_per_play, snap_share, career_games, games)
+        three_year = classify_three_year_context(pos, career_epa_per_play, snap_share, career_games, games)
         sustainability = classify_sustainability(success_rate, usage_vol, role_stab, games)
 
-        trends = compute_weekly_trends(pbp, name)
-
-        player_obj = {
+        all_players.append({
             "player": full_name,
             "team": team,
             "pos": pos,
             "age": age,
             "games": games,
             "snapShare": snap_share,
-            # Receiver opportunity metrics are not meaningful for QBs
+            # Receiver opportunity metrics are not applicable for QBs
             "targetShare": None,
             "airYardsShare": None,
             "wopr": None,
@@ -701,21 +882,23 @@ def compute_metrics(
             "tdOverExpected": td_over_expected,
             "fpoe": round(epa_per_play * attempts * 0.3, 2),
             "explosivePlayRate": explosive_rate,
-            "breakawayRunRate": None,
+            "breakawayRunRate": None,     # not applicable for QBs
             "deepTargetRate": round(deep_target_rate, 1),
             "sustainability": sustainability,
             "rollingSnapTrend": trends["rollingSnapTrend"],
-            # Target / route trends are not applicable for QBs
-            "rollingTargetTrend": None,
+            "rollingTargetTrend": None,   # not applicable for QBs
             "usageVolatility": trends["usageVolatility"],
             "roleStability": trends["roleStability"],
-            "routeGrowth": None,
-        }
-        all_players.append(player_obj)
+            "routeGrowth": None,          # not applicable for QBs
+        })
 
     print(f"Total players processed: {len(all_players)}")
     return all_players
 
+
+# ---------------------------------------------------------------------------
+# Output
+# ---------------------------------------------------------------------------
 
 def save_metrics(players: list[dict]) -> None:
     """Save computed metrics to JSON."""
@@ -726,8 +909,8 @@ def save_metrics(players: list[dict]) -> None:
 
 
 def main():
-    pbp, stats, sleeper_players = load_data()
-    players = compute_metrics(pbp, sleeper_players)
+    pbp_all, pbp_2025, stats, sleeper_players = load_data()
+    players = compute_metrics(pbp_all, pbp_2025, sleeper_players)
     save_metrics(players)
     print("Metric computation complete.")
 
