@@ -47,9 +47,8 @@ PBP_COLUMNS = [
 
 STATS_COLUMNS = [
     "player_id", "player_name", "player_display_name",
-    "position", "position_group", "recent_team",
+    "position", "recent_team",
     "season", "week", "season_type",
-    "targets", "receptions",
     "receiving_routes_run",
     "offense_snaps", "snap_counts_offense",
 ]
