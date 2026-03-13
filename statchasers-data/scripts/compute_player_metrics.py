@@ -64,13 +64,77 @@ def load_data() -> tuple[pd.DataFrame, pd.DataFrame, list[dict]]:
 
 
 def build_player_lookup(sleeper_players: list[dict]) -> dict[str, dict]:
-    """Build a name->metadata lookup from Sleeper data."""
+    """Build a full-name->metadata lookup from Sleeper data."""
     lookup = {}
     for p in sleeper_players:
         name = p.get("full_name", "").strip()
         if name:
             lookup[name] = p
     return lookup
+
+
+def _nflverse_abbrev(full_name: str) -> str:
+    """
+    Derive the nflverse-style abbreviated name from a full name.
+
+    nflverse uses 'FirstInitial.LastName', e.g.:
+      "Ja'Marr Chase"     -> "J.Chase"
+      "CeeDee Lamb"       -> "C.Lamb"
+      "Saquon Barkley"    -> "S.Barkley"
+      "D.J. Moore"        -> "D.Moore"   (first token is already initial-like)
+      "Travis Kelce"      -> "T.Kelce"
+    """
+    parts = full_name.strip().split()
+    if len(parts) < 2:
+        return full_name
+    first_initial = parts[0][0].upper()
+    last_name = parts[-1]
+    return f"{first_initial}.{last_name}"
+
+
+def build_abbreviated_lookup(sleeper_players: list[dict]) -> dict[str, str]:
+    """
+    Build an abbreviated-name -> full-name lookup so that nflverse PBP player
+    names (e.g. 'J.Chase') can be resolved to canonical Sleeper names
+    (e.g. "Ja'Marr Chase").
+
+    When two players share the same abbreviation (e.g. two players named
+    'J.Smith'), neither entry wins; both are dropped so we don't silently
+    assign the wrong name. The abbreviated name is kept as-is in that case.
+    """
+    counts: dict[str, int] = {}
+    mapping: dict[str, str] = {}
+
+    for p in sleeper_players:
+        full = p.get("full_name", "").strip()
+        if not full:
+            continue
+        abbrev = _nflverse_abbrev(full)
+        counts[abbrev] = counts.get(abbrev, 0) + 1
+        mapping[abbrev] = full
+
+    # Remove ambiguous abbreviations that map to more than one player
+    return {abbrev: full for abbrev, full in mapping.items() if counts[abbrev] == 1}
+
+
+def resolve_full_name(
+    pbp_name: str,
+    player_lookup: dict[str, dict],
+    abbreviated_lookup: dict[str, str],
+) -> str:
+    """
+    Return the canonical Sleeper full name for a given PBP player name.
+
+    Resolution order:
+    1. Direct match in Sleeper full-name lookup (already a full name).
+    2. Match via abbreviated-name lookup (PBP abbreviation -> Sleeper full name).
+    3. Fall back to the PBP name unchanged.
+    """
+    if pbp_name in player_lookup:
+        return pbp_name
+    if pbp_name in abbreviated_lookup:
+        return abbreviated_lookup[pbp_name]
+    return pbp_name
 
 
 def safe_pct(numerator: float, denominator: float, scale: float = 100.0) -> float:
@@ -357,6 +421,9 @@ def compute_metrics(
 ) -> list[dict]:
     """Main computation: combine all metric groups into per-player objects."""
     player_lookup = build_player_lookup(sleeper_players)
+    # Maps nflverse abbreviated names (e.g. "J.Chase") to Sleeper full names
+    # (e.g. "Ja'Marr Chase") for all unambiguous players.
+    abbreviated_lookup = build_abbreviated_lookup(sleeper_players)
 
     print("Computing passing metrics...")
     passing = compute_passing_metrics(pbp)
@@ -384,7 +451,7 @@ def compute_metrics(
 
     # --- Pass catchers (WR / TE / RB receiving) ---
     for _, row in receiving.iterrows():
-        name = row["player_name"]
+        name = row["player_name"]  # PBP abbreviated name — used for PBP data lookups
         if pd.isna(name):
             continue
 
@@ -392,7 +459,9 @@ def compute_metrics(
         if attempts < MIN_PLAYS:
             continue
 
-        sleeper_info = player_lookup.get(name, {})
+        # Resolve to canonical Sleeper full name for the output player field
+        full_name = resolve_full_name(name, player_lookup, abbreviated_lookup)
+        sleeper_info = player_lookup.get(full_name, {})
         team = str(row.get("team", sleeper_info.get("team", "UNK")))
         pos = sleeper_info.get("position", row.get("pos", "WR"))
         age = sleeper_info.get("age")
@@ -448,7 +517,7 @@ def compute_metrics(
         trends = compute_weekly_trends(pbp, name)
 
         player_obj = {
-            "player": name,
+            "player": full_name,
             "team": team,
             "pos": pos,
             "age": age,
@@ -480,18 +549,20 @@ def compute_metrics(
 
     # --- Rushers (RB / FB) ---
     for _, row in rushing.iterrows():
-        name = row["player_name"]
+        name = row["player_name"]  # PBP abbreviated name — used for PBP data lookups
         if pd.isna(name):
             continue
 
-        if any(p["player"] == name for p in all_players):
+        # Resolve to canonical Sleeper full name before dedup check
+        full_name = resolve_full_name(name, player_lookup, abbreviated_lookup)
+        if any(p["player"] == full_name for p in all_players):
             continue
 
         attempts = int(row.get("attempts", 0))
         if attempts < MIN_PLAYS:
             continue
 
-        sleeper_info = player_lookup.get(name, {})
+        sleeper_info = player_lookup.get(full_name, {})
         team = str(row.get("team", sleeper_info.get("team", "UNK")))
         pos = sleeper_info.get("position", "RB")
         age = sleeper_info.get("age")
@@ -530,7 +601,7 @@ def compute_metrics(
         trends = compute_weekly_trends(pbp, name)
 
         player_obj = {
-            "player": name,
+            "player": full_name,
             "team": team,
             "pos": pos,
             "age": age,
@@ -564,18 +635,20 @@ def compute_metrics(
 
     # --- Quarterbacks ---
     for _, row in passing.iterrows():
-        name = row["player_name"]
+        name = row["player_name"]  # PBP abbreviated name — used for PBP data lookups
         if pd.isna(name):
             continue
 
-        if any(p["player"] == name for p in all_players):
+        # Resolve to canonical Sleeper full name before dedup check
+        full_name = resolve_full_name(name, player_lookup, abbreviated_lookup)
+        if any(p["player"] == full_name for p in all_players):
             continue
 
         attempts = int(row.get("attempts", 0))
         if attempts < MIN_PLAYS:
             continue
 
-        sleeper_info = player_lookup.get(name, {})
+        sleeper_info = player_lookup.get(full_name, {})
         team = str(row.get("team", sleeper_info.get("team", "UNK")))
         pos = "QB"
         age = sleeper_info.get("age")
@@ -608,7 +681,7 @@ def compute_metrics(
         trends = compute_weekly_trends(pbp, name)
 
         player_obj = {
-            "player": name,
+            "player": full_name,
             "team": team,
             "pos": pos,
             "age": age,
