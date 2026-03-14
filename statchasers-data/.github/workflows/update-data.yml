@@ -50,6 +50,9 @@ jobs:
       - name: Build Stat Explorer output
         run: python scripts/build_stat_explorer.py
 
+      - name: Build QB trends output
+        run: python scripts/build_qb_trends.py
+
       - name: Commit and push updated JSON
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -59,6 +62,7 @@ jobs:
           git add output/performance_analytics_latest.json
           git add output/performance_analytics_2025.json
           git add output/stat_explorer_*.json
+          git add output/qb_trends.json
           git add data/raw/sleeper_players.json
 
           # Only commit if there are actual changes

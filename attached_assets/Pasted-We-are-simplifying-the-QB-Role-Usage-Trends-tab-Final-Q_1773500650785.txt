@@ -1,0 +1,75 @@
+We are simplifying the QB Role & Usage Trends tab.
+
+Final QB trends columns should be:
+
+1. player
+2. team
+3. dropbacksPerGame
+4. deltaDropbacksPerGame
+5. rushAttPerGame
+6. deltaRushAttPerGame
+7. rushTd
+
+Goal:
+This tab should compare recent QB usage vs prior usage, not show static profile/context metrics.
+
+Please update the backend to emit the following QB trend fields:
+
+Required output fields
+- player
+- team
+- dropbacksPerGame
+- deltaDropbacksPerGame
+- rushAttPerGame
+- deltaRushAttPerGame
+- rushTd
+
+Definitions
+- dropbacksPerGame = current/full-sample dropbacks per game
+- rushAttPerGame = current/full-sample QB rush attempts per game
+- rushTd = QB rushing touchdowns in the current sample
+- deltaDropbacksPerGame = recent dropbacksPerGame minus prior dropbacksPerGame
+- deltaRushAttPerGame = recent rushAttPerGame minus prior rushAttPerGame
+
+Trend window
+Use:
+- recent window = last 4 games
+- prior window = all earlier games in the sample before those last 4 games
+
+If fewer than 6 total games are available for a QB:
+- still emit dropbacksPerGame, rushAttPerGame, rushTd
+- set deltaDropbacksPerGame and deltaRushAttPerGame to null if the split sample is too small to be trustworthy
+
+Output shape
+Return a schema-driven payload for QB trends similar to the Stat Explorer format:
+
+{
+  "position": "QB",
+  "sampleLabel": "Rolling Multi-Season",
+  "sampleWindow": "2024-2025",
+  "pipelineYear": 2025,
+  "columns": [
+    { "key": "player", "label": "Player", "type": "string", "group": "identity", "defaultVisible": true },
+    { "key": "team", "label": "Team", "type": "string", "group": "identity", "defaultVisible": true },
+    { "key": "dropbacksPerGame", "label": "DB/Gm", "type": "number", "group": "passing_usage", "defaultVisible": true },
+    { "key": "deltaDropbacksPerGame", "label": "Δ DB/Gm", "type": "number", "group": "passing_usage", "defaultVisible": true },
+    { "key": "rushAttPerGame", "label": "Rush/Gm", "type": "number", "group": "rushing_usage", "defaultVisible": true },
+    { "key": "deltaRushAttPerGame", "label": "Δ Rush/Gm", "type": "number", "group": "rushing_usage", "defaultVisible": true },
+    { "key": "rushTd", "label": "Rush TD", "type": "number", "group": "rushing_usage", "defaultVisible": true }
+  ],
+  "rows": [...]
+}
+
+Formatting/rounding
+- dropbacksPerGame: 1 decimal
+- deltaDropbacksPerGame: signed, 1 decimal
+- rushAttPerGame: 1 decimal
+- deltaRushAttPerGame: signed, 1 decimal
+- rushTd: integer
+
+Please also include metadata for the trend calculation if easy:
+- recentWindowGames
+- priorWindowGames
+
+Do not include other QB trend fields in this payload for now.
+This tab is intentionally minimal and trend-focused.
