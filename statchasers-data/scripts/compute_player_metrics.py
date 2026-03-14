@@ -211,6 +211,7 @@ def resolve_full_name(
     abbreviated_lookup: dict[str, str],
     team_disambig: dict[str, dict[str, str]] | None = None,
     pbp_team: str | None = None,
+    pos_hint: str | None = None,
 ) -> str:
     """
     Return the canonical Sleeper full name for a PBP player name.
@@ -220,17 +221,47 @@ def resolve_full_name(
     2. Unambiguous abbreviated-name lookup.
     3. Team-based disambiguation for ambiguous abbreviations:
        a. Exact team match (e.g. "R.Wilson" + "PIT" → "Roman Wilson").
-       b. Fallback to the None-team entry (cut/retired player with no team).
+       b. Position filter (pos_hint provided): keep only candidates whose
+          Sleeper position matches pos_hint.
+            • Exactly one match → return it.
+            • Multiple matches (e.g. two QBs) → prefer the one on an active
+              NFL roster (team ≠ None) over a teamless/retired player.
+       c. No position hint: prefer the candidate on an active roster (non-None
+          team), then fall back to the teamless entry as a last resort.
     4. Return the PBP name unchanged.
+
+    The pos_hint tiebreaker prevents Taulia Tagovailoa (teamless, QB) from
+    being chosen over Tua Tagovailoa (ATL, QB) just because Tua's Sleeper team
+    (post-season move) no longer matches his 2025 PBP team (MIA).
     """
     if pbp_name in player_lookup:
         return pbp_name
     if pbp_name in abbreviated_lookup:
         return abbreviated_lookup[pbp_name]
     if team_disambig and pbp_name in team_disambig:
-        teams = team_disambig[pbp_name]
+        teams = team_disambig[pbp_name]           # {team | None: full_name}
+        # (a) Exact team match
         if pbp_team and pbp_team in teams:
             return teams[pbp_team]
+        candidates = list(teams.items())          # [(team, full_name), ...]
+        # (b) Position-filtered disambiguation
+        if pos_hint:
+            pos_matches = [
+                (team, name) for team, name in candidates
+                if player_lookup.get(name, {}).get("position") == pos_hint
+            ]
+            if len(pos_matches) == 1:
+                return pos_matches[0][1]
+            if len(pos_matches) > 1:
+                # Multiple same-position candidates: active roster > teamless
+                with_team = [(t, n) for t, n in pos_matches if t is not None]
+                if with_team:
+                    return with_team[0][1]
+                return pos_matches[0][1]
+        # (c) No position hint — prefer active roster, fall back to teamless
+        with_team = [(t, n) for t, n in candidates if t is not None]
+        if len(with_team) == 1:
+            return with_team[0][1]
         if None in teams:
             return teams[None]
     return pbp_name
@@ -1021,6 +1052,7 @@ def compute_metrics(
         full_name = resolve_full_name(
             name, player_lookup, abbreviated_lookup,
             team_disambig=team_disambig, pbp_team=str(row.get("team", "")),
+            pos_hint="RB",
         )
         if any(p["player"] == full_name and p.get("pos") in ("RB", "FB") for p in all_players):
             continue
@@ -1121,6 +1153,7 @@ def compute_metrics(
         full_name = resolve_full_name(
             name, player_lookup, abbreviated_lookup,
             team_disambig=team_disambig, pbp_team=str(row.get("team", "")),
+            pos_hint="QB",
         )
         if any(p["player"] == full_name and p.get("pos") == "QB" for p in all_players):
             continue
