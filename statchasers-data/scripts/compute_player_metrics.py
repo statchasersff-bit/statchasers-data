@@ -27,10 +27,11 @@ BASE_DIR = os.path.dirname(__file__)
 RAW_DIR = os.path.join(BASE_DIR, "..", "data", "raw")
 PROCESSED_DIR = os.path.join(BASE_DIR, "..", "data", "processed")
 
-PBP_PATH = os.path.join(RAW_DIR, "nflverse_play_by_play.parquet")
-STATS_PATH = os.path.join(RAW_DIR, "nflverse_player_stats.parquet")
+PBP_PATH     = os.path.join(RAW_DIR, "nflverse_play_by_play.parquet")
+STATS_PATH   = os.path.join(RAW_DIR, "nflverse_player_stats.parquet")
 SLEEPER_PATH = os.path.join(RAW_DIR, "sleeper_players.json")
-OUTPUT_PATH = os.path.join(PROCESSED_DIR, "player_metrics.json")
+NFL_PLAYERS_PATH = os.path.join(RAW_DIR, "nflverse_players.parquet")
+OUTPUT_PATH  = os.path.join(PROCESSED_DIR, "player_metrics.json")
 
 # The season whose data drives all dashboard (usage/share/trend) metrics
 CURRENT_SEASON = 2025
@@ -49,16 +50,17 @@ MIN_CAREER_GAMES_ELITE = 32
 # Data loading
 # ---------------------------------------------------------------------------
 
-def load_data() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, list[dict]]:
+def load_data() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, list[dict], pd.DataFrame]:
     """
     Load all raw data sources.
 
     Returns
     -------
-    pbp_all   : DataFrame of all seasons (used for career-context labels)
-    pbp_2025  : DataFrame of CURRENT_SEASON only (used for dashboard metrics)
-    stats     : Weekly player stats (optional; may be empty)
+    pbp_all         : DataFrame of all seasons (used for career-context labels)
+    pbp_2025        : DataFrame of CURRENT_SEASON only (used for dashboard metrics)
+    stats           : Weekly player stats (optional; may be empty)
     sleeper_players : list of Sleeper player dicts
+    nfl_players     : nflverse player registry with years_of_experience
     """
     if not os.path.exists(PBP_PATH):
         print(f"ERROR: Play-by-play data not found at {PBP_PATH}", file=sys.stderr)
@@ -91,7 +93,15 @@ def load_data() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, list[dict]]:
         sleeper_players = json.load(f)
 
     print(f"  {len(sleeper_players)} Sleeper players loaded.")
-    return pbp_all, pbp_2025, stats, sleeper_players
+
+    nfl_players = pd.DataFrame()
+    if os.path.exists(NFL_PLAYERS_PATH):
+        nfl_players = pd.read_parquet(NFL_PLAYERS_PATH)
+        print(f"  {len(nfl_players):,} nflverse player registry records loaded.")
+    else:
+        print("  NOTE: nflverse_players.parquet not found — experience tiers will use game-count estimate.")
+
+    return pbp_all, pbp_2025, stats, sleeper_players, nfl_players
 
 
 # ---------------------------------------------------------------------------
@@ -170,6 +180,29 @@ def build_team_disambiguation(
         counts[abbrev] = counts.get(abbrev, 0) + 1
         by_team.setdefault(abbrev, {})[p.get("team")] = full
     return {abbrev: teams for abbrev, teams in by_team.items() if counts[abbrev] > 1}
+
+
+def build_exp_lookup(nfl_players: pd.DataFrame) -> dict[str, int]:
+    """
+    Build a display_name → years_of_experience lookup from the nflverse
+    player registry.
+
+    The nflverse `display_name` field (e.g. "Russell Wilson") closely matches
+    Sleeper's `full_name`, making it the best join key without a shared player ID.
+
+    Returns an empty dict when the registry is unavailable.
+    """
+    if nfl_players.empty or "display_name" not in nfl_players.columns:
+        return {}
+    if "years_of_experience" not in nfl_players.columns:
+        return {}
+    lookup: dict[str, int] = {}
+    for _, row in nfl_players.iterrows():
+        name = row.get("display_name")
+        yoe = row.get("years_of_experience")
+        if name and pd.notna(yoe):
+            lookup[str(name).strip()] = int(yoe)
+    return lookup
 
 
 def resolve_full_name(
@@ -430,23 +463,35 @@ def classify_sustainability(
 # Experience tier
 # ---------------------------------------------------------------------------
 
-def classify_experience_tier(career_games: int) -> str:
+def classify_experience_tier(years_of_experience: int) -> str:
     """
-    Deterministic career-longevity tier based on total games played (all seasons).
+    Deterministic career-longevity tier based on NFL seasons played.
 
     Boundaries align with standard NFL contract phases:
-      < 16  → Rookie       (still on 1st-year contract / < 1 full season of starts)
-      16–47 → Early Career  (years 1-3, developing starter)
-      48–95 → Established  (years 3–6, prime contract window)
-      ≥ 96  → Veteran      (6+ seasons, deep experience)
+      1       → Rookie       (on rookie contract, first year)
+      2–4     → Early Career  (years 2-4, developing starter)
+      5–9     → Established  (prime contract window)
+      ≥ 10    → Veteran      (decade of experience)
+
+    Input is seasons of NFL experience (1 = rookie year), sourced from the
+    nflverse player registry (years_of_experience field).  Callers should
+    prefer that source; the game-count estimator is a fallback only.
     """
-    if career_games < 16:
+    if years_of_experience <= 1:
         return "Rookie"
-    if career_games < 48:
+    if years_of_experience <= 4:
         return "Early Career"
-    if career_games < 96:
+    if years_of_experience <= 9:
         return "Established"
     return "Veteran"
+
+
+def years_exp_from_games(career_games: int) -> int:
+    """
+    Estimate seasons of experience from game count when the nflverse
+    player registry is unavailable.  Uses 17-game seasons.
+    """
+    return max(1, round(career_games / 17))
 
 
 # ---------------------------------------------------------------------------
@@ -741,6 +786,7 @@ def compute_metrics(
     pbp_2025: pd.DataFrame,
     stats: pd.DataFrame,
     sleeper_players: list[dict],
+    nfl_players: pd.DataFrame | None = None,
 ) -> list[dict]:
     """
     Assemble per-player metric objects.
@@ -749,9 +795,13 @@ def compute_metrics(
     Context labels (careerArc, threeYearContext) → career_stats from pbp_all.
     Route participation → player stats for CURRENT_SEASON.
     """
+    if nfl_players is None:
+        nfl_players = pd.DataFrame()
+
     player_lookup = build_player_lookup(sleeper_players)
     abbreviated_lookup = build_abbreviated_lookup(sleeper_players)
     team_disambig = build_team_disambiguation(sleeper_players)
+    exp_lookup = build_exp_lookup(nfl_players)
 
     print("Computing career context from all seasons...")
     career_stats = compute_career_stats(pbp_all)
@@ -1143,8 +1193,10 @@ def compute_metrics(
             designed_rush_count = max(0, rush_att - sc_count)
             designed_rush_rate  = round(safe_pct(designed_rush_count, qb_dbs), 1)
 
-        # Experience tier (uses career_games already computed from all-season PBP)
-        experience_tier = classify_experience_tier(career_games)
+        # Experience tier — prefer nflverse years_of_experience (true career
+        # length); fall back to estimating from our 3-season PBP window.
+        years_exp = exp_lookup.get(full_name) or years_exp_from_games(career_games)
+        experience_tier = classify_experience_tier(years_exp)
 
         trends = compute_weekly_trends(pbp_2025, name)
         usage_vol = trends["usageVolatility"] or 0.0
@@ -1305,8 +1357,8 @@ def save_metrics(players: list[dict]) -> None:
 
 
 def main():
-    pbp_all, pbp_2025, stats, sleeper_players = load_data()
-    players = compute_metrics(pbp_all, pbp_2025, stats, sleeper_players)
+    pbp_all, pbp_2025, stats, sleeper_players, nfl_players = load_data()
+    players = compute_metrics(pbp_all, pbp_2025, stats, sleeper_players, nfl_players)
     save_metrics(players)
     print("Metric computation complete.")
 

@@ -35,6 +35,7 @@ STATS_OUTPUT_PATH   = os.path.join(OUTPUT_DIR, "nflverse_player_stats.parquet")
 PFR_PASS_PATH       = os.path.join(OUTPUT_DIR, "pfr_pass_advstats.parquet")
 PFR_RUSH_PATH       = os.path.join(OUTPUT_DIR, "pfr_rush_advstats.parquet")
 PFR_REC_PATH        = os.path.join(OUTPUT_DIR, "pfr_rec_advstats.parquet")
+PLAYERS_OUTPUT_PATH = os.path.join(OUTPUT_DIR, "nflverse_players.parquet")
 
 # Columns to retain from play-by-play to reduce file size
 PBP_COLUMNS = [
@@ -145,6 +146,30 @@ def fetch_pfr_advstats(seasons: list[int]) -> dict[str, pl.DataFrame]:
     return results
 
 
+def fetch_players() -> pl.DataFrame | None:
+    """
+    Load the nflverse player registry (all historical + current players).
+    Retains only the fields needed for experience-tier classification.
+    Returns None on failure so the pipeline can continue without it.
+    """
+    print("Loading nflverse player registry...")
+    try:
+        players = nfl.load_players()
+        keep = ["gsis_id", "display_name", "short_name", "position",
+                "years_of_experience", "rookie_season", "last_season",
+                "latest_team", "status"]
+        available = [c for c in keep if c in players.columns]
+        players = players.select(available)
+        skill = players.filter(
+            pl.col("position").is_in(["QB", "RB", "WR", "TE", "FB"])
+        )
+        print(f"  Loaded {skill.height:,} skill-position player records.")
+        return skill
+    except Exception as e:
+        print(f"  WARNING: Could not load player registry: {e}", file=sys.stderr)
+        return None
+
+
 def main():
     pbp_df = fetch_play_by_play(SEASONS)
     save_parquet(pbp_df, PBP_OUTPUT_PATH, "play-by-play data")
@@ -162,6 +187,10 @@ def main():
     for stat_type, df in pfr.items():
         if not df.is_empty():
             save_parquet(df, pfr_paths[stat_type], f"PFR {stat_type} advstats")
+
+    players_df = fetch_players()
+    if players_df is not None:
+        save_parquet(players_df, PLAYERS_OUTPUT_PATH, "player registry")
 
     print("nflverse data pull complete.")
 
