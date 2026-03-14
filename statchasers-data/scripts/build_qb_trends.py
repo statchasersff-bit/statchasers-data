@@ -37,7 +37,7 @@ METRICS_PATH  = ROOT / "data" / "processed" / "player_metrics.json"
 OUTPUT_PATH   = ROOT / "output"             / "qb_trends.json"
 
 PIPELINE_YEAR   = 2025
-TREND_SEASONS   = [2024, 2025]   # rolling window for this tab
+TREND_SEASONS   = [2025]         # 2025 season only
 MIN_DB_TOTAL    = 10             # minimum total dropbacks to qualify
 MIN_GAMES_DELTA = 6              # minimum total games before delta is non-null
 RECENT_WINDOW   = 4              # "last N games" = recent bucket
