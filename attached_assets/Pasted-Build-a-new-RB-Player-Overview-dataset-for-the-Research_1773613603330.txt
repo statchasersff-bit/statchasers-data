@@ -1,0 +1,345 @@
+Build a new RB Player Overview dataset for the Research tab. This table should be a high-level identity + role + opportunity + summary efficiency table for running backs, with minimal overlap versus the separate Role & Usage Trends and Efficiency Analytics tables.
+
+Goal of this table
+
+This table should answer:
+
+What type of RB is this, how strong is the role, and how fantasy-friendly is the profile overall?
+
+It should not be the deep efficiency table and it should not be the recent-trends table.
+
+Exact output columns
+
+Return these fields in this exact order:
+
+rank
+player
+team
+age
+games
+snap_pct
+
+touches_per_gm
+rush_att_per_gm
+targets_per_gm
+route_pct
+
+rz_rush_att
+goal_line_att
+target_share_pct
+
+receptions
+receiving_yds
+yards_per_touch
+explosive_run_pct
+breakaway_run_pct
+fpoe
+
+stability
+volatility
+
+career_arc
+exp_tier
+
+opp_score
+usage_score
+player_score
+rb_tier_score
+rb_tier
+Display labels
+
+Map them to these frontend labels:
+
+#
+Player
+Team
+Age
+GP
+Snap %
+
+Touches / Gm
+Rush / Gm
+Targets / Gm
+Route %
+
+RZ Att
+GL Att
+Tgt Share %
+
+REC
+REC YDS
+Yds / Touch
+Explosive %
+Breakaway %
+FPOE
+
+Stability (/10)
+Volatility
+
+Career Arc
+Exp. Tier
+
+Opp Score
+Usage Score
+Player Score
+Tier Score
+Tier
+Recommended table groupings
+
+Tell frontend/backend the visual column groups should be:
+
+Identity
+
+Player
+
+Team
+
+Age
+
+GP
+
+Snap %
+
+Role & Usage
+
+Touches / Gm
+
+Rush / Gm
+
+Targets / Gm
+
+Route %
+
+Opportunity
+
+RZ Att
+
+GL Att
+
+Tgt Share %
+
+Receiving + Efficiency
+
+REC
+
+REC YDS
+
+Yds / Touch
+
+Explosive %
+
+Breakaway %
+
+FPOE
+
+Stability
+
+Stability (/10)
+
+Volatility
+
+Career Context
+
+Career Arc
+
+Exp. Tier
+
+Composite Scores
+
+Opp Score
+
+Usage Score
+
+Player Score
+
+Tier Score
+
+Tier
+
+Metric definitions
+
+Use these exact definitions.
+
+Identity
+
+rank: default table rank
+
+player: player name
+
+team: team abbreviation
+
+age: player age
+
+games: games played
+
+snap_pct: offensive snap percentage
+
+Role & Usage
+
+touches_per_gm: (rush attempts + receptions) / games
+
+rush_att_per_gm: rush attempts / games
+
+targets_per_gm: targets / games
+
+route_pct: routes run / team dropbacks, or routes on pass plays if that is your preferred normalized version. Just keep it consistent.
+
+Opportunity
+
+rz_rush_att: rushing attempts inside the opponent 20
+
+goal_line_att: rushing attempts inside the 5
+
+target_share_pct: player targets / team targets
+
+Receiving + Efficiency
+
+receptions: total receptions
+
+receiving_yds: total receiving yards
+
+yards_per_touch: (rushing yards + receiving yards) / (rush attempts + receptions)
+
+explosive_run_pct: rushes of 10+ yards / rushing attempts
+
+breakaway_run_pct: choose one method and keep it consistent:
+
+preferred: rushes of 15+ yards / rushing attempts
+
+alternate: rush yards on runs of 15+ yards / total rush yards
+
+fpoe: fantasy points over expectation, season-to-date
+
+Stability
+
+stability: 0–10 score for role consistency
+
+volatility: role/output volatility measure, can be numeric or categorical, but numeric is preferred
+
+Career Context
+
+career_arc: label such as:
+
+Ascending
+
+Prime
+
+Plateau
+
+Declining
+
+Rookie
+
+exp_tier: label such as:
+
+Rookie
+
+Year 2
+
+Year 3–4
+
+Veteran
+
+Senior Veteran
+
+Composite Scores
+
+opp_score: 0–100 opportunity score
+
+usage_score: 0–100 usage/value-of-role score
+
+player_score: 0–100 overall profile score
+
+rb_tier_score: 0–100 StatChasers RB tier score
+
+rb_tier: tier label, such as:
+
+Fantasy Alpha
+
+Elite Workhorse
+
+Bellcow RB
+
+Lead Back
+
+Committee RB
+
+Flex Option
+
+Handcuff / Depth
+
+Composite score formulas
+
+Tell them to calculate percentiles across RBs only, then convert to 0–100.
+
+1. Opportunity Score
+Opp Score =
+(Touches/Gm percentile * 0.40)
++ (Snap % percentile * 0.20)
++ (RZ Att percentile * 0.20)
++ (Goal Line Att percentile * 0.10)
++ (Target Share % percentile * 0.10)
+2. Usage Score
+Usage Score =
+(Targets/Gm percentile * 0.35)
++ (Route % percentile * 0.25)
++ (Rush/Gm percentile * 0.25)
++ (Explosive % percentile * 0.15)
+3. Efficiency Score
+
+This can be internal only if you do not want to expose it in the table.
+
+Efficiency Score =
+(Yds/Touch percentile * 0.35)
++ (Breakaway % percentile * 0.25)
++ (FPOE percentile * 0.40)
+4. Player Score
+Player Score =
+(Opp Score * 0.50)
++ (Usage Score * 0.25)
++ (Efficiency Score * 0.25)
+5. RB Tier Score
+RB Tier Score =
+(Opp Score * 0.50)
++ (
+  ((Targets/Gm percentile * 0.50)
+  + (Route % percentile * 0.30)
+  + (Target Share % percentile * 0.20)) * 0.20
+)
++ (Efficiency Score * 0.20)
++ ((Stability normalized to 0-100) * 0.10)
+
+Then assign rb_tier using:
+
+95+   Fantasy Alpha
+90-94 Elite Workhorse
+80-89 Bellcow RB
+70-79 Lead Back
+60-69 Committee RB
+50-59 Flex Option
+<50   Handcuff / Depth
+Stability and volatility logic
+
+Backend should use recent-game role consistency, ideally last 5 or 6 games when enough games exist.
+
+Stability
+
+Preferred method:
+
+stability_raw = 1 - (stddev(touches_last_6_games) / mean(touches_last_6_games))
+
+Then normalize to 0–10 and clamp within range.
+
+Volatility
+
+Use either:
+
+coefficient of variation of fantasy points per game, or
+
+coefficient of variation of touches per game
+
+Recommended:
+
+higher number = more volatile
+
+round to 2 decimals

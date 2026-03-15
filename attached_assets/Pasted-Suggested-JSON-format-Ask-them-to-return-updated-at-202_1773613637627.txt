@@ -1,0 +1,47 @@
+Suggested JSON format
+
+Ask them to return:
+
+{
+  "updated_at": "2026-03-15T18:00:00Z",
+  "season": 2026,
+  "week": null,
+  "table": "rb_player_overview",
+  "columns": [
+    { "key": "rank", "label": "#", "type": "number", "group": "Identity" },
+    { "key": "player", "label": "Player", "type": "string", "group": "Identity" },
+    { "key": "team", "label": "Team", "type": "string", "group": "Identity" },
+    { "key": "age", "label": "Age", "type": "number", "group": "Identity" },
+    { "key": "games", "label": "GP", "type": "number", "group": "Identity" },
+    { "key": "snap_pct", "label": "Snap %", "type": "number", "group": "Identity" },
+
+    { "key": "touches_per_gm", "label": "Touches / Gm", "type": "number", "group": "Role & Usage" },
+    { "key": "rush_att_per_gm", "label": "Rush / Gm", "type": "number", "group": "Role & Usage" },
+    { "key": "targets_per_gm", "label": "Targets / Gm", "type": "number", "group": "Role & Usage" },
+    { "key": "route_pct", "label": "Route %", "type": "number", "group": "Role & Usage" },
+
+    { "key": "rz_rush_att", "label": "RZ Att", "type": "number", "group": "Opportunity" },
+    { "key": "goal_line_att", "label": "GL Att", "type": "number", "group": "Opportunity" },
+    { "key": "target_share_pct", "label": "Tgt Share %", "type": "number", "group": "Opportunity" },
+
+    { "key": "receptions", "label": "REC", "type": "number", "group": "Receiving + Efficiency" },
+    { "key": "receiving_yds", "label": "REC YDS", "type": "number", "group": "Receiving + Efficiency" },
+    { "key": "yards_per_touch", "label": "Yds / Touch", "type": "number", "group": "Receiving + Efficiency" },
+    { "key": "explosive_run_pct", "label": "Explosive %", "type": "number", "group": "Receiving + Efficiency" },
+    { "key": "breakaway_run_pct", "label": "Breakaway %", "type": "number", "group": "Receiving + Efficiency" },
+    { "key": "fpoe", "label": "FPOE", "type": "number", "group": "Receiving + Efficiency" },
+
+    { "key": "stability", "label": "Stability (/10)", "type": "number", "group": "Stability" },
+    { "key": "volatility", "label": "Volatility", "type": "number", "group": "Stability" },
+
+    { "key": "career_arc", "label": "Career Arc", "type": "string", "group": "Career Context" },
+    { "key": "exp_tier", "label": "Exp. Tier", "type": "string", "group": "Career Context" },
+
+    { "key": "opp_score", "label": "Opp Score", "type": "number", "group": "Composite Scores" },
+    { "key": "usage_score", "label": "Usage Score", "type": "number", "group": "Composite Scores" },
+    { "key": "player_score", "label": "Player Score", "type": "number", "group": "Composite Scores" },
+    { "key": "rb_tier_score", "label": "Tier Score", "type": "number", "group": "Composite Scores" },
+    { "key": "rb_tier", "label": "Tier", "type": "string", "group": "Composite Scores" }
+  ],
+  "rows": []
+}
