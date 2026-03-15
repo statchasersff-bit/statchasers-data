@@ -56,6 +56,9 @@ jobs:
       - name: Build RB advanced stats output
         run: python scripts/build_rb_advanced_stats.py
 
+      - name: Build RB player overview output
+        run: python scripts/build_rb_player_overview.py
+
       - name: Commit and push updated JSON
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -67,6 +70,7 @@ jobs:
           git add output/stat_explorer_*.json
           git add output/qb_trends.json
           git add output/rb_advanced_stats.json
+          git add output/rb_player_overview.json
           git add data/raw/sleeper_players.json
 
           # Only commit if there are actual changes
