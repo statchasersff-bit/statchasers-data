@@ -70,6 +70,10 @@ jobs:
           git add output/stat_explorer_*.json
           git add output/qb_trends.json
           git add output/rb_advanced_stats.json
+          git add output/rb_advanced_stats_2023.json
+          git add output/rb_advanced_stats_2024.json
+          git add output/rb_advanced_stats_2025.json
+          git add output/rb_advanced_stats_all.json
           git add output/rb_player_overview.json
           git add data/raw/sleeper_players.json
 
