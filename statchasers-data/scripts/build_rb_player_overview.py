@@ -455,8 +455,8 @@ def build(
         if goal_line_att is None:
             goal_line_att = m.get("goalLineCarries")
 
-        # Team: prefer player_metrics (current roster), then PBP primary team
-        team = m.get("team") or rs.get("primary_team") or ""
+        # Team: PBP primary_team is ground truth; player_metrics.team is stale.
+        team = rs.get("primary_team") or m.get("team") or ""
 
         # Exp tier from nflverse years_of_experience
         yoe = yoe_lookup.get(fn)

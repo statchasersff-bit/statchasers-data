@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-16T12:12:35Z",
+  "updated_at": "2026-03-16T14:32:06Z",
   "season": 2025,
   "week": 22,
   "table": "rb_efficiency_analytics",
@@ -536,7 +536,7 @@
     },
     {
       "player": "Bijan Robinson",
-      "team": "SF",
+      "team": "ATL",
       "games": 17,
       "rush_attempts": 288,
       "epa_per_rush": -0.04,

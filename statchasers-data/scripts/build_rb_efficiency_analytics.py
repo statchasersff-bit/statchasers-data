@@ -322,11 +322,10 @@ def build(
         touches      = rush_att + receptions
         ypt          = round((rush_yds + receiving_yds) / touches, 2) if touches > 0 else None
 
-        # Team (player_metrics preferred, then last PBP team)
+        # Team: always use PBP posteam (ground truth).
+        # player_metrics.team is stale and must not override.
         team = str(grp["posteam"].iloc[-1]) if "posteam" in grp.columns else ""
         m = metrics_map.get(fn, {})
-        if m.get("team"):
-            team = m["team"]
 
         # FPOE from player_metrics
         fpoe = m.get("fpoe")

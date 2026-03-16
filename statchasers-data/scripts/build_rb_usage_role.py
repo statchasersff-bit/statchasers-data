@@ -111,15 +111,20 @@ def _build_name_lookups(sleeper_players: list[dict]) -> tuple[set[str], dict[str
 
     unambig_full = {ab: fns[0] for ab, fns in abbrev_map.items() if len(fns) == 1}
 
-    team_disambig: dict[str, dict[str, str]] = {}
+    # team_disambig: for ambiguous abbreviations, map {team: full_name}.
+    # Players with team=None in Sleeper are stored under the key None —
+    # they serve as the fallback for any PBP team not already claimed by a
+    # known-team player (e.g. Brian Robinson team=None is the fallback for
+    # any team that isn't ATL where Bijan Robinson is explicitly registered).
+    team_disambig: dict[str, dict] = {}
     for p in sleeper_players:
         full = (p.get("full_name") or "").strip()
-        team = (p.get("team") or "").strip()
-        if not full or not team:
+        if not full:
             continue
+        raw_team = p.get("team")           # preserve Python None
         ab = _abbrev(full)
         if len(abbrev_map.get(ab, [])) > 1:
-            team_disambig.setdefault(ab, {})[team] = full
+            team_disambig.setdefault(ab, {})[raw_team] = full
 
     return full_name_set, unambig_full, team_disambig
 
@@ -129,7 +134,7 @@ def _resolve(
     team: str,
     full_name_set: set[str],
     unambig_full: dict[str, str],
-    team_disambig: dict[str, dict[str, str]],
+    team_disambig: dict[str, dict],
 ) -> str | None:
     if not pbp_name or pbp_name == "nan":
         return None
@@ -137,10 +142,15 @@ def _resolve(
         return pbp_name
     if pbp_name in team_disambig:
         teams = team_disambig[pbp_name]
+        # Exact team match — highest confidence
         if team in teams:
             return teams[team]
-        if len(teams) == 1:
-            return next(iter(teams.values()))
+        # No exact match: return the player with no known team (if any).
+        # Do NOT fall back to a player with a different known team — that
+        # would incorrectly assign ATL-registered Bijan Robinson to SF plays.
+        if None in teams:
+            return teams[None]
+        return None
     if pbp_name in unambig_full:
         return unambig_full[pbp_name]
     return None
