@@ -62,6 +62,9 @@ jobs:
       - name: Build RB efficiency analytics output
         run: python scripts/build_rb_efficiency_analytics.py
 
+      - name: Build RB usage and role output
+        run: python scripts/build_rb_usage_role.py
+
       - name: Commit and push updated JSON
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -79,6 +82,7 @@ jobs:
           git add output/rb_advanced_stats_all.json
           git add output/rb_player_overview.json
           git add output/rb_efficiency_analytics.json
+          git add output/rb_usage_role.json
           git add data/raw/sleeper_players.json
 
           # Only commit if there are actual changes

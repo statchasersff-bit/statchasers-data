@@ -1,0 +1,295 @@
+Backend instructions
+
+Create a new RB Research dataset called rb_usage_role.
+
+This table should identify RBs whose fantasy role is growing or becoming more valuable, not just who has the best season-long totals.
+
+The goal is to answer:
+
+Which RBs are gaining role, usage, and fantasy-relevant opportunity?
+
+This is your trend and breakout-style table, but label it:
+
+Usage & Role
+
+It should emphasize:
+
+recent role growth
+
+recent usage growth
+
+passing-game involvement
+
+scoring opportunity
+
+a composite signal that surfaces risers
+
+It should have minimal overlap with:
+
+rb_player_overview
+
+rb_efficiency_analytics
+
+rb_advanced_stats
+
+Exact output columns
+
+Return these fields in this exact order:
+
+player
+team
+games
+
+snap_pct
+delta_snap_pct
+
+touches_per_gm
+delta_touches_per_gm
+
+rush_att_per_gm
+delta_rush_att_per_gm
+
+targets_per_gm
+delta_targets_per_gm
+
+route_pct
+delta_route_pct
+
+rz_touches
+goal_line_att
+
+usage_role_score
+role_trend
+Display labels
+
+Use these labels:
+
+Player
+Team
+GP
+
+Snap %
+Δ Snap %
+
+Touches / Gm
+Δ Touches / Gm
+
+Rush / Gm
+Δ Rush / Gm
+
+Targets / Gm
+Δ Targets / Gm
+
+Route %
+Δ Route %
+
+RZ Touches
+GL Att
+
+Usage & Role Score
+Role Trend
+Metric definitions
+Base season context
+
+player: player name
+
+team: team abbreviation
+
+games: games played
+
+snap_pct: season-to-date offensive snap percentage
+
+touches_per_gm: (rush attempts + receptions) / games
+
+rush_att_per_gm: rush attempts / games
+
+targets_per_gm: targets / games
+
+route_pct: routes run / team dropbacks, or routes on pass plays, but use one consistent definition
+
+rz_touches: season-to-date red zone touches = red zone rush attempts + red zone receptions or red zone targets depending on available source. Preferred: rush attempts + targets inside the 20 if catch-level red zone receiving detail is not available.
+
+goal_line_att: season-to-date rushing attempts inside the 5
+
+Delta metric definitions
+
+All delta fields should compare:
+
+recent sample vs prior baseline
+
+Preferred logic:
+
+recent_window = last 4 games
+
+baseline_window = previous 4 games before that
+
+If there are not enough games:
+
+use last 3 vs previous 3
+
+if still not enough, use recent vs season average
+
+if sample is too small, return null
+
+Delta fields
+
+delta_snap_pct = recent_snap_pct - baseline_snap_pct
+
+delta_touches_per_gm = recent_touches_per_gm - baseline_touches_per_gm
+
+delta_rush_att_per_gm = recent_rush_att_per_gm - baseline_rush_att_per_gm
+
+delta_targets_per_gm = recent_targets_per_gm - baseline_targets_per_gm
+
+delta_route_pct = recent_route_pct - baseline_route_pct
+
+These should be signed values:
+
+positive = role growing
+
+negative = role shrinking
+
+Usage & Role Score formula
+
+This is the signature metric for the table.
+
+Backend should calculate percentiles across RBs only and convert to a 0–100 score.
+
+Use this formula:
+
+Usage & Role Score =
+(delta_snap_pct percentile * 0.22)
++ (delta_touches_per_gm percentile * 0.22)
++ (delta_rush_att_per_gm percentile * 0.12)
++ (delta_targets_per_gm percentile * 0.18)
++ (delta_route_pct percentile * 0.12)
++ (rz_touches percentile * 0.08)
++ (goal_line_att percentile * 0.06)
+Why these weights
+
+snap growth matters a lot
+
+touch growth matters a lot
+
+target growth is especially valuable in fantasy
+
+routes help identify receiving-role gain
+
+red zone and goal-line work add touchdown upside
+
+Role Trend label rules
+
+Generate a categorical label in role_trend.
+
+Suggested rules:
+
+Rising Fast
+
+Use when:
+
+delta_snap_pct >= 8
+
+and either delta_touches_per_gm >= 2 or delta_targets_per_gm >= 1
+
+Trending Up
+
+Use when:
+
+delta_snap_pct >= 4
+
+and usage_role_score >= 65
+
+Stable
+
+Use when:
+
+changes are modest and score is in middle range
+
+Trending Down
+
+Use when:
+
+delta_snap_pct <= -4
+
+or delta_touches_per_gm <= -2
+
+Falling Fast
+
+Use when:
+
+delta_snap_pct <= -8
+
+and delta_touches_per_gm <= -3
+
+If sample is insufficient:
+
+role_trend = "Limited Sample"
+
+Data rules
+
+Tell backend:
+
+RBs only
+
+One row per player
+
+Use season-to-date dataset plus recent-game splits
+
+Return null for missing values
+
+Round:
+
+percentages to 1 or 2 decimals
+
+per-game rates to 2 decimals
+
+score to 1 or 2 decimals
+
+Counting stats stay integers where appropriate
+
+Deltas should retain sign
+
+Default sort should be usage_role_score descending
+
+For percentile calculations, use a sensible minimum sample such as:
+
+at least 3 games played
+
+and at least 15–20 season touches
+
+Still return players below threshold if desired, but exclude tiny samples from percentile math
+
+Suggested JSON shape
+{
+  "updated_at": "2026-03-16T15:00:00Z",
+  "season": 2026,
+  "week": null,
+  "table": "rb_usage_role",
+  "columns": [
+    { "key": "player", "label": "Player", "type": "string", "group": "Identity" },
+    { "key": "team", "label": "Team", "type": "string", "group": "Identity" },
+    { "key": "games", "label": "GP", "type": "number", "group": "Identity" },
+
+    { "key": "snap_pct", "label": "Snap %", "type": "number", "group": "Role" },
+    { "key": "delta_snap_pct", "label": "Δ Snap %", "type": "number", "group": "Role" },
+
+    { "key": "touches_per_gm", "label": "Touches / Gm", "type": "number", "group": "Usage" },
+    { "key": "delta_touches_per_gm", "label": "Δ Touches / Gm", "type": "number", "group": "Usage" },
+
+    { "key": "rush_att_per_gm", "label": "Rush / Gm", "type": "number", "group": "Usage" },
+    { "key": "delta_rush_att_per_gm", "label": "Δ Rush / Gm", "type": "number", "group": "Usage" },
+
+    { "key": "targets_per_gm", "label": "Targets / Gm", "type": "number", "group": "Receiving Role" },
+    { "key": "delta_targets_per_gm", "label": "Δ Targets / Gm", "type": "number", "group": "Receiving Role" },
+
+    { "key": "route_pct", "label": "Route %", "type": "number", "group": "Receiving Role" },
+    { "key": "delta_route_pct", "label": "Δ Route %", "type": "number", "group": "Receiving Role" },
+
+    { "key": "rz_touches", "label": "RZ Touches", "type": "number", "group": "Scoring Role" },
+    { "key": "goal_line_att", "label": "GL Att", "type": "number", "group": "Scoring Role" },
+
+    { "key": "usage_role_score", "label": "Usage & Role Score", "type": "number", "group": "Composite" },
+    { "key": "role_trend", "label": "Role Trend", "type": "string", "group": "Composite" }
+  ],
+  "rows": []
+}
