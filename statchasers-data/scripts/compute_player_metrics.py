@@ -178,7 +178,18 @@ def build_team_disambiguation(
             continue
         abbrev = _nflverse_abbrev(full)
         counts[abbrev] = counts.get(abbrev, 0) + 1
-        by_team.setdefault(abbrev, {})[p.get("team")] = full
+        team = p.get("team")
+        slot = by_team.setdefault(abbrev, {})
+        if team in slot:
+            # Multiple players share the same team slot (often both team=None).
+            # Promote to a list so resolve_full_name can apply pos_hint filtering.
+            existing = slot[team]
+            if isinstance(existing, list):
+                existing.append(full)
+            else:
+                slot[team] = [existing, full]
+        else:
+            slot[team] = full
     return {abbrev: teams for abbrev, teams in by_team.items() if counts[abbrev] > 1}
 
 
@@ -239,11 +250,22 @@ def resolve_full_name(
     if pbp_name in abbreviated_lookup:
         return abbreviated_lookup[pbp_name]
     if team_disambig and pbp_name in team_disambig:
-        teams = team_disambig[pbp_name]           # {team | None: full_name}
-        # (a) Exact team match
+        teams = team_disambig[pbp_name]           # {team | None: full_name | [full_name, ...]}
+        # (a) Exact team match (only when slot is unambiguous)
         if pbp_team and pbp_team in teams:
-            return teams[pbp_team]
-        candidates = list(teams.items())          # [(team, full_name), ...]
+            slot = teams[pbp_team]
+            if isinstance(slot, str):
+                return slot
+            # slot is a list — fall through to pos_hint disambiguation below
+        # Expand list-valued slots into flat (team, full_name) pairs so that
+        # pos_hint filtering can distinguish e.g. Aaron Rodgers (QB, None)
+        # from Amari Rodgers (WR, None) even though both have team=None.
+        candidates: list[tuple] = []
+        for t, val in teams.items():
+            if isinstance(val, list):
+                candidates.extend((t, n) for n in val)
+            else:
+                candidates.append((t, val))
         # (b) Position-filtered disambiguation
         if pos_hint:
             pos_matches = [
@@ -262,8 +284,10 @@ def resolve_full_name(
         with_team = [(t, n) for t, n in candidates if t is not None]
         if len(with_team) == 1:
             return with_team[0][1]
-        if None in teams:
-            return teams[None]
+        # Fall back to the first teamless candidate (teams[None] may be a list)
+        teamless = [n for t, n in candidates if t is None]
+        if teamless:
+            return teamless[0]
     return pbp_name
 
 
