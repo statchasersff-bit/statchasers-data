@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-16T17:56:23Z",
+  "updated_at": "2026-03-16T17:59:12Z",
   "season": "all",
   "week": null,
   "table": "rb_advanced_stats",
@@ -496,6 +496,31 @@
     },
     {
       "rank": 15,
+      "player": "Javonte Williams",
+      "team": "DAL",
+      "games": 49,
+      "rush_att": 617,
+      "rush_yds": 2519,
+      "yards_per_att": 4.08,
+      "yards_before_contact_per_att": 2.12,
+      "yards_after_contact_per_att": 1.96,
+      "broken_tackles": 39,
+      "tfl": 55,
+      "tfl_yds_lost": 118,
+      "runs_10_plus": 60,
+      "runs_20_plus": 9,
+      "runs_30_plus": 3,
+      "runs_40_plus": 1,
+      "runs_50_plus": 1,
+      "longest_run": 66,
+      "longest_run_td": false,
+      "targets": 182,
+      "receptions": 136,
+      "red_zone_targets": 21,
+      "rec_yac": 915
+    },
+    {
+      "rank": 16,
       "player": "David Montgomery",
       "team": "DET",
       "games": 49,
@@ -520,7 +545,7 @@
       "rec_yac": 776
     },
     {
-      "rank": 16,
+      "rank": 17,
       "player": "Rachaad White",
       "team": "TB",
       "games": 52,
@@ -545,7 +570,7 @@
       "rec_yac": 1514
     },
     {
-      "rank": 17,
+      "rank": 18,
       "player": "Rico Dowdle",
       "team": "CAR",
       "games": 51,
@@ -570,7 +595,7 @@
       "rec_yac": 816
     },
     {
-      "rank": 18,
+      "rank": 19,
       "player": "Najee Harris",
       "team": "LAC",
       "games": 39,
@@ -595,7 +620,7 @@
       "rec_yac": 578
     },
     {
-      "rank": 19,
+      "rank": 20,
       "player": "Rhamondre Stevenson",
       "team": "NE",
       "games": 45,
@@ -620,7 +645,7 @@
       "rec_yac": 897
     },
     {
-      "rank": 20,
+      "rank": 21,
       "player": "De'Von Achane",
       "team": "MIA",
       "games": 45,
@@ -645,7 +670,7 @@
       "rec_yac": 1498
     },
     {
-      "rank": 21,
+      "rank": 22,
       "player": "Joe Mixon",
       "team": "HOU",
       "games": 33,
@@ -670,7 +695,7 @@
       "rec_yac": 847
     },
     {
-      "rank": 22,
+      "rank": 23,
       "player": "Alvin Kamara",
       "team": "NO",
       "games": 38,
@@ -695,7 +720,7 @@
       "rec_yac": 1245
     },
     {
-      "rank": 23,
+      "rank": 24,
       "player": "Kareem Hunt",
       "team": "KC",
       "games": 48,
@@ -720,7 +745,7 @@
       "rec_yac": 501
     },
     {
-      "rank": 24,
+      "rank": 25,
       "player": "Chase Brown",
       "team": "CIN",
       "games": 41,
@@ -745,7 +770,7 @@
       "rec_yac": 947
     },
     {
-      "rank": 25,
+      "rank": 26,
       "player": "Jaylen Warren",
       "team": "PIT",
       "games": 51,
@@ -770,7 +795,7 @@
       "rec_yac": 1285
     },
     {
-      "rank": 26,
+      "rank": 27,
       "player": "Isiah Pacheco",
       "team": "KC",
       "games": 41,
@@ -795,7 +820,7 @@
       "rec_yac": 693
     },
     {
-      "rank": 27,
+      "rank": 28,
       "player": "Brian Robinson",
       "team": "SF",
       "games": 48,
@@ -820,7 +845,7 @@
       "rec_yac": 652
     },
     {
-      "rank": 28,
+      "rank": 29,
       "player": "James Conner",
       "team": "ARI",
       "games": 32,
@@ -843,31 +868,6 @@
       "receptions": 82,
       "red_zone_targets": 13,
       "rec_yac": 772
-    },
-    {
-      "rank": 29,
-      "player": "Jarveon Williams",
-      "team": "DEN",
-      "games": 47,
-      "rush_att": 472,
-      "rush_yds": 1622,
-      "yards_per_att": 3.44,
-      "yards_before_contact_per_att": 0.0,
-      "yards_after_contact_per_att": 0.0,
-      "broken_tackles": null,
-      "tfl": 53,
-      "tfl_yds_lost": 109,
-      "runs_10_plus": 39,
-      "runs_20_plus": 3,
-      "runs_30_plus": 0,
-      "runs_40_plus": 0,
-      "runs_50_plus": 0,
-      "longest_run": 21,
-      "longest_run_td": false,
-      "targets": 152,
-      "receptions": 119,
-      "red_zone_targets": 10,
-      "rec_yac": 796
     },
     {
       "rank": 30,
@@ -1371,31 +1371,6 @@
     },
     {
       "rank": 50,
-      "player": "Javonte Williams",
-      "team": "DAL",
-      "games": 16,
-      "rush_att": 252,
-      "rush_yds": 1201,
-      "yards_per_att": 4.77,
-      "yards_before_contact_per_att": 2.38,
-      "yards_after_contact_per_att": 2.39,
-      "broken_tackles": 25,
-      "tfl": 13,
-      "tfl_yds_lost": 27,
-      "runs_10_plus": 26,
-      "runs_20_plus": 6,
-      "runs_30_plus": 3,
-      "runs_40_plus": 1,
-      "runs_50_plus": 1,
-      "longest_run": 66,
-      "longest_run_td": false,
-      "targets": 51,
-      "receptions": 35,
-      "red_zone_targets": 12,
-      "rec_yac": 206
-    },
-    {
-      "rank": 51,
       "player": "Jaleel McLaughlin",
       "team": "DEN",
       "games": 43,
@@ -1420,7 +1395,7 @@
       "rec_yac": 505
     },
     {
-      "rank": 52,
+      "rank": 51,
       "player": "Quinshon Judkins",
       "team": "CLE",
       "games": 14,
@@ -1445,7 +1420,7 @@
       "rec_yac": 194
     },
     {
-      "rank": 53,
+      "rank": 52,
       "player": "Blake Corum",
       "team": "LA",
       "games": 34,
@@ -1470,7 +1445,7 @@
       "rec_yac": 126
     },
     {
-      "rank": 54,
+      "rank": 53,
       "player": "Woody Marks",
       "team": "HOU",
       "games": 18,
@@ -1495,7 +1470,7 @@
       "rec_yac": 240
     },
     {
-      "rank": 55,
+      "rank": 54,
       "player": "Antonio Gibson",
       "team": "NE",
       "games": 37,
@@ -1520,7 +1495,7 @@
       "rec_yac": 605
     },
     {
-      "rank": 56,
+      "rank": 55,
       "player": "TreVeyon Henderson",
       "team": "NE",
       "games": 21,
@@ -1545,7 +1520,7 @@
       "rec_yac": 285
     },
     {
-      "rank": 57,
+      "rank": 56,
       "player": "Kimani Vidal",
       "team": "LAC",
       "games": 22,
@@ -1570,7 +1545,7 @@
       "rec_yac": 224
     },
     {
-      "rank": 58,
+      "rank": 57,
       "player": "Miles Sanders",
       "team": "DAL",
       "games": 31,
@@ -1595,7 +1570,7 @@
       "rec_yac": 352
     },
     {
-      "rank": 59,
+      "rank": 58,
       "player": "Chris Rodriguez",
       "team": "WAS",
       "games": 26,
@@ -1620,7 +1595,7 @@
       "rec_yac": 56
     },
     {
-      "rank": 60,
+      "rank": 59,
       "player": "Dameon Pierce",
       "team": "HOU",
       "games": 24,
@@ -1645,7 +1620,7 @@
       "rec_yac": 100
     },
     {
-      "rank": 61,
+      "rank": 60,
       "player": "Kyle Monangai",
       "team": "CHI",
       "games": 18,
@@ -1670,7 +1645,7 @@
       "rec_yac": 224
     },
     {
-      "rank": 62,
+      "rank": 61,
       "player": "Khalil Herbert",
       "team": "NYJ",
       "games": 23,
@@ -1695,7 +1670,7 @@
       "rec_yac": 191
     },
     {
-      "rank": 63,
+      "rank": 62,
       "player": "Anthony Jones",
       "team": "GB",
       "games": 13,
@@ -1720,7 +1695,7 @@
       "rec_yac": 297
     },
     {
-      "rank": 64,
+      "rank": 63,
       "player": "D'Onta Foreman",
       "team": "CLE",
       "games": 19,
@@ -1745,7 +1720,7 @@
       "rec_yac": 113
     },
     {
-      "rank": 65,
+      "rank": 64,
       "player": "A.J. Dillon",
       "team": "GB",
       "games": 15,
@@ -1770,7 +1745,7 @@
       "rec_yac": 231
     },
     {
-      "rank": 66,
+      "rank": 65,
       "player": "Ray Davis",
       "team": "BUF",
       "games": 28,
@@ -1795,7 +1770,7 @@
       "rec_yac": 280
     },
     {
-      "rank": 67,
+      "rank": 66,
       "player": "Justice Hill",
       "team": "BAL",
       "games": 41,
@@ -1820,7 +1795,7 @@
       "rec_yac": 930
     },
     {
-      "rank": 68,
+      "rank": 67,
       "player": "Jacory Croskey-Merritt",
       "team": "WAS",
       "games": 17,
@@ -1845,7 +1820,7 @@
       "rec_yac": 77
     },
     {
-      "rank": 69,
+      "rank": 68,
       "player": "Ty Chandler",
       "team": "MIN",
       "games": 24,
@@ -1870,7 +1845,7 @@
       "rec_yac": 286
     },
     {
-      "rank": 70,
+      "rank": 69,
       "player": "Zamir White",
       "team": "LV",
       "games": 21,
@@ -1895,7 +1870,7 @@
       "rec_yac": 144
     },
     {
-      "rank": 71,
+      "rank": 70,
       "player": "Cam Akers",
       "team": "MIN",
       "games": 23,
@@ -1920,7 +1895,7 @@
       "rec_yac": 161
     },
     {
-      "rank": 72,
+      "rank": 71,
       "player": "RJ Harvey",
       "team": "DEN",
       "games": 19,
@@ -1945,7 +1920,7 @@
       "rec_yac": 426
     },
     {
-      "rank": 73,
+      "rank": 72,
       "player": "Samaje Perine",
       "team": "CIN",
       "games": 39,
@@ -1970,7 +1945,7 @@
       "rec_yac": 876
     },
     {
-      "rank": 74,
+      "rank": 73,
       "player": "Sean Tucker",
       "team": "TB",
       "games": 28,
@@ -1995,7 +1970,7 @@
       "rec_yac": 166
     },
     {
-      "rank": 75,
+      "rank": 74,
       "player": "Jaylen Wright",
       "team": "MIA",
       "games": 22,
@@ -2020,7 +1995,7 @@
       "rec_yac": 68
     },
     {
-      "rank": 76,
+      "rank": 75,
       "player": "Roschon Johnson",
       "team": "CHI",
       "games": 27,
@@ -2045,7 +2020,7 @@
       "rec_yac": 343
     },
     {
-      "rank": 77,
+      "rank": 76,
       "player": "Kendre Miller",
       "team": "NO",
       "games": 20,
@@ -2070,7 +2045,7 @@
       "rec_yac": 196
     },
     {
-      "rank": 78,
+      "rank": 77,
       "player": "Emari Demercado",
       "team": "ARI",
       "games": 30,
@@ -2095,7 +2070,7 @@
       "rec_yac": 288
     },
     {
-      "rank": 79,
+      "rank": 78,
       "player": "Emanuel Wilson",
       "team": "GB",
       "games": 17,
@@ -2120,7 +2095,7 @@
       "rec_yac": 133
     },
     {
-      "rank": 80,
+      "rank": 79,
       "player": "Omarion Hampton",
       "team": "LAC",
       "games": 10,
@@ -2145,7 +2120,7 @@
       "rec_yac": 245
     },
     {
-      "rank": 81,
+      "rank": 80,
       "player": "Audric Estime",
       "team": "NO",
       "games": 18,
@@ -2170,7 +2145,7 @@
       "rec_yac": 145
     },
     {
-      "rank": 82,
+      "rank": 81,
       "player": "Keaton Mitchell",
       "team": "BAL",
       "games": 20,
@@ -2195,7 +2170,7 @@
       "rec_yac": 240
     },
     {
-      "rank": 83,
+      "rank": 82,
       "player": "Braelon Allen",
       "team": "NYJ",
       "games": 22,
@@ -2220,7 +2195,7 @@
       "rec_yac": 172
     },
     {
-      "rank": 84,
+      "rank": 83,
       "player": "Ty.Johnson",
       "team": "BUF",
       "games": 33,
@@ -2245,7 +2220,7 @@
       "rec_yac": 453
     },
     {
-      "rank": 85,
+      "rank": 84,
       "player": "Joshua Kelley",
       "team": "LAC",
       "games": 17,
@@ -2268,6 +2243,31 @@
       "receptions": 8,
       "red_zone_targets": 1,
       "rec_yac": 39
+    },
+    {
+      "rank": 85,
+      "player": "Jamaal Williams",
+      "team": "NO",
+      "games": 13,
+      "rush_att": 106,
+      "rush_yds": 306,
+      "yards_per_att": 2.89,
+      "yards_before_contact_per_att": 1.53,
+      "yards_after_contact_per_att": 1.36,
+      "broken_tackles": 3,
+      "tfl": 10,
+      "tfl_yds_lost": 16,
+      "runs_10_plus": 5,
+      "runs_20_plus": 0,
+      "runs_30_plus": 0,
+      "runs_40_plus": 0,
+      "runs_50_plus": 0,
+      "longest_run": 17,
+      "longest_run_td": false,
+      "targets": 20,
+      "receptions": 18,
+      "red_zone_targets": 1,
+      "rec_yac": 87
     },
     {
       "rank": 86,

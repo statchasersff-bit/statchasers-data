@@ -64,6 +64,7 @@ MIN_GAMES    = 3
 _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "T.Etienne": {"JAX": "Travis Etienne", "CAR": "Trevor Etienne"},
     "B.Robinson": {"ATL": "Bijan Robinson", "SF": "Brian Robinson", "WAS": "Brian Robinson"},
+    "J.Williams": {"DEN": "Javonte Williams", "NO": "Jamaal Williams"},
 }
 MIN_TOUCHES  = 15     # rush_att + receptions, season total
 

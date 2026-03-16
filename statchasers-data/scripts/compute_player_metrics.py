@@ -49,6 +49,10 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     # Brian Robinson moved to SF; Sleeper still lists him as None (was WAS).
     # Both Robinson players are RBs so pos_hint cannot distinguish them.
     "B.Robinson": {"ATL": "Bijan Robinson", "SF": "Brian Robinson", "WAS": "Brian Robinson"},
+    # Javonte Williams played DEN 2023-2024 then DAL 2025 (DAL already in disambig).
+    # Jamaal Williams played NO 2023 (retired, team=None in Sleeper).
+    # Both fall through to Jarveon Williams (None slot) without this override.
+    "J.Williams": {"DEN": "Javonte Williams", "NO": "Jamaal Williams"},
 }
 
 # Minimum 2025-season games before applying narrative labels
