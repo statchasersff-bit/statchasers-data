@@ -19,6 +19,20 @@
       "defaultVisible": true
     },
     {
+      "key": "age",
+      "label": "Age",
+      "type": "number",
+      "group": "identity",
+      "defaultVisible": true
+    },
+    {
+      "key": "games",
+      "label": "GP",
+      "type": "number",
+      "group": "identity",
+      "defaultVisible": true
+    },
+    {
       "key": "dropbacksPerGame",
       "label": "DB/Gm",
       "type": "number",
@@ -58,6 +72,8 @@
     {
       "player": "Jacoby Brissett",
       "team": "ARI",
+      "age": 33,
+      "games": 13,
       "dropbacksPerGame": 40.8,
       "deltaDropbacksPerGame": -3.4,
       "rushAttPerGame": 2.9,
@@ -69,6 +85,8 @@
     {
       "player": "Patrick Mahomes",
       "team": "KC",
+      "age": 30,
+      "games": 14,
       "dropbacksPerGame": 38.5,
       "deltaDropbacksPerGame": 0.7,
       "rushAttPerGame": 4.6,
@@ -80,6 +98,8 @@
     {
       "player": "Bo Nix",
       "team": "DEN",
+      "age": 26,
+      "games": 18,
       "dropbacksPerGame": 38.1,
       "deltaDropbacksPerGame": 2.5,
       "rushAttPerGame": 5.3,
@@ -91,6 +111,8 @@
     {
       "player": "Carson Wentz",
       "team": "MIN",
+      "age": 33,
+      "games": 5,
       "dropbacksPerGame": 37.8,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 2.2,
@@ -102,6 +124,8 @@
     {
       "player": "Dak Prescott",
       "team": "DAL",
+      "age": 32,
+      "games": 17,
       "dropbacksPerGame": 37.3,
       "deltaDropbacksPerGame": -7.9,
       "rushAttPerGame": 3.1,
@@ -113,6 +137,8 @@
     {
       "player": "Matthew Stafford",
       "team": "LA",
+      "age": 38,
+      "games": 20,
       "dropbacksPerGame": 37.2,
       "deltaDropbacksPerGame": 5.3,
       "rushAttPerGame": 1.7,
@@ -124,6 +150,8 @@
     {
       "player": "Joe Flacco",
       "team": "CIN",
+      "age": 41,
+      "games": 12,
       "dropbacksPerGame": 36.3,
       "deltaDropbacksPerGame": -22.6,
       "rushAttPerGame": 1.8,
@@ -135,6 +163,8 @@
     {
       "player": "Caleb Williams",
       "team": "CHI",
+      "age": 24,
+      "games": 19,
       "dropbacksPerGame": 36.2,
       "deltaDropbacksPerGame": 7.6,
       "rushAttPerGame": 4.5,
@@ -146,6 +176,8 @@
     {
       "player": "Jared Goff",
       "team": "DET",
+      "age": 31,
+      "games": 17,
       "dropbacksPerGame": 36.2,
       "deltaDropbacksPerGame": 10.5,
       "rushAttPerGame": 1.1,
@@ -157,6 +189,8 @@
     {
       "player": "Justin Herbert",
       "team": "LAC",
+      "age": 28,
+      "games": 17,
       "dropbacksPerGame": 35.5,
       "deltaDropbacksPerGame": -1.9,
       "rushAttPerGame": 5.5,
@@ -168,6 +202,8 @@
     {
       "player": "Kyler Murray",
       "team": "ARI",
+      "age": 28,
+      "games": 5,
       "dropbacksPerGame": 35.4,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 5.8,
@@ -179,6 +215,8 @@
     {
       "player": "Trevor Lawrence",
       "team": "JAX",
+      "age": 26,
+      "games": 18,
       "dropbacksPerGame": 35.2,
       "deltaDropbacksPerGame": 0.7,
       "rushAttPerGame": 4.9,
@@ -190,6 +228,8 @@
     {
       "player": "Cam Ward",
       "team": "TEN",
+      "age": 23,
+      "games": 17,
       "dropbacksPerGame": 35.0,
       "deltaDropbacksPerGame": -11.1,
       "rushAttPerGame": 2.3,
@@ -201,6 +241,8 @@
     {
       "player": "Joe Burrow",
       "team": "CIN",
+      "age": 29,
+      "games": 8,
       "dropbacksPerGame": 34.8,
       "deltaDropbacksPerGame": 6.5,
       "rushAttPerGame": 1.8,
@@ -212,6 +254,8 @@
     {
       "player": "Brady Cook",
       "team": "NYJ",
+      "age": 24,
+      "games": 5,
       "dropbacksPerGame": 34.6,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 2.6,
@@ -223,6 +267,8 @@
     {
       "player": "Mac Jones",
       "team": "SF",
+      "age": 27,
+      "games": 9,
       "dropbacksPerGame": 34.6,
       "deltaDropbacksPerGame": -15.0,
       "rushAttPerGame": 4.1,
@@ -234,6 +280,8 @@
     {
       "player": "Baker Mayfield",
       "team": "TB",
+      "age": 30,
+      "games": 17,
       "dropbacksPerGame": 34.4,
       "deltaDropbacksPerGame": 0.4,
       "rushAttPerGame": 3.2,
@@ -245,6 +293,8 @@
     {
       "player": "Jarrett Stidham",
       "team": "DEN",
+      "age": 29,
+      "games": 1,
       "dropbacksPerGame": 34.0,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 5.0,
@@ -256,6 +306,8 @@
     {
       "player": "Geno Smith",
       "team": "LV",
+      "age": 35,
+      "games": 15,
       "dropbacksPerGame": 33.7,
       "deltaDropbacksPerGame": -8.8,
       "rushAttPerGame": 2.7,
@@ -267,6 +319,8 @@
     {
       "player": "C.J. Stroud",
       "team": "HOU",
+      "age": 24,
+      "games": 16,
       "dropbacksPerGame": 33.4,
       "deltaDropbacksPerGame": 0.8,
       "rushAttPerGame": 3.2,
@@ -276,8 +330,10 @@
       "priorWindowGames": 12
     },
     {
-      "player": "A.Rodgers",
+      "player": "Aaron Rodgers",
       "team": "PIT",
+      "age": 42,
+      "games": 17,
       "dropbacksPerGame": 33.3,
       "deltaDropbacksPerGame": 12.0,
       "rushAttPerGame": 1.2,
@@ -289,6 +345,8 @@
     {
       "player": "Brock Purdy",
       "team": "SF",
+      "age": 26,
+      "games": 11,
       "dropbacksPerGame": 32.6,
       "deltaDropbacksPerGame": -2.2,
       "rushAttPerGame": 4.3,
@@ -300,6 +358,8 @@
     {
       "player": "Tyler Shough",
       "team": "NO",
+      "age": 26,
+      "games": 11,
       "dropbacksPerGame": 32.6,
       "deltaDropbacksPerGame": 10.4,
       "rushAttPerGame": 4.2,
@@ -311,6 +371,8 @@
     {
       "player": "Drake Maye",
       "team": "NE",
+      "age": 23,
+      "games": 21,
       "dropbacksPerGame": 32.5,
       "deltaDropbacksPerGame": 3.7,
       "rushAttPerGame": 6.3,
@@ -322,6 +384,8 @@
     {
       "player": "Josh Allen",
       "team": "BUF",
+      "age": 29,
+      "games": 18,
       "dropbacksPerGame": 32.5,
       "deltaDropbacksPerGame": 3.2,
       "rushAttPerGame": 7.5,
@@ -333,6 +397,8 @@
     {
       "player": "Bryce Young",
       "team": "CAR",
+      "age": 24,
+      "games": 17,
       "dropbacksPerGame": 32.4,
       "deltaDropbacksPerGame": 2.5,
       "rushAttPerGame": 3.4,
@@ -344,6 +410,8 @@
     {
       "player": "Philip Rivers",
       "team": "IND",
+      "age": 44,
+      "games": 3,
       "dropbacksPerGame": 32.3,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 0.7,
@@ -355,6 +423,8 @@
     {
       "player": "Michael Penix",
       "team": "ATL",
+      "age": 25,
+      "games": 9,
       "dropbacksPerGame": 32.2,
       "deltaDropbacksPerGame": -1.3,
       "rushAttPerGame": 2.3,
@@ -366,6 +436,8 @@
     {
       "player": "Jordan Love",
       "team": "GB",
+      "age": 27,
+      "games": 16,
       "dropbacksPerGame": 31.8,
       "deltaDropbacksPerGame": 0.6,
       "rushAttPerGame": 3.0,
@@ -377,6 +449,8 @@
     {
       "player": "Daniel Jones",
       "team": "IND",
+      "age": 28,
+      "games": 13,
       "dropbacksPerGame": 31.6,
       "deltaDropbacksPerGame": -9.6,
       "rushAttPerGame": 3.5,
@@ -388,6 +462,8 @@
     {
       "player": "Jaxson Dart",
       "team": "NYG",
+      "age": 22,
+      "games": 12,
       "dropbacksPerGame": 31.3,
       "deltaDropbacksPerGame": -0.9,
       "rushAttPerGame": 7.2,
@@ -399,6 +475,8 @@
     {
       "player": "Brandon Allen",
       "team": "TEN",
+      "age": 33,
+      "games": 1,
       "dropbacksPerGame": 31.0,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 19.0,
@@ -410,6 +488,8 @@
     {
       "player": "Jalen Hurts",
       "team": "PHI",
+      "age": 27,
+      "games": 17,
       "dropbacksPerGame": 30.8,
       "deltaDropbacksPerGame": -3.7,
       "rushAttPerGame": 6.5,
@@ -421,6 +501,8 @@
     {
       "player": "Spencer Rattler",
       "team": "NO",
+      "age": 25,
+      "games": 9,
       "dropbacksPerGame": 30.6,
       "deltaDropbacksPerGame": -15.0,
       "rushAttPerGame": 3.6,
@@ -432,6 +514,8 @@
     {
       "player": "Sam Darnold",
       "team": "SEA",
+      "age": 28,
+      "games": 20,
       "dropbacksPerGame": 30.1,
       "deltaDropbacksPerGame": 1.4,
       "rushAttPerGame": 2.0,
@@ -443,6 +527,8 @@
     {
       "player": "Tua Tagovailoa",
       "team": "MIA",
+      "age": 28,
+      "games": 14,
       "dropbacksPerGame": 29.8,
       "deltaDropbacksPerGame": -4.6,
       "rushAttPerGame": 1.4,
@@ -454,6 +540,8 @@
     {
       "player": "Jayden Daniels",
       "team": "WAS",
+      "age": 25,
+      "games": 7,
       "dropbacksPerGame": 29.6,
       "deltaDropbacksPerGame": -10.7,
       "rushAttPerGame": 8.4,
@@ -465,6 +553,8 @@
     {
       "player": "Shedeur Sanders",
       "team": "CLE",
+      "age": 24,
+      "games": 8,
       "dropbacksPerGame": 29.4,
       "deltaDropbacksPerGame": 3.2,
       "rushAttPerGame": 2.8,
@@ -476,6 +566,8 @@
     {
       "player": "Kirk Cousins",
       "team": "ATL",
+      "age": 37,
+      "games": 10,
       "dropbacksPerGame": 28.4,
       "deltaDropbacksPerGame": 10.6,
       "rushAttPerGame": 1.4,
@@ -487,6 +579,8 @@
     {
       "player": "Davis Mills",
       "team": "HOU",
+      "age": 27,
+      "games": 6,
       "dropbacksPerGame": 28.2,
       "deltaDropbacksPerGame": 15.2,
       "rushAttPerGame": 2.3,
@@ -498,6 +592,8 @@
     {
       "player": "J.J. McCarthy",
       "team": "MIN",
+      "age": 23,
+      "games": 10,
       "dropbacksPerGame": 27.3,
       "deltaDropbacksPerGame": -7.6,
       "rushAttPerGame": 3.7,
@@ -509,6 +605,8 @@
     {
       "player": "Jake Browning",
       "team": "CIN",
+      "age": 29,
+      "games": 5,
       "dropbacksPerGame": 26.8,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 1.8,
@@ -520,6 +618,8 @@
     {
       "player": "Lamar Jackson",
       "team": "BAL",
+      "age": 29,
+      "games": 13,
       "dropbacksPerGame": 26.2,
       "deltaDropbacksPerGame": -7.4,
       "rushAttPerGame": 5.2,
@@ -531,6 +631,8 @@
     {
       "player": "Justin Fields",
       "team": "NYJ",
+      "age": 27,
+      "games": 9,
       "dropbacksPerGame": 26.1,
       "deltaDropbacksPerGame": -6.5,
       "rushAttPerGame": 8.1,
@@ -540,8 +642,10 @@
       "priorWindowGames": 5
     },
     {
-      "player": "T.Taylor",
+      "player": "Tyrod Taylor",
       "team": "NYJ",
+      "age": 36,
+      "games": 6,
       "dropbacksPerGame": 24.7,
       "deltaDropbacksPerGame": -2.8,
       "rushAttPerGame": 4.5,
@@ -553,6 +657,8 @@
     {
       "player": "Marcus Mariota",
       "team": "WAS",
+      "age": 32,
+      "games": 10,
       "dropbacksPerGame": 24.6,
       "deltaDropbacksPerGame": -1.8,
       "rushAttPerGame": 5.0,
@@ -564,6 +670,8 @@
     {
       "player": "Aidan O'Connell",
       "team": "LV",
+      "age": 27,
+      "games": 1,
       "dropbacksPerGame": 23.0,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 1.0,
@@ -575,6 +683,8 @@
     {
       "player": "Jameis Winston",
       "team": "NYG",
+      "age": 32,
+      "games": 3,
       "dropbacksPerGame": 23.0,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 2.3,
@@ -586,6 +696,8 @@
     {
       "player": "Tanner McKee",
       "team": "PHI",
+      "age": 25,
+      "games": 2,
       "dropbacksPerGame": 23.0,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 4.0,
@@ -597,6 +709,8 @@
     {
       "player": "Quinn Ewers",
       "team": "MIA",
+      "age": 22,
+      "games": 4,
       "dropbacksPerGame": 22.8,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 2.0,
@@ -608,6 +722,8 @@
     {
       "player": "Russell Wilson",
       "team": "NYG",
+      "age": 37,
+      "games": 6,
       "dropbacksPerGame": 21.5,
       "deltaDropbacksPerGame": -30.0,
       "rushAttPerGame": 3.0,
@@ -619,6 +735,8 @@
     {
       "player": "Chris Oladokun",
       "team": "KC",
+      "age": 28,
+      "games": 3,
       "dropbacksPerGame": 21.0,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 1.7,
@@ -630,6 +748,8 @@
     {
       "player": "Dillon Gabriel",
       "team": "CLE",
+      "age": 25,
+      "games": 10,
       "dropbacksPerGame": 20.5,
       "deltaDropbacksPerGame": -12.9,
       "rushAttPerGame": 1.4,
@@ -641,6 +761,8 @@
     {
       "player": "Shane Buechele",
       "team": "KC",
+      "age": null,
+      "games": 1,
       "dropbacksPerGame": 19.0,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 1.0,
@@ -652,6 +774,8 @@
     {
       "player": "Tyler Huntley",
       "team": "BAL",
+      "age": 28,
+      "games": 4,
       "dropbacksPerGame": 18.8,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 6.0,
@@ -661,8 +785,10 @@
       "priorWindowGames": null
     },
     {
-      "player": "J.Johnson",
+      "player": "Jerrod Johnson",
       "team": "WAS",
+      "age": 37,
+      "games": 3,
       "dropbacksPerGame": 18.7,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 4.0,
@@ -674,6 +800,8 @@
     {
       "player": "Cooper Rush",
       "team": "BAL",
+      "age": 32,
+      "games": 3,
       "dropbacksPerGame": 17.7,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 1.3,
@@ -685,6 +813,8 @@
     {
       "player": "Teddy Bridgewater",
       "team": "TB",
+      "age": null,
+      "games": 1,
       "dropbacksPerGame": 17.0,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 3.0,
@@ -696,6 +826,8 @@
     {
       "player": "Trey Lance",
       "team": "LAC",
+      "age": 25,
+      "games": 4,
       "dropbacksPerGame": 15.8,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 4.2,
@@ -707,6 +839,8 @@
     {
       "player": "Andy Dalton",
       "team": "CAR",
+      "age": 38,
+      "games": 3,
       "dropbacksPerGame": 15.0,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 1.7,
@@ -718,6 +852,8 @@
     {
       "player": "Max Brosmer",
       "team": "MIN",
+      "age": 24,
+      "games": 6,
       "dropbacksPerGame": 14.2,
       "deltaDropbacksPerGame": 15.2,
       "rushAttPerGame": 1.2,
@@ -729,6 +865,8 @@
     {
       "player": "Riley Leonard",
       "team": "IND",
+      "age": 23,
+      "games": 5,
       "dropbacksPerGame": 14.0,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 1.2,
@@ -740,6 +878,8 @@
     {
       "player": "Mitchell Trubisky",
       "team": "BUF",
+      "age": 31,
+      "games": 3,
       "dropbacksPerGame": 12.3,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 3.0,
@@ -751,6 +891,8 @@
     {
       "player": "Mason Rudolph",
       "team": "PIT",
+      "age": 30,
+      "games": 5,
       "dropbacksPerGame": 11.0,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 1.4,
@@ -762,6 +904,8 @@
     {
       "player": "Clayton Tune",
       "team": "GB",
+      "age": null,
+      "games": 2,
       "dropbacksPerGame": 10.0,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 2.5,
@@ -773,6 +917,8 @@
     {
       "player": "Malik Willis",
       "team": "GB",
+      "age": 26,
+      "games": 4,
       "dropbacksPerGame": 9.5,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 5.5,
@@ -784,6 +930,8 @@
     {
       "player": "Kenny Pickett",
       "team": "LV",
+      "age": 27,
+      "games": 6,
       "dropbacksPerGame": 8.8,
       "deltaDropbacksPerGame": 11.0,
       "rushAttPerGame": 0.8,
@@ -795,6 +943,8 @@
     {
       "player": "Gardner Minshew",
       "team": "KC",
+      "age": null,
+      "games": 2,
       "dropbacksPerGame": 6.5,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 3.0,
@@ -806,6 +956,8 @@
     {
       "player": "Joe Milton",
       "team": "DAL",
+      "age": 26,
+      "games": 4,
       "dropbacksPerGame": 6.0,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 1.2,
@@ -817,6 +969,8 @@
     {
       "player": "Zach Wilson",
       "team": "MIA",
+      "age": null,
+      "games": 3,
       "dropbacksPerGame": 3.7,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 1.0,
@@ -828,6 +982,8 @@
     {
       "player": "Joshua Dobbs",
       "team": "NE",
+      "age": null,
+      "games": 4,
       "dropbacksPerGame": 2.5,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 2.5,

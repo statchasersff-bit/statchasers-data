@@ -67,7 +67,7 @@ def _build_abbreviated_lookup(sleeper_players: list[dict]) -> dict[str, str]:
     return {ab: fn for ab, fn in mapping.items() if counts[ab] == 1}
 
 
-def _build_team_disambig(sleeper_players: list[dict]) -> dict[str, dict[str, str]]:
+def _build_team_disambig(sleeper_players: list[dict]) -> dict[str, dict]:
     counts: dict[str, int] = {}
     by_team: dict[str, dict] = {}
     for p in sleeper_players:
@@ -76,7 +76,18 @@ def _build_team_disambig(sleeper_players: list[dict]) -> dict[str, dict[str, str
             continue
         ab = _abbrev(full)
         counts[ab] = counts.get(ab, 0) + 1
-        by_team.setdefault(ab, {})[p.get("team")] = full
+        team = p.get("team")
+        slot = by_team.setdefault(ab, {})
+        if team in slot:
+            # Multiple players share the same team slot (often both team=None).
+            # Promote to a list so _resolve_qb_name can apply position filtering.
+            existing = slot[team]
+            if isinstance(existing, list):
+                existing.append(full)
+            else:
+                slot[team] = [existing, full]
+        else:
+            slot[team] = full
     return {ab: teams for ab, teams in by_team.items() if counts[ab] > 1}
 
 
@@ -105,12 +116,23 @@ def _resolve_qb_name(
         return abbreviated_lookup[pbp_name]
     if pbp_name in team_disambig:
         teams = team_disambig[pbp_name]
+        # Exact team match — only when slot holds a single unambiguous name.
         if pbp_team and pbp_team in teams:
-            return teams[pbp_team]
-        candidates = list(teams.items())
+            slot = teams[pbp_team]
+            if isinstance(slot, str):
+                return slot
+            # slot is a list — fall through to QB position filter below
+        # Expand list-valued slots (e.g. {None: ["Aaron Rodgers", "Amari Rodgers"]})
+        # into flat (team, full_name) pairs so position filtering works correctly.
+        candidates: list[tuple] = []
+        for t, val in teams.items():
+            if isinstance(val, list):
+                candidates.extend((t, n) for n in val)
+            else:
+                candidates.append((t, val))
         qb_matches = [
-            (team, name) for team, name in candidates
-            if player_lookup.get(name, {}).get("position") == "QB"
+            (t, n) for t, n in candidates
+            if player_lookup.get(n, {}).get("position") == "QB"
         ]
         if len(qb_matches) == 1:
             return qb_matches[0][1]
@@ -234,6 +256,8 @@ def compute_qb_trends(
         rows.append({
             "player":                full_name,
             "team":                  team,
+            "age":                   info.get("age"),
+            "games":                 total_games,
             "dropbacksPerGame":      dropbacks_per_game,
             "deltaDropbacksPerGame": delta_dbs_pg,
             "rushAttPerGame":        rush_att_per_game,
@@ -254,6 +278,8 @@ def compute_qb_trends(
 COLUMNS = [
     {"key": "player",                "label": "Player",   "type": "string", "group": "identity",      "defaultVisible": True},
     {"key": "team",                  "label": "Team",     "type": "string", "group": "identity",      "defaultVisible": True},
+    {"key": "age",                   "label": "Age",      "type": "number", "group": "identity",      "defaultVisible": True},
+    {"key": "games",                 "label": "GP",       "type": "number", "group": "identity",      "defaultVisible": True},
     {"key": "dropbacksPerGame",      "label": "DB/Gm",    "type": "number", "group": "passing_usage", "defaultVisible": True},
     {"key": "deltaDropbacksPerGame", "label": "Δ DB/Gm",  "type": "number", "group": "passing_usage", "defaultVisible": True},
     {"key": "rushAttPerGame",        "label": "Rush/Gm",  "type": "number", "group": "rushing_usage", "defaultVisible": True},
