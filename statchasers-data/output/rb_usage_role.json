@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-16T14:33:00Z",
+  "updated_at": "2026-03-16T14:46:10Z",
   "season": 2025,
   "week": null,
   "table": "rb_usage_role",
@@ -124,7 +124,7 @@
       "delta_route_pct": 6.09,
       "rz_touches": 55,
       "goal_line_att": 9,
-      "usage_role_score": 95.69,
+      "usage_role_score": 95.59,
       "role_trend": "Rising Fast"
     },
     {
@@ -200,7 +200,7 @@
       "delta_route_pct": 1.8,
       "rz_touches": 34,
       "goal_line_att": 14,
-      "usage_role_score": 84.93,
+      "usage_role_score": 84.69,
       "role_trend": "Rising Fast"
     },
     {
@@ -219,7 +219,7 @@
       "delta_route_pct": -1.6,
       "rz_touches": 39,
       "goal_line_att": 13,
-      "usage_role_score": 79.06,
+      "usage_role_score": 78.88,
       "role_trend": "Rising Fast"
     },
     {
@@ -238,7 +238,7 @@
       "delta_route_pct": 1.6,
       "rz_touches": 6,
       "goal_line_att": 3,
-      "usage_role_score": 78.17,
+      "usage_role_score": 77.94,
       "role_trend": "Trending Up"
     },
     {
@@ -257,7 +257,7 @@
       "delta_route_pct": 4.86,
       "rz_touches": 26,
       "goal_line_att": 2,
-      "usage_role_score": 77.26,
+      "usage_role_score": 77.36,
       "role_trend": "Trending Up"
     },
     {
@@ -276,7 +276,7 @@
       "delta_route_pct": 3.37,
       "rz_touches": 9,
       "goal_line_att": 3,
-      "usage_role_score": 75.67,
+      "usage_role_score": 75.59,
       "role_trend": "Trending Up"
     },
     {
@@ -295,7 +295,7 @@
       "delta_route_pct": 3.63,
       "rz_touches": 12,
       "goal_line_att": 2,
-      "usage_role_score": 75.43,
+      "usage_role_score": 75.45,
       "role_trend": "Stable"
     },
     {
@@ -314,7 +314,7 @@
       "delta_route_pct": 3.62,
       "rz_touches": 17,
       "goal_line_att": 1,
-      "usage_role_score": 74.21,
+      "usage_role_score": 74.14,
       "role_trend": "Trending Up"
     },
     {
@@ -333,7 +333,7 @@
       "delta_route_pct": 3.32,
       "rz_touches": 17,
       "goal_line_att": 4,
-      "usage_role_score": 73.05,
+      "usage_role_score": 73.19,
       "role_trend": "Stable"
     },
     {
@@ -352,7 +352,7 @@
       "delta_route_pct": -0.81,
       "rz_touches": 33,
       "goal_line_att": 13,
-      "usage_role_score": 72.79,
+      "usage_role_score": 72.67,
       "role_trend": "Rising Fast"
     },
     {
@@ -371,7 +371,7 @@
       "delta_route_pct": 12.87,
       "rz_touches": 49,
       "goal_line_att": 11,
-      "usage_role_score": 72.21,
+      "usage_role_score": 72.0,
       "role_trend": "Stable"
     },
     {
@@ -390,7 +390,7 @@
       "delta_route_pct": 3.96,
       "rz_touches": 4,
       "goal_line_att": 1,
-      "usage_role_score": 71.34,
+      "usage_role_score": 71.4,
       "role_trend": "Stable"
     },
     {
@@ -409,7 +409,7 @@
       "delta_route_pct": -0.13,
       "rz_touches": 13,
       "goal_line_att": 0,
-      "usage_role_score": 71.04,
+      "usage_role_score": 70.89,
       "role_trend": "Trending Up"
     },
     {
@@ -428,7 +428,7 @@
       "delta_route_pct": 0.37,
       "rz_touches": 11,
       "goal_line_att": 0,
-      "usage_role_score": 70.6,
+      "usage_role_score": 70.45,
       "role_trend": "Stable"
     },
     {
@@ -447,26 +447,7 @@
       "delta_route_pct": -0.41,
       "rz_touches": 57,
       "goal_line_att": 16,
-      "usage_role_score": 69.19,
-      "role_trend": "Trending Up"
-    },
-    {
-      "player": "Jaydon Blue",
-      "team": "DAL",
-      "games": 5,
-      "snap_pct": 13.35,
-      "delta_snap_pct": 4.75,
-      "touches_per_gm": 7.8,
-      "delta_touches_per_gm": 2.87,
-      "rush_att_per_gm": 7.6,
-      "delta_rush_att_per_gm": 2.73,
-      "targets_per_gm": 0.2,
-      "delta_targets_per_gm": 0.13,
-      "route_pct": 0.65,
-      "delta_route_pct": 0.43,
-      "rz_touches": 7,
-      "goal_line_att": 1,
-      "usage_role_score": 68.56,
+      "usage_role_score": 69.11,
       "role_trend": "Trending Up"
     },
     {
@@ -485,8 +466,27 @@
       "delta_route_pct": 2.71,
       "rz_touches": 6,
       "goal_line_att": 1,
-      "usage_role_score": 68.52,
+      "usage_role_score": 68.51,
       "role_trend": "Stable"
+    },
+    {
+      "player": "Jaydon Blue",
+      "team": "DAL",
+      "games": 5,
+      "snap_pct": 13.35,
+      "delta_snap_pct": 4.75,
+      "touches_per_gm": 7.8,
+      "delta_touches_per_gm": 2.87,
+      "rush_att_per_gm": 7.6,
+      "delta_rush_att_per_gm": 2.73,
+      "targets_per_gm": 0.2,
+      "delta_targets_per_gm": 0.13,
+      "route_pct": 0.65,
+      "delta_route_pct": 0.43,
+      "rz_touches": 7,
+      "goal_line_att": 1,
+      "usage_role_score": 68.43,
+      "role_trend": "Trending Up"
     },
     {
       "player": "Cam Skattebo",
@@ -504,7 +504,7 @@
       "delta_route_pct": 1.0,
       "rz_touches": 28,
       "goal_line_att": 10,
-      "usage_role_score": 68.48,
+      "usage_role_score": 68.35,
       "role_trend": "Stable"
     },
     {
@@ -523,7 +523,26 @@
       "delta_route_pct": 1.22,
       "rz_touches": 7,
       "goal_line_att": 4,
-      "usage_role_score": 68.39,
+      "usage_role_score": 68.26,
+      "role_trend": "Stable"
+    },
+    {
+      "player": "Travis Etienne",
+      "team": "JAX",
+      "games": 18,
+      "snap_pct": 28.49,
+      "delta_snap_pct": -0.02,
+      "touches_per_gm": 17.28,
+      "delta_touches_per_gm": 0.5,
+      "rush_att_per_gm": 15.0,
+      "delta_rush_att_per_gm": -0.5,
+      "targets_per_gm": 3.17,
+      "delta_targets_per_gm": 1.0,
+      "route_pct": 9.16,
+      "delta_route_pct": 1.94,
+      "rz_touches": 67,
+      "goal_line_att": 12,
+      "usage_role_score": 67.24,
       "role_trend": "Stable"
     },
     {
@@ -542,7 +561,7 @@
       "delta_route_pct": -0.38,
       "rz_touches": 30,
       "goal_line_att": 7,
-      "usage_role_score": 66.51,
+      "usage_role_score": 66.4,
       "role_trend": "Stable"
     },
     {
@@ -561,7 +580,7 @@
       "delta_route_pct": 2.78,
       "rz_touches": 6,
       "goal_line_att": 2,
-      "usage_role_score": 65.23,
+      "usage_role_score": 65.45,
       "role_trend": "Stable"
     },
     {
@@ -580,7 +599,7 @@
       "delta_route_pct": 0.16,
       "rz_touches": 19,
       "goal_line_att": 6,
-      "usage_role_score": 64.64,
+      "usage_role_score": 64.55,
       "role_trend": "Stable"
     },
     {
@@ -599,7 +618,7 @@
       "delta_route_pct": 5.57,
       "rz_touches": 34,
       "goal_line_att": 12,
-      "usage_role_score": 64.25,
+      "usage_role_score": 63.93,
       "role_trend": "Stable"
     },
     {
@@ -618,7 +637,7 @@
       "delta_route_pct": -5.1,
       "rz_touches": 45,
       "goal_line_att": 11,
-      "usage_role_score": 63.21,
+      "usage_role_score": 63.14,
       "role_trend": "Rising Fast"
     },
     {
@@ -637,7 +656,7 @@
       "delta_route_pct": 2.03,
       "rz_touches": 29,
       "goal_line_att": 13,
-      "usage_role_score": 62.99,
+      "usage_role_score": 62.75,
       "role_trend": "Stable"
     },
     {
@@ -656,7 +675,7 @@
       "delta_route_pct": 3.0,
       "rz_touches": 5,
       "goal_line_att": 1,
-      "usage_role_score": 62.12,
+      "usage_role_score": 62.16,
       "role_trend": "Stable"
     },
     {
@@ -675,7 +694,7 @@
       "delta_route_pct": 6.05,
       "rz_touches": 44,
       "goal_line_att": 10,
-      "usage_role_score": 61.61,
+      "usage_role_score": 61.51,
       "role_trend": "Stable"
     },
     {
@@ -694,7 +713,7 @@
       "delta_route_pct": -4.63,
       "rz_touches": 65,
       "goal_line_att": 27,
-      "usage_role_score": 61.23,
+      "usage_role_score": 61.24,
       "role_trend": "Stable"
     },
     {
@@ -713,7 +732,7 @@
       "delta_route_pct": -0.75,
       "rz_touches": 20,
       "goal_line_att": 4,
-      "usage_role_score": 60.36,
+      "usage_role_score": 60.32,
       "role_trend": "Stable"
     },
     {
@@ -732,7 +751,7 @@
       "delta_route_pct": -4.03,
       "rz_touches": 19,
       "goal_line_att": 3,
-      "usage_role_score": 60.01,
+      "usage_role_score": 59.98,
       "role_trend": "Stable"
     },
     {
@@ -751,7 +770,7 @@
       "delta_route_pct": 1.71,
       "rz_touches": 0,
       "goal_line_att": 0,
-      "usage_role_score": 59.17,
+      "usage_role_score": 59.14,
       "role_trend": "Stable"
     },
     {
@@ -770,7 +789,7 @@
       "delta_route_pct": 3.34,
       "rz_touches": 9,
       "goal_line_att": 2,
-      "usage_role_score": 58.21,
+      "usage_role_score": 58.02,
       "role_trend": "Stable"
     },
     {
@@ -789,7 +808,7 @@
       "delta_route_pct": 0.27,
       "rz_touches": 21,
       "goal_line_att": 6,
-      "usage_role_score": 57.33,
+      "usage_role_score": 57.21,
       "role_trend": "Stable"
     },
     {
@@ -808,7 +827,7 @@
       "delta_route_pct": 0.5,
       "rz_touches": 7,
       "goal_line_att": 1,
-      "usage_role_score": 57.18,
+      "usage_role_score": 57.17,
       "role_trend": "Stable"
     },
     {
@@ -827,7 +846,7 @@
       "delta_route_pct": 0.38,
       "rz_touches": 4,
       "goal_line_att": 2,
-      "usage_role_score": 56.51,
+      "usage_role_score": 56.5,
       "role_trend": "Stable"
     },
     {
@@ -884,26 +903,7 @@
       "delta_route_pct": 1.24,
       "rz_touches": 24,
       "goal_line_att": 0,
-      "usage_role_score": 54.34,
-      "role_trend": "Stable"
-    },
-    {
-      "player": "Jaylen Wright",
-      "team": "MIA",
-      "games": 9,
-      "snap_pct": 14.96,
-      "delta_snap_pct": 0.19,
-      "touches_per_gm": 8.33,
-      "delta_touches_per_gm": -0.25,
-      "rush_att_per_gm": 7.78,
-      "delta_rush_att_per_gm": -1.25,
-      "targets_per_gm": 1.0,
-      "delta_targets_per_gm": 0.5,
-      "route_pct": 3.75,
-      "delta_route_pct": 0.72,
-      "rz_touches": 12,
-      "goal_line_att": 4,
-      "usage_role_score": 53.89,
+      "usage_role_score": 54.0,
       "role_trend": "Stable"
     },
     {
@@ -922,26 +922,26 @@
       "delta_route_pct": -0.78,
       "rz_touches": 4,
       "goal_line_att": 2,
-      "usage_role_score": 53.54,
+      "usage_role_score": 53.57,
       "role_trend": "Stable"
     },
     {
-      "player": "Woody Marks",
-      "team": "HOU",
-      "games": 18,
-      "snap_pct": 22.65,
-      "delta_snap_pct": -1.94,
-      "touches_per_gm": 14.17,
-      "delta_touches_per_gm": -1.5,
-      "rush_att_per_gm": 12.72,
-      "delta_rush_att_per_gm": -1.5,
-      "targets_per_gm": 2.22,
-      "delta_targets_per_gm": 0.75,
-      "route_pct": 5.9,
-      "delta_route_pct": 1.8,
-      "rz_touches": 51,
-      "goal_line_att": 9,
-      "usage_role_score": 53.34,
+      "player": "Jaylen Wright",
+      "team": "MIA",
+      "games": 9,
+      "snap_pct": 14.96,
+      "delta_snap_pct": 0.19,
+      "touches_per_gm": 8.33,
+      "delta_touches_per_gm": -0.25,
+      "rush_att_per_gm": 7.78,
+      "delta_rush_att_per_gm": -1.25,
+      "targets_per_gm": 1.0,
+      "delta_targets_per_gm": 0.5,
+      "route_pct": 3.75,
+      "delta_route_pct": 0.72,
+      "rz_touches": 12,
+      "goal_line_att": 4,
+      "usage_role_score": 53.56,
       "role_trend": "Stable"
     },
     {
@@ -960,7 +960,26 @@
       "delta_route_pct": 6.22,
       "rz_touches": 3,
       "goal_line_att": 0,
-      "usage_role_score": 53.3,
+      "usage_role_score": 52.86,
+      "role_trend": "Stable"
+    },
+    {
+      "player": "Woody Marks",
+      "team": "HOU",
+      "games": 18,
+      "snap_pct": 22.65,
+      "delta_snap_pct": -1.94,
+      "touches_per_gm": 14.17,
+      "delta_touches_per_gm": -1.5,
+      "rush_att_per_gm": 12.72,
+      "delta_rush_att_per_gm": -1.5,
+      "targets_per_gm": 2.22,
+      "delta_targets_per_gm": 0.75,
+      "route_pct": 5.9,
+      "delta_route_pct": 1.8,
+      "rz_touches": 51,
+      "goal_line_att": 9,
+      "usage_role_score": 52.79,
       "role_trend": "Stable"
     },
     {
@@ -979,7 +998,7 @@
       "delta_route_pct": -0.77,
       "rz_touches": 17,
       "goal_line_att": 2,
-      "usage_role_score": 52.3,
+      "usage_role_score": 52.34,
       "role_trend": "Stable"
     },
     {
@@ -998,7 +1017,7 @@
       "delta_route_pct": 5.76,
       "rz_touches": 107,
       "goal_line_att": 21,
-      "usage_role_score": 50.73,
+      "usage_role_score": 50.66,
       "role_trend": "Trending Down"
     },
     {
@@ -1017,7 +1036,7 @@
       "delta_route_pct": -0.73,
       "rz_touches": 15,
       "goal_line_att": 6,
-      "usage_role_score": 50.4,
+      "usage_role_score": 50.35,
       "role_trend": "Stable"
     },
     {
@@ -1036,7 +1055,7 @@
       "delta_route_pct": 1.65,
       "rz_touches": 76,
       "goal_line_att": 24,
-      "usage_role_score": 49.18,
+      "usage_role_score": 48.81,
       "role_trend": "Trending Down"
     },
     {
@@ -1055,7 +1074,7 @@
       "delta_route_pct": 0.74,
       "rz_touches": 9,
       "goal_line_att": 1,
-      "usage_role_score": 48.98,
+      "usage_role_score": 48.46,
       "role_trend": "Stable"
     },
     {
@@ -1074,7 +1093,7 @@
       "delta_route_pct": null,
       "rz_touches": 6,
       "goal_line_att": 3,
-      "usage_role_score": 48.16,
+      "usage_role_score": 48.11,
       "role_trend": "Limited Sample"
     },
     {
@@ -1093,7 +1112,7 @@
       "delta_route_pct": 2.63,
       "rz_touches": 3,
       "goal_line_att": 0,
-      "usage_role_score": 47.16,
+      "usage_role_score": 46.88,
       "role_trend": "Stable"
     },
     {
@@ -1112,7 +1131,7 @@
       "delta_route_pct": -4.33,
       "rz_touches": 46,
       "goal_line_att": 14,
-      "usage_role_score": 46.17,
+      "usage_role_score": 46.1,
       "role_trend": "Stable"
     },
     {
@@ -1131,7 +1150,7 @@
       "delta_route_pct": null,
       "rz_touches": 2,
       "goal_line_att": 2,
-      "usage_role_score": 45.92,
+      "usage_role_score": 45.89,
       "role_trend": "Limited Sample"
     },
     {
@@ -1150,7 +1169,7 @@
       "delta_route_pct": -2.49,
       "rz_touches": 6,
       "goal_line_att": 0,
-      "usage_role_score": 45.81,
+      "usage_role_score": 45.8,
       "role_trend": "Stable"
     },
     {
@@ -1169,26 +1188,7 @@
       "delta_route_pct": -0.51,
       "rz_touches": 29,
       "goal_line_att": 4,
-      "usage_role_score": 45.58,
-      "role_trend": "Stable"
-    },
-    {
-      "player": "LeQuint Allen",
-      "team": "JAX",
-      "games": 15,
-      "snap_pct": 3.68,
-      "delta_snap_pct": 0.33,
-      "touches_per_gm": 2.33,
-      "delta_touches_per_gm": 0.0,
-      "rush_att_per_gm": 1.6,
-      "delta_rush_att_per_gm": 0.25,
-      "targets_per_gm": 0.8,
-      "delta_targets_per_gm": -0.25,
-      "route_pct": 2.25,
-      "delta_route_pct": -0.89,
-      "rz_touches": 6,
-      "goal_line_att": 1,
-      "usage_role_score": 44.77,
+      "usage_role_score": 45.1,
       "role_trend": "Stable"
     },
     {
@@ -1207,8 +1207,27 @@
       "delta_route_pct": null,
       "rz_touches": 4,
       "goal_line_att": 0,
-      "usage_role_score": 44.7,
+      "usage_role_score": 44.69,
       "role_trend": "Limited Sample"
+    },
+    {
+      "player": "LeQuint Allen",
+      "team": "JAX",
+      "games": 15,
+      "snap_pct": 3.68,
+      "delta_snap_pct": 0.33,
+      "touches_per_gm": 2.33,
+      "delta_touches_per_gm": 0.0,
+      "rush_att_per_gm": 1.6,
+      "delta_rush_att_per_gm": 0.25,
+      "targets_per_gm": 0.8,
+      "delta_targets_per_gm": -0.25,
+      "route_pct": 2.25,
+      "delta_route_pct": -0.89,
+      "rz_touches": 6,
+      "goal_line_att": 1,
+      "usage_role_score": 44.66,
+      "role_trend": "Stable"
     },
     {
       "player": "Najee Harris",
@@ -1226,7 +1245,7 @@
       "delta_route_pct": null,
       "rz_touches": 1,
       "goal_line_att": 0,
-      "usage_role_score": 43.89,
+      "usage_role_score": 43.88,
       "role_trend": "Limited Sample"
     },
     {
@@ -1245,7 +1264,7 @@
       "delta_route_pct": -0.19,
       "rz_touches": 6,
       "goal_line_att": 1,
-      "usage_role_score": 43.72,
+      "usage_role_score": 43.26,
       "role_trend": "Stable"
     },
     {
@@ -1264,7 +1283,7 @@
       "delta_route_pct": -0.08,
       "rz_touches": 0,
       "goal_line_att": 0,
-      "usage_role_score": 43.1,
+      "usage_role_score": 42.77,
       "role_trend": "Stable"
     },
     {
@@ -1283,7 +1302,7 @@
       "delta_route_pct": -0.19,
       "rz_touches": 6,
       "goal_line_att": 1,
-      "usage_role_score": 43.03,
+      "usage_role_score": 42.7,
       "role_trend": "Stable"
     },
     {
@@ -1302,7 +1321,7 @@
       "delta_route_pct": -3.48,
       "rz_touches": 40,
       "goal_line_att": 9,
-      "usage_role_score": 42.43,
+      "usage_role_score": 41.99,
       "role_trend": "Stable"
     },
     {
@@ -1321,7 +1340,7 @@
       "delta_route_pct": 0.38,
       "rz_touches": 46,
       "goal_line_att": 13,
-      "usage_role_score": 41.35,
+      "usage_role_score": 40.98,
       "role_trend": "Trending Down"
     },
     {
@@ -1340,7 +1359,7 @@
       "delta_route_pct": -0.03,
       "rz_touches": 1,
       "goal_line_att": 0,
-      "usage_role_score": 41.14,
+      "usage_role_score": 40.71,
       "role_trend": "Stable"
     },
     {
@@ -1359,7 +1378,7 @@
       "delta_route_pct": -0.25,
       "rz_touches": 23,
       "goal_line_att": 8,
-      "usage_role_score": 37.71,
+      "usage_role_score": 37.32,
       "role_trend": "Trending Down"
     },
     {
@@ -1378,7 +1397,7 @@
       "delta_route_pct": -3.59,
       "rz_touches": 33,
       "goal_line_att": 10,
-      "usage_role_score": 37.47,
+      "usage_role_score": 37.2,
       "role_trend": "Stable"
     },
     {
@@ -1397,7 +1416,7 @@
       "delta_route_pct": 0.12,
       "rz_touches": 66,
       "goal_line_att": 20,
-      "usage_role_score": 36.23,
+      "usage_role_score": 35.91,
       "role_trend": "Falling Fast"
     },
     {
@@ -1416,7 +1435,7 @@
       "delta_route_pct": 1.97,
       "rz_touches": 41,
       "goal_line_att": 9,
-      "usage_role_score": 35.62,
+      "usage_role_score": 35.38,
       "role_trend": "Trending Down"
     },
     {
@@ -1435,27 +1454,8 @@
       "delta_route_pct": -1.28,
       "rz_touches": 49,
       "goal_line_att": 13,
-      "usage_role_score": 35.61,
+      "usage_role_score": 35.3,
       "role_trend": "Trending Down"
-    },
-    {
-      "player": "TreVeyon Henderson",
-      "team": "NE",
-      "games": 21,
-      "snap_pct": 19.9,
-      "delta_snap_pct": -10.03,
-      "touches_per_gm": 11.9,
-      "delta_touches_per_gm": -4.75,
-      "rush_att_per_gm": 10.0,
-      "delta_rush_att_per_gm": -5.25,
-      "targets_per_gm": 2.29,
-      "delta_targets_per_gm": 0.5,
-      "route_pct": 6.65,
-      "delta_route_pct": 0.38,
-      "rz_touches": 41,
-      "goal_line_att": 8,
-      "usage_role_score": 35.2,
-      "role_trend": "Falling Fast"
     },
     {
       "player": "Evan Hull",
@@ -1473,8 +1473,27 @@
       "delta_route_pct": -1.45,
       "rz_touches": 3,
       "goal_line_att": 0,
-      "usage_role_score": 35.11,
+      "usage_role_score": 34.86,
       "role_trend": "Stable"
+    },
+    {
+      "player": "TreVeyon Henderson",
+      "team": "NE",
+      "games": 21,
+      "snap_pct": 19.9,
+      "delta_snap_pct": -10.03,
+      "touches_per_gm": 11.9,
+      "delta_touches_per_gm": -4.75,
+      "rush_att_per_gm": 10.0,
+      "delta_rush_att_per_gm": -5.25,
+      "targets_per_gm": 2.29,
+      "delta_targets_per_gm": 0.5,
+      "route_pct": 6.65,
+      "delta_route_pct": 0.38,
+      "rz_touches": 41,
+      "goal_line_att": 8,
+      "usage_role_score": 34.83,
+      "role_trend": "Falling Fast"
     },
     {
       "player": "George Holani",
@@ -1492,7 +1511,7 @@
       "delta_route_pct": 1.1,
       "rz_touches": 6,
       "goal_line_att": 0,
-      "usage_role_score": 34.97,
+      "usage_role_score": 34.69,
       "role_trend": "Trending Down"
     },
     {
@@ -1511,7 +1530,7 @@
       "delta_route_pct": -0.48,
       "rz_touches": 5,
       "goal_line_att": 1,
-      "usage_role_score": 34.07,
+      "usage_role_score": 33.72,
       "role_trend": "Stable"
     },
     {
@@ -1530,7 +1549,7 @@
       "delta_route_pct": -0.22,
       "rz_touches": 5,
       "goal_line_att": 0,
-      "usage_role_score": 33.79,
+      "usage_role_score": 33.43,
       "role_trend": "Stable"
     },
     {
@@ -1549,7 +1568,7 @@
       "delta_route_pct": 0.5,
       "rz_touches": 9,
       "goal_line_att": 0,
-      "usage_role_score": 31.35,
+      "usage_role_score": 31.02,
       "role_trend": "Trending Down"
     },
     {
@@ -1568,7 +1587,7 @@
       "delta_route_pct": -3.33,
       "rz_touches": 22,
       "goal_line_att": 0,
-      "usage_role_score": 30.57,
+      "usage_role_score": 30.32,
       "role_trend": "Trending Down"
     },
     {
@@ -1587,7 +1606,7 @@
       "delta_route_pct": -0.58,
       "rz_touches": 2,
       "goal_line_att": 0,
-      "usage_role_score": 30.49,
+      "usage_role_score": 30.17,
       "role_trend": "Stable"
     },
     {
@@ -1606,7 +1625,7 @@
       "delta_route_pct": -2.16,
       "rz_touches": 48,
       "goal_line_att": 17,
-      "usage_role_score": 30.28,
+      "usage_role_score": 30.03,
       "role_trend": "Trending Down"
     },
     {
@@ -1625,7 +1644,7 @@
       "delta_route_pct": -5.28,
       "rz_touches": 67,
       "goal_line_att": 10,
-      "usage_role_score": 30.04,
+      "usage_role_score": 29.77,
       "role_trend": "Trending Down"
     },
     {
@@ -1644,7 +1663,7 @@
       "delta_route_pct": -0.29,
       "rz_touches": 24,
       "goal_line_att": 10,
-      "usage_role_score": 29.64,
+      "usage_role_score": 29.33,
       "role_trend": "Trending Down"
     },
     {
@@ -1663,7 +1682,7 @@
       "delta_route_pct": -0.05,
       "rz_touches": 4,
       "goal_line_att": 1,
-      "usage_role_score": 29.57,
+      "usage_role_score": 29.26,
       "role_trend": "Trending Down"
     },
     {
@@ -1682,7 +1701,7 @@
       "delta_route_pct": -1.31,
       "rz_touches": 5,
       "goal_line_att": 0,
-      "usage_role_score": 28.96,
+      "usage_role_score": 28.72,
       "role_trend": "Stable"
     },
     {
@@ -1701,27 +1720,8 @@
       "delta_route_pct": -0.25,
       "rz_touches": 17,
       "goal_line_att": 2,
-      "usage_role_score": 28.57,
+      "usage_role_score": 28.27,
       "role_trend": "Trending Down"
-    },
-    {
-      "player": "Kaleb Johnson",
-      "team": "PIT",
-      "games": 10,
-      "snap_pct": 5.45,
-      "delta_snap_pct": -2.67,
-      "touches_per_gm": 2.9,
-      "delta_touches_per_gm": -1.25,
-      "rush_att_per_gm": 2.8,
-      "delta_rush_att_per_gm": -1.0,
-      "targets_per_gm": 0.2,
-      "delta_targets_per_gm": -0.5,
-      "route_pct": 0.68,
-      "delta_route_pct": -1.7,
-      "rz_touches": 4,
-      "goal_line_att": 0,
-      "usage_role_score": 28.44,
-      "role_trend": "Stable"
     },
     {
       "player": "Justice Hill",
@@ -1739,7 +1739,26 @@
       "delta_route_pct": -4.11,
       "rz_touches": 4,
       "goal_line_att": 1,
-      "usage_role_score": 28.36,
+      "usage_role_score": 28.19,
+      "role_trend": "Stable"
+    },
+    {
+      "player": "Kaleb Johnson",
+      "team": "PIT",
+      "games": 10,
+      "snap_pct": 5.45,
+      "delta_snap_pct": -2.67,
+      "touches_per_gm": 2.9,
+      "delta_touches_per_gm": -1.25,
+      "rush_att_per_gm": 2.8,
+      "delta_rush_att_per_gm": -1.0,
+      "targets_per_gm": 0.2,
+      "delta_targets_per_gm": -0.5,
+      "route_pct": 0.68,
+      "delta_route_pct": -1.7,
+      "rz_touches": 4,
+      "goal_line_att": 0,
+      "usage_role_score": 28.14,
       "role_trend": "Stable"
     },
     {
@@ -1758,7 +1777,7 @@
       "delta_route_pct": -1.28,
       "rz_touches": 64,
       "goal_line_att": 22,
-      "usage_role_score": 27.99,
+      "usage_role_score": 27.76,
       "role_trend": "Falling Fast"
     },
     {
@@ -1777,7 +1796,7 @@
       "delta_route_pct": -2.52,
       "rz_touches": 4,
       "goal_line_att": 0,
-      "usage_role_score": 27.53,
+      "usage_role_score": 27.37,
       "role_trend": "Stable"
     },
     {
@@ -1796,7 +1815,7 @@
       "delta_route_pct": -2.26,
       "rz_touches": 33,
       "goal_line_att": 4,
-      "usage_role_score": 27.35,
+      "usage_role_score": 27.07,
       "role_trend": "Falling Fast"
     },
     {
@@ -1815,7 +1834,7 @@
       "delta_route_pct": -3.4,
       "rz_touches": 66,
       "goal_line_att": 18,
-      "usage_role_score": 25.7,
+      "usage_role_score": 25.5,
       "role_trend": "Falling Fast"
     },
     {
@@ -1834,7 +1853,7 @@
       "delta_route_pct": -2.39,
       "rz_touches": 6,
       "goal_line_att": 1,
-      "usage_role_score": 25.03,
+      "usage_role_score": 24.83,
       "role_trend": "Stable"
     },
     {
@@ -1853,7 +1872,7 @@
       "delta_route_pct": -0.7,
       "rz_touches": 43,
       "goal_line_att": 15,
-      "usage_role_score": 21.54,
+      "usage_role_score": 21.38,
       "role_trend": "Falling Fast"
     },
     {
@@ -1872,7 +1891,7 @@
       "delta_route_pct": -3.85,
       "rz_touches": 28,
       "goal_line_att": 8,
-      "usage_role_score": 20.5,
+      "usage_role_score": 20.29,
       "role_trend": "Trending Down"
     },
     {
@@ -1891,7 +1910,7 @@
       "delta_route_pct": -2.53,
       "rz_touches": 29,
       "goal_line_att": 8,
-      "usage_role_score": 19.25,
+      "usage_role_score": 19.05,
       "role_trend": "Falling Fast"
     },
     {
@@ -1910,7 +1929,7 @@
       "delta_route_pct": -2.4,
       "rz_touches": 24,
       "goal_line_att": 11,
-      "usage_role_score": 18.23,
+      "usage_role_score": 18.04,
       "role_trend": "Falling Fast"
     },
     {
@@ -1929,7 +1948,7 @@
       "delta_route_pct": -2.39,
       "rz_touches": 34,
       "goal_line_att": 8,
-      "usage_role_score": 17.62,
+      "usage_role_score": 17.44,
       "role_trend": "Falling Fast"
     },
     {
@@ -1948,7 +1967,7 @@
       "delta_route_pct": -7.99,
       "rz_touches": 20,
       "goal_line_att": 2,
-      "usage_role_score": 17.22,
+      "usage_role_score": 17.04,
       "role_trend": "Trending Down"
     },
     {
@@ -1967,7 +1986,7 @@
       "delta_route_pct": -8.28,
       "rz_touches": 43,
       "goal_line_att": 5,
-      "usage_role_score": 11.82,
+      "usage_role_score": 11.7,
       "role_trend": "Falling Fast"
     }
   ]

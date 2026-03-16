@@ -39,6 +39,15 @@ CURRENT_SEASON = 2025
 # Minimum 2025-season plays to include a player
 MIN_PLAYS = 20
 
+# Hardcoded team overrides for cases where Sleeper team data is stale and
+# pos_hint alone cannot disambiguate two same-position players.
+# Key: PBP abbreviated name  →  {pbp_team: canonical full name}
+_MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
+    # Travis Etienne plays JAX in 2025 PBP; Sleeper still lists him as NO.
+    # Both Etienne players are RBs so pos_hint cannot distinguish them.
+    "T.Etienne": {"JAX": "Travis Etienne", "CAR": "Trevor Etienne"},
+}
+
 # Minimum 2025-season games before applying narrative labels
 MIN_GAMES_FOR_LABELS = 6
 
@@ -245,6 +254,11 @@ def resolve_full_name(
     being chosen over Tua Tagovailoa (ATL, QB) just because Tua's Sleeper team
     (post-season move) no longer matches his 2025 PBP team (MIA).
     """
+    # Manual override: checked first so stale Sleeper team data never wins.
+    if pbp_name in _MANUAL_TEAM_OVERRIDES and pbp_team:
+        hit = _MANUAL_TEAM_OVERRIDES[pbp_name].get(pbp_team)
+        if hit:
+            return hit
     if pbp_name in player_lookup:
         return pbp_name
     if pbp_name in abbreviated_lookup:

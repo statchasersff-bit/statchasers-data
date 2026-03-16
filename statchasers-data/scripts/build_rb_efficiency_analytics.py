@@ -48,6 +48,12 @@ OUTPUT_PATH  = ROOT / "output"             / "rb_efficiency_analytics.json"
 
 SEASON               = 2025
 MIN_CARRIES          = 15   # minimum to appear in output
+
+# Hardcoded team overrides for ambiguous same-position abbreviations where
+# Sleeper's team field is stale relative to the 2025 PBP season.
+_MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
+    "T.Etienne": {"JAX": "Travis Etienne", "CAR": "Trevor Etienne"},
+}
 MIN_CARRIES_PCT_POOL = 25   # minimum to enter the percentile pool for runner_score
 
 COLUMNS: list[dict] = [
@@ -130,6 +136,10 @@ def _resolve(
     sleeper_pos: dict[str, str],
     pos_hint: str = "RB",
 ) -> str:
+    if pbp_name in _MANUAL_TEAM_OVERRIDES and pbp_team:
+        hit = _MANUAL_TEAM_OVERRIDES[pbp_name].get(pbp_team)
+        if hit:
+            return hit
     if pbp_name in full_name_set:
         return pbp_name
     if pbp_name in unambig:

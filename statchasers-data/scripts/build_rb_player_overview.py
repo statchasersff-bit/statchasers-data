@@ -48,6 +48,12 @@ SEASON       = 2025
 MIN_GAMES    = 3
 MIN_RUSH_ATT = 15  # include all meaningful RBs
 
+# Hardcoded team overrides for ambiguous same-position abbreviations where
+# Sleeper's team field is stale relative to the 2025 PBP season.
+_MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
+    "T.Etienne": {"JAX": "Travis Etienne", "CAR": "Trevor Etienne"},
+}
+
 COLUMNS: list[dict] = [
     {"key": "rank",              "label": "#",              "type": "number", "group": "Identity",               "defaultVisible": True},
     {"key": "player",            "label": "Player",         "type": "string", "group": "Identity",               "defaultVisible": True},
@@ -126,6 +132,10 @@ def _resolve(
     metrics_pos: dict[str, str],
     sleeper_pos: dict[str, str],
 ) -> str:
+    if pbp_name in _MANUAL_TEAM_OVERRIDES and pbp_team:
+        hit = _MANUAL_TEAM_OVERRIDES[pbp_name].get(pbp_team)
+        if hit:
+            return hit
     if pbp_name in full_name_set:
         return pbp_name
     if pbp_name in unambig:

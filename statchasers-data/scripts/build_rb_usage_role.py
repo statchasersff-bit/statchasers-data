@@ -58,6 +58,12 @@ OUTPUT_PATH  = ROOT / "output"             / "rb_usage_role.json"
 
 SEASON       = 2025
 MIN_GAMES    = 3
+
+# Hardcoded team overrides for ambiguous same-position abbreviations where
+# Sleeper's team field is stale relative to the 2025 PBP season.
+_MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
+    "T.Etienne": {"JAX": "Travis Etienne", "CAR": "Trevor Etienne"},
+}
 MIN_TOUCHES  = 15     # rush_att + receptions, season total
 
 COLUMNS: list[dict] = [
@@ -138,6 +144,10 @@ def _resolve(
 ) -> str | None:
     if not pbp_name or pbp_name == "nan":
         return None
+    if pbp_name in _MANUAL_TEAM_OVERRIDES and team:
+        hit = _MANUAL_TEAM_OVERRIDES[pbp_name].get(team)
+        if hit:
+            return hit
     if pbp_name in full_name_set:
         return pbp_name
     if pbp_name in team_disambig:
