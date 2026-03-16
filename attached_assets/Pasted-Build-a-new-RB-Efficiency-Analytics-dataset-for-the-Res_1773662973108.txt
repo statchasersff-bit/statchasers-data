@@ -1,0 +1,210 @@
+Build a new RB Efficiency Analytics dataset for the Research tab. This table should focus on play-level rushing efficiency, explosiveness, tackle-breaking, and overall fantasy efficiency, with minimal overlap versus:
+
+RB Player Overview → role, opportunity, summary profile
+
+RB Role & Usage Trends → recent usage changes
+
+RB Advanced Stats → raw totals and volume stats
+
+The goal is:
+
+How effective is this RB on a per-play and per-touch basis?
+
+What backend should return
+
+Use these fields in this exact order:
+
+player
+team
+games
+rush_attempts
+
+epa_per_rush
+success_rate
+
+yards_per_attempt
+yards_per_touch
+fpoe
+
+explosive_run_pct
+breakaway_run_pct
+breakaway_runs
+longest_run
+
+broken_tackles
+broken_tackles_per_att
+yac_per_att
+ybc_per_att
+
+runner_score
+Display labels
+
+Map those to:
+
+Player
+Team
+GP
+ATT
+
+EPA / Rush
+Success %
+
+Yds / Att
+Yds / Touch
+FPOE
+
+Explosive %
+Breakaway %
+Breakaway Runs
+Longest Run
+
+Broken Tackles
+BTKL / Att
+YAC / Att
+YBC / Att
+
+Runner Score
+What each metric means
+
+Tell backend to use these definitions consistently:
+
+Identity / context
+
+player: player name
+
+team: team abbreviation
+
+games: games played
+
+rush_attempts: total rushing attempts
+
+Efficiency
+
+epa_per_rush: expected points added per rushing attempt
+
+success_rate: successful rushes / rush attempts
+
+yards_per_attempt: rushing yards / rushing attempts
+
+yards_per_touch: (rushing yards + receiving yards) / (rush attempts + receptions)
+
+fpoe: season-to-date fantasy points over expectation
+
+Explosiveness
+
+explosive_run_pct: runs of 10+ yards / rush attempts
+
+breakaway_run_pct: preferred definition = runs of 15+ yards / rush attempts
+
+breakaway_runs: total runs of 15+ yards
+
+longest_run: longest rushing gain
+
+Elusiveness / independent rushing skill
+
+broken_tackles: total broken tackles on rushes
+
+broken_tackles_per_att: broken tackles / rush attempts
+
+yac_per_att: rushing yards after contact / rush attempts
+
+ybc_per_att: rushing yards before contact / rush attempts
+
+Composite
+
+runner_score: 0–100 composite “how good is this RB as a runner” score
+
+Runner Score formula
+
+Tell backend to calculate percentiles across RBs only, then scale to 0–100.
+
+Use:
+
+Runner Score =
+(EPA / Rush percentile * 0.25)
++ (Success % percentile * 0.20)
++ (Yds / Att percentile * 0.15)
++ (Explosive % percentile * 0.15)
++ (Broken Tackles / Att percentile * 0.15)
++ (YAC / Att percentile * 0.10)
+
+That gives a balanced score across:
+
+efficiency
+
+consistency
+
+explosiveness
+
+tackle-breaking
+
+Data rules for backend
+
+Tell them:
+
+RBs only
+
+One row per player
+
+Use season-to-date data
+
+Return null for missing values, not empty strings
+
+Round percentages and rate stats to 2 decimals
+
+Counting stats should stay integers
+
+runner_score should be rounded to 1 or 2 decimals
+
+Default sort should be:
+
+runner_score descending, or
+
+epa_per_rush descending if you want a purer efficiency sort
+
+Include a minimum sample filter if needed for ranking integrity, but still return all relevant RBs if possible
+
+Recommended threshold for leaderboard quality:
+
+either no hard cutoff in rows, but
+
+only use players with something like 25+ rush attempts for percentile calculations
+
+That avoids tiny-sample nonsense.
+
+Suggested backend JSON shape
+
+Ask them to return:
+
+{
+  "updated_at": "2026-03-16T12:00:00Z",
+  "season": 2026,
+  "week": null,
+  "table": "rb_efficiency_analytics",
+  "columns": [
+    { "key": "player", "label": "Player", "type": "string", "group": "Identity" },
+    { "key": "team", "label": "Team", "type": "string", "group": "Identity" },
+    { "key": "games", "label": "GP", "type": "number", "group": "Identity" },
+    { "key": "rush_attempts", "label": "ATT", "type": "number", "group": "Identity" },
+
+    { "key": "epa_per_rush", "label": "EPA / Rush", "type": "number", "group": "Efficiency" },
+    { "key": "success_rate", "label": "Success %", "type": "number", "group": "Efficiency" },
+
+    { "key": "yards_per_attempt", "label": "Yds / Att", "type": "number", "group": "Efficiency" },
+    { "key": "yards_per_touch", "label": "Yds / Touch", "type": "number", "group": "Efficiency" },
+    { "key": "fpoe", "label": "FPOE", "type": "number", "group": "Efficiency" },
+
+    { "key": "explosive_run_pct", "label": "Explosive %", "type": "number", "group": "Explosiveness" },
+    { "key": "breakaway_run_pct", "label": "Breakaway %", "type": "number", "group": "Explosiveness" },
+    { "key": "breakaway_runs", "label": "Breakaway Runs", "type": "number", "group": "Explosiveness" },
+    { "key": "longest_run", "label": "Longest Run", "type": "number", "group": "Explosiveness" },
+
+    { "key": "broken_tackles", "label": "Broken Tackles", "type": "number", "group": "Elusiveness" },
+    { "key": "broken_tackles_per_att", "label": "BTKL / Att", "type": "number", "group": "Elusiveness" },
+    { "key": "yac_per_att", "label": "YAC / Att", "type": "number", "group": "Elusiveness" },
+    { "key": "ybc_per_att", "label": "YBC / Att", "type": "number", "group": "Elusiveness" },
+
+    { "key": "runner_score", "label": "Runner Score", "type": "number", "group": "Composite" }
+  ],
+  "rows": []
+}
