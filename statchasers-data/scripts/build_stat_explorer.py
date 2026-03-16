@@ -808,7 +808,9 @@ def build_stat_explorer_dataset(
         if pos and pos != position:
             continue
 
-        team = info.get("team") or raw.get("team_pbp", "")
+        # Prefer PBP posteam (seasonal ground truth) over player_metrics.team
+        # which reflects current roster and is stale for historical seasons.
+        team = raw.get("team_pbp", "") or info.get("team", "")
 
         pfr_stats = pfr_agg.get(full_name, {})
 

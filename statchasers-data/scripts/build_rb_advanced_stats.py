@@ -321,8 +321,8 @@ def build_season(
 
         team = str(grp["posteam"].iloc[-1]) if "posteam" in grp.columns else ""
         info = metrics_by_player.get(str(full_name), {})
-        if info.get("team"):
-            team = info["team"]
+        # Do NOT override team with player_metrics.team — it reflects current
+        # roster and is stale for per-season historical files.
 
         neg_plays    = grp[grp["yards_gained"] < 0]
         tfl          = int(len(neg_plays))

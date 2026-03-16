@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-16T17:59:12Z",
+  "updated_at": "2026-03-16T21:51:24Z",
   "season": 2023,
   "week": 22,
   "table": "rb_advanced_stats",
@@ -222,7 +222,7 @@
     {
       "rank": 4,
       "player": "Derrick Henry",
-      "team": "BAL",
+      "team": "TEN",
       "games": 17,
       "rush_att": 280,
       "rush_yds": 1167,
@@ -322,7 +322,7 @@
     {
       "rank": 8,
       "player": "Tony Pollard",
-      "team": "TEN",
+      "team": "DAL",
       "games": 18,
       "rush_att": 268,
       "rush_yds": 1063,
@@ -397,7 +397,7 @@
     {
       "rank": 11,
       "player": "Saquon Barkley",
-      "team": "PHI",
+      "team": "NYG",
       "games": 14,
       "rush_att": 248,
       "rush_yds": 964,
@@ -447,7 +447,7 @@
     {
       "rank": 13,
       "player": "D'Andre Swift",
-      "team": "CHI",
+      "team": "PHI",
       "games": 17,
       "rush_att": 239,
       "rush_yds": 1083,
@@ -497,7 +497,7 @@
     {
       "rank": 15,
       "player": "Devin Singletary",
-      "team": "NYG",
+      "team": "HOU",
       "games": 18,
       "rush_att": 238,
       "rush_yds": 996,
@@ -522,7 +522,7 @@
     {
       "rank": 16,
       "player": "Josh Jacobs",
-      "team": "GB",
+      "team": "LV",
       "games": 13,
       "rush_att": 233,
       "rush_yds": 805,
@@ -547,7 +547,7 @@
     {
       "rank": 17,
       "player": "Javonte Williams",
-      "team": "DAL",
+      "team": "DEN",
       "games": 16,
       "rush_att": 219,
       "rush_yds": 776,
@@ -597,7 +597,7 @@
     {
       "rank": 19,
       "player": "Raheem Mostert",
-      "team": "LV",
+      "team": "MIA",
       "games": 16,
       "rush_att": 217,
       "rush_yds": 1045,
@@ -897,7 +897,7 @@
     {
       "rank": 31,
       "player": "Brian Robinson",
-      "team": "SF",
+      "team": "WAS",
       "games": 15,
       "rush_att": 179,
       "rush_yds": 735,
@@ -1047,7 +1047,7 @@
     {
       "rank": 37,
       "player": "Kareem Hunt",
-      "team": "KC",
+      "team": "CLE",
       "games": 15,
       "rush_att": 143,
       "rush_yds": 437,
@@ -1097,7 +1097,7 @@
     {
       "rank": 39,
       "player": "Miles Sanders",
-      "team": "DAL",
+      "team": "CAR",
       "games": 16,
       "rush_att": 129,
       "rush_yds": 432,
@@ -1347,7 +1347,7 @@
     {
       "rank": 49,
       "player": "Rico Dowdle",
-      "team": "CAR",
+      "team": "DAL",
       "games": 17,
       "rush_att": 92,
       "rush_yds": 374,
@@ -1372,7 +1372,7 @@
     {
       "rank": 50,
       "player": "Kenneth Gainwell",
-      "team": "PIT",
+      "team": "PHI",
       "games": 17,
       "rush_att": 89,
       "rush_yds": 369,
@@ -1572,7 +1572,7 @@
     {
       "rank": 58,
       "player": "Antonio Gibson",
-      "team": "NE",
+      "team": "WAS",
       "games": 15,
       "rush_att": 65,
       "rush_yds": 265,
@@ -1722,7 +1722,7 @@
     {
       "rank": 64,
       "player": "Samaje Perine",
-      "team": "CIN",
+      "team": "DEN",
       "games": 16,
       "rush_att": 53,
       "rush_yds": 238,
@@ -1797,7 +1797,7 @@
     {
       "rank": 67,
       "player": "Tank Bigsby",
-      "team": "PHI",
+      "team": "JAX",
       "games": 13,
       "rush_att": 50,
       "rush_yds": 132,
@@ -1997,7 +1997,7 @@
     {
       "rank": 75,
       "player": "Jordan Mason",
-      "team": "MIN",
+      "team": "SF",
       "games": 9,
       "rush_att": 40,
       "rush_yds": 206,
@@ -2147,7 +2147,7 @@
     {
       "rank": 81,
       "player": "Nick Chubb",
-      "team": "HOU",
+      "team": "CLE",
       "games": 2,
       "rush_att": 28,
       "rush_yds": 170,
@@ -2372,7 +2372,7 @@
     {
       "rank": 90,
       "player": "Chris Brooks",
-      "team": "GB",
+      "team": "MIA",
       "games": 3,
       "rush_att": 19,
       "rush_yds": 106,

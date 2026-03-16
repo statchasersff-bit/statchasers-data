@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-16T17:59:12Z",
+  "updated_at": "2026-03-16T21:51:24Z",
   "season": 2024,
   "week": 22,
   "table": "rb_advanced_stats",
@@ -522,7 +522,7 @@
     {
       "rank": 16,
       "player": "Rico Dowdle",
-      "team": "CAR",
+      "team": "DAL",
       "games": 16,
       "rush_att": 235,
       "rush_yds": 1079,
@@ -647,7 +647,7 @@
     {
       "rank": 21,
       "player": "Brian Robinson",
-      "team": "SF",
+      "team": "WAS",
       "games": 17,
       "rush_att": 223,
       "rush_yds": 928,
@@ -722,7 +722,7 @@
     {
       "rank": 24,
       "player": "J.K. Dobbins",
-      "team": "DEN",
+      "team": "LAC",
       "games": 14,
       "rush_att": 204,
       "rush_yds": 931,
@@ -822,7 +822,7 @@
     {
       "rank": 28,
       "player": "Tank Bigsby",
-      "team": "PHI",
+      "team": "JAX",
       "games": 15,
       "rush_att": 168,
       "rush_yds": 766,
@@ -847,7 +847,7 @@
     {
       "rank": 29,
       "player": "Jordan Mason",
-      "team": "MIN",
+      "team": "SF",
       "games": 12,
       "rush_att": 153,
       "rush_yds": 789,
@@ -922,7 +922,7 @@
     {
       "rank": 32,
       "player": "Javonte Williams",
-      "team": "DAL",
+      "team": "DEN",
       "games": 17,
       "rush_att": 146,
       "rush_yds": 542,
@@ -1222,7 +1222,7 @@
     {
       "rank": 44,
       "player": "Nick Chubb",
-      "team": "HOU",
+      "team": "CLE",
       "games": 8,
       "rush_att": 102,
       "rush_yds": 332,
@@ -1322,7 +1322,7 @@
     {
       "rank": 48,
       "player": "Kenneth Gainwell",
-      "team": "PIT",
+      "team": "PHI",
       "games": 19,
       "rush_att": 88,
       "rush_yds": 332,
@@ -1347,7 +1347,7 @@
     {
       "rank": 49,
       "player": "Raheem Mostert",
-      "team": "LV",
+      "team": "MIA",
       "games": 11,
       "rush_att": 85,
       "rush_yds": 278,
@@ -1422,7 +1422,7 @@
     {
       "rank": 52,
       "player": "Audric Estime",
-      "team": "NO",
+      "team": "DEN",
       "games": 13,
       "rush_att": 76,
       "rush_yds": 310,
@@ -1797,7 +1797,7 @@
     {
       "rank": 67,
       "player": "Miles Sanders",
-      "team": "DAL",
+      "team": "CAR",
       "games": 11,
       "rush_att": 55,
       "rush_yds": 205,
@@ -2397,7 +2397,7 @@
     {
       "rank": 91,
       "player": "Samaje Perine",
-      "team": "CIN",
+      "team": "KC",
       "games": 10,
       "rush_att": 21,
       "rush_yds": 100,
