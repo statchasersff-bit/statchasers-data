@@ -912,22 +912,63 @@ def main() -> None:
             all_by_season[str(season)][pos] = dataset
 
     # ── rolling multi-season files ────────────────────────────────────────────
+    # Merge the already-built per-season datasets rather than re-aggregating.
+    # This gives one row per player per season (with a `season` field) instead
+    # of a single rolled-up row per player, which is what the frontend expects
+    # when the user selects "Multi-Season".
     print("\nBuilding rolling multi-season data...")
     for pos, slug in pos_slugs:
-        dataset = build_stat_explorer_dataset(
-            pos, pbp, sleeper_players, player_metrics,
-            pfr_pass=pfr_pass, pfr_rush=pfr_rush, pfr_rec=pfr_rec,
-        )
-        if not dataset:
+        combined_rows: list[dict] = []
+        for season in available_seasons:
+            season_data = all_by_season.get(str(season), {}).get(pos, {})
+            for row in season_data.get("rows", []):
+                combined_rows.append({**row, "season": season})
+
+        if not combined_rows:
             print(f"  WARNING: No rolling {pos} data.")
             continue
+
+        # Sort by the same key used in per-season files
+        sort_key = {"QB": "att", "RB": "carries"}.get(pos, "tgt")
+        combined_rows.sort(key=lambda r: r.get(sort_key) or 0, reverse=True)
+
+        # Columns: take column spec from the first available season, prepend season
+        sample_cols: list[dict] = []
+        for s in available_seasons:
+            candidate = all_by_season.get(str(s), {}).get(pos, {}).get("columns", [])
+            if candidate:
+                sample_cols = candidate
+                break
+        season_col = {
+            "key": "season", "label": "SEASON", "type": "number",
+            "group": "core", "defaultVisible": True,
+            "description": "NFL season year", "coverage": 1.0,
+        }
+        columns = [season_col] + sample_cols
+
+        seasons_present = sorted({r["season"] for r in combined_rows})
+        sample_window = (
+            f"{seasons_present[0]}\u2013{seasons_present[-1]}"
+            if len(seasons_present) >= 2 else str(seasons_present[0])
+        )
+
+        dataset = {
+            "position":     pos,
+            "sampleLabel":  "Rolling Multi-Season",
+            "sampleWindow": sample_window,
+            "pipelineYear": PIPELINE_YEAR,
+            "generatedAt":  datetime.now(timezone.utc).isoformat(),
+            "playerCount":  len(combined_rows),
+            "columns":      columns,
+            "rows":         combined_rows,
+        }
 
         filename = f"stat_explorer_{slug}.json"
         out_path = OUTPUT_DIR / filename
         with open(out_path, "w") as fh:
             json.dump(dataset, fh, separators=(",", ":"))
         kb = out_path.stat().st_size / 1024
-        print(f"  Wrote {filename}  ({kb:.1f} KB, {dataset['playerCount']} players)")
+        print(f"  Wrote {filename}  ({kb:.1f} KB, {len(combined_rows)} rows across {seasons_present})")
         all_rolling[pos] = dataset
 
     # ── union file ─────────────────────────────────────────────────────────────
