@@ -847,6 +847,116 @@ def build_stat_explorer_dataset(
 
 
 # ---------------------------------------------------------------------------
+# Multi-season aggregation (one row per player, stats summed across seasons)
+# ---------------------------------------------------------------------------
+
+def _aggregate_rolling_rows(rows: list[dict], pos: str) -> list[dict]:
+    """
+    Collapse per-season rows (each tagged with a 'season' key) into one
+    combined row per player, summing counting stats and recalculating rates.
+    Identity fields (team, position) are taken from the most recent season.
+    """
+    from collections import defaultdict
+
+    SUM_FIELDS: dict[str, list[str]] = {
+        "QB": [
+            "gp", "comp", "att", "yds", "td", "int", "air_yards",
+            "pass_10_plus", "pass_20_plus", "pass_30_plus", "pass_40_plus", "pass_50_plus",
+            "sacks", "rz_att", "rush_att", "rush_yds", "rush_td",
+            "blitzes", "hurries", "knockdowns", "pressures", "poor_throws", "drops",
+        ],
+        "RB": [
+            "gp", "carries", "yds", "td", "explosive_runs", "rz_carries",
+            "broken_tackles", "yds_after_contact", "tgt", "rec", "rec_yds", "rec_td", "rz_tgt",
+        ],
+        "WR": [
+            "gp", "tgt", "rec", "rec_yds", "td", "air_yards", "yac",
+            "explosive_recs", "rz_tgt", "rz_rec", "drops", "broken_tackles",
+        ],
+        "TE": [
+            "gp", "tgt", "rec", "rec_yds", "td", "air_yards", "yac",
+            "explosive_recs", "rz_tgt", "rz_rec", "drops", "broken_tackles",
+        ],
+    }
+    MAX_FIELDS: dict[str, list[str]] = {
+        "QB": [],
+        "RB": ["long"],
+        "WR": ["long"],
+        "TE": ["long"],
+    }
+
+    sum_fields = SUM_FIELDS.get(pos, [])
+    max_fields = MAX_FIELDS.get(pos, [])
+
+    by_player: dict[str, list[dict]] = defaultdict(list)
+    for r in rows:
+        by_player[r["player"]].append(r)
+
+    result: list[dict] = []
+    for player, player_rows in by_player.items():
+        latest = max(player_rows, key=lambda r: r.get("season", 0))
+
+        combined: dict = {
+            "player":   player,
+            "team":     latest.get("team"),
+            "position": latest.get("position"),
+        }
+
+        for f in sum_fields:
+            vals = [r[f] for r in player_rows if r.get(f) is not None]
+            combined[f] = sum(vals) if vals else None
+
+        for f in max_fields:
+            vals = [r[f] for r in player_rows if r.get(f) is not None]
+            combined[f] = max(vals) if vals else None
+
+        if pos == "QB":
+            att  = combined.get("att") or 0
+            comp = combined.get("comp") or 0
+            yds  = combined.get("yds") or 0
+            td   = combined.get("td") or 0
+            int_ = combined.get("int") or 0
+            air  = combined.get("air_yards") or 0
+            combined["pct"]              = round(comp / att * 100, 1) if att else None
+            combined["ypa"]              = round(yds  / att, 2)       if att else None
+            combined["air_yards_per_att"]= round(air  / att, 1)       if att else None
+            if att:
+                a = max(0.0, min(2.375, ((comp / att) - 0.3) * 5))
+                b = max(0.0, min(2.375, ((yds  / att) - 3)   * 0.25))
+                c = max(0.0, min(2.375, (td   / att)          * 20))
+                d = max(0.0, min(2.375, 2.375 - (int_ / att)  * 25))
+                combined["passer_rating"] = round((a + b + c + d) / 6 * 100, 1)
+            else:
+                combined["passer_rating"] = None
+            pt_num = sum((r.get("pocket_time") or 0) * (r.get("att") or 0) for r in player_rows)
+            combined["pocket_time"] = round(pt_num / att, 2) if att else None
+
+        elif pos == "RB":
+            carries  = combined.get("carries") or 0
+            yds      = combined.get("yds") or 0
+            yac      = combined.get("yds_after_contact") or 0
+            rec      = combined.get("rec") or 0
+            rec_yds  = combined.get("rec_yds") or 0
+            combined["ypc"]         = round(yds     / carries, 2) if carries else None
+            combined["yac_per_carry"]= round(yac     / carries, 2) if carries else None
+            combined["ypr"]         = round(rec_yds / rec,     2) if rec     else None
+
+        elif pos in ("WR", "TE"):
+            tgt     = combined.get("tgt") or 0
+            rec     = combined.get("rec") or 0
+            rec_yds = combined.get("rec_yds") or 0
+            air     = combined.get("air_yards") or 0
+            yac     = combined.get("yac") or 0
+            combined["ypr"]        = round(rec_yds / rec, 2) if rec else None
+            combined["air_per_tgt"]= round(air / tgt, 1)    if tgt else None
+            combined["yac_per_rec"]= round(yac / rec, 2)    if rec else None
+
+        result.append(combined)
+
+    return result
+
+
+# ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
 
@@ -925,41 +1035,36 @@ def main() -> None:
             all_by_season[str(season)][pos] = dataset
 
     # ── rolling multi-season files ────────────────────────────────────────────
-    # Merge the already-built per-season datasets rather than re-aggregating.
-    # This gives one row per player per season (with a `season` field) instead
-    # of a single rolled-up row per player, which is what the frontend expects
-    # when the user selects "Multi-Season".
+    # Collect per-season rows then aggregate into ONE row per player (counting
+    # stats summed, rate stats recalculated from the combined totals).
     print("\nBuilding rolling multi-season data...")
     for pos, slug in pos_slugs:
-        combined_rows: list[dict] = []
+        season_rows: list[dict] = []
         for season in available_seasons:
             season_data = all_by_season.get(str(season), {}).get(pos, {})
             for row in season_data.get("rows", []):
-                combined_rows.append({**row, "season": season})
+                season_rows.append({**row, "season": season})
 
-        if not combined_rows:
+        if not season_rows:
             print(f"  WARNING: No rolling {pos} data.")
             continue
 
-        # Sort by the same key used in per-season files
+        # Collapse to one row per player across all seasons
+        combined_rows = _aggregate_rolling_rows(season_rows, pos)
+
+        # Sort by primary volume stat
         sort_key = {"QB": "att", "RB": "carries"}.get(pos, "tgt")
         combined_rows.sort(key=lambda r: r.get(sort_key) or 0, reverse=True)
 
-        # Columns: take column spec from the first available season, prepend season
+        # Columns: use per-season column spec (no season column needed)
         sample_cols: list[dict] = []
         for s in available_seasons:
             candidate = all_by_season.get(str(s), {}).get(pos, {}).get("columns", [])
             if candidate:
                 sample_cols = candidate
                 break
-        season_col = {
-            "key": "season", "label": "SEASON", "type": "number",
-            "group": "core", "defaultVisible": True,
-            "description": "NFL season year", "coverage": 1.0,
-        }
-        columns = [season_col] + sample_cols
 
-        seasons_present = sorted({r["season"] for r in combined_rows})
+        seasons_present = sorted({r["season"] for r in season_rows})
         sample_window = (
             f"{seasons_present[0]}\u2013{seasons_present[-1]}"
             if len(seasons_present) >= 2 else str(seasons_present[0])
@@ -967,12 +1072,12 @@ def main() -> None:
 
         dataset = {
             "position":     pos,
-            "sampleLabel":  "Rolling Multi-Season",
+            "sampleLabel":  "Multi-Season (Combined)",
             "sampleWindow": sample_window,
             "pipelineYear": PIPELINE_YEAR,
             "generatedAt":  datetime.now(timezone.utc).isoformat(),
             "playerCount":  len(combined_rows),
-            "columns":      columns,
+            "columns":      sample_cols,
             "rows":         combined_rows,
         }
 
@@ -981,7 +1086,7 @@ def main() -> None:
         with open(out_path, "w") as fh:
             json.dump(dataset, fh, separators=(",", ":"))
         kb = out_path.stat().st_size / 1024
-        print(f"  Wrote {filename}  ({kb:.1f} KB, {len(combined_rows)} rows across {seasons_present})")
+        print(f"  Wrote {filename}  ({kb:.1f} KB, {len(combined_rows)} players across {seasons_present})")
         all_rolling[pos] = dataset
 
     # ── union file ─────────────────────────────────────────────────────────────

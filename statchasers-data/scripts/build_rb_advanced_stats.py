@@ -414,6 +414,75 @@ def _make_payload(
 
 
 # ---------------------------------------------------------------------------
+# Multi-season aggregation (one row per player, stats summed across seasons)
+# ---------------------------------------------------------------------------
+
+def _aggregate_combined_rb(rows: list[dict]) -> list[dict]:
+    """
+    Collapse per-season RB rows (each tagged with a '_season' key) into one
+    combined row per player: counting stats summed, rates recalculated.
+    team is taken from the most recent season row.
+    """
+    from collections import defaultdict
+
+    SUM_FIELDS = [
+        "games", "rush_att", "rush_yds", "broken_tackles",
+        "tfl", "tfl_yds_lost",
+        "runs_10_plus", "runs_20_plus", "runs_30_plus",
+        "runs_40_plus", "runs_50_plus",
+        "targets", "receptions", "red_zone_targets", "rec_yac",
+    ]
+
+    by_player: dict[str, list[dict]] = defaultdict(list)
+    for r in rows:
+        by_player[r["player"]].append(r)
+
+    result: list[dict] = []
+    for player, player_rows in by_player.items():
+        latest = max(player_rows, key=lambda r: r.get("_season", 0))
+
+        combined: dict = {
+            "player": player,
+            "team":   latest.get("team"),
+        }
+
+        for f in SUM_FIELDS:
+            vals = [r[f] for r in player_rows if r.get(f) is not None]
+            combined[f] = sum(vals) if vals else None
+
+        lng_vals = [r["longest_run"] for r in player_rows if r.get("longest_run") is not None]
+        combined["longest_run"]    = max(lng_vals) if lng_vals else None
+        combined["longest_run_td"] = any(r.get("longest_run_td") for r in player_rows)
+
+        rush_att = combined.get("rush_att") or 0
+        rush_yds = combined.get("rush_yds") or 0
+        if rush_att:
+            combined["yards_per_att"] = round(rush_yds / rush_att, 2)
+            ybc_num = sum(
+                (r.get("yards_before_contact_per_att") or 0) * (r.get("rush_att") or 0)
+                for r in player_rows
+            )
+            yac_num = sum(
+                (r.get("yards_after_contact_per_att") or 0) * (r.get("rush_att") or 0)
+                for r in player_rows
+            )
+            combined["yards_before_contact_per_att"] = round(ybc_num / rush_att, 2)
+            combined["yards_after_contact_per_att"]  = round(yac_num / rush_att, 2)
+        else:
+            combined["yards_per_att"]                = None
+            combined["yards_before_contact_per_att"] = None
+            combined["yards_after_contact_per_att"]  = None
+
+        result.append(combined)
+
+    result.sort(key=lambda r: r.get("rush_att") or 0, reverse=True)
+    for i, r in enumerate(result, 1):
+        r["rank"] = i
+
+    return result
+
+
+# ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
 
@@ -484,26 +553,24 @@ def main() -> None:
             json.dump(payload, f, indent=2)
         print(f"  Wrote {out_path} ({out_path.stat().st_size/1024:.1f} KB)")
 
-        # Collect rows for multi-season file (add season field to each row)
+        # Tag rows with season for aggregation (using private key to avoid
+        # polluting the output columns)
         for r in rows:
-            all_rows_with_season.append({**r, "season": season})
+            all_rows_with_season.append({**r, "_season": season})
 
-    # ── Multi-season file ─────────────────────────────────────────────────────
-    # Sort: newest season first, then by rank within each season
-    all_rows_with_season.sort(
-        key=lambda r: (-r.get("season", 0), r.get("rank", 9999))
-    )
+    # ── Multi-season file (one combined row per player) ────────────────────────
+    combined_rows = _aggregate_combined_rb(all_rows_with_season)
     multi_path = OUTPUT_DIR / "rb_advanced_stats_all.json"
     multi_payload = _make_payload(
-        rows       = all_rows_with_season,
-        columns    = COLUMNS_MULTI,
+        rows       = combined_rows,
+        columns    = COLUMNS_SEASON,
         season     = "all",
         week       = None,
         updated_at = updated_at,
     )
     with open(multi_path, "w") as f:
         json.dump(multi_payload, f, indent=2)
-    print(f"\nWrote {multi_path} ({multi_path.stat().st_size/1024:.1f} KB, {len(all_rows_with_season)} total rows)")
+    print(f"\nWrote {multi_path} ({multi_path.stat().st_size/1024:.1f} KB, {len(combined_rows)} players combined)")
 
     # ── Backward-compat alias: rb_advanced_stats.json → 2025 ─────────────────
     alias_path = OUTPUT_DIR / "rb_advanced_stats.json"
