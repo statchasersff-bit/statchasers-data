@@ -263,16 +263,27 @@ def _build_pfr_abbrev_lookup(pfr_df: pd.DataFrame | None) -> dict[str, str]:
     return {ab: fn for ab, fn in mapping.items() if counts[ab] == 1}
 
 
+_MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
+    "T.Etienne": {"JAX": "Travis Etienne", "CAR": "Trevor Etienne"},
+    "B.Robinson": {"ATL": "Bijan Robinson", "SF": "Brian Robinson", "WAS": "Brian Robinson"},
+}
+
+
 def _resolve_name(
     pbp_name: str,
     full_name_set: set[str],
     combined_lookup: dict[str, str],
+    pbp_team: str = "",
 ) -> str:
     """
     Resolve a PBP abbreviated name to a canonical full name.
-    Priority: direct Sleeper full-name match → combined Sleeper+PFR abbrev lookup.
+    Priority: manual team override → direct Sleeper full-name match → combined Sleeper+PFR abbrev lookup.
     Falls back to the PBP name unchanged (should be rare with PFR supplement).
     """
+    if pbp_name in _MANUAL_TEAM_OVERRIDES and pbp_team:
+        hit = _MANUAL_TEAM_OVERRIDES[pbp_name].get(pbp_team)
+        if hit:
+            return hit
     if pbp_name in full_name_set:
         return pbp_name
     return combined_lookup.get(pbp_name, pbp_name)
@@ -537,7 +548,9 @@ def compute_rushing_raw_stats(pbp: pd.DataFrame) -> pd.DataFrame:
     has_yardline = "yardline_100" in rush.columns
 
     rows = []
-    for name, grp in rush.groupby("rusher_player_name"):
+    # Group by (name, team) so players who share an abbreviated name but play
+    # for different teams (e.g. B.Robinson on ATL vs SF) get separate rows.
+    for (name, team_pbp), grp in rush.groupby(["rusher_player_name", "posteam"]):
         carries = len(grp)
         yds     = int(grp["yards_gained"].sum())
         td      = int(grp["touchdown"].sum())
@@ -545,11 +558,10 @@ def compute_rushing_raw_stats(pbp: pd.DataFrame) -> pd.DataFrame:
         long_r  = int(grp["yards_gained"].max())
         expl    = int((grp["yards_gained"] >= 15).sum())
         rz_car  = int((grp["yardline_100"] <= 20).sum()) if has_yardline else None
-        team    = str(grp["posteam"].iloc[-1]) if "posteam" in grp.columns else ""
 
         rows.append({
             "player_name": name,
-            "team_pbp":    team,
+            "team_pbp":    str(team_pbp),
             "gp":          gp,
             "carries":     carries,
             "yds":         yds,
@@ -579,7 +591,9 @@ def compute_receiving_raw_stats(pbp: pd.DataFrame) -> pd.DataFrame:
     has_yac      = "yards_after_catch" in pass_plays.columns
 
     rows = []
-    for name, grp in pass_plays.groupby("receiver_player_name"):
+    # Group by (name, team) so players who share an abbreviated name but play
+    # for different teams get separate rows.
+    for (name, team_pbp), grp in pass_plays.groupby(["receiver_player_name", "posteam"]):
         tgt     = len(grp)
         rec     = int(grp["complete_pass"].sum())
         rec_yds = int(grp["yards_gained"].sum())
@@ -592,11 +606,10 @@ def compute_receiving_raw_stats(pbp: pd.DataFrame) -> pd.DataFrame:
         rz_tgt  = int((grp["yardline_100"] <= 20).sum()) if has_yardline else None
         rz_rec  = int((grp.loc[grp["complete_pass"] == 1, "yardline_100"] <= 20).sum()) if has_yardline else None
         yac     = round(float(grp["yards_after_catch"].dropna().sum()), 1) if has_yac else None
-        team    = str(grp["posteam"].iloc[-1]) if "posteam" in grp.columns else ""
 
         rows.append({
             "player_name":  name,
-            "team_pbp":     team,
+            "team_pbp":     str(team_pbp),
             "gp":           gp,
             "tgt":          tgt,
             "rec":          rec,
@@ -784,7 +797,7 @@ def build_stat_explorer_dataset(
     rows: list[dict] = []
     for _, raw in raw_df.iterrows():
         pbp_name = raw["player_name"]
-        full_name = _resolve_name(pbp_name, full_name_set, combined_lookup)
+        full_name = _resolve_name(pbp_name, full_name_set, combined_lookup, raw.get("team_pbp", ""))
 
         info  = metrics_by_player.get(full_name, {})
         pos   = info.get("pos", position)

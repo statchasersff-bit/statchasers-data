@@ -46,6 +46,9 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     # Travis Etienne plays JAX in 2025 PBP; Sleeper still lists him as NO.
     # Both Etienne players are RBs so pos_hint cannot distinguish them.
     "T.Etienne": {"JAX": "Travis Etienne", "CAR": "Trevor Etienne"},
+    # Brian Robinson moved to SF; Sleeper still lists him as None (was WAS).
+    # Both Robinson players are RBs so pos_hint cannot distinguish them.
+    "B.Robinson": {"ATL": "Bijan Robinson", "SF": "Brian Robinson", "WAS": "Brian Robinson"},
 }
 
 # Minimum 2025-season games before applying narrative labels
@@ -655,7 +658,9 @@ def compute_receiving_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
 
     rec_plays = targets[targets["receiver_player_name"].notna()].copy()
 
-    grouped = rec_plays.groupby("receiver_player_name").agg(
+    # Group by (name, team) so players who share an abbreviated name but play
+    # for different teams (e.g. B.Robinson on ATL vs SF) get separate rows.
+    grouped = rec_plays.groupby(["receiver_player_name", "posteam"]).agg(
         attempts=("pass_attempt", "sum"),
         completions=("complete_pass", "sum"),
         total_epa=("epa", "sum"),
@@ -670,9 +675,8 @@ def compute_receiving_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
         yac_total=("yards_after_catch", lambda x: x.dropna().sum()),
     ).reset_index()
 
-    grouped.rename(columns={"receiver_player_name": "player_name"}, inplace=True)
+    grouped.rename(columns={"receiver_player_name": "player_name", "posteam": "team"}, inplace=True)
     grouped["pos"] = "WR"
-    grouped["team"] = rec_plays.groupby("receiver_player_name")["posteam"].last().values
 
     grouped = grouped.merge(
         team_air_yards.reset_index(), left_on="team", right_on="posteam", how="left"
@@ -698,7 +702,9 @@ def compute_rushing_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
     else:
         rush_plays["goal_line_carry"] = 0
 
-    grouped = rush_plays.groupby("rusher_player_name").agg(
+    # Group by (name, team) so players who share an abbreviated name but play
+    # for different teams (e.g. B.Robinson on ATL vs SF) get separate rows.
+    grouped = rush_plays.groupby(["rusher_player_name", "posteam"]).agg(
         attempts=("rush_attempt", "sum"),
         total_epa=("epa", "sum"),
         successful_plays=("success", "sum"),
@@ -711,9 +717,8 @@ def compute_rushing_metrics(pbp: pd.DataFrame) -> pd.DataFrame:
         yards_gained_total=("yards_gained", "sum"),
     ).reset_index()
 
-    grouped.rename(columns={"rusher_player_name": "player_name"}, inplace=True)
+    grouped.rename(columns={"rusher_player_name": "player_name", "posteam": "team"}, inplace=True)
     grouped["pos"] = "RB"
-    grouped["team"] = rush_plays.groupby("rusher_player_name")["posteam"].last().values
     return grouped
 
 

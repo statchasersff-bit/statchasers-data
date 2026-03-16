@@ -127,6 +127,12 @@ def _build_pfr_abbrev_lookup(pfr_df: pd.DataFrame) -> dict[str, str]:
     return {ab: fn for ab, fn in mapping.items() if counts[ab] == 1}
 
 
+_MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
+    "T.Etienne": {"JAX": "Travis Etienne", "CAR": "Trevor Etienne"},
+    "B.Robinson": {"ATL": "Bijan Robinson", "SF": "Brian Robinson", "WAS": "Brian Robinson"},
+}
+
+
 def _resolve_with_team(
     pbp_name: str,
     pbp_team: str,
@@ -137,6 +143,10 @@ def _resolve_with_team(
     sleeper_pos: dict[str, str],
     pos_hint: str = "RB",
 ) -> str:
+    if pbp_name in _MANUAL_TEAM_OVERRIDES and pbp_team:
+        hit = _MANUAL_TEAM_OVERRIDES[pbp_name].get(pbp_team)
+        if hit:
+            return hit
     if pbp_name in full_name_set:
         return pbp_name
     if pbp_name in unambiguous_lookup:

@@ -53,6 +53,7 @@ MIN_CARRIES          = 15   # minimum to appear in output
 # Sleeper's team field is stale relative to the 2025 PBP season.
 _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "T.Etienne": {"JAX": "Travis Etienne", "CAR": "Trevor Etienne"},
+    "B.Robinson": {"ATL": "Bijan Robinson", "SF": "Brian Robinson", "WAS": "Brian Robinson"},
 }
 MIN_CARRIES_PCT_POOL = 25   # minimum to enter the percentile pool for runner_score
 

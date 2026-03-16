@@ -63,6 +63,7 @@ MIN_GAMES    = 3
 # Sleeper's team field is stale relative to the 2025 PBP season.
 _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "T.Etienne": {"JAX": "Travis Etienne", "CAR": "Trevor Etienne"},
+    "B.Robinson": {"ATL": "Bijan Robinson", "SF": "Brian Robinson", "WAS": "Brian Robinson"},
 }
 MIN_TOUCHES  = 15     # rush_att + receptions, season total
 
