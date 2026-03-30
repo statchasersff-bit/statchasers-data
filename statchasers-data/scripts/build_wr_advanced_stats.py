@@ -154,6 +154,14 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
         "NE":  "Kyle Williams",
         "CIN": "Ke'Shawn Williams",
     },
+    # R.White: TB/WAS = Rachaad White (RB → excluded by pos filter);
+    # SEA = Ricky White (WR). Reggie White + Roddy White are retired,
+    # both team=None — they would win the tiebreak over the active RB.
+    "R.White": {
+        "TB":  "Rachaad White",
+        "WAS": "Rachaad White",
+        "SEA": "Ricky White",
+    },
 }
 
 
