@@ -65,6 +65,9 @@ jobs:
       - name: Build RB usage and role output
         run: python scripts/build_rb_usage_role.py
 
+      - name: Build WR advanced stats output
+        run: python scripts/build_wr_advanced_stats.py
+
       - name: Commit and push updated JSON
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -83,6 +86,11 @@ jobs:
           git add output/rb_player_overview.json
           git add output/rb_efficiency_analytics.json
           git add output/rb_usage_role.json
+          git add output/wr_advanced_stats.json
+          git add output/wr_advanced_stats_2023.json
+          git add output/wr_advanced_stats_2024.json
+          git add output/wr_advanced_stats_2025.json
+          git add output/wr_advanced_stats_all.json
           git add data/raw/sleeper_players.json
 
           # Only commit if there are actual changes

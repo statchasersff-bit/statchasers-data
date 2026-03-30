@@ -1,0 +1,186 @@
+Build the WR Advanced Stats dataset and API output for the WR table.
+
+Goal
+
+Create a WR advanced stats table dataset with these exact columns and labels, in this exact order:
+
+Identity
+rank
+player
+team
+g
+Receiving
+rec
+yds
+ypr
+ybc
+ybc_per_rec
+yac
+yac_per_rec
+brktkl
+Targets
+tgt
+target_share
+rz_tgt
+Explosive Plays
+rec_10_plus
+rec_20_plus
+rec_30_plus
+rec_40_plus
+rec_50_plus
+lng
+Position filter
+
+Only include WRs.
+
+Source expectations
+
+Use the existing receiving/player pipeline data already available for WRs. If multiple sources are needed, merge them by player id / canonical player key.
+
+Required output format
+
+Create a JSON file named:
+
+wr_advanced_stats.json
+
+Also optionally season-specific versions if our pipeline already supports it:
+
+wr_advanced_stats_2023.json
+wr_advanced_stats_2024.json
+wr_advanced_stats_2025.json
+wr_advanced_stats_all.json
+JSON structure
+
+Use this structure:
+
+{
+  "meta": {
+    "position": "WR",
+    "table": "advanced_stats",
+    "season": "2025",
+    "generated_at": "ISO_TIMESTAMP",
+    "columns": [
+      "rank",
+      "player",
+      "team",
+      "g",
+      "rec",
+      "yds",
+      "ypr",
+      "ybc",
+      "ybc_per_rec",
+      "yac",
+      "yac_per_rec",
+      "brktkl",
+      "tgt",
+      "target_share",
+      "rz_tgt",
+      "rec_10_plus",
+      "rec_20_plus",
+      "rec_30_plus",
+      "rec_40_plus",
+      "rec_50_plus",
+      "lng"
+    ]
+  },
+  "players": []
+}
+Field definitions
+
+Use these exact calculation rules:
+
+rank: ordinal rank after sorting default table order
+player: player display name
+team: current/primary team abbreviation
+g: games played
+Receiving
+rec: receptions
+yds: receiving yards
+ypr: receiving yards / receptions
+ybc: yards before catch
+ybc_per_rec: yards before catch / receptions
+yac: yards after catch
+yac_per_rec: yards after catch / receptions
+brktkl: broken tackles on receptions, or best available broken tackle receiving stat from source
+Targets
+tgt: total targets
+target_share: player targets / team total pass targets while active for the season
+return as decimal in backend, for example 0.247
+frontend will render as percent
+rz_tgt: red-zone targets
+Explosive Plays
+rec_10_plus: receptions gaining 10 or more yards
+rec_20_plus: receptions gaining 20 or more yards
+rec_30_plus: receptions gaining 30 or more yards
+rec_40_plus: receptions gaining 40 or more yards
+rec_50_plus: receptions gaining 50 or more yards
+lng: longest reception
+Data quality rules
+Use 0 for counting stats when confirmed none
+Use null only when the stat truly is unavailable
+Guard all rate stats against divide-by-zero
+If rec = 0, then ypr, ybc_per_rec, and yac_per_rec should be null
+target_share should be null only if team target denominator is unavailable
+Round displayed-ready decimals in backend to 1 decimal for yardage rates:
+ypr
+ybc_per_rec
+yac_per_rec
+Keep raw decimals reasonable:
+target_share: 4 decimals
+Count stats should be integers
+Default sorting
+
+Default sort should be:
+
+yds descending
+rec descending
+tgt descending
+
+Then assign rank from that sorted order.
+
+Canonical field map
+
+Please expose rows with these exact keys:
+
+type WrAdvancedStatsRow = {
+  rank: number
+  player: string
+  team: string
+  g: number
+
+  rec: number
+  yds: number
+  ypr: number | null
+  ybc: number | null
+  ybc_per_rec: number | null
+  yac: number | null
+  yac_per_rec: number | null
+  brktkl: number | null
+
+  tgt: number
+  target_share: number | null
+  rz_tgt: number | null
+
+  rec_10_plus: number | null
+  rec_20_plus: number | null
+  rec_30_plus: number | null
+  rec_40_plus: number | null
+  rec_50_plus: number | null
+  lng: number | null
+}
+File publishing
+
+Publish the output into the same output folder pattern as the other position tables so the frontend can fetch it from CDN the same way as QB and RB tables.
+
+Validation
+
+Add validation checks before writing output:
+
+only WR players included
+no duplicate players by canonical id
+all required keys present
+columns in meta match exact frontend order
+sort/rank applied correctly
+Nice-to-have
+
+If there are source stat naming inconsistencies, normalize them internally but keep the final output keys exactly as listed above.
