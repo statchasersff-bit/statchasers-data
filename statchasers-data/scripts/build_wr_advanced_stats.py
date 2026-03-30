@@ -162,6 +162,14 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
         "WAS": "Rachaad White",
         "SEA": "Ricky White",
     },
+    # J.Smith: all 8 Sleeper J.Smith players have team=None — only one
+    # survives the dict and Jeret Smith (WR) was winning the tiebreak.
+    # ATL/MIA/PIT are all Jonnu Smith (TE → excluded by pos filter).
+    "J.Smith": {
+        "ATL": "Jonnu Smith",
+        "MIA": "Jonnu Smith",
+        "PIT": "Jonnu Smith",
+    },
 }
 
 
