@@ -316,6 +316,7 @@ def main() -> None:
 
     print("Loading play-by-play data...")
     pbp_full = pd.read_parquet(PBP_PATH)
+    pbp_full = pbp_full[pbp_full["season_type"] == "REG"].copy()  # regular season only
     if "season" in pbp_full.columns:
         pbp = pbp_full[pbp_full["season"].isin(TREND_SEASONS)].copy()
     else:

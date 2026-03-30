@@ -975,6 +975,7 @@ def main() -> None:
 
     print("Loading PBP data...")
     pbp = pd.read_parquet(PBP_PATH)
+    pbp = pbp[pbp["season_type"] == "REG"].copy()  # regular season only
 
     print("Loading Sleeper players...")
     with open(SLEEPER_PATH) as f:

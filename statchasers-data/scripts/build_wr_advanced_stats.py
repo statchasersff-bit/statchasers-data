@@ -117,10 +117,43 @@ def _build_pfr_abbrev_lookup(pfr_df: pd.DataFrame) -> dict[str, str]:
 
 # WR-specific manual overrides for players whose abbreviation is ambiguous
 # and whose team in the PBP is the clearest disambiguator.
+#
+# Root cause: when multiple Sleeper players share team=None the dict collapses
+# to one entry and tiebreak logic picks the wrong player.  Overrides here are
+# authoritative — PBP posteam is the source of truth.
 _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
+    # ── Cross-position guards (RB abbreviations that appear in pass plays) ───
     "T.Etienne": {"JAX": "Travis Etienne", "CAR": "Trevor Etienne"},
     "B.Robinson": {"ATL": "Bijan Robinson", "SF": "Brian Robinson", "WAS": "Brian Robinson"},
     "J.Williams": {"DEN": "Javonte Williams", "NO": "Jamaal Williams"},
+    # ── WR / name-collision fixes ────────────────────────────────────────────
+    # D.Moore: CHI/BUF = DJ Moore; CAR/TB = David Moore; Denarius Moore retired
+    "D.Moore": {
+        "CHI": "DJ Moore",
+        "BUF": "DJ Moore",
+        "CAR": "David Moore",
+        "TB":  "David Moore",
+    },
+    # K.Allen: Keenan Allen (LAC 2023, CHI 2024, LAC 2025) wins over
+    # Kazmeir Allen (team=None) and Kaytron Allen (RB, team=None)
+    "K.Allen": {
+        "LAC": "Keenan Allen",
+        "CHI": "Keenan Allen",
+    },
+    # D.Montgomery: DET/HOU = David Montgomery (RB → excluded by pos filter);
+    # IND = D.J. Montgomery (WR, ~8 tgt — below threshold anyway)
+    "D.Montgomery": {
+        "DET": "David Montgomery",
+        "HOU": "David Montgomery",
+        "IND": "D.J. Montgomery",
+    },
+    # K.Williams: LA = Kyren Williams (RB → excluded by pos filter);
+    # NE = Kyle Williams (WR); CIN = Ke'Shawn Williams (WR)
+    "K.Williams": {
+        "LA":  "Kyren Williams",
+        "NE":  "Kyle Williams",
+        "CIN": "Ke'Shawn Williams",
+    },
 }
 
 
@@ -466,6 +499,7 @@ def main() -> None:
 
     print("Loading play-by-play data (all seasons)...")
     pbp_full = pd.read_parquet(PBP_PATH)
+    pbp_full = pbp_full[pbp_full["season_type"] == "REG"].copy()  # regular season only
 
     print("Loading PFR receiving advanced stats...")
     pfr = pd.read_parquet(PFR_PATH)

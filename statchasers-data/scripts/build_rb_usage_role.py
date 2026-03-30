@@ -226,7 +226,7 @@ def _window_split(game_rows: list[dict], season_avgs: dict[str, float]):
 def build(pbp_path: Path, sleeper_path: Path) -> list[dict]:
     print("Loading play-by-play data...")
     pbp = pd.read_parquet(pbp_path)
-    pbp25 = pbp[pbp["season"] == SEASON].copy()
+    pbp25 = pbp[(pbp["season"] == SEASON) & (pbp["season_type"] == "REG")].copy()  # regular season only
     print(f"  {len(pbp25):,} plays for {SEASON}.")
 
     print("Loading Sleeper players...")

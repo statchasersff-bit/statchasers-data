@@ -96,17 +96,17 @@
       "priorWindowGames": 10
     },
     {
-      "player": "Bo Nix",
-      "team": "DEN",
-      "age": 26,
-      "games": 18,
-      "dropbacksPerGame": 38.1,
-      "deltaDropbacksPerGame": 2.5,
-      "rushAttPerGame": 5.3,
-      "deltaRushAttPerGame": 3.8,
-      "rushTd": 5,
+      "player": "Mac Jones",
+      "team": "SF",
+      "age": 27,
+      "games": 8,
+      "dropbacksPerGame": 38.4,
+      "deltaDropbacksPerGame": -12.8,
+      "rushAttPerGame": 4.5,
+      "deltaRushAttPerGame": -1.0,
+      "rushTd": 0,
       "recentWindowGames": 4,
-      "priorWindowGames": 14
+      "priorWindowGames": 4
     },
     {
       "player": "Carson Wentz",
@@ -120,6 +120,19 @@
       "rushTd": 0,
       "recentWindowGames": null,
       "priorWindowGames": null
+    },
+    {
+      "player": "Bo Nix",
+      "team": "DEN",
+      "age": 26,
+      "games": 17,
+      "dropbacksPerGame": 37.6,
+      "deltaDropbacksPerGame": -0.8,
+      "rushAttPerGame": 4.9,
+      "deltaRushAttPerGame": 2.8,
+      "rushTd": 5,
+      "recentWindowGames": 4,
+      "priorWindowGames": 13
     },
     {
       "player": "Dak Prescott",
@@ -138,14 +151,14 @@
       "player": "Matthew Stafford",
       "team": "LA",
       "age": 38,
-      "games": 20,
-      "dropbacksPerGame": 37.2,
-      "deltaDropbacksPerGame": 5.3,
+      "games": 17,
+      "dropbacksPerGame": 36.5,
+      "deltaDropbacksPerGame": 8.2,
       "rushAttPerGame": 1.7,
-      "deltaRushAttPerGame": -0.2,
+      "deltaRushAttPerGame": -0.9,
       "rushTd": 0,
       "recentWindowGames": 4,
-      "priorWindowGames": 16
+      "priorWindowGames": 13
     },
     {
       "player": "Joe Flacco",
@@ -161,19 +174,6 @@
       "priorWindowGames": 8
     },
     {
-      "player": "Caleb Williams",
-      "team": "CHI",
-      "age": 24,
-      "games": 19,
-      "dropbacksPerGame": 36.2,
-      "deltaDropbacksPerGame": 7.6,
-      "rushAttPerGame": 4.5,
-      "deltaRushAttPerGame": -1.0,
-      "rushTd": 3,
-      "recentWindowGames": 4,
-      "priorWindowGames": 15
-    },
-    {
       "player": "Jared Goff",
       "team": "DET",
       "age": 31,
@@ -187,17 +187,30 @@
       "priorWindowGames": 13
     },
     {
+      "player": "Trevor Lawrence",
+      "team": "JAX",
+      "age": 26,
+      "games": 17,
+      "dropbacksPerGame": 35.5,
+      "deltaDropbacksPerGame": 0.7,
+      "rushAttPerGame": 4.9,
+      "deltaRushAttPerGame": 0.5,
+      "rushTd": 9,
+      "recentWindowGames": 4,
+      "priorWindowGames": 13
+    },
+    {
       "player": "Justin Herbert",
       "team": "LAC",
       "age": 28,
-      "games": 17,
-      "dropbacksPerGame": 35.5,
-      "deltaDropbacksPerGame": -1.9,
-      "rushAttPerGame": 5.5,
-      "deltaRushAttPerGame": 1.3,
+      "games": 16,
+      "dropbacksPerGame": 35.4,
+      "deltaDropbacksPerGame": -3.2,
+      "rushAttPerGame": 5.2,
+      "deltaRushAttPerGame": 1.7,
       "rushTd": 2,
       "recentWindowGames": 4,
-      "priorWindowGames": 13
+      "priorWindowGames": 12
     },
     {
       "player": "Kyler Murray",
@@ -213,17 +226,17 @@
       "priorWindowGames": null
     },
     {
-      "player": "Trevor Lawrence",
-      "team": "JAX",
-      "age": 26,
-      "games": 18,
-      "dropbacksPerGame": 35.2,
-      "deltaDropbacksPerGame": 0.7,
-      "rushAttPerGame": 4.9,
-      "deltaRushAttPerGame": 0.7,
-      "rushTd": 9,
+      "player": "Caleb Williams",
+      "team": "CHI",
+      "age": 24,
+      "games": 17,
+      "dropbacksPerGame": 35.1,
+      "deltaDropbacksPerGame": 0.6,
+      "rushAttPerGame": 4.5,
+      "deltaRushAttPerGame": -2.0,
+      "rushTd": 3,
       "recentWindowGames": 4,
-      "priorWindowGames": 14
+      "priorWindowGames": 13
     },
     {
       "player": "Cam Ward",
@@ -265,19 +278,6 @@
       "priorWindowGames": null
     },
     {
-      "player": "Mac Jones",
-      "team": "SF",
-      "age": 27,
-      "games": 9,
-      "dropbacksPerGame": 34.6,
-      "deltaDropbacksPerGame": -15.0,
-      "rushAttPerGame": 4.1,
-      "deltaRushAttPerGame": -2.2,
-      "rushTd": 0,
-      "recentWindowGames": 4,
-      "priorWindowGames": 5
-    },
-    {
       "player": "Baker Mayfield",
       "team": "TB",
       "age": 30,
@@ -289,19 +289,6 @@
       "rushTd": 1,
       "recentWindowGames": 4,
       "priorWindowGames": 13
-    },
-    {
-      "player": "Jarrett Stidham",
-      "team": "DEN",
-      "age": 29,
-      "games": 1,
-      "dropbacksPerGame": 34.0,
-      "deltaDropbacksPerGame": null,
-      "rushAttPerGame": 5.0,
-      "deltaRushAttPerGame": null,
-      "rushTd": 0,
-      "recentWindowGames": null,
-      "priorWindowGames": null
     },
     {
       "player": "Geno Smith",
@@ -317,43 +304,30 @@
       "priorWindowGames": 11
     },
     {
-      "player": "C.J. Stroud",
-      "team": "HOU",
-      "age": 24,
-      "games": 16,
-      "dropbacksPerGame": 33.4,
-      "deltaDropbacksPerGame": 0.8,
-      "rushAttPerGame": 3.2,
-      "deltaRushAttPerGame": -1.2,
-      "rushTd": 2,
-      "recentWindowGames": 4,
-      "priorWindowGames": 12
-    },
-    {
       "player": "Aaron Rodgers",
       "team": "PIT",
       "age": 42,
-      "games": 17,
-      "dropbacksPerGame": 33.3,
-      "deltaDropbacksPerGame": 12.0,
-      "rushAttPerGame": 1.2,
-      "deltaRushAttPerGame": -0.3,
+      "games": 16,
+      "dropbacksPerGame": 33.1,
+      "deltaDropbacksPerGame": 10.2,
+      "rushAttPerGame": 1.3,
+      "deltaRushAttPerGame": -0.4,
       "rushTd": 1,
       "recentWindowGames": 4,
-      "priorWindowGames": 13
+      "priorWindowGames": 12
     },
     {
       "player": "Brock Purdy",
       "team": "SF",
       "age": 26,
-      "games": 11,
-      "dropbacksPerGame": 32.6,
-      "deltaDropbacksPerGame": -2.2,
-      "rushAttPerGame": 4.3,
-      "deltaRushAttPerGame": 1.9,
+      "games": 9,
+      "dropbacksPerGame": 33.1,
+      "deltaDropbacksPerGame": -0.6,
+      "rushAttPerGame": 3.7,
+      "deltaRushAttPerGame": 1.0,
       "rushTd": 3,
       "recentWindowGames": 4,
-      "priorWindowGames": 7
+      "priorWindowGames": 5
     },
     {
       "player": "Tyler Shough",
@@ -367,45 +341,6 @@
       "rushTd": 3,
       "recentWindowGames": 4,
       "priorWindowGames": 7
-    },
-    {
-      "player": "Drake Maye",
-      "team": "NE",
-      "age": 23,
-      "games": 21,
-      "dropbacksPerGame": 32.5,
-      "deltaDropbacksPerGame": 3.7,
-      "rushAttPerGame": 6.3,
-      "deltaRushAttPerGame": 1.1,
-      "rushTd": 5,
-      "recentWindowGames": 4,
-      "priorWindowGames": 17
-    },
-    {
-      "player": "Josh Allen",
-      "team": "BUF",
-      "age": 29,
-      "games": 18,
-      "dropbacksPerGame": 32.5,
-      "deltaDropbacksPerGame": 3.2,
-      "rushAttPerGame": 7.5,
-      "deltaRushAttPerGame": 2.2,
-      "rushTd": 16,
-      "recentWindowGames": 4,
-      "priorWindowGames": 14
-    },
-    {
-      "player": "Bryce Young",
-      "team": "CAR",
-      "age": 24,
-      "games": 17,
-      "dropbacksPerGame": 32.4,
-      "deltaDropbacksPerGame": 2.5,
-      "rushAttPerGame": 3.4,
-      "deltaRushAttPerGame": 1.5,
-      "rushTd": 3,
-      "recentWindowGames": 4,
-      "priorWindowGames": 13
     },
     {
       "player": "Philip Rivers",
@@ -434,15 +369,54 @@
       "priorWindowGames": 5
     },
     {
-      "player": "Jordan Love",
-      "team": "GB",
-      "age": 27,
+      "player": "C.J. Stroud",
+      "team": "HOU",
+      "age": 24,
+      "games": 14,
+      "dropbacksPerGame": 32.1,
+      "deltaDropbacksPerGame": -4.3,
+      "rushAttPerGame": 3.4,
+      "deltaRushAttPerGame": 0.8,
+      "rushTd": 2,
+      "recentWindowGames": 4,
+      "priorWindowGames": 10
+    },
+    {
+      "player": "Bryce Young",
+      "team": "CAR",
+      "age": 24,
       "games": 16,
       "dropbacksPerGame": 31.8,
-      "deltaDropbacksPerGame": 0.6,
-      "rushAttPerGame": 3.0,
-      "deltaRushAttPerGame": -1.7,
-      "rushTd": 0,
+      "deltaDropbacksPerGame": -2.3,
+      "rushAttPerGame": 3.4,
+      "deltaRushAttPerGame": 2.8,
+      "rushTd": 2,
+      "recentWindowGames": 4,
+      "priorWindowGames": 12
+    },
+    {
+      "player": "Drake Maye",
+      "team": "NE",
+      "age": 23,
+      "games": 17,
+      "dropbacksPerGame": 31.8,
+      "deltaDropbacksPerGame": -4.3,
+      "rushAttPerGame": 6.1,
+      "deltaRushAttPerGame": -0.8,
+      "rushTd": 4,
+      "recentWindowGames": 4,
+      "priorWindowGames": 13
+    },
+    {
+      "player": "Josh Allen",
+      "team": "BUF",
+      "age": 29,
+      "games": 16,
+      "dropbacksPerGame": 31.7,
+      "deltaDropbacksPerGame": -0.9,
+      "rushAttPerGame": 7.0,
+      "deltaRushAttPerGame": 2.0,
+      "rushTd": 14,
       "recentWindowGames": 4,
       "priorWindowGames": 12
     },
@@ -486,17 +460,17 @@
       "priorWindowGames": null
     },
     {
-      "player": "Jalen Hurts",
-      "team": "PHI",
+      "player": "Jordan Love",
+      "team": "GB",
       "age": 27,
-      "games": 17,
+      "games": 15,
       "dropbacksPerGame": 30.8,
-      "deltaDropbacksPerGame": -3.7,
-      "rushAttPerGame": 6.5,
-      "deltaRushAttPerGame": -1.3,
-      "rushTd": 8,
+      "deltaDropbacksPerGame": -3.8,
+      "rushAttPerGame": 3.1,
+      "deltaRushAttPerGame": -0.5,
+      "rushTd": 0,
       "recentWindowGames": 4,
-      "priorWindowGames": 13
+      "priorWindowGames": 11
     },
     {
       "player": "Spencer Rattler",
@@ -512,17 +486,30 @@
       "priorWindowGames": 5
     },
     {
+      "player": "Jalen Hurts",
+      "team": "PHI",
+      "age": 27,
+      "games": 16,
+      "dropbacksPerGame": 30.5,
+      "deltaDropbacksPerGame": -1.7,
+      "rushAttPerGame": 6.6,
+      "deltaRushAttPerGame": -1.8,
+      "rushTd": 8,
+      "recentWindowGames": 4,
+      "priorWindowGames": 12
+    },
+    {
       "player": "Sam Darnold",
       "team": "SEA",
       "age": 28,
-      "games": 20,
-      "dropbacksPerGame": 30.1,
-      "deltaDropbacksPerGame": 1.4,
-      "rushAttPerGame": 2.0,
-      "deltaRushAttPerGame": 0.9,
+      "games": 17,
+      "dropbacksPerGame": 29.8,
+      "deltaDropbacksPerGame": 5.2,
+      "rushAttPerGame": 2.1,
+      "deltaRushAttPerGame": 2.5,
       "rushTd": 0,
       "recentWindowGames": 4,
-      "priorWindowGames": 16
+      "priorWindowGames": 13
     },
     {
       "player": "Tua Tagovailoa",
@@ -876,6 +863,19 @@
       "priorWindowGames": null
     },
     {
+      "player": "Mason Rudolph",
+      "team": "PIT",
+      "age": 30,
+      "games": 4,
+      "dropbacksPerGame": 13.5,
+      "deltaDropbacksPerGame": null,
+      "rushAttPerGame": 1.8,
+      "deltaRushAttPerGame": null,
+      "rushTd": 0,
+      "recentWindowGames": null,
+      "priorWindowGames": null
+    },
+    {
       "player": "Mitchell Trubisky",
       "team": "BUF",
       "age": 31,
@@ -883,19 +883,6 @@
       "dropbacksPerGame": 12.3,
       "deltaDropbacksPerGame": null,
       "rushAttPerGame": 3.0,
-      "deltaRushAttPerGame": null,
-      "rushTd": 0,
-      "recentWindowGames": null,
-      "priorWindowGames": null
-    },
-    {
-      "player": "Mason Rudolph",
-      "team": "PIT",
-      "age": 30,
-      "games": 5,
-      "dropbacksPerGame": 11.0,
-      "deltaDropbacksPerGame": null,
-      "rushAttPerGame": 1.4,
       "deltaRushAttPerGame": null,
       "rushTd": 0,
       "recentWindowGames": null,

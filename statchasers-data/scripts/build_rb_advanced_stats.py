@@ -495,6 +495,7 @@ def main() -> None:
 
     print("Loading play-by-play data (all seasons)...")
     pbp_full = pd.read_parquet(PBP_PATH)
+    pbp_full = pbp_full[pbp_full["season_type"] == "REG"].copy()  # regular season only
 
     print("Loading PFR rush advanced stats...")
     pfr = pd.read_parquet(PFR_PATH)
