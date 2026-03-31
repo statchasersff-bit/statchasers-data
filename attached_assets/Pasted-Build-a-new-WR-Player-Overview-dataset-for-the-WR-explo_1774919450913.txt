@@ -1,0 +1,154 @@
+Build a new WR Player Overview dataset for the WR explorer.
+
+Goal
+
+Create a JSON output for the WR Player Overview tab with pipeline-computed fields for role, opportunity, efficiency, stability, career context, and composite scores.
+
+Output files
+
+Create:
+
+wr_player_overview.json
+wr_player_overview_2023.json
+wr_player_overview_2024.json
+wr_player_overview_2025.json
+wr_player_overview_all.json
+
+Store them in the same output folder pattern as the QB and RB datasets.
+
+Position filter
+
+Only include WR players.
+
+Required JSON structure
+{
+  "meta": {
+    "position": "WR",
+    "table": "player_overview",
+    "season": "2025",
+    "generated_at": "ISO_TIMESTAMP",
+    "columns": [
+      "player",
+      "team",
+      "age",
+      "games",
+      "snap_pct",
+      "routes_per_gm",
+      "targets_per_gm",
+      "receptions_per_gm",
+      "air_yards_per_gm",
+      "target_share_pct",
+      "air_yards_share_pct",
+      "wopr",
+      "rz_tgt",
+      "catch_rate",
+      "yards_per_route_run",
+      "yards_per_target",
+      "yac_per_rec",
+      "fpoe",
+      "stability",
+      "volatility",
+      "career_arc",
+      "exp_tier",
+      "opp_score",
+      "usage_score",
+      "player_score"
+    ]
+  },
+  "players": []
+}
+Required row shape
+type WrPlayerOverviewRow = {
+  player: string
+  team: string
+  age: number | null
+  games: number
+
+  snap_pct: number | null
+
+  routes_per_gm: number | null
+  targets_per_gm: number | null
+  receptions_per_gm: number | null
+  air_yards_per_gm: number | null
+
+  target_share_pct: number | null
+  air_yards_share_pct: number | null
+  wopr: number | null
+  rz_tgt: number | null
+
+  catch_rate: number | null
+  yards_per_route_run: number | null
+  yards_per_target: number | null
+  yac_per_rec: number | null
+  fpoe: number | null
+
+  stability: number | null
+  volatility: number | null
+
+  career_arc: string | null
+  exp_tier: string | null
+
+  opp_score: number | null
+  usage_score: number | null
+  player_score: number | null
+}
+Field definitions
+Identity
+player: player display name
+team: current/primary team abbreviation
+age: current age
+games: games played in sample window
+snap_pct: offensive snap share percentage
+Role & Usage
+routes_per_gm: routes run per game
+targets_per_gm: targets per game
+receptions_per_gm: receptions per game
+air_yards_per_gm: air yards per game
+Opportunity
+target_share_pct: target share percentage
+air_yards_share_pct: air yards share percentage
+wopr: weighted opportunity rating for WRs
+rz_tgt: red-zone targets
+Efficiency
+catch_rate: catch rate
+yards_per_route_run: receiving yards per route run
+yards_per_target: receiving yards per target
+yac_per_rec: yards after catch per reception
+fpoe: fantasy points over expectation
+Stability / Context / Composite
+stability
+volatility
+career_arc
+exp_tier
+opp_score
+usage_score
+player_score
+Data rules
+use null only if data is truly unavailable
+protect all rate stats from divide-by-zero
+percentages should be stored as decimals, not formatted strings
+example: 0.273
+round numeric rate outputs to reasonable precision:
+shares / catch rate: 4 decimals
+wopr / yprr / yards per target / yac per rec / fpoe: 2 decimals
+no duplicate players by canonical id
+only WRs included
+Default sort for backend output
+
+Sort by:
+
+player_score descending
+opp_score descending
+targets_per_gm descending
+Validation
+
+Before writing files:
+
+all required fields exist
+meta column order matches frontend expectation
+no duplicate players
+only WRs included
+season/all variants write successfully
+Important
+
+Do not compute WR Tier in the backend JSON. That should be assembled client-side from existing fields after load.

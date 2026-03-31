@@ -68,6 +68,9 @@ jobs:
       - name: Build WR advanced stats output
         run: python scripts/build_wr_advanced_stats.py
 
+      - name: Build WR player overview output
+        run: python scripts/build_wr_player_overview.py
+
       - name: Commit and push updated JSON
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -91,6 +94,11 @@ jobs:
           git add output/wr_advanced_stats_2024.json
           git add output/wr_advanced_stats_2025.json
           git add output/wr_advanced_stats_all.json
+          git add output/wr_player_overview.json
+          git add output/wr_player_overview_2023.json
+          git add output/wr_player_overview_2024.json
+          git add output/wr_player_overview_2025.json
+          git add output/wr_player_overview_all.json
           git add data/raw/sleeper_players.json
 
           # Only commit if there are actual changes

@@ -1,0 +1,726 @@
+"""
+build_wr_player_overview.py
+───────────────────────────
+Builds the WR Player Overview dataset for the StatChasers WR explorer.
+
+Produces five output files:
+  output/wr_player_overview.json        — alias for 2025 (backward compat)
+  output/wr_player_overview_2023.json
+  output/wr_player_overview_2024.json
+  output/wr_player_overview_2025.json
+  output/wr_player_overview_all.json    — 2023–2025 combined (one row per player)
+
+Data sources:
+  data/raw/nflverse_play_by_play.parquet  — targets, recs, air yards, YAC, games
+  data/processed/player_metrics.json      — snapShare, fpoe, careerArc, wopr,
+                                            stability, volatility (2025 only)
+  data/raw/nflverse_players.parquet       — years_of_experience → exp_tier
+  data/raw/sleeper_players.json           — name disambiguation + age
+
+Data rules:
+  - WRs only
+  - ≥ 15 targets to qualify (per season)
+  - null when data is truly unavailable; never empty strings
+  - percentages stored as decimals (e.g. 0.273), rounded to 4 decimal places
+  - rate stats: 2 decimal places
+  - stability/volatility from player_metrics for 2025, PBP-computed for prior seasons
+
+Do NOT compute WR Tier in this backend — assembled client-side.
+"""
+
+from __future__ import annotations
+
+import json
+import shutil
+import sys
+from collections import defaultdict
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+import pandas as pd
+
+ROOT         = Path(__file__).resolve().parent.parent
+PBP_PATH     = ROOT / "data" / "raw"       / "nflverse_play_by_play.parquet"
+METRICS_PATH = ROOT / "data" / "processed" / "player_metrics.json"
+NFL_PATH     = ROOT / "data" / "raw"       / "nflverse_players.parquet"
+SLEEPER_PATH = ROOT / "data" / "raw"       / "sleeper_players.json"
+OUTPUT_DIR   = ROOT / "output"
+
+SEASONS     = [2023, 2024, 2025]
+CURRENT     = 2025
+MIN_TARGETS = 15
+
+
+# ---------------------------------------------------------------------------
+# Column metadata (frontend contract)
+# ---------------------------------------------------------------------------
+
+COLUMNS: list[str] = [
+    "player", "team", "age", "games",
+    "snap_pct",
+    "routes_per_gm", "targets_per_gm", "receptions_per_gm", "air_yards_per_gm",
+    "target_share_pct", "air_yards_share_pct", "wopr", "rz_tgt",
+    "catch_rate", "yards_per_route_run", "yards_per_target", "yac_per_rec", "fpoe",
+    "stability", "volatility",
+    "career_arc", "exp_tier",
+    "opp_score", "usage_score", "player_score",
+]
+
+
+# ---------------------------------------------------------------------------
+# Name resolution  (identical pattern to build_wr_advanced_stats.py)
+# ---------------------------------------------------------------------------
+
+def _abbrev(full_name: str) -> str:
+    parts = full_name.strip().split()
+    if len(parts) < 2:
+        return full_name
+    return f"{parts[0][0].upper()}.{parts[-1]}"
+
+
+def _build_unambig(sleeper_players: list[dict]) -> dict[str, str]:
+    counts: dict[str, int] = {}
+    mapping: dict[str, str] = {}
+    for p in sleeper_players:
+        full = (p.get("full_name") or "").strip()
+        if not full:
+            continue
+        ab = _abbrev(full)
+        counts[ab] = counts.get(ab, 0) + 1
+        mapping[ab] = full
+    return {ab: fn for ab, fn in mapping.items() if counts[ab] == 1}
+
+
+def _build_team_disambig(sleeper_players: list[dict]) -> dict[str, dict[str, str]]:
+    counts: dict[str, int] = {}
+    by_team: dict[str, dict] = {}
+    for p in sleeper_players:
+        full = (p.get("full_name") or "").strip()
+        if not full:
+            continue
+        ab = _abbrev(full)
+        counts[ab] = counts.get(ab, 0) + 1
+        by_team.setdefault(ab, {})[p.get("team")] = full
+    return {ab: t for ab, t in by_team.items() if counts[ab] > 1}
+
+
+# Identical override table from build_wr_advanced_stats.py — keep in sync.
+_MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
+    "T.Etienne":    {"JAX": "Travis Etienne",    "CAR": "Trevor Etienne"},
+    "B.Robinson":   {"ATL": "Bijan Robinson",    "SF": "Brian Robinson", "WAS": "Brian Robinson"},
+    "J.Williams":   {"DEN": "Javonte Williams",  "NO": "Jamaal Williams"},
+    "D.Moore":      {"CHI": "DJ Moore", "BUF": "DJ Moore", "CAR": "David Moore", "TB": "David Moore"},
+    "K.Allen":      {"LAC": "Keenan Allen",      "CHI": "Keenan Allen"},
+    "D.Montgomery": {"DET": "David Montgomery",  "HOU": "David Montgomery", "IND": "D.J. Montgomery"},
+    "K.Williams":   {"LA": "Kyren Williams",     "NE": "Kyle Williams",    "CIN": "Ke'Shawn Williams"},
+    "R.White":      {"TB": "Rachaad White",      "WAS": "Rachaad White",   "SEA": "Ricky White"},
+    "J.Smith":      {"ATL": "Jonnu Smith",       "MIA": "Jonnu Smith",     "PIT": "Jonnu Smith"},
+}
+
+
+def _resolve(
+    pbp_name: str,
+    pbp_team: str,
+    full_name_set: set[str],
+    unambig: dict[str, str],
+    team_disambig: dict[str, dict[str, str]],
+    sleeper_pos: dict[str, str],
+) -> str:
+    if pbp_name in _MANUAL_TEAM_OVERRIDES and pbp_team:
+        hit = _MANUAL_TEAM_OVERRIDES[pbp_name].get(pbp_team)
+        if hit:
+            return hit
+    if pbp_name in full_name_set:
+        return pbp_name
+    if pbp_name in unambig:
+        return unambig[pbp_name]
+    if pbp_name in team_disambig:
+        teams = team_disambig[pbp_name]
+        if pbp_team and pbp_team in teams:
+            return teams[pbp_team]
+        pos_matches = [(t, n) for t, n in teams.items() if sleeper_pos.get(n, "") == "WR"]
+        if not pos_matches:
+            pos_matches = list(teams.items())
+        if len(pos_matches) == 1:
+            return pos_matches[0][1]
+        conflicting     = [(t, n) for t, n in pos_matches if t is not None and t != pbp_team]
+        non_conflicting = [(t, n) for t, n in pos_matches if t is None or t == pbp_team]
+        if non_conflicting and conflicting:
+            no_team = [(t, n) for t, n in non_conflicting if t is None]
+            if no_team:
+                return no_team[0][1]
+            return non_conflicting[0][1]
+        with_team = [(t, n) for t, n in pos_matches if t is not None]
+        if with_team:
+            return with_team[0][1]
+        return pos_matches[0][1]
+    return pbp_name
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _exp_tier(yoe: float | None) -> str | None:
+    if yoe is None:
+        return None
+    try:
+        y = int(float(yoe))
+    except (ValueError, TypeError):
+        return None
+    if y <= 1:  return "Rookie"
+    if y == 2:  return "Year 2"
+    if y <= 4:  return "Year 3–4"
+    if y <= 9:  return "Veteran"
+    return "Senior Veteran"
+
+
+def _pct(value: float | None, arr: list[float | None]) -> float:
+    """Percentile rank (0–100).  Null value or empty pool → 50.0 (neutral)."""
+    clean = np.array(
+        [float(v) for v in arr if v is not None and not (isinstance(v, float) and np.isnan(v))],
+        dtype=float,
+    )
+    if len(clean) == 0 or value is None or (isinstance(value, float) and np.isnan(value)):
+        return 50.0
+    v = float(value)
+    below = float(np.sum(clean < v))
+    equal = float(np.sum(clean == v))
+    return float((below + 0.5 * equal) / len(clean) * 100.0)
+
+
+def _stability_volatility(
+    game_target_map: dict[str, int],
+    game_order: list[str],
+) -> tuple[float | None, float | None]:
+    """
+    stability  = (1 – σ/μ of last-6 games) × 10, clamped 0–10
+    volatility = σ/μ of all games (coefficient of variation)
+    Uses per-game target counts as the 'usage' signal.
+    """
+    ordered = [game_target_map[g] for g in game_order if g in game_target_map]
+    extra   = [v for g, v in game_target_map.items() if g not in game_order]
+    ordered = ordered + extra
+    if len(ordered) < 2:
+        return (None, None)
+
+    mean_all = float(np.mean(ordered))
+    std_all  = float(np.std(ordered))
+    volatility = round(std_all / mean_all, 2) if mean_all > 0 else None
+
+    window = ordered[-6:] if len(ordered) >= 6 else ordered
+    if len(window) < 2:
+        return (None, volatility)
+    mean_w = float(np.mean(window))
+    std_w  = float(np.std(window))
+    if mean_w == 0:
+        return (None, volatility)
+    raw = 1.0 - (std_w / mean_w)
+    stability = round(max(0.0, min(10.0, raw * 10.0)), 2)
+    return (stability, volatility)
+
+
+# ---------------------------------------------------------------------------
+# Per-season builder
+# ---------------------------------------------------------------------------
+
+def build_season(
+    pbp_season: pd.DataFrame,
+    season: int,
+    full_name_set: set[str],
+    unambig: dict[str, str],
+    team_disambig: dict[str, dict[str, str]],
+    sleeper_pos: dict[str, str],
+    sleeper_age: dict[str, Any],
+    metrics_map: dict[str, dict],
+    yoe_lookup: dict[str, int],
+) -> list[dict]:
+    """Return one row per qualifying WR for this season (no composite scores yet)."""
+
+    pass_plays = pbp_season[pbp_season["pass_attempt"] == 1].copy()
+    if pass_plays.empty:
+        return []
+
+    has_yardline = "yardline_100" in pass_plays.columns
+    has_yac      = "yards_after_catch" in pass_plays.columns
+    has_air      = "air_yards" in pass_plays.columns
+
+    # ── Name resolution ───────────────────────────────────────────────────────
+    cache: dict[tuple[str, str], str] = {}
+
+    def _tag(row: pd.Series) -> str:
+        pbp_name = str(row.get("receiver_player_name") or "")
+        if not pbp_name or pbp_name == "nan":
+            return ""
+        key = (pbp_name, str(row.get("posteam", "")))
+        if key not in cache:
+            cache[key] = _resolve(key[0], key[1], full_name_set, unambig, team_disambig, sleeper_pos)
+        return cache[key]
+
+    targeted = pass_plays[pass_plays["receiver_player_name"].notna()].copy()
+    targeted["_fn"] = targeted.apply(_tag, axis=1)
+    targeted = targeted[targeted["_fn"] != ""]
+
+    # ── WR filter ─────────────────────────────────────────────────────────────
+    wr_names: set[str] = {
+        fn for fn in targeted["_fn"].unique()
+        if sleeper_pos.get(str(fn), "") == "WR"
+        or metrics_map.get(str(fn), {}).get("pos", "") == "WR"
+    }
+    wr_plays = targeted[targeted["_fn"].isin(wr_names)].copy()
+    if wr_plays.empty:
+        return []
+
+    # ── Team-level totals (for share denominators) ────────────────────────────
+    team_pass_totals: dict[str, int] = (
+        pass_plays.groupby("posteam")["pass_attempt"].count().to_dict()
+    )
+    if has_air:
+        team_air_totals: dict[str, float] = (
+            pass_plays.groupby("posteam")["air_yards"].sum().to_dict()
+        )
+    else:
+        team_air_totals = {}
+
+    sort_cols = [c for c in ("season", "week") if c in wr_plays.columns]
+
+    # ── Per-player aggregation ────────────────────────────────────────────────
+    rows: list[dict] = []
+
+    for fn, grp in wr_plays.groupby("_fn"):
+        fn  = str(fn)
+        tgt = len(grp)
+        if tgt < MIN_TARGETS:
+            continue
+
+        comps = grp[grp["complete_pass"] == 1]
+        rec   = len(comps)
+        yds   = int(comps["yards_gained"].sum())
+        games = int(grp["game_id"].nunique())
+
+        # Primary team (most recent game)
+        if sort_cols:
+            team = str(grp.sort_values(sort_cols)["posteam"].iloc[-1])
+            game_order = (
+                grp[["game_id"] + sort_cols]
+                .drop_duplicates("game_id")
+                .sort_values(sort_cols)["game_id"]
+                .tolist()
+            )
+        else:
+            team       = str(grp["posteam"].iloc[-1])
+            game_order = list(grp["game_id"].unique())
+
+        # Per-game target map (for stability/volatility)
+        game_tgt_map: dict[str, int] = dict(grp.groupby("game_id")["pass_attempt"].count())
+
+        # Air yards (on all targets, not just catches)
+        if has_air:
+            player_air  = float(grp["air_yards"].dropna().sum())
+            team_air    = team_air_totals.get(team, 0.0)
+        else:
+            player_air = 0.0
+            team_air   = 0.0
+
+        # YAC (completions only)
+        total_yac = float(comps["yards_after_catch"].dropna().sum()) if has_yac and rec > 0 else None
+
+        # Red-zone targets
+        rz_tgt = int((grp["yardline_100"] <= 20).sum()) if has_yardline else None
+
+        # --- Rates (decimal, 4 places for shares; 2 places for per-game) ---
+        team_pass = team_pass_totals.get(team, 0)
+        target_share_pct    = round(tgt / team_pass, 4)       if team_pass > 0 else None
+        air_yards_share_pct = round(player_air / team_air, 4) if team_air  > 0 else None
+
+        # WOPR = 1.5 × target_share + 0.7 × air_yards_share
+        wopr = None
+        if target_share_pct is not None and air_yards_share_pct is not None:
+            wopr = round(1.5 * target_share_pct + 0.7 * air_yards_share_pct, 2)
+
+        catch_rate      = round(rec / tgt, 4)        if tgt > 0 else None
+        yards_per_tgt   = round(yds / tgt, 2)        if tgt > 0 else None
+        yac_per_rec     = round(total_yac / rec, 2)  if rec > 0 and total_yac is not None else None
+        tgt_per_gm      = round(tgt / games, 2)      if games > 0 else None
+        rec_per_gm      = round(rec / games, 2)      if games > 0 else None
+        air_yds_per_gm  = round(player_air / games, 2) if games > 0 and has_air else None
+
+        stab_pbp, vol_pbp = _stability_volatility(game_tgt_map, game_order)
+
+        # --- player_metrics fields (CURRENT season only) ---------------------
+        m = metrics_map.get(fn, {}) if season == CURRENT else {}
+
+        snap_pct   = round(float(m["snapShare"]) / 100.0, 4) if m.get("snapShare") is not None else None
+        fpoe       = m.get("fpoe")
+        career_arc = m.get("careerArc")
+
+        # For 2025 prefer player_metrics stability/volatility (more accurate);
+        # for prior seasons use PBP-computed values.
+        if season == CURRENT:
+            stability  = m.get("roleStability")   or stab_pbp
+            volatility = m.get("usageVolatility") or vol_pbp
+            # Also prefer player_metrics wopr/shares if available (more precise)
+            if m.get("wopr") is not None:
+                wopr = round(float(m["wopr"]), 2)
+            if m.get("targetShare") is not None:
+                target_share_pct = round(float(m["targetShare"]) / 100.0, 4)
+            if m.get("airYardsShare") is not None:
+                air_yards_share_pct = round(float(m["airYardsShare"]) / 100.0, 4)
+        else:
+            stability  = stab_pbp
+            volatility = vol_pbp
+
+        # Age + exp tier
+        age      = m.get("age") or sleeper_age.get(fn)
+        yoe      = yoe_lookup.get(fn)
+        exp_tier = _exp_tier(yoe)
+
+        rows.append({
+            "player":               fn,
+            "team":                 team,
+            "age":                  age,
+            "games":                games,
+            "snap_pct":             snap_pct,
+            "routes_per_gm":        None,   # no source has per-game routes
+            "targets_per_gm":       tgt_per_gm,
+            "receptions_per_gm":    rec_per_gm,
+            "air_yards_per_gm":     air_yds_per_gm,
+            "target_share_pct":     target_share_pct,
+            "air_yards_share_pct":  air_yards_share_pct,
+            "wopr":                 wopr,
+            "rz_tgt":               rz_tgt,
+            "catch_rate":           catch_rate,
+            "yards_per_route_run":  None,   # no routes data available
+            "yards_per_target":     yards_per_tgt,
+            "yac_per_rec":          yac_per_rec,
+            "fpoe":                 fpoe,
+            "stability":            stability,
+            "volatility":           volatility,
+            "career_arc":           career_arc,
+            "exp_tier":             exp_tier,
+            # --- internals for scoring (dropped from final output) -----------
+            "_tgt":       tgt,
+            "_rec":       rec,
+            "_yds":       yds,
+            "_air":       player_air if has_air else None,
+            "_yac":       total_yac,
+            "_season":    season,
+        })
+
+    return rows
+
+
+# ---------------------------------------------------------------------------
+# Composite scores (percentile-based, same design as RB overview)
+# ---------------------------------------------------------------------------
+
+def _add_scores(rows: list[dict]) -> list[dict]:
+    def col(key: str) -> list[float | None]:
+        return [r.get(key) for r in rows]
+
+    arr_tgt_pg   = col("targets_per_gm")
+    arr_rec_pg   = col("receptions_per_gm")
+    arr_air_pg   = col("air_yards_per_gm")
+    arr_tgt_shr  = col("target_share_pct")
+    arr_air_shr  = col("air_yards_share_pct")
+    arr_wopr     = col("wopr")
+    arr_rz       = col("rz_tgt")
+    arr_snap     = col("snap_pct")
+    arr_catch    = col("catch_rate")
+    arr_ypt      = col("yards_per_target")
+    arr_yac      = col("yac_per_rec")
+    arr_fpoe     = col("fpoe")
+    arr_stab     = col("stability")
+
+    final: list[dict] = []
+    for r in rows:
+        p_tgt_pg  = _pct(r["targets_per_gm"],      arr_tgt_pg)
+        p_rec_pg  = _pct(r["receptions_per_gm"],   arr_rec_pg)
+        p_air_pg  = _pct(r["air_yards_per_gm"],    arr_air_pg)
+        p_tgt_shr = _pct(r["target_share_pct"],    arr_tgt_shr)
+        p_air_shr = _pct(r["air_yards_share_pct"], arr_air_shr)
+        p_wopr    = _pct(r["wopr"],                arr_wopr)
+        p_rz      = _pct(r["rz_tgt"],             arr_rz)
+        p_snap    = _pct(r["snap_pct"],            arr_snap)
+        p_catch   = _pct(r["catch_rate"],          arr_catch)
+        p_ypt     = _pct(r["yards_per_target"],    arr_ypt)
+        p_yac     = _pct(r["yac_per_rec"],         arr_yac)
+        p_fpoe    = _pct(r["fpoe"],                arr_fpoe)
+        p_stab    = _pct(r["stability"],           arr_stab)
+
+        # Opportunity Score — how coveted is this WR's role?
+        opp_score = round(
+            p_tgt_pg  * 0.25
+            + p_tgt_shr * 0.25
+            + p_air_shr * 0.20
+            + p_wopr    * 0.20
+            + p_rz      * 0.10,
+            1,
+        )
+
+        # Usage Score — how much of the offense runs through this WR?
+        usage_score = round(
+            p_tgt_pg  * 0.35
+            + p_snap  * 0.30
+            + p_air_pg * 0.20
+            + p_rec_pg * 0.15,
+            1,
+        )
+
+        # Efficiency Score (internal component)
+        eff_score = (
+            p_ypt   * 0.35
+            + p_catch * 0.25
+            + p_yac   * 0.20
+            + p_fpoe  * 0.20
+        )
+
+        # Player Score — overall WR fantasy/production value
+        player_score = round(
+            opp_score   * 0.45
+            + usage_score * 0.25
+            + eff_score   * 0.25
+            + p_stab      * 0.05,
+            1,
+        )
+
+        final.append({**r, "opp_score": opp_score, "usage_score": usage_score, "player_score": player_score})
+
+    return final
+
+
+# ---------------------------------------------------------------------------
+# Multi-season aggregation (one combined row per player)
+# ---------------------------------------------------------------------------
+
+def _aggregate_all(season_rows: list[dict], yoe_lookup: dict[str, int]) -> list[dict]:
+    """
+    Combine 2023+2024+2025 rows into one row per player.
+    Counting stats summed; rate stats recomputed from totals.
+    Metrics that only exist for 2025 (snap_pct, fpoe, career_arc) taken from
+    the most recent season that has them.
+    """
+    by_player: dict[str, list[dict]] = defaultdict(list)
+    for r in season_rows:
+        by_player[r["player"]].append(r)
+
+    result: list[dict] = []
+    for player, player_rows in by_player.items():
+        latest = max(player_rows, key=lambda r: r.get("_season", 0))
+
+        total_tgt   = sum(r["_tgt"]               for r in player_rows)
+        total_rec   = sum(r["_rec"]               for r in player_rows)
+        total_yds   = sum(r["_yds"]               for r in player_rows)
+        total_air   = sum(r["_air"] or 0          for r in player_rows)
+        total_yac   = sum(r["_yac"] or 0          for r in player_rows)
+        total_games = sum(r["games"]              for r in player_rows)
+        total_rz    = sum(r["rz_tgt"] or 0        for r in player_rows)
+
+        tgt_pg  = round(total_tgt / total_games, 2) if total_games > 0 else None
+        rec_pg  = round(total_rec / total_games, 2) if total_games > 0 else None
+        air_pg  = round(total_air / total_games, 2) if total_games > 0 else None
+
+        catch_rate  = round(total_rec / total_tgt, 4) if total_tgt > 0 else None
+        yds_per_tgt = round(total_yds / total_tgt, 2) if total_tgt > 0 else None
+        yac_per_rec = round(total_yac / total_rec, 2) if total_rec > 0 else None
+
+        # Shares not meaningful across seasons → null
+        result.append({
+            "player":               player,
+            "team":                 latest.get("team"),
+            "age":                  latest.get("age"),
+            "games":                total_games,
+            "snap_pct":             latest.get("snap_pct"),       # 2025 value
+            "routes_per_gm":        None,
+            "targets_per_gm":       tgt_pg,
+            "receptions_per_gm":    rec_pg,
+            "air_yards_per_gm":     air_pg,
+            "target_share_pct":     None,   # not meaningful across seasons
+            "air_yards_share_pct":  None,
+            "wopr":                 None,
+            "rz_tgt":               total_rz,
+            "catch_rate":           catch_rate,
+            "yards_per_route_run":  None,
+            "yards_per_target":     yds_per_tgt,
+            "yac_per_rec":          yac_per_rec,
+            "fpoe":                 latest.get("fpoe"),           # 2025 value
+            "stability":            latest.get("stability"),      # 2025 value
+            "volatility":           latest.get("volatility"),     # 2025 value
+            "career_arc":           latest.get("career_arc"),     # 2025 value
+            "exp_tier":             _exp_tier(yoe_lookup.get(player)),
+            "_tgt":                 total_tgt,
+            "_rec":                 total_rec,
+            "_yds":                 total_yds,
+            "_air":                 total_air,
+            "_yac":                 total_yac,
+            "_season":              latest.get("_season", 0),
+        })
+
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Validation
+# ---------------------------------------------------------------------------
+
+def _validate(rows: list[dict], label: str) -> None:
+    seen: set[str] = set()
+    for r in rows:
+        p = r.get("player", "?")
+        if p in seen:
+            print(f"  WARNING: duplicate '{p}' in {label}", file=sys.stderr)
+        seen.add(p)
+        for col in COLUMNS:
+            if col not in r:
+                print(f"  WARNING: {p} missing column '{col}' in {label}", file=sys.stderr)
+        pos_check = r.get("_pos_check")
+        if pos_check and pos_check != "WR":
+            print(f"  WARNING: non-WR '{p}' ({pos_check}) in {label}", file=sys.stderr)
+    print(f"  Validation OK [{label}]: {len(rows)} WRs, no duplicate IDs")
+
+
+# ---------------------------------------------------------------------------
+# Payload builder
+# ---------------------------------------------------------------------------
+
+def _make_payload(
+    rows: list[dict],
+    season: int | str,
+    week: int | None,
+    updated_at: str,
+) -> dict[str, Any]:
+    clean_rows = [{col: r.get(col) for col in COLUMNS} for r in rows]
+    return {
+        "meta": {
+            "position":     "WR",
+            "table":        "player_overview",
+            "season":       str(season),
+            "generated_at": updated_at,
+            "columns":      COLUMNS,
+        },
+        "players": clean_rows,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Entry point
+# ---------------------------------------------------------------------------
+
+def main() -> None:
+    for path in (PBP_PATH, METRICS_PATH, SLEEPER_PATH):
+        if not path.exists():
+            print(f"ERROR: {path} not found.", file=sys.stderr)
+            sys.exit(1)
+
+    print("Loading play-by-play data (all seasons)...")
+    pbp_full = pd.read_parquet(PBP_PATH)
+    pbp_full = pbp_full[pbp_full["season_type"] == "REG"].copy()
+
+    with open(SLEEPER_PATH) as f:
+        raw = json.load(f)
+    sleeper_players: list[dict] = list(raw.values()) if isinstance(raw, dict) else raw
+    print(f"  {len(sleeper_players):,} Sleeper players.")
+
+    with open(METRICS_PATH) as f:
+        player_metrics: list[dict] = json.load(f)
+    print(f"  {len(player_metrics):,} player metric records.")
+
+    # ── Shared lookup tables ─────────────────────────────────────────────────
+    full_name_set = {(p.get("full_name") or "").strip() for p in sleeper_players}
+    unambig       = _build_unambig(sleeper_players)
+    team_disambig = _build_team_disambig(sleeper_players)
+    sleeper_pos   = {(p.get("full_name") or "").strip(): p.get("position", "") for p in sleeper_players}
+    sleeper_age   = {(p.get("full_name") or "").strip(): p.get("age")          for p in sleeper_players}
+    metrics_map   = {p["player"]: p for p in player_metrics}
+
+    # ── nflverse years_of_experience lookup ──────────────────────────────────
+    yoe_lookup: dict[str, int] = {}
+    if NFL_PATH.exists():
+        nfl = pd.read_parquet(NFL_PATH)
+        print(f"  {len(nfl):,} nflverse players loaded.")
+        if "display_name" in nfl.columns and "years_of_experience" in nfl.columns:
+            for _, row in nfl.iterrows():
+                name = str(row["display_name"]).strip()
+                yoe  = row["years_of_experience"]
+                if name and yoe is not None and not (isinstance(yoe, float) and np.isnan(yoe)):
+                    yoe_lookup[name] = int(yoe)
+    else:
+        print("  nflverse_players.parquet not found — exp_tier will be null.", file=sys.stderr)
+
+    updated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    all_raw_rows: list[dict] = []
+    latest_week_2025: int | None = None
+
+    # ── Per-season files ─────────────────────────────────────────────────────
+    for season in SEASONS:
+        print(f"\nBuilding {season} season...")
+        pbp_s = pbp_full[pbp_full["season"] == season].copy()
+        week  = int(pbp_s["week"].max()) if "week" in pbp_s.columns and not pbp_s.empty else None
+        if season == CURRENT:
+            latest_week_2025 = week
+
+        raw_rows = build_season(
+            pbp_season    = pbp_s,
+            season        = season,
+            full_name_set = full_name_set,
+            unambig       = unambig,
+            team_disambig = team_disambig,
+            sleeper_pos   = sleeper_pos,
+            sleeper_age   = sleeper_age,
+            metrics_map   = metrics_map,
+            yoe_lookup    = yoe_lookup,
+        )
+
+        # Composite scores within-season pool
+        scored = _add_scores(raw_rows)
+
+        # Sort: player_score → opp_score → targets_per_gm (all desc)
+        scored.sort(
+            key=lambda r: (r.get("player_score") or 0, r.get("opp_score") or 0, r.get("targets_per_gm") or 0),
+            reverse=True,
+        )
+        print(f"  {len(scored)} WRs qualified for {season}.")
+        _validate(scored, str(season))
+
+        out_path = OUTPUT_DIR / f"wr_player_overview_{season}.json"
+        payload  = _make_payload(scored, season, week, updated_at)
+        with open(out_path, "w") as f:
+            json.dump(payload, f, indent=2)
+        print(f"  Wrote {out_path} ({out_path.stat().st_size/1024:.1f} KB)")
+
+        all_raw_rows.extend(scored)
+
+    # ── All-seasons combined file ─────────────────────────────────────────────
+    print("\nBuilding all-seasons combined file...")
+    all_agg   = _aggregate_all(all_raw_rows, yoe_lookup)
+    all_scored = _add_scores(all_agg)
+    all_scored.sort(
+        key=lambda r: (r.get("player_score") or 0, r.get("opp_score") or 0, r.get("targets_per_gm") or 0),
+        reverse=True,
+    )
+    _validate(all_scored, "all-seasons")
+
+    all_path = OUTPUT_DIR / "wr_player_overview_all.json"
+    all_payload = _make_payload(all_scored, "2023-2025", None, updated_at)
+    with open(all_path, "w") as f:
+        json.dump(all_payload, f, indent=2)
+    print(f"  Wrote {all_path} ({all_path.stat().st_size/1024:.1f} KB, {len(all_scored)} players)")
+
+    # ── Alias for 2025 ───────────────────────────────────────────────────────
+    alias_path = OUTPUT_DIR / "wr_player_overview.json"
+    shutil.copy(OUTPUT_DIR / "wr_player_overview_2025.json", alias_path)
+    print(f"  Wrote {alias_path} (alias for 2025)")
+
+    print("\nWR Player Overview build complete.")
+    print("Endpoints:")
+    for name in ["wr_player_overview_2023.json", "wr_player_overview_2024.json",
+                 "wr_player_overview_2025.json", "wr_player_overview_all.json"]:
+        print(f"  output/{name}")
+
+
+if __name__ == "__main__":
+    main()
