@@ -47,6 +47,7 @@ import pandas as pd
 ROOT                = Path(__file__).resolve().parent.parent
 PBP_PATH            = ROOT / "data" / "raw"       / "nflverse_play_by_play.parquet"
 PARTICIPATION_PATH  = ROOT / "data" / "raw"       / "nflverse_participation.parquet"
+SNAP_COUNTS_PATH    = ROOT / "data" / "raw"       / "nflverse_snap_counts.parquet"
 METRICS_PATH        = ROOT / "data" / "processed" / "player_metrics.json"
 NFL_PATH            = ROOT / "data" / "raw"       / "nflverse_players.parquet"
 SLEEPER_PATH        = ROOT / "data" / "raw"       / "sleeper_players.json"
@@ -121,6 +122,10 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "K.Williams":   {"LA": "Kyren Williams",     "NE": "Kyle Williams",    "CIN": "Ke'Shawn Williams"},
     "R.White":      {"TB": "Rachaad White",      "WAS": "Rachaad White",   "SEA": "Ricky White"},
     "J.Smith":      {"ATL": "Jonnu Smith",       "MIA": "Jonnu Smith",     "PIT": "Jonnu Smith"},
+    # Multi-char prefix abbreviations (nflverse disambiguates within a game)
+    "Mi.Wilson":    {"ARI": "Michael Wilson"},   # nflverse 2-char prefix for Michael Wilson Jr.
+    # K.Juszczyk resolution: maps to Kyle Juszczyk (FB) so WR filter will correctly exclude him
+    "K.Juszczyk":   {"SF": "Kyle Juszczyk"},
 }
 
 
@@ -227,6 +232,101 @@ def _stability_volatility(
 
 
 # ---------------------------------------------------------------------------
+# Name normalisation helper
+# ---------------------------------------------------------------------------
+
+# snap_counts (PFR) uses slightly different names from Sleeper for some players.
+# Key: snap_counts player_name  →  Value: Sleeper full_name (canonical in our system)
+_SNAP_PLAYER_ALIASES: dict[str, str] = {
+    "Gabriel Davis": "Gabe Davis",   # snap_counts PFR name → Sleeper canonical
+}
+
+
+def _norm(name: str) -> str:
+    """Remove dots, hyphens, spaces and lowercase for fuzzy name matching.
+    e.g. "D.J. Moore" → "djmoore", "Amon-Ra St. Brown" → "amonrastbrown"
+    """
+    return name.lower().replace(".", "").replace("-", "").replace(" ", "").replace("'", "")
+
+
+# ---------------------------------------------------------------------------
+# Snap-count lookup (from nflverse load_snap_counts)
+# ---------------------------------------------------------------------------
+
+def _build_snap_pct_lookups(
+    snap_df: pd.DataFrame,
+    nfl_df: pd.DataFrame | None,
+) -> tuple[dict[int, dict[str, float]], dict[int, dict[str, float]]]:
+    """
+    Build two snap-pct lookup dicts from load_snap_counts data:
+      snap_by_norm : {season → {normalised_player_name → avg_snap_pct}}
+      snap_by_gsis : {season → {gsis_id → avg_snap_pct}}  (via nflverse_players bridge)
+
+    snap_by_norm covers the vast majority of players via direct / normalised match.
+    snap_by_gsis covers edge cases like 'A.St. Brown' whose PBP abbreviation doesn't
+    normalise to the same string as the snap_counts full name 'Amon-Ra St. Brown'.
+    """
+    wr_snap = snap_df[snap_df["position"] == "WR"].copy()
+
+    snap_by_norm: dict[int, dict[str, float]] = {}
+    for (season, player), grp in wr_snap.groupby(["season", "player"]):
+        pct = round(float(grp["offense_pct"].mean()), 4)
+        s   = int(season)
+        snap_by_norm.setdefault(s, {})[_norm(str(player))] = pct
+        # Also index under canonical Sleeper name if this snap_counts name has an alias
+        alias = _SNAP_PLAYER_ALIASES.get(str(player))
+        if alias:
+            snap_by_norm[s][_norm(alias)] = pct
+
+    snap_by_gsis: dict[int, dict[str, float]] = {}
+    if nfl_df is not None and "display_name" in nfl_df.columns and "gsis_id" in nfl_df.columns:
+        display_to_gsis: dict[str, str] = (
+            nfl_df.dropna(subset=["gsis_id", "display_name"])
+            .drop_duplicates("display_name")
+            .set_index("display_name")["gsis_id"]
+            .to_dict()
+        )
+        for (season, player), grp in wr_snap.groupby(["season", "player"]):
+            gsis = display_to_gsis.get(str(player))
+            if gsis:
+                snap_by_gsis.setdefault(int(season), {})[str(gsis)] = round(
+                    float(grp["offense_pct"].mean()), 4
+                )
+
+    return snap_by_norm, snap_by_gsis
+
+
+# ---------------------------------------------------------------------------
+# Age lookup via gsis_id → nflverse display_name → Sleeper age
+# (covers players whose PBP abbreviation couldn't be resolved to Sleeper full_name)
+# ---------------------------------------------------------------------------
+
+def _build_gsis_age_lookup(
+    nfl_df: pd.DataFrame | None,
+    sleeper_age: dict[str, Any],
+) -> dict[str, Any]:
+    """
+    Build {gsis_id → age} by bridging nflverse display_name to Sleeper full_name.
+    Uses normalised string matching so e.g. 'Amon-Ra St. Brown' matches Sleeper's
+    'Amon-Ra St. Brown' directly.
+    """
+    if nfl_df is None or "gsis_id" not in nfl_df.columns or "display_name" not in nfl_df.columns:
+        return {}
+
+    sleeper_age_norm: dict[str, Any] = {_norm(fn): age for fn, age in sleeper_age.items()}
+
+    gsis_to_age: dict[str, Any] = {}
+    for _, row in nfl_df.dropna(subset=["gsis_id", "display_name"]).iterrows():
+        gsis    = str(row["gsis_id"])
+        display = str(row["display_name"])
+        age     = sleeper_age.get(display) or sleeper_age_norm.get(_norm(display))
+        if age is not None:
+            gsis_to_age[gsis] = age
+
+    return gsis_to_age
+
+
+# ---------------------------------------------------------------------------
 # Routes lookup from participation data
 # ---------------------------------------------------------------------------
 
@@ -309,11 +409,16 @@ def build_season(
     metrics_map: dict[str, dict],
     yoe_lookup: dict[str, int],
     routes_by_season: dict[int, dict[str, dict[str, int]]] | None = None,
+    snap_by_norm: dict[int, dict[str, float]] | None = None,
+    snap_by_gsis: dict[int, dict[str, float]] | None = None,
+    gsis_to_age: dict[str, Any] | None = None,
 ) -> list[dict]:
     """Return one row per qualifying WR for this season (no composite scores yet)."""
     routes_map: dict[str, dict[str, int]] = (
         routes_by_season.get(season, {}) if routes_by_season else {}
     )
+    snap_norm_s: dict[str, float] = snap_by_norm.get(season, {}) if snap_by_norm else {}
+    snap_gsis_s: dict[str, float] = snap_by_gsis.get(season, {}) if snap_by_gsis else {}
 
     pass_plays = pbp_season[pbp_season["pass_attempt"] == 1].copy()
     if pass_plays.empty:
@@ -340,14 +445,32 @@ def build_season(
     targeted = targeted[targeted["_fn"] != ""]
 
     # ── WR filter ─────────────────────────────────────────────────────────────
-    wr_names: set[str] = {
-        fn for fn in targeted["_fn"].unique()
-        if sleeper_pos.get(str(fn), "") == "WR"
-        or metrics_map.get(str(fn), {}).get("pos", "") == "WR"
-    }
+    # If Sleeper explicitly knows this player's position, use it as the truth.
+    # Only defer to player_metrics position when Sleeper has no record of the player.
+    def _is_wr(fn: str) -> bool:
+        s_pos = sleeper_pos.get(fn, "")
+        if s_pos == "WR":
+            return True
+        if s_pos and s_pos != "WR":
+            return False  # Sleeper says FB/TE/RB/QB → exclude
+        # Unknown in Sleeper — check player_metrics position
+        return metrics_map.get(fn, {}).get("pos", "") == "WR"
+
+    wr_names: set[str] = {fn for fn in targeted["_fn"].unique() if _is_wr(str(fn))}
     wr_plays = targeted[targeted["_fn"].isin(wr_names)].copy()
     if wr_plays.empty:
         return []
+
+    # ── canonical_name → gsis_id map (for snap and age bridge lookups) ────────
+    canonical_to_gsis: dict[str, str] = {}
+    if "receiver_player_id" in wr_plays.columns:
+        canonical_to_gsis = (
+            wr_plays[["_fn", "receiver_player_id"]]
+            .dropna(subset=["receiver_player_id"])
+            .drop_duplicates("_fn")
+            .set_index("_fn")["receiver_player_id"]
+            .to_dict()
+        )
 
     # ── Team-level totals (for share denominators) ────────────────────────────
     team_pass_totals: dict[str, int] = (
@@ -427,8 +550,24 @@ def build_season(
 
         # --- player_metrics fields (CURRENT season only) ---------------------
         m = metrics_map.get(fn, {}) if season == CURRENT else {}
+        # Also try PBP abbreviation key for player_metrics (e.g. "M.Evans")
+        if not m and season == CURRENT:
+            m = metrics_map.get(_abbrev(fn), {})
 
-        snap_pct   = round(float(m["snapShare"]) / 100.0, 4) if m.get("snapShare") is not None else None
+        # snap_pct: snap_counts is the primary source (covers all seasons + all players).
+        # Lookup chain: 1) direct normalised name  2) gsis_id bridge  3) player_metrics fallback
+        gsis_id = canonical_to_gsis.get(fn, "")
+        snap_from_counts = (
+            snap_norm_s.get(_norm(fn))
+            or (snap_gsis_s.get(gsis_id) if gsis_id else None)
+        )
+        if snap_from_counts is not None:
+            snap_pct = round(float(snap_from_counts), 4)
+        elif m.get("snapShare") is not None:
+            snap_pct = round(float(m["snapShare"]) / 100.0, 4)
+        else:
+            snap_pct = None
+
         fpoe       = m.get("fpoe")
         career_arc = m.get("careerArc")
 
@@ -448,8 +587,12 @@ def build_season(
             stability  = stab_pbp
             volatility = vol_pbp
 
-        # Age + exp tier
-        age      = m.get("age") or sleeper_age.get(fn)
+        # Age: player_metrics → Sleeper direct → gsis_id bridge (for PBP abbreviations)
+        age = (
+            m.get("age")
+            or sleeper_age.get(fn)
+            or (gsis_to_age.get(gsis_id) if (gsis_to_age and gsis_id) else None)
+        )
         yoe      = yoe_lookup.get(fn)
         exp_tier = _exp_tier(yoe)
 
@@ -741,19 +884,36 @@ def main() -> None:
     else:
         print(f"  WARNING: {PARTICIPATION_PATH} not found — routes_per_gm will be null.", file=sys.stderr)
 
-    # ── nflverse years_of_experience lookup ──────────────────────────────────
+    # ── nflverse players: years_of_experience + bridge for snap/age ──────────
     yoe_lookup: dict[str, int] = {}
+    nfl_df: pd.DataFrame | None = None
     if NFL_PATH.exists():
-        nfl = pd.read_parquet(NFL_PATH)
-        print(f"  {len(nfl):,} nflverse players loaded.")
-        if "display_name" in nfl.columns and "years_of_experience" in nfl.columns:
-            for _, row in nfl.iterrows():
+        nfl_df = pd.read_parquet(NFL_PATH)
+        print(f"  {len(nfl_df):,} nflverse players loaded.")
+        if "display_name" in nfl_df.columns and "years_of_experience" in nfl_df.columns:
+            for _, row in nfl_df.iterrows():
                 name = str(row["display_name"]).strip()
                 yoe  = row["years_of_experience"]
                 if name and yoe is not None and not (isinstance(yoe, float) and np.isnan(yoe)):
                     yoe_lookup[name] = int(yoe)
     else:
         print("  nflverse_players.parquet not found — exp_tier will be null.", file=sys.stderr)
+
+    # ── Snap-pct lookups from load_snap_counts (primary source for all seasons) ─
+    snap_by_norm: dict[int, dict[str, float]] = {}
+    snap_by_gsis: dict[int, dict[str, float]] = {}
+    if SNAP_COUNTS_PATH.exists():
+        print("Loading snap_counts data...")
+        snap_df = pd.read_parquet(SNAP_COUNTS_PATH)
+        snap_by_norm, snap_by_gsis = _build_snap_pct_lookups(snap_df, nfl_df)
+        total_snap_players = sum(len(v) for v in snap_by_norm.values())
+        print(f"  Snap-pct lookup built: {total_snap_players} player-seasons.")
+    else:
+        print(f"  WARNING: {SNAP_COUNTS_PATH} not found — snap_pct from player_metrics only.", file=sys.stderr)
+
+    # ── Age lookup via gsis_id bridge (covers unresolved PBP abbreviations) ──
+    gsis_to_age: dict[str, Any] = _build_gsis_age_lookup(nfl_df, sleeper_age)
+    print(f"  gsis_to_age bridge built: {len(gsis_to_age)} entries.")
 
     updated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -780,6 +940,9 @@ def main() -> None:
             metrics_map      = metrics_map,
             yoe_lookup       = yoe_lookup,
             routes_by_season = routes_by_season,
+            snap_by_norm     = snap_by_norm,
+            snap_by_gsis     = snap_by_gsis,
+            gsis_to_age      = gsis_to_age,
         )
 
         # Composite scores within-season pool

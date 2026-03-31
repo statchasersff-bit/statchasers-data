@@ -170,6 +170,10 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
         "MIA": "Jonnu Smith",
         "PIT": "Jonnu Smith",
     },
+    # Mi.Wilson: nflverse 2-char prefix for Michael Wilson Jr. (ARI)
+    "Mi.Wilson": {"ARI": "Michael Wilson"},
+    # K.Juszczyk: maps to Kyle Juszczyk (FB) so WR pos filter correctly excludes him
+    "K.Juszczyk": {"SF": "Kyle Juszczyk"},
 }
 
 

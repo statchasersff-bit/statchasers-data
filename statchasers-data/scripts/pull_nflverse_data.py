@@ -37,6 +37,7 @@ PFR_RUSH_PATH           = os.path.join(OUTPUT_DIR, "pfr_rush_advstats.parquet")
 PFR_REC_PATH            = os.path.join(OUTPUT_DIR, "pfr_rec_advstats.parquet")
 PLAYERS_OUTPUT_PATH     = os.path.join(OUTPUT_DIR, "nflverse_players.parquet")
 PARTICIPATION_OUTPUT    = os.path.join(OUTPUT_DIR, "nflverse_participation.parquet")
+SNAP_COUNTS_OUTPUT      = os.path.join(OUTPUT_DIR, "nflverse_snap_counts.parquet")
 
 # Columns to retain from play-by-play to reduce file size
 PBP_COLUMNS = [
@@ -174,6 +175,34 @@ def fetch_participation(seasons: list[int]) -> pl.DataFrame | None:
     return pl.concat(all_frames, how="diagonal_relaxed")
 
 
+def fetch_snap_counts(seasons: list[int]) -> pl.DataFrame | None:
+    """
+    Load per-game snap counts (offense_pct, offense_snaps) from nflverse.
+    Used downstream as the primary snap_pct source for WR player overview.
+    Covers all seasons and all players; avoids player_metrics name-mismatch gaps.
+    """
+    all_frames = []
+    for season in seasons:
+        print(f"Loading snap counts for {season} season...")
+        try:
+            snaps = nfl.load_snap_counts(seasons=[season])
+            snaps = snaps.filter(pl.col("game_type") == "REG")
+            keep = ["season", "week", "player", "pfr_player_id", "position",
+                    "team", "game_id", "offense_pct"]
+            available = [c for c in keep if c in snaps.columns]
+            snaps = snaps.select(available)
+            all_frames.append(snaps)
+            print(f"  Loaded {snaps.height:,} snap rows for {season}.")
+        except Exception as e:
+            print(f"  WARNING: Could not load {season} snap counts: {e}", file=sys.stderr)
+
+    if not all_frames:
+        print("WARNING: No snap count data loaded.", file=sys.stderr)
+        return None
+
+    return pl.concat(all_frames, how="diagonal_relaxed")
+
+
 def fetch_players() -> pl.DataFrame | None:
     """
     Load the nflverse player registry (all historical + current players).
@@ -223,6 +252,10 @@ def main():
     part_df = fetch_participation(SEASONS)
     if part_df is not None:
         save_parquet(part_df, PARTICIPATION_OUTPUT, "participation data")
+
+    snap_df = fetch_snap_counts(SEASONS)
+    if snap_df is not None:
+        save_parquet(snap_df, SNAP_COUNTS_OUTPUT, "snap counts")
 
     print("nflverse data pull complete.")
 
