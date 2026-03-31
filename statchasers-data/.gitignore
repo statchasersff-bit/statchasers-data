@@ -17,6 +17,12 @@ env/
 data/raw/*.parquet
 data/processed/
 
+# BUT keep the small reference parquets that the build scripts need.
+# These are committed so GitHub Actions clones have them without re-downloading.
+!data/raw/nflverse_participation.parquet
+!data/raw/nflverse_snap_counts.parquet
+!data/raw/nflverse_players.parquet
+
 # OS
 .DS_Store
 Thumbs.db

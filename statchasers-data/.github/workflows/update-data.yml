@@ -102,6 +102,7 @@ jobs:
           git add data/raw/sleeper_players.json
           git add data/raw/nflverse_participation.parquet
           git add data/raw/nflverse_snap_counts.parquet
+          git add data/raw/nflverse_players.parquet
 
           # Only commit if there are actual changes
           if git diff --staged --quiet; then
