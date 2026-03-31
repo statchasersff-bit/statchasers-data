@@ -11,11 +11,12 @@ Produces five output files:
   output/wr_player_overview_all.json    — 2023–2025 combined (one row per player)
 
 Data sources:
-  data/raw/nflverse_play_by_play.parquet  — targets, recs, air yards, YAC, games
-  data/processed/player_metrics.json      — snapShare, fpoe, careerArc, wopr,
-                                            stability, volatility (2025 only)
-  data/raw/nflverse_players.parquet       — years_of_experience → exp_tier
-  data/raw/sleeper_players.json           — name disambiguation + age
+  data/raw/nflverse_play_by_play.parquet   — targets, recs, air yards, YAC, games
+  data/raw/nflverse_participation.parquet  — routes run (WR appearances on pass plays)
+  data/processed/player_metrics.json       — snapShare, fpoe, careerArc, wopr,
+                                             stability, volatility (2025 only)
+  data/raw/nflverse_players.parquet        — years_of_experience → exp_tier
+  data/raw/sleeper_players.json            — name disambiguation + age
 
 Data rules:
   - WRs only
@@ -24,6 +25,8 @@ Data rules:
   - percentages stored as decimals (e.g. 0.273), rounded to 4 decimal places
   - rate stats: 2 decimal places
   - stability/volatility from player_metrics for 2025, PBP-computed for prior seasons
+  - routes_per_gm from participation data (WR appearances on pass plays per game)
+  - yards_per_route_run = receiving yards / total routes run (seasonal)
 
 Do NOT compute WR Tier in this backend — assembled client-side.
 """
@@ -41,12 +44,13 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-ROOT         = Path(__file__).resolve().parent.parent
-PBP_PATH     = ROOT / "data" / "raw"       / "nflverse_play_by_play.parquet"
-METRICS_PATH = ROOT / "data" / "processed" / "player_metrics.json"
-NFL_PATH     = ROOT / "data" / "raw"       / "nflverse_players.parquet"
-SLEEPER_PATH = ROOT / "data" / "raw"       / "sleeper_players.json"
-OUTPUT_DIR   = ROOT / "output"
+ROOT                = Path(__file__).resolve().parent.parent
+PBP_PATH            = ROOT / "data" / "raw"       / "nflverse_play_by_play.parquet"
+PARTICIPATION_PATH  = ROOT / "data" / "raw"       / "nflverse_participation.parquet"
+METRICS_PATH        = ROOT / "data" / "processed" / "player_metrics.json"
+NFL_PATH            = ROOT / "data" / "raw"       / "nflverse_players.parquet"
+SLEEPER_PATH        = ROOT / "data" / "raw"       / "sleeper_players.json"
+OUTPUT_DIR          = ROOT / "output"
 
 SEASONS     = [2023, 2024, 2025]
 CURRENT     = 2025
@@ -223,6 +227,74 @@ def _stability_volatility(
 
 
 # ---------------------------------------------------------------------------
+# Routes lookup from participation data
+# ---------------------------------------------------------------------------
+
+def _build_routes_lookup(
+    pbp: pd.DataFrame,
+    part: pd.DataFrame,
+) -> dict[int, dict[str, dict[str, int]]]:
+    """
+    Build {season → {player_abbrev → {game_id → route_count}}} from participation data.
+
+    Bridges participation gsis_ids → PBP receiver abbreviations so that the rest
+    of the pipeline can use the same canonical name resolution already in place.
+
+    A 'route' is defined as a play where the player appears in offense_players with
+    position == 'WR'.  The participation dataset is already filtered to passing plays
+    (nearly all rows have a route value), so every WR on the field = 1 route run.
+
+    Only regular-season weeks (week ≤ 18) are counted.
+    """
+    # Step 1: gsis_id → PBP abbreviation from all receiver targets
+    gsis_to_abbrev: dict[str, str] = (
+        pbp[pbp["pass_attempt"] == 1][["receiver_player_id", "receiver_player_name"]]
+        .dropna(subset=["receiver_player_id", "receiver_player_name"])
+        .drop_duplicates("receiver_player_id")
+        .set_index("receiver_player_id")["receiver_player_name"]
+        .to_dict()
+    )
+
+    # Step 2: filter participation to regular season (weeks 1-18)
+    part = part.copy()
+    part["week_num"] = part["nflverse_game_id"].str.split("_").str[1].astype(int)
+    part_reg = part[
+        (part["week_num"] <= 18)
+        & part["offense_players"].notna()
+        & part["offense_positions"].notna()
+    ].copy()
+
+    # Step 3: vectorised explode of semicolon-separated player/position lists
+    part_reg["pid_list"] = part_reg["offense_players"].str.split(";")
+    part_reg["pos_list"] = part_reg["offense_positions"].str.split(";")
+
+    exp = (
+        part_reg[["nflverse_game_id", "season", "pid_list", "pos_list"]]
+        .explode(["pid_list", "pos_list"])          # pandas ≥ 1.3 multi-col explode
+        .rename(columns={"pid_list": "gsis_id", "pos_list": "position"})
+    )
+    exp["gsis_id"]  = exp["gsis_id"].str.strip()
+    exp["position"] = exp["position"].str.strip()
+
+    # Step 4: keep only WRs that we can map to an abbreviation
+    wr = exp[exp["position"] == "WR"].copy()
+    wr["abbrev"] = wr["gsis_id"].map(gsis_to_abbrev)
+    wr = wr[wr["abbrev"].notna()]
+
+    # Step 5: group into {season: {abbrev: {game_id: count}}}
+    result: dict[int, dict[str, dict[str, int]]] = {}
+    for (season, abbrev, game_id), cnt in (
+        wr.groupby(["season", "abbrev", "nflverse_game_id"]).size().items()
+    ):
+        result.setdefault(int(season), {}).setdefault(str(abbrev), {})[str(game_id)] = int(cnt)
+
+    matched = wr["abbrev"].notna().sum()
+    total   = len(exp[exp["position"] == "WR"])
+    print(f"  Routes lookup built: {matched:,}/{total:,} WR instances matched ({matched/total*100:.1f}%)")
+    return result
+
+
+# ---------------------------------------------------------------------------
 # Per-season builder
 # ---------------------------------------------------------------------------
 
@@ -236,8 +308,12 @@ def build_season(
     sleeper_age: dict[str, Any],
     metrics_map: dict[str, dict],
     yoe_lookup: dict[str, int],
+    routes_by_season: dict[int, dict[str, dict[str, int]]] | None = None,
 ) -> list[dict]:
     """Return one row per qualifying WR for this season (no composite scores yet)."""
+    routes_map: dict[str, dict[str, int]] = (
+        routes_by_season.get(season, {}) if routes_by_season else {}
+    )
 
     pass_plays = pbp_season[pbp_season["pass_attempt"] == 1].copy()
     if pass_plays.empty:
@@ -377,13 +453,26 @@ def build_season(
         yoe      = yoe_lookup.get(fn)
         exp_tier = _exp_tier(yoe)
 
+        # --- Routes from participation data -----------------------------------
+        player_routes: dict[str, int] = routes_map.get(fn, {})
+        # Also try PBP abbreviation key in case resolution changed
+        if not player_routes:
+            for abbrev_key in cache:
+                if cache[abbrev_key] == fn and abbrev_key[0] in routes_map:
+                    player_routes = routes_map[abbrev_key[0]]
+                    break
+        total_routes  = sum(player_routes.values())
+        route_games   = len(player_routes)
+        routes_pg     = round(total_routes / route_games, 1)   if route_games > 0 else None
+        yds_per_route = round(yds / total_routes, 2)           if total_routes > 0 else None
+
         rows.append({
             "player":               fn,
             "team":                 team,
             "age":                  age,
             "games":                games,
             "snap_pct":             snap_pct,
-            "routes_per_gm":        None,   # no source has per-game routes
+            "routes_per_gm":        routes_pg,
             "targets_per_gm":       tgt_per_gm,
             "receptions_per_gm":    rec_per_gm,
             "air_yards_per_gm":     air_yds_per_gm,
@@ -392,7 +481,7 @@ def build_season(
             "wopr":                 wopr,
             "rz_tgt":               rz_tgt,
             "catch_rate":           catch_rate,
-            "yards_per_route_run":  None,   # no routes data available
+            "yards_per_route_run":  yds_per_route,
             "yards_per_target":     yards_per_tgt,
             "yac_per_rec":          yac_per_rec,
             "fpoe":                 fpoe,
@@ -401,12 +490,14 @@ def build_season(
             "career_arc":           career_arc,
             "exp_tier":             exp_tier,
             # --- internals for scoring (dropped from final output) -----------
-            "_tgt":       tgt,
-            "_rec":       rec,
-            "_yds":       yds,
-            "_air":       player_air if has_air else None,
-            "_yac":       total_yac,
-            "_season":    season,
+            "_tgt":          tgt,
+            "_rec":          rec,
+            "_yds":          yds,
+            "_air":          player_air if has_air else None,
+            "_yac":          total_yac,
+            "_total_routes": total_routes,
+            "_route_games":  route_games,
+            "_season":       season,
         })
 
     return rows
@@ -510,17 +601,21 @@ def _aggregate_all(season_rows: list[dict], yoe_lookup: dict[str, int]) -> list[
     for player, player_rows in by_player.items():
         latest = max(player_rows, key=lambda r: r.get("_season", 0))
 
-        total_tgt   = sum(r["_tgt"]               for r in player_rows)
-        total_rec   = sum(r["_rec"]               for r in player_rows)
-        total_yds   = sum(r["_yds"]               for r in player_rows)
-        total_air   = sum(r["_air"] or 0          for r in player_rows)
-        total_yac   = sum(r["_yac"] or 0          for r in player_rows)
-        total_games = sum(r["games"]              for r in player_rows)
-        total_rz    = sum(r["rz_tgt"] or 0        for r in player_rows)
+        total_tgt    = sum(r["_tgt"]               for r in player_rows)
+        total_rec    = sum(r["_rec"]               for r in player_rows)
+        total_yds    = sum(r["_yds"]               for r in player_rows)
+        total_air    = sum(r["_air"] or 0          for r in player_rows)
+        total_yac    = sum(r["_yac"] or 0          for r in player_rows)
+        total_games  = sum(r["games"]              for r in player_rows)
+        total_rz     = sum(r["rz_tgt"] or 0        for r in player_rows)
+        total_routes = sum(r.get("_total_routes") or 0 for r in player_rows)
+        total_rg     = sum(r.get("_route_games")  or 0 for r in player_rows)
 
         tgt_pg  = round(total_tgt / total_games, 2) if total_games > 0 else None
         rec_pg  = round(total_rec / total_games, 2) if total_games > 0 else None
         air_pg  = round(total_air / total_games, 2) if total_games > 0 else None
+        routes_pg     = round(total_routes / total_rg, 1) if total_rg > 0 else None
+        yds_per_route = round(total_yds / total_routes, 2) if total_routes > 0 else None
 
         catch_rate  = round(total_rec / total_tgt, 4) if total_tgt > 0 else None
         yds_per_tgt = round(total_yds / total_tgt, 2) if total_tgt > 0 else None
@@ -533,7 +628,7 @@ def _aggregate_all(season_rows: list[dict], yoe_lookup: dict[str, int]) -> list[
             "age":                  latest.get("age"),
             "games":                total_games,
             "snap_pct":             latest.get("snap_pct"),       # 2025 value
-            "routes_per_gm":        None,
+            "routes_per_gm":        routes_pg,
             "targets_per_gm":       tgt_pg,
             "receptions_per_gm":    rec_pg,
             "air_yards_per_gm":     air_pg,
@@ -542,7 +637,7 @@ def _aggregate_all(season_rows: list[dict], yoe_lookup: dict[str, int]) -> list[
             "wopr":                 None,
             "rz_tgt":               total_rz,
             "catch_rate":           catch_rate,
-            "yards_per_route_run":  None,
+            "yards_per_route_run":  yds_per_route,
             "yards_per_target":     yds_per_tgt,
             "yac_per_rec":          yac_per_rec,
             "fpoe":                 latest.get("fpoe"),           # 2025 value
@@ -550,12 +645,14 @@ def _aggregate_all(season_rows: list[dict], yoe_lookup: dict[str, int]) -> list[
             "volatility":           latest.get("volatility"),     # 2025 value
             "career_arc":           latest.get("career_arc"),     # 2025 value
             "exp_tier":             _exp_tier(yoe_lookup.get(player)),
-            "_tgt":                 total_tgt,
-            "_rec":                 total_rec,
-            "_yds":                 total_yds,
-            "_air":                 total_air,
-            "_yac":                 total_yac,
-            "_season":              latest.get("_season", 0),
+            "_tgt":          total_tgt,
+            "_rec":          total_rec,
+            "_yds":          total_yds,
+            "_air":          total_air,
+            "_yac":          total_yac,
+            "_total_routes": total_routes,
+            "_route_games":  total_rg,
+            "_season":       latest.get("_season", 0),
         })
 
     return result
@@ -615,8 +712,8 @@ def main() -> None:
             sys.exit(1)
 
     print("Loading play-by-play data (all seasons)...")
-    pbp_full = pd.read_parquet(PBP_PATH)
-    pbp_full = pbp_full[pbp_full["season_type"] == "REG"].copy()
+    pbp_raw  = pd.read_parquet(PBP_PATH)
+    pbp_full = pbp_raw[pbp_raw["season_type"] == "REG"].copy()
 
     with open(SLEEPER_PATH) as f:
         raw = json.load(f)
@@ -634,6 +731,15 @@ def main() -> None:
     sleeper_pos   = {(p.get("full_name") or "").strip(): p.get("position", "") for p in sleeper_players}
     sleeper_age   = {(p.get("full_name") or "").strip(): p.get("age")          for p in sleeper_players}
     metrics_map   = {p["player"]: p for p in player_metrics}
+
+    # ── Routes lookup from participation data ────────────────────────────────
+    routes_by_season: dict[int, dict[str, dict[str, int]]] = {}
+    if PARTICIPATION_PATH.exists():
+        print("Loading participation data for routes computation...")
+        part_df = pd.read_parquet(PARTICIPATION_PATH)
+        routes_by_season = _build_routes_lookup(pbp_raw, part_df)
+    else:
+        print(f"  WARNING: {PARTICIPATION_PATH} not found — routes_per_gm will be null.", file=sys.stderr)
 
     # ── nflverse years_of_experience lookup ──────────────────────────────────
     yoe_lookup: dict[str, int] = {}
@@ -664,15 +770,16 @@ def main() -> None:
             latest_week_2025 = week
 
         raw_rows = build_season(
-            pbp_season    = pbp_s,
-            season        = season,
-            full_name_set = full_name_set,
-            unambig       = unambig,
-            team_disambig = team_disambig,
-            sleeper_pos   = sleeper_pos,
-            sleeper_age   = sleeper_age,
-            metrics_map   = metrics_map,
-            yoe_lookup    = yoe_lookup,
+            pbp_season       = pbp_s,
+            season           = season,
+            full_name_set    = full_name_set,
+            unambig          = unambig,
+            team_disambig    = team_disambig,
+            sleeper_pos      = sleeper_pos,
+            sleeper_age      = sleeper_age,
+            metrics_map      = metrics_map,
+            yoe_lookup       = yoe_lookup,
+            routes_by_season = routes_by_season,
         )
 
         # Composite scores within-season pool

@@ -100,6 +100,7 @@ jobs:
           git add output/wr_player_overview_2025.json
           git add output/wr_player_overview_all.json
           git add data/raw/sleeper_players.json
+          git add data/raw/nflverse_participation.parquet
 
           # Only commit if there are actual changes
           if git diff --staged --quiet; then

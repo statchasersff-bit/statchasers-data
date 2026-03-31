@@ -29,13 +29,14 @@ except ImportError:
     print("ERROR: polars is not installed. Run: pip install polars", file=sys.stderr)
     sys.exit(1)
 
-OUTPUT_DIR          = os.path.join(os.path.dirname(__file__), "..", "data", "raw")
-PBP_OUTPUT_PATH     = os.path.join(OUTPUT_DIR, "nflverse_play_by_play.parquet")
-STATS_OUTPUT_PATH   = os.path.join(OUTPUT_DIR, "nflverse_player_stats.parquet")
-PFR_PASS_PATH       = os.path.join(OUTPUT_DIR, "pfr_pass_advstats.parquet")
-PFR_RUSH_PATH       = os.path.join(OUTPUT_DIR, "pfr_rush_advstats.parquet")
-PFR_REC_PATH        = os.path.join(OUTPUT_DIR, "pfr_rec_advstats.parquet")
-PLAYERS_OUTPUT_PATH = os.path.join(OUTPUT_DIR, "nflverse_players.parquet")
+OUTPUT_DIR              = os.path.join(os.path.dirname(__file__), "..", "data", "raw")
+PBP_OUTPUT_PATH         = os.path.join(OUTPUT_DIR, "nflverse_play_by_play.parquet")
+STATS_OUTPUT_PATH       = os.path.join(OUTPUT_DIR, "nflverse_player_stats.parquet")
+PFR_PASS_PATH           = os.path.join(OUTPUT_DIR, "pfr_pass_advstats.parquet")
+PFR_RUSH_PATH           = os.path.join(OUTPUT_DIR, "pfr_rush_advstats.parquet")
+PFR_REC_PATH            = os.path.join(OUTPUT_DIR, "pfr_rec_advstats.parquet")
+PLAYERS_OUTPUT_PATH     = os.path.join(OUTPUT_DIR, "nflverse_players.parquet")
+PARTICIPATION_OUTPUT    = os.path.join(OUTPUT_DIR, "nflverse_participation.parquet")
 
 # Columns to retain from play-by-play to reduce file size
 PBP_COLUMNS = [
@@ -146,6 +147,33 @@ def fetch_pfr_advstats(seasons: list[int]) -> dict[str, pl.DataFrame]:
     return results
 
 
+def fetch_participation(seasons: list[int]) -> pl.DataFrame | None:
+    """
+    Load play-level participation data (who is on the field per play).
+    Used downstream to compute per-player routes run.
+    Retains only the columns needed: game_id, play_id, season, offense_players, offense_positions.
+    """
+    all_frames = []
+    for season in seasons:
+        print(f"Loading participation data for {season} season...")
+        try:
+            part = nfl.load_participation(seasons=[season])
+            keep = ["nflverse_game_id", "play_id", "offense_players", "offense_positions"]
+            available = [c for c in keep if c in part.columns]
+            part = part.select(available)
+            part = part.with_columns(pl.lit(season).alias("season"))
+            all_frames.append(part)
+            print(f"  Loaded {part.height:,} plays for {season}.")
+        except Exception as e:
+            print(f"  WARNING: Could not load {season} participation data: {e}", file=sys.stderr)
+
+    if not all_frames:
+        print("WARNING: No participation data loaded.", file=sys.stderr)
+        return None
+
+    return pl.concat(all_frames, how="diagonal_relaxed")
+
+
 def fetch_players() -> pl.DataFrame | None:
     """
     Load the nflverse player registry (all historical + current players).
@@ -191,6 +219,10 @@ def main():
     players_df = fetch_players()
     if players_df is not None:
         save_parquet(players_df, PLAYERS_OUTPUT_PATH, "player registry")
+
+    part_df = fetch_participation(SEASONS)
+    if part_df is not None:
+        save_parquet(part_df, PARTICIPATION_OUTPUT, "participation data")
 
     print("nflverse data pull complete.")
 
