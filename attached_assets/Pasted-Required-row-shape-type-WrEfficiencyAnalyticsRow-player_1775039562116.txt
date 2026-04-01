@@ -1,0 +1,96 @@
+Required row shape
+type WrEfficiencyAnalyticsRow = {
+  player: string
+  team: string
+  games: number
+  targets: number
+
+  epa_per_target: number | null
+  success_rate: number | null
+  yards_per_target: number | null
+  catch_rate: number | null
+  fpoe: number | null
+
+  yards_per_route_run: number | null
+  targets_per_route_run: number | null
+  air_yards_per_target: number | null
+  air_yards_share_pct: number | null
+
+  explosive_play_rate: number | null
+  explosive_rec_20_plus: number | null
+  explosive_rec_40_plus: number | null
+  longest_reception: number | null
+
+  yac_per_rec: number | null
+  ybc_per_rec: number | null
+  broken_tackles: number | null
+  btkl_per_rec: number | null
+
+  wr_efficiency_score: number | null
+}
+Column order
+[
+  "player",
+  "team",
+  "games",
+  "targets",
+
+  "epa_per_target",
+  "success_rate",
+  "yards_per_target",
+  "catch_rate",
+  "fpoe",
+
+  "yards_per_route_run",
+  "targets_per_route_run",
+  "air_yards_per_target",
+  "air_yards_share_pct",
+
+  "explosive_play_rate",
+  "explosive_rec_20_plus",
+  "explosive_rec_40_plus",
+  "longest_reception",
+
+  "yac_per_rec",
+  "ybc_per_rec",
+  "broken_tackles",
+  "btkl_per_rec",
+
+  "wr_efficiency_score"
+]
+Definitions
+targets = total targets
+epa_per_target = EPA divided by targets
+success_rate = percent of targets producing positive EPA
+yards_per_target = receiving yards / targets
+catch_rate = receptions / targets
+fpoe = fantasy points over expectation
+yards_per_route_run = receiving yards / routes run
+targets_per_route_run = targets / routes run
+air_yards_per_target = air yards / targets
+air_yards_share_pct = share of team air yards as decimal
+explosive_play_rate = percent of receptions gaining 15+ yards
+explosive_rec_20_plus = receptions of 20+ yards
+explosive_rec_40_plus = receptions of 40+ yards
+longest_reception = longest single reception
+yac_per_rec = yards after catch / receptions
+ybc_per_rec = yards before catch / receptions
+broken_tackles = broken tackles on receptions
+btkl_per_rec = broken tackles / receptions
+WR Efficiency Score formula
+
+Compute in pipeline as a 0–100 composite from percentile ranks:
+
+EPA / TGT = 25%
+YPRR = 25%
+Success Rate = 20%
+Yds / TGT = 15%
+Explosive Play Rate = 10%
+BTKL / Rec = 5%
+Data rules
+WRs only
+no duplicate players
+percentages stored as decimals
+protect divide-by-zero
+round rate stats to sensible precision
+sort default by wr_efficiency_score descending, then yards_per_route_run descending
