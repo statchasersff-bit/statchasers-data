@@ -1,0 +1,167 @@
+Build a 2025-only WR Role & Usage Trends dataset for the WR explorer.
+
+Goal
+
+Create a WR-only trends dataset focused on current role movement, using recent-vs-prior sample deltas.
+
+Output file
+
+Create:
+
+wr_trends_2025.json
+
+Store it in the same output folder pattern as the other position datasets.
+
+Position filter
+
+Only include WR players.
+
+Required JSON structure
+{
+  "meta": {
+    "position": "WR",
+    "table": "role_usage_trends",
+    "season": "2025",
+    "generated_at": "ISO_TIMESTAMP",
+    "columns": [
+      "player",
+      "team",
+      "games",
+      "snap_pct",
+      "delta_snap_pct",
+      "routes_per_gm",
+      "delta_routes_per_gm",
+      "targets_per_gm",
+      "delta_targets_per_gm",
+      "air_yards_per_gm",
+      "delta_air_yards_per_gm",
+      "adot",
+      "delta_adot",
+      "rz_tgt",
+      "end_zone_tgt",
+      "usage_score",
+      "role_trend"
+    ]
+  },
+  "players": []
+}
+Required row shape
+type WrTrendsRow = {
+  player: string
+  team: string
+  games: number
+
+  snap_pct: number | null
+  delta_snap_pct: number | null
+
+  routes_per_gm: number | null
+  delta_routes_per_gm: number | null
+
+  targets_per_gm: number | null
+  delta_targets_per_gm: number | null
+
+  air_yards_per_gm: number | null
+  delta_air_yards_per_gm: number | null
+
+  adot: number | null
+  delta_adot: number | null
+
+  rz_tgt: number | null
+  end_zone_tgt: number | null
+
+  usage_score: number | null
+  role_trend: string | null
+}
+Field definitions
+Identity
+player: player display name
+team: current team abbreviation
+games: total 2025 games played
+Current role values
+snap_pct: current 2025 snap share
+routes_per_gm: current 2025 routes run per game
+targets_per_gm: current 2025 targets per game
+air_yards_per_gm: current 2025 air yards per game
+adot: current 2025 average depth of target
+rz_tgt: total 2025 red-zone targets
+end_zone_tgt: total 2025 end-zone targets
+Delta values
+
+Compute deltas as:
+
+recent 4-game sample minus prior 4-game sample
+
+Fields:
+
+delta_snap_pct
+delta_routes_per_gm
+delta_targets_per_gm
+delta_air_yards_per_gm
+delta_adot
+
+If the player does not have enough sample, set delta fields to null.
+
+Sample rules
+
+Use:
+
+recent window = last 4 games played
+prior window = previous 4 games played before recent window
+
+If fewer than 8 games:
+
+use best effort split if possible
+otherwise leave delta fields null and set trend to Insufficient Data
+Usage Score
+
+Compute usage_score as a 0–100 percentile-based role score among WRs in 2025 with these weights:
+
+Routes/Gm = 25%
+TGT/Gm = 30%
+Snap % = 15%
+Air/Gm = 20%
+RZ TGT = 10%
+Role Trend label logic
+
+Set role_trend using current deltas.
+
+Suggested labels:
+
+Rising Fast
+Trending Up
+Stable
+Trending Down
+Falling Fast
+Boom/Bust Role
+Insufficient Data
+Suggested classification logic
+Rising Fast = strong positive target delta plus positive routes or air-yard delta
+Trending Up = broad positive movement
+Stable = changes near neutral
+Trending Down = negative target delta plus negative role movement
+Falling Fast = sharp negative change across multiple core inputs
+Boom/Bust Role = air/aDOT up but targets not improving
+Insufficient Data = not enough sample
+Data rules
+WRs only
+no duplicates
+percentages stored as decimals
+protect divide-by-zero
+round rate fields and deltas to sensible precision
+current values should represent 2025 season-to-date, not recent-only
+deltas should represent recent minus prior
+Default sort
+
+Sort backend output by:
+
+usage_score descending
+delta_targets_per_gm descending
+delta_air_yards_per_gm descending
+Validation
+
+Before writing:
+
+only WRs included
+no duplicate players
+all required keys present
+meta columns match exact frontend order
