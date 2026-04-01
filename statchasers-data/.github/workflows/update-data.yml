@@ -71,6 +71,9 @@ jobs:
       - name: Build WR player overview output
         run: python scripts/build_wr_player_overview.py
 
+      - name: Build WR efficiency analytics output
+        run: python scripts/build_wr_efficiency_analytics.py
+
       - name: Commit and push updated JSON
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -99,6 +102,8 @@ jobs:
           git add output/wr_player_overview_2024.json
           git add output/wr_player_overview_2025.json
           git add output/wr_player_overview_all.json
+          git add output/wr_efficiency_analytics.json
+          git add output/wr_efficiency_analytics_2025.json
           git add data/raw/sleeper_players.json
           git add data/raw/nflverse_participation.parquet
           git add data/raw/nflverse_snap_counts.parquet
