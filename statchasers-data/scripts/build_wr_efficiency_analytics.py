@@ -69,6 +69,13 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     # _abbrev("Amon-Ra St. Brown") produces "A.Brown" which collides with A.J. Brown,
     # so we handle this manually.
     "A.St. Brown":  {"DET": "Amon-Ra St. Brown"},
+    # Non-WR receivers whose Sleeper team field is stale (None) or uses a different
+    # team code than nflverse PBP, causing the pos-based fallback to pick the wrong
+    # WR with the same abbreviation.  Explicit team→canonical locks the correct player
+    # so the WR position filter can then exclude them cleanly.
+    "M.Carter":     {"ARI": "Michael Carter"},                      # RB/ARI, not Malachi Carter
+    "D.Allen":      {"LA": "Davis Allen", "LAR": "Davis Allen"},    # TE/LAR, not Devon Allen
+    "J.Ford":       {"CLE": "Jerome Ford"},                         # RB/CLE, not Jacoby Ford
 }
 
 # PFR sometimes uses a different given name than Sleeper/PBP (nickname vs full).

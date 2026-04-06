@@ -73,6 +73,12 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "J.Smith":      {"ATL": "Jonnu Smith",       "MIA": "Jonnu Smith",     "PIT": "Jonnu Smith"},
     "Mi.Wilson":    {"ARI": "Michael Wilson"},
     "K.Juszczyk":   {"SF": "Kyle Juszczyk"},
+    # Non-WR receivers whose Sleeper team field is stale (None) or uses a different
+    # team code than nflverse PBP, causing the pos-based fallback to pick the wrong
+    # WR with the same abbreviation.
+    "M.Carter":     {"ARI": "Michael Carter"},                      # RB/ARI, not Malachi Carter
+    "D.Allen":      {"LA": "Davis Allen", "LAR": "Davis Allen"},    # TE/LAR, not Devon Allen
+    "J.Ford":       {"CLE": "Jerome Ford"},                         # RB/CLE, not Jacoby Ford
 }
 
 # PFR snap-counts name → Sleeper canonical name aliases

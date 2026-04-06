@@ -3,7 +3,7 @@
     "position": "WR",
     "table": "player_overview",
     "season": "2024",
-    "generated_at": "2026-03-31T01:49:56Z",
+    "generated_at": "2026-04-06T16:19:19Z",
     "columns": [
       "player",
       "team",
@@ -85,7 +85,7 @@
       "exp_tier": "Veteran",
       "opp_score": 95.5,
       "usage_score": 93.2,
-      "player_score": 86.5
+      "player_score": 86.6
     },
     {
       "player": "Malik Nabers",
@@ -139,7 +139,7 @@
       "exp_tier": null,
       "opp_score": 90.7,
       "usage_score": 81.7,
-      "player_score": 84.1
+      "player_score": 84.2
     },
     {
       "player": "A.St. Brown",
@@ -164,7 +164,7 @@
       "volatility": 0.49,
       "career_arc": null,
       "exp_tier": null,
-      "opp_score": 92.4,
+      "opp_score": 92.3,
       "usage_score": 85.5,
       "player_score": 83.7
     },
@@ -191,9 +191,9 @@
       "volatility": 0.41,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 94.2,
-      "usage_score": 93.2,
-      "player_score": 82.6
+      "opp_score": 94.1,
+      "usage_score": 93.1,
+      "player_score": 82.5
     },
     {
       "player": "Drake London",
@@ -218,9 +218,9 @@
       "volatility": 0.47,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 97.5,
-      "usage_score": 94.4,
-      "player_score": 81.9
+      "opp_score": 97.4,
+      "usage_score": 94.3,
+      "player_score": 81.8
     },
     {
       "player": "Davante Adams",
@@ -245,9 +245,9 @@
       "volatility": 0.25,
       "career_arc": null,
       "exp_tier": "Senior Veteran",
-      "opp_score": 91.9,
-      "usage_score": 93.8,
-      "player_score": 81.8
+      "opp_score": 91.8,
+      "usage_score": 93.7,
+      "player_score": 81.7
     },
     {
       "player": "CeeDee Lamb",
@@ -272,9 +272,9 @@
       "volatility": 0.29,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 90.8,
+      "opp_score": 90.7,
       "usage_score": 87.9,
-      "player_score": 80.7
+      "player_score": 80.6
     },
     {
       "player": "A.J. Brown",
@@ -299,9 +299,9 @@
       "volatility": 0.41,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 84.5,
-      "usage_score": 84.9,
-      "player_score": 80.5
+      "opp_score": 84.4,
+      "usage_score": 84.8,
+      "player_score": 80.4
     },
     {
       "player": "Courtland Sutton",
@@ -327,7 +327,7 @@
       "career_arc": null,
       "exp_tier": "Veteran",
       "opp_score": 94.5,
-      "usage_score": 89.0,
+      "usage_score": 88.9,
       "player_score": 79.9
     },
     {
@@ -353,9 +353,9 @@
       "volatility": 0.37,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 87.5,
-      "usage_score": 80.4,
-      "player_score": 79.9
+      "opp_score": 87.4,
+      "usage_score": 80.3,
+      "player_score": 79.8
     },
     {
       "player": "Jaxon Smith-Njigba",
@@ -380,9 +380,9 @@
       "volatility": 0.47,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 87.0,
-      "usage_score": 84.5,
-      "player_score": 79.9
+      "opp_score": 86.9,
+      "usage_score": 84.4,
+      "player_score": 79.8
     },
     {
       "player": "Puka Nacua",
@@ -407,9 +407,9 @@
       "volatility": 0.37,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 79.6,
-      "usage_score": 80.4,
-      "player_score": 79.8
+      "opp_score": 79.4,
+      "usage_score": 80.3,
+      "player_score": 79.7
     },
     {
       "player": "Jerry Jeudy",
@@ -434,9 +434,9 @@
       "volatility": 0.48,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 88.8,
+      "opp_score": 88.7,
       "usage_score": 91.9,
-      "player_score": 79.0
+      "player_score": 78.9
     },
     {
       "player": "Jakobi Meyers",
@@ -461,9 +461,9 @@
       "volatility": 0.34,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 85.7,
-      "usage_score": 91.1,
-      "player_score": 78.9
+      "opp_score": 85.6,
+      "usage_score": 91.0,
+      "player_score": 78.8
     },
     {
       "player": "DJ Moore",
@@ -488,9 +488,9 @@
       "volatility": 0.31,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 86.5,
-      "usage_score": 86.5,
-      "player_score": 78.5
+      "opp_score": 86.4,
+      "usage_score": 86.4,
+      "player_score": 78.4
     },
     {
       "player": "Ladd McConkey",
@@ -515,8 +515,8 @@
       "volatility": 0.32,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 80.6,
-      "usage_score": 73.0,
+      "opp_score": 80.4,
+      "usage_score": 72.9,
       "player_score": 78.2
     },
     {
@@ -542,8 +542,8 @@
       "volatility": 0.39,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 77.4,
-      "usage_score": 76.0,
+      "opp_score": 77.2,
+      "usage_score": 75.9,
       "player_score": 76.7
     },
     {
@@ -569,9 +569,9 @@
       "volatility": 0.45,
       "career_arc": null,
       "exp_tier": "Senior Veteran",
-      "opp_score": 83.6,
-      "usage_score": 78.0,
-      "player_score": 76.0
+      "opp_score": 83.5,
+      "usage_score": 77.9,
+      "player_score": 75.9
     },
     {
       "player": "George Pickens",
@@ -596,9 +596,9 @@
       "volatility": 0.28,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 85.6,
-      "usage_score": 81.7,
-      "player_score": 75.9
+      "opp_score": 85.4,
+      "usage_score": 81.6,
+      "player_score": 75.8
     },
     {
       "player": "Zay Flowers",
@@ -623,9 +623,9 @@
       "volatility": 0.48,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 83.4,
-      "usage_score": 71.8,
-      "player_score": 75.8
+      "opp_score": 83.3,
+      "usage_score": 71.7,
+      "player_score": 75.7
     },
     {
       "player": "DeVonta Smith",
@@ -650,9 +650,9 @@
       "volatility": 0.39,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 76.7,
-      "usage_score": 79.0,
-      "player_score": 75.8
+      "opp_score": 76.5,
+      "usage_score": 78.9,
+      "player_score": 75.7
     },
     {
       "player": "DK Metcalf",
@@ -677,7 +677,7 @@
       "volatility": 0.42,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 81.4,
+      "opp_score": 81.3,
       "usage_score": 84.1,
       "player_score": 75.3
     },
@@ -704,9 +704,9 @@
       "volatility": 0.31,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 80.4,
-      "usage_score": 86.7,
-      "player_score": 75.0
+      "opp_score": 80.3,
+      "usage_score": 86.6,
+      "player_score": 74.9
     },
     {
       "player": "Jauan Jennings",
@@ -731,9 +731,9 @@
       "volatility": 0.36,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 82.1,
-      "usage_score": 75.5,
-      "player_score": 74.8
+      "opp_score": 81.9,
+      "usage_score": 75.4,
+      "player_score": 74.7
     },
     {
       "player": "Calvin Ridley",
@@ -758,9 +758,9 @@
       "volatility": 0.42,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 86.3,
-      "usage_score": 81.3,
-      "player_score": 74.1
+      "opp_score": 86.2,
+      "usage_score": 81.2,
+      "player_score": 74.0
     },
     {
       "player": "Jordan Addison",
@@ -785,8 +785,8 @@
       "volatility": 0.35,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 78.4,
-      "usage_score": 77.7,
+      "opp_score": 78.3,
+      "usage_score": 77.6,
       "player_score": 73.2
     },
     {
@@ -812,9 +812,9 @@
       "volatility": 0.48,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 74.2,
-      "usage_score": 80.9,
-      "player_score": 71.8
+      "opp_score": 74.0,
+      "usage_score": 80.7,
+      "player_score": 71.7
     },
     {
       "player": "Marvin Harrison",
@@ -839,9 +839,9 @@
       "volatility": 0.37,
       "career_arc": null,
       "exp_tier": "Senior Veteran",
-      "opp_score": 86.5,
-      "usage_score": 75.7,
-      "player_score": 70.3
+      "opp_score": 86.4,
+      "usage_score": 75.6,
+      "player_score": 70.2
     },
     {
       "player": "Chris Godwin",
@@ -866,9 +866,9 @@
       "volatility": 0.22,
       "career_arc": null,
       "exp_tier": null,
-      "opp_score": 52.1,
-      "usage_score": 83.5,
-      "player_score": 69.4
+      "opp_score": 51.7,
+      "usage_score": 83.4,
+      "player_score": 69.2
     },
     {
       "player": "Keenan Allen",
@@ -893,9 +893,9 @@
       "volatility": 0.45,
       "career_arc": null,
       "exp_tier": "Senior Veteran",
-      "opp_score": 82.7,
-      "usage_score": 83.6,
-      "player_score": 68.0
+      "opp_score": 82.6,
+      "usage_score": 83.5,
+      "player_score": 67.9
     },
     {
       "player": "Michael Pittman",
@@ -920,9 +920,9 @@
       "volatility": 0.31,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 79.6,
-      "usage_score": 68.9,
-      "player_score": 67.5
+      "opp_score": 79.4,
+      "usage_score": 68.8,
+      "player_score": 67.4
     },
     {
       "player": "Cooper Kupp",
@@ -947,9 +947,9 @@
       "volatility": 0.6,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 73.6,
-      "usage_score": 81.0,
-      "player_score": 67.0
+      "opp_score": 73.4,
+      "usage_score": 80.9,
+      "player_score": 66.8
     },
     {
       "player": "Rome Odunze",
@@ -974,9 +974,9 @@
       "volatility": 0.43,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 76.7,
-      "usage_score": 72.9,
-      "player_score": 66.6
+      "opp_score": 76.5,
+      "usage_score": 72.7,
+      "player_score": 66.4
     },
     {
       "player": "Khalil Shakir",
@@ -1001,9 +1001,9 @@
       "volatility": 0.37,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 66.2,
-      "usage_score": 55.6,
-      "player_score": 66.2
+      "opp_score": 65.9,
+      "usage_score": 55.4,
+      "player_score": 66.0
     },
     {
       "player": "Wan'Dale Robinson",
@@ -1028,9 +1028,9 @@
       "volatility": 0.4,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 79.4,
-      "usage_score": 70.5,
-      "player_score": 66.0
+      "opp_score": 79.3,
+      "usage_score": 70.4,
+      "player_score": 65.9
     },
     {
       "player": "Josh Downs",
@@ -1055,9 +1055,9 @@
       "volatility": 0.39,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 72.6,
-      "usage_score": 64.6,
-      "player_score": 65.1
+      "opp_score": 72.4,
+      "usage_score": 64.5,
+      "player_score": 64.9
     },
     {
       "player": "Quentin Johnston",
@@ -1082,9 +1082,9 @@
       "volatility": 0.49,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 70.9,
-      "usage_score": 64.3,
-      "player_score": 64.7
+      "opp_score": 70.7,
+      "usage_score": 64.2,
+      "player_score": 64.6
     },
     {
       "player": "Adam Thielen",
@@ -1109,9 +1109,9 @@
       "volatility": 0.39,
       "career_arc": null,
       "exp_tier": "Senior Veteran",
-      "opp_score": 55.3,
-      "usage_score": 67.5,
-      "player_score": 63.8
+      "opp_score": 55.0,
+      "usage_score": 67.4,
+      "player_score": 63.7
     },
     {
       "player": "Jaylen Waddle",
@@ -1136,9 +1136,9 @@
       "volatility": 0.53,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 65.4,
-      "usage_score": 64.6,
-      "player_score": 63.6
+      "opp_score": 65.2,
+      "usage_score": 64.4,
+      "player_score": 63.5
     },
     {
       "player": "Xavier Worthy",
@@ -1163,36 +1163,9 @@
       "volatility": 0.42,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 74.0,
-      "usage_score": 58.3,
-      "player_score": 63.1
-    },
-    {
-      "player": "Jameson Williams",
-      "team": "DET",
-      "age": 24,
-      "games": 10,
-      "snap_pct": 0.7953,
-      "routes_per_gm": 56.1,
-      "targets_per_gm": 5.5,
-      "receptions_per_gm": 3.4,
-      "air_yards_per_gm": 72.5,
-      "target_share_pct": 0.094,
-      "air_yards_share_pct": 0.2079,
-      "wopr": 0.29,
-      "rz_tgt": 7,
-      "catch_rate": 0.6182,
-      "yards_per_route_run": 0.74,
-      "yards_per_target": 11.29,
-      "yac_per_rec": 9.12,
-      "fpoe": null,
-      "stability": 5.84,
-      "volatility": 0.54,
-      "career_arc": null,
-      "exp_tier": "Year 3\u20134",
-      "opp_score": 53.7,
-      "usage_score": 67.5,
-      "player_score": 62.6
+      "opp_score": 73.8,
+      "usage_score": 58.2,
+      "player_score": 63.0
     },
     {
       "player": "Stefon Diggs",
@@ -1217,9 +1190,36 @@
       "volatility": 0.23,
       "career_arc": null,
       "exp_tier": "Senior Veteran",
-      "opp_score": 52.6,
-      "usage_score": 78.9,
-      "player_score": 62.6
+      "opp_score": 52.3,
+      "usage_score": 78.8,
+      "player_score": 62.5
+    },
+    {
+      "player": "Jameson Williams",
+      "team": "DET",
+      "age": 24,
+      "games": 10,
+      "snap_pct": 0.7953,
+      "routes_per_gm": 56.1,
+      "targets_per_gm": 5.5,
+      "receptions_per_gm": 3.4,
+      "air_yards_per_gm": 72.5,
+      "target_share_pct": 0.094,
+      "air_yards_share_pct": 0.2079,
+      "wopr": 0.29,
+      "rz_tgt": 7,
+      "catch_rate": 0.6182,
+      "yards_per_route_run": 0.74,
+      "yards_per_target": 11.29,
+      "yac_per_rec": 9.12,
+      "fpoe": null,
+      "stability": 5.84,
+      "volatility": 0.54,
+      "career_arc": null,
+      "exp_tier": "Year 3\u20134",
+      "opp_score": 53.4,
+      "usage_score": 67.3,
+      "player_score": 62.4
     },
     {
       "player": "Jayden Reed",
@@ -1244,36 +1244,9 @@
       "volatility": 0.42,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 59.0,
-      "usage_score": 45.1,
-      "player_score": 61.0
-    },
-    {
-      "player": "Kayshon Boutte",
-      "team": "NE",
-      "age": 23,
-      "games": 15,
-      "snap_pct": 0.7807,
-      "routes_per_gm": 54.2,
-      "targets_per_gm": 4.6,
-      "receptions_per_gm": 2.87,
-      "air_yards_per_gm": 67.4,
-      "target_share_pct": 0.1179,
-      "air_yards_share_pct": 0.2629,
-      "wopr": 0.36,
-      "rz_tgt": 5,
-      "catch_rate": 0.6232,
-      "yards_per_route_run": 0.73,
-      "yards_per_target": 8.55,
-      "yac_per_rec": 3.49,
-      "fpoe": null,
-      "stability": 7.92,
-      "volatility": 0.44,
-      "career_arc": null,
-      "exp_tier": "Year 3\u20134",
-      "opp_score": 59.6,
-      "usage_score": 59.1,
-      "player_score": 59.9
+      "opp_score": 58.6,
+      "usage_score": 44.8,
+      "player_score": 60.8
     },
     {
       "player": "Tank Dell",
@@ -1298,9 +1271,36 @@
       "volatility": 0.38,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 63.5,
-      "usage_score": 62.6,
-      "player_score": 59.8
+      "opp_score": 63.2,
+      "usage_score": 62.5,
+      "player_score": 59.7
+    },
+    {
+      "player": "Kayshon Boutte",
+      "team": "NE",
+      "age": 23,
+      "games": 15,
+      "snap_pct": 0.7807,
+      "routes_per_gm": 54.2,
+      "targets_per_gm": 4.6,
+      "receptions_per_gm": 2.87,
+      "air_yards_per_gm": 67.4,
+      "target_share_pct": 0.1179,
+      "air_yards_share_pct": 0.2629,
+      "wopr": 0.36,
+      "rz_tgt": 5,
+      "catch_rate": 0.6232,
+      "yards_per_route_run": 0.73,
+      "yards_per_target": 8.55,
+      "yac_per_rec": 3.49,
+      "fpoe": null,
+      "stability": 7.92,
+      "volatility": 0.44,
+      "career_arc": null,
+      "exp_tier": "Year 3\u20134",
+      "opp_score": 59.3,
+      "usage_score": 59.0,
+      "player_score": 59.7
     },
     {
       "player": "Rashod Bateman",
@@ -1325,9 +1325,9 @@
       "volatility": 0.46,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 63.6,
-      "usage_score": 51.8,
-      "player_score": 59.7
+      "opp_score": 63.4,
+      "usage_score": 51.7,
+      "player_score": 59.6
     },
     {
       "player": "Romeo Doubs",
@@ -1352,9 +1352,9 @@
       "volatility": 0.52,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 65.4,
-      "usage_score": 65.1,
-      "player_score": 59.1
+      "opp_score": 65.2,
+      "usage_score": 64.9,
+      "player_score": 59.0
     },
     {
       "player": "Alec Pierce",
@@ -1379,9 +1379,9 @@
       "volatility": 0.45,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 60.1,
-      "usage_score": 61.6,
-      "player_score": 58.7
+      "opp_score": 59.9,
+      "usage_score": 61.5,
+      "player_score": 58.6
     },
     {
       "player": "Deebo Samuel",
@@ -1406,9 +1406,9 @@
       "volatility": 0.43,
       "career_arc": null,
       "exp_tier": null,
-      "opp_score": 58.6,
-      "usage_score": 57.7,
-      "player_score": 58.1
+      "opp_score": 58.3,
+      "usage_score": 57.5,
+      "player_score": 57.9
     },
     {
       "player": "Allen Lazard",
@@ -1433,9 +1433,9 @@
       "volatility": 0.52,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 52.5,
-      "usage_score": 63.9,
-      "player_score": 57.2
+      "opp_score": 52.1,
+      "usage_score": 63.7,
+      "player_score": 57.0
     },
     {
       "player": "Rashee Rice",
@@ -1460,9 +1460,9 @@
       "volatility": 0.34,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 32.9,
-      "usage_score": 69.8,
-      "player_score": 57.1
+      "opp_score": 32.6,
+      "usage_score": 69.7,
+      "player_score": 57.0
     },
     {
       "player": "DeMario Douglas",
@@ -1487,9 +1487,9 @@
       "volatility": 0.43,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 56.0,
-      "usage_score": 48.9,
-      "player_score": 56.9
+      "opp_score": 55.7,
+      "usage_score": 48.6,
+      "player_score": 56.7
     },
     {
       "player": "Ray-Ray McCloud",
@@ -1514,9 +1514,9 @@
       "volatility": 0.48,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 54.7,
-      "usage_score": 61.1,
-      "player_score": 56.5
+      "opp_score": 54.4,
+      "usage_score": 60.8,
+      "player_score": 56.4
     },
     {
       "player": "Xavier Legette",
@@ -1541,9 +1541,9 @@
       "volatility": 0.43,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 68.1,
-      "usage_score": 60.9,
-      "player_score": 56.0
+      "opp_score": 67.9,
+      "usage_score": 60.7,
+      "player_score": 55.8
     },
     {
       "player": "DeAndre Hopkins",
@@ -1568,9 +1568,9 @@
       "volatility": 0.51,
       "career_arc": null,
       "exp_tier": "Senior Veteran",
-      "opp_score": 64.1,
-      "usage_score": 46.9,
-      "player_score": 55.8
+      "opp_score": 63.8,
+      "usage_score": 46.7,
+      "player_score": 55.6
     },
     {
       "player": "Rashid Shaheed",
@@ -1595,9 +1595,9 @@
       "volatility": 0.36,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 46.0,
-      "usage_score": 74.1,
-      "player_score": 55.5
+      "opp_score": 45.6,
+      "usage_score": 74.0,
+      "player_score": 55.3
     },
     {
       "player": "Jalen Tolbert",
@@ -1622,9 +1622,9 @@
       "volatility": 0.46,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 58.2,
-      "usage_score": 55.4,
-      "player_score": 54.7
+      "opp_score": 57.9,
+      "usage_score": 55.2,
+      "player_score": 54.5
     },
     {
       "player": "Keon Coleman",
@@ -1649,9 +1649,9 @@
       "volatility": 0.59,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 55.1,
-      "usage_score": 52.5,
-      "player_score": 54.5
+      "opp_score": 54.8,
+      "usage_score": 52.3,
+      "player_score": 54.3
     },
     {
       "player": "Amari Cooper",
@@ -1676,9 +1676,9 @@
       "volatility": 0.58,
       "career_arc": null,
       "exp_tier": "Senior Veteran",
-      "opp_score": 70.5,
-      "usage_score": 63.9,
-      "player_score": 54.1
+      "opp_score": 70.3,
+      "usage_score": 63.7,
+      "player_score": 53.9
     },
     {
       "player": "Tre Tucker",
@@ -1703,9 +1703,9 @@
       "volatility": 0.49,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 57.5,
-      "usage_score": 64.7,
-      "player_score": 53.5
+      "opp_score": 57.2,
+      "usage_score": 64.6,
+      "player_score": 53.3
     },
     {
       "player": "Michael Wilson",
@@ -1730,9 +1730,9 @@
       "volatility": 0.49,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 56.7,
-      "usage_score": 54.9,
-      "player_score": 53.5
+      "opp_score": 56.4,
+      "usage_score": 54.7,
+      "player_score": 53.3
     },
     {
       "player": "Joshua Palmer",
@@ -1757,9 +1757,9 @@
       "volatility": 0.47,
       "career_arc": null,
       "exp_tier": null,
-      "opp_score": 58.8,
-      "usage_score": 50.3,
-      "player_score": 52.8
+      "opp_score": 58.4,
+      "usage_score": 50.1,
+      "player_score": 52.5
     },
     {
       "player": "Jalen McMillan",
@@ -1784,9 +1784,9 @@
       "volatility": 0.55,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 49.2,
-      "usage_score": 50.5,
-      "player_score": 52.1
+      "opp_score": 48.8,
+      "usage_score": 50.3,
+      "player_score": 51.8
     },
     {
       "player": "Brandon Aiyuk",
@@ -1811,9 +1811,9 @@
       "volatility": 0.42,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 46.0,
-      "usage_score": 71.3,
-      "player_score": 51.8
+      "opp_score": 45.6,
+      "usage_score": 71.2,
+      "player_score": 51.5
     },
     {
       "player": "Christian Watson",
@@ -1838,9 +1838,9 @@
       "volatility": 0.58,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 53.2,
-      "usage_score": 41.7,
-      "player_score": 51.2
+      "opp_score": 52.8,
+      "usage_score": 41.5,
+      "player_score": 51.0
     },
     {
       "player": "Elijah Moore",
@@ -1865,9 +1865,9 @@
       "volatility": 0.55,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 61.2,
-      "usage_score": 63.0,
-      "player_score": 50.8
+      "opp_score": 60.9,
+      "usage_score": 62.8,
+      "player_score": 50.6
     },
     {
       "player": "Darius Slayton",
@@ -1892,9 +1892,9 @@
       "volatility": 0.67,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 56.0,
-      "usage_score": 59.5,
-      "player_score": 50.7
+      "opp_score": 55.7,
+      "usage_score": 59.4,
+      "player_score": 50.6
     },
     {
       "player": "Nick Westbrook-Ikhine",
@@ -1919,9 +1919,9 @@
       "volatility": 0.39,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 52.3,
-      "usage_score": 51.0,
-      "player_score": 50.6
+      "opp_score": 51.9,
+      "usage_score": 50.8,
+      "player_score": 50.4
     },
     {
       "player": "Tyler Lockett",
@@ -1946,9 +1946,9 @@
       "volatility": 0.56,
       "career_arc": null,
       "exp_tier": "Senior Veteran",
-      "opp_score": 54.2,
-      "usage_score": 46.6,
-      "player_score": 50.1
+      "opp_score": 53.9,
+      "usage_score": 46.4,
+      "player_score": 49.9
     },
     {
       "player": "Noah Brown",
@@ -1973,9 +1973,9 @@
       "volatility": 0.48,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 47.9,
-      "usage_score": 52.3,
-      "player_score": 49.8
+      "opp_score": 47.6,
+      "usage_score": 52.1,
+      "player_score": 49.6
     },
     {
       "player": "Jalen Coker",
@@ -2000,35 +2000,8 @@
       "volatility": 0.55,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 36.4,
-      "usage_score": 44.5,
-      "player_score": 49.7
-    },
-    {
-      "player": "Christian Kirk",
-      "team": "JAX",
-      "age": 29,
-      "games": 8,
-      "snap_pct": 0.7,
-      "routes_per_gm": 43.4,
-      "targets_per_gm": 5.88,
-      "receptions_per_gm": 3.38,
-      "air_yards_per_gm": 80.5,
-      "target_share_pct": 0.0803,
-      "air_yards_share_pct": 0.1404,
-      "wopr": 0.22,
-      "rz_tgt": 5,
-      "catch_rate": 0.5745,
-      "yards_per_route_run": 1.06,
-      "yards_per_target": 7.81,
-      "yac_per_rec": 4.19,
-      "fpoe": null,
-      "stability": 5.13,
-      "volatility": 0.53,
-      "career_arc": null,
-      "exp_tier": "Veteran",
-      "opp_score": 45.1,
-      "usage_score": 64.8,
+      "opp_score": 36.0,
+      "usage_score": 44.3,
       "player_score": 49.5
     },
     {
@@ -2054,9 +2027,36 @@
       "volatility": 0.63,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 63.4,
-      "usage_score": 41.4,
-      "player_score": 49.4
+      "opp_score": 63.2,
+      "usage_score": 41.2,
+      "player_score": 49.2
+    },
+    {
+      "player": "Christian Kirk",
+      "team": "JAX",
+      "age": 29,
+      "games": 8,
+      "snap_pct": 0.7,
+      "routes_per_gm": 43.4,
+      "targets_per_gm": 5.88,
+      "receptions_per_gm": 3.38,
+      "air_yards_per_gm": 80.5,
+      "target_share_pct": 0.0803,
+      "air_yards_share_pct": 0.1404,
+      "wopr": 0.22,
+      "rz_tgt": 5,
+      "catch_rate": 0.5745,
+      "yards_per_route_run": 1.06,
+      "yards_per_target": 7.81,
+      "yac_per_rec": 4.19,
+      "fpoe": null,
+      "stability": 5.13,
+      "volatility": 0.53,
+      "career_arc": null,
+      "exp_tier": "Veteran",
+      "opp_score": 44.7,
+      "usage_score": 64.6,
+      "player_score": 49.2
     },
     {
       "player": "Chris Olave",
@@ -2081,9 +2081,9 @@
       "volatility": 0.78,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 38.2,
-      "usage_score": 55.0,
-      "player_score": 48.1
+      "opp_score": 37.8,
+      "usage_score": 54.8,
+      "player_score": 48.0
     },
     {
       "player": "Ricky Pearsall",
@@ -2108,9 +2108,9 @@
       "volatility": 0.57,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 42.1,
-      "usage_score": 51.9,
-      "player_score": 47.0
+      "opp_score": 41.7,
+      "usage_score": 51.7,
+      "player_score": 46.8
     },
     {
       "player": "Demarcus Robinson",
@@ -2135,9 +2135,9 @@
       "volatility": 0.56,
       "career_arc": null,
       "exp_tier": "Senior Veteran",
-      "opp_score": 58.4,
-      "usage_score": 51.9,
-      "player_score": 46.7
+      "opp_score": 58.1,
+      "usage_score": 51.7,
+      "player_score": 46.4
     },
     {
       "player": "Calvin Austin",
@@ -2162,9 +2162,9 @@
       "volatility": 0.46,
       "career_arc": null,
       "exp_tier": null,
-      "opp_score": 45.3,
-      "usage_score": 31.7,
-      "player_score": 46.5
+      "opp_score": 45.0,
+      "usage_score": 31.8,
+      "player_score": 46.4
     },
     {
       "player": "Olamide Zaccheaus",
@@ -2189,9 +2189,9 @@
       "volatility": 0.52,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 43.8,
-      "usage_score": 31.1,
-      "player_score": 44.9
+      "opp_score": 43.4,
+      "usage_score": 30.8,
+      "player_score": 44.7
     },
     {
       "player": "Tutu Atwell",
@@ -2216,9 +2216,9 @@
       "volatility": 0.67,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 46.1,
-      "usage_score": 34.1,
-      "player_score": 44.7
+      "opp_score": 45.7,
+      "usage_score": 33.9,
+      "player_score": 44.5
     },
     {
       "player": "Marvin Mims",
@@ -2243,9 +2243,9 @@
       "volatility": 0.56,
       "career_arc": null,
       "exp_tier": null,
-      "opp_score": 32.6,
+      "opp_score": 32.3,
       "usage_score": 19.2,
-      "player_score": 44.2
+      "player_score": 44.1
     },
     {
       "player": "Andrei Iosivas",
@@ -2270,9 +2270,9 @@
       "volatility": 0.42,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 42.6,
-      "usage_score": 44.4,
-      "player_score": 44.1
+      "opp_score": 42.2,
+      "usage_score": 44.2,
+      "player_score": 43.9
     },
     {
       "player": "Devaughn Vele",
@@ -2297,9 +2297,9 @@
       "volatility": 0.52,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 39.9,
-      "usage_score": 37.3,
-      "player_score": 43.6
+      "opp_score": 39.4,
+      "usage_score": 37.0,
+      "player_score": 43.4
     },
     {
       "player": "Cedric Tillman",
@@ -2324,9 +2324,9 @@
       "volatility": 0.69,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 40.9,
-      "usage_score": 58.4,
-      "player_score": 43.5
+      "opp_score": 40.4,
+      "usage_score": 58.2,
+      "player_score": 43.2
     },
     {
       "player": "Brandin Cooks",
@@ -2351,9 +2351,9 @@
       "volatility": 0.42,
       "career_arc": null,
       "exp_tier": "Senior Veteran",
-      "opp_score": 44.7,
-      "usage_score": 55.9,
-      "player_score": 41.4
+      "opp_score": 44.3,
+      "usage_score": 55.8,
+      "player_score": 41.2
     },
     {
       "player": "Marquez Valdes-Scantling",
@@ -2378,9 +2378,9 @@
       "volatility": 0.69,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 35.2,
-      "usage_score": 33.6,
-      "player_score": 41.3
+      "opp_score": 34.9,
+      "usage_score": 33.7,
+      "player_score": 41.2
     },
     {
       "player": "Parker Washington",
@@ -2405,9 +2405,9 @@
       "volatility": 0.72,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 43.9,
-      "usage_score": 41.5,
-      "player_score": 41.0
+      "opp_score": 43.4,
+      "usage_score": 41.3,
+      "player_score": 40.7
     },
     {
       "player": "Jordan Whittington",
@@ -2432,36 +2432,9 @@
       "volatility": 0.7,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 21.9,
-      "usage_score": 33.1,
-      "player_score": 40.4
-    },
-    {
-      "player": "Gabe Davis",
-      "team": "JAX",
-      "age": 26,
-      "games": 9,
-      "snap_pct": 0.716,
-      "routes_per_gm": 42.0,
-      "targets_per_gm": 4.67,
-      "receptions_per_gm": 2.22,
-      "air_yards_per_gm": 62.78,
-      "target_share_pct": 0.0718,
-      "air_yards_share_pct": 0.1232,
-      "wopr": 0.19,
-      "rz_tgt": 10,
-      "catch_rate": 0.4762,
-      "yards_per_route_run": 0.59,
-      "yards_per_target": 5.86,
-      "yac_per_rec": 2.3,
-      "fpoe": null,
-      "stability": 5.65,
-      "volatility": 0.4,
-      "career_arc": null,
-      "exp_tier": "Veteran",
-      "opp_score": 41.0,
-      "usage_score": 53.8,
-      "player_score": 39.6
+      "opp_score": 21.5,
+      "usage_score": 32.9,
+      "player_score": 40.2
     },
     {
       "player": "Tim Patrick",
@@ -2486,9 +2459,36 @@
       "volatility": 0.69,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 34.0,
+      "opp_score": 33.7,
       "usage_score": 26.6,
-      "player_score": 39.6
+      "player_score": 39.5
+    },
+    {
+      "player": "Gabe Davis",
+      "team": "JAX",
+      "age": 26,
+      "games": 9,
+      "snap_pct": 0.716,
+      "routes_per_gm": 42.0,
+      "targets_per_gm": 4.67,
+      "receptions_per_gm": 2.22,
+      "air_yards_per_gm": 62.78,
+      "target_share_pct": 0.0718,
+      "air_yards_share_pct": 0.1232,
+      "wopr": 0.19,
+      "rz_tgt": 10,
+      "catch_rate": 0.4762,
+      "yards_per_route_run": 0.59,
+      "yards_per_target": 5.86,
+      "yac_per_rec": 2.3,
+      "fpoe": null,
+      "stability": 5.65,
+      "volatility": 0.4,
+      "career_arc": null,
+      "exp_tier": "Veteran",
+      "opp_score": 40.6,
+      "usage_score": 53.7,
+      "player_score": 39.4
     },
     {
       "player": "Mack Hollins",
@@ -2513,36 +2513,9 @@
       "volatility": 0.56,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 40.0,
+      "opp_score": 39.7,
       "usage_score": 33.8,
-      "player_score": 38.1
-    },
-    {
-      "player": "David Moore",
-      "team": "CAR",
-      "age": 31,
-      "games": 14,
-      "snap_pct": 0.5394,
-      "routes_per_gm": 52.5,
-      "targets_per_gm": 4.07,
-      "receptions_per_gm": 2.29,
-      "air_yards_per_gm": 45.07,
-      "target_share_pct": 0.0974,
-      "air_yards_share_pct": 0.1414,
-      "wopr": 0.25,
-      "rz_tgt": 11,
-      "catch_rate": 0.5614,
-      "yards_per_route_run": 0.2,
-      "yards_per_target": 6.16,
-      "yac_per_rec": 1.88,
-      "fpoe": null,
-      "stability": 4.05,
-      "volatility": 0.62,
-      "career_arc": null,
-      "exp_tier": "Veteran",
-      "opp_score": 46.8,
-      "usage_score": 36.4,
-      "player_score": 37.1
+      "player_score": 38.0
     },
     {
       "player": "Troy Franklin",
@@ -2567,9 +2540,36 @@
       "volatility": 0.42,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 42.3,
+      "opp_score": 42.1,
       "usage_score": 24.7,
-      "player_score": 37.1
+      "player_score": 37.0
+    },
+    {
+      "player": "David Moore",
+      "team": "CAR",
+      "age": 31,
+      "games": 14,
+      "snap_pct": 0.5394,
+      "routes_per_gm": 52.5,
+      "targets_per_gm": 4.07,
+      "receptions_per_gm": 2.29,
+      "air_yards_per_gm": 45.07,
+      "target_share_pct": 0.0974,
+      "air_yards_share_pct": 0.1414,
+      "wopr": 0.25,
+      "rz_tgt": 11,
+      "catch_rate": 0.5614,
+      "yards_per_route_run": 0.2,
+      "yards_per_target": 6.16,
+      "yac_per_rec": 1.88,
+      "fpoe": null,
+      "stability": 4.05,
+      "volatility": 0.62,
+      "career_arc": null,
+      "exp_tier": "Veteran",
+      "opp_score": 46.4,
+      "usage_score": 36.2,
+      "player_score": 36.9
     },
     {
       "player": "Jalen Nailor",
@@ -2594,9 +2594,9 @@
       "volatility": 0.49,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 27.9,
+      "opp_score": 27.5,
       "usage_score": 22.6,
-      "player_score": 36.5
+      "player_score": 36.3
     },
     {
       "player": "Kendrick Bourne",
@@ -2621,9 +2621,9 @@
       "volatility": 0.46,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 22.9,
+      "opp_score": 22.5,
       "usage_score": 28.2,
-      "player_score": 35.7
+      "player_score": 35.5
     },
     {
       "player": "Sterling Shepard",
@@ -2648,9 +2648,9 @@
       "volatility": 0.48,
       "career_arc": null,
       "exp_tier": "Senior Veteran",
-      "opp_score": 37.8,
-      "usage_score": 35.0,
-      "player_score": 35.3
+      "opp_score": 37.4,
+      "usage_score": 34.8,
+      "player_score": 35.1
     },
     {
       "player": "KaVontae Turpin",
@@ -2675,9 +2675,9 @@
       "volatility": 0.5,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 31.4,
+      "opp_score": 31.1,
       "usage_score": 18.9,
-      "player_score": 34.8
+      "player_score": 34.7
     },
     {
       "player": "Greg Dortch",
@@ -2702,9 +2702,9 @@
       "volatility": 0.64,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 28.2,
-      "usage_score": 16.4,
-      "player_score": 34.4
+      "opp_score": 27.8,
+      "usage_score": 16.3,
+      "player_score": 34.2
     },
     {
       "player": "Lil'Jordan Humphrey",
@@ -2729,9 +2729,9 @@
       "volatility": 0.65,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 26.4,
+      "opp_score": 26.0,
       "usage_score": 23.7,
-      "player_score": 33.7
+      "player_score": 33.5
     },
     {
       "player": "Adonai Mitchell",
@@ -2756,9 +2756,9 @@
       "volatility": 0.54,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 41.3,
+      "opp_score": 41.1,
       "usage_score": 21.7,
-      "player_score": 32.8
+      "player_score": 32.6
     },
     {
       "player": "Tyler Johnson",
@@ -2783,9 +2783,9 @@
       "volatility": 0.65,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 28.6,
-      "usage_score": 24.0,
-      "player_score": 32.7
+      "opp_score": 28.1,
+      "usage_score": 23.8,
+      "player_score": 32.4
     },
     {
       "player": "John Metchie",
@@ -2810,9 +2810,9 @@
       "volatility": 0.53,
       "career_arc": null,
       "exp_tier": null,
-      "opp_score": 28.1,
-      "usage_score": 29.5,
-      "player_score": 31.8
+      "opp_score": 27.6,
+      "usage_score": 29.3,
+      "player_score": 31.5
     },
     {
       "player": "Marlon Williams",
@@ -2837,9 +2837,9 @@
       "volatility": 0.52,
       "career_arc": null,
       "exp_tier": null,
-      "opp_score": 25.6,
+      "opp_score": 25.3,
       "usage_score": 28.1,
-      "player_score": 31.2
+      "player_score": 31.1
     },
     {
       "player": "Van Jefferson",
@@ -2864,9 +2864,9 @@
       "volatility": 0.47,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 29.7,
-      "usage_score": 26.0,
-      "player_score": 31.1
+      "opp_score": 29.4,
+      "usage_score": 25.9,
+      "player_score": 30.9
     },
     {
       "player": "Curtis Samuel",
@@ -2891,36 +2891,9 @@
       "volatility": 0.65,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 28.1,
+      "opp_score": 27.7,
       "usage_score": 23.0,
-      "player_score": 30.9
-    },
-    {
-      "player": "Jacoby Ford",
-      "team": "CLE",
-      "age": 38,
-      "games": 12,
-      "snap_pct": null,
-      "routes_per_gm": null,
-      "targets_per_gm": 3.58,
-      "receptions_per_gm": 3.08,
-      "air_yards_per_gm": -1.25,
-      "target_share_pct": 0.0585,
-      "air_yards_share_pct": -0.0029,
-      "wopr": 0.09,
-      "rz_tgt": 1,
-      "catch_rate": 0.8605,
-      "yards_per_route_run": null,
-      "yards_per_target": 5.23,
-      "yac_per_rec": 7.95,
-      "fpoe": null,
-      "stability": 4.45,
-      "volatility": 0.54,
-      "career_arc": null,
-      "exp_tier": "Year 3\u20134",
-      "opp_score": 15.5,
-      "usage_score": 33.8,
-      "player_score": 30.9
+      "player_score": 30.7
     },
     {
       "player": "JuJu Smith-Schuster",
@@ -2945,9 +2918,9 @@
       "volatility": 0.81,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 11.2,
-      "usage_score": 13.7,
-      "player_score": 30.4
+      "opp_score": 10.9,
+      "usage_score": 13.6,
+      "player_score": 30.3
     },
     {
       "player": "Malik Washington",
@@ -2972,9 +2945,9 @@
       "volatility": 0.49,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 18.6,
+      "opp_score": 18.4,
       "usage_score": 21.9,
-      "player_score": 29.7
+      "player_score": 29.6
     },
     {
       "player": "Kalif Raymond",
@@ -2999,9 +2972,9 @@
       "volatility": 0.7,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 10.4,
-      "usage_score": 10.2,
-      "player_score": 29.3
+      "opp_score": 10.2,
+      "usage_score": 10.1,
+      "player_score": 29.2
     },
     {
       "player": "Josh Reynolds",
@@ -3026,9 +2999,9 @@
       "volatility": 0.75,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 15.9,
+      "opp_score": 15.6,
       "usage_score": 24.2,
-      "player_score": 26.6
+      "player_score": 26.4
     },
     {
       "player": "Cedrick Wilson",
@@ -3053,7 +3026,7 @@
       "volatility": 0.74,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 12.8,
+      "opp_score": 12.6,
       "usage_score": 16.0,
       "player_score": 25.4
     },
@@ -3080,7 +3053,7 @@
       "volatility": 0.24,
       "career_arc": null,
       "exp_tier": null,
-      "opp_score": 9.9,
+      "opp_score": 9.8,
       "usage_score": 33.6,
       "player_score": 24.1
     },
@@ -3107,9 +3080,9 @@
       "volatility": 0.56,
       "career_arc": null,
       "exp_tier": "Senior Veteran",
-      "opp_score": 17.5,
-      "usage_score": 13.3,
-      "player_score": 23.8
+      "opp_score": 17.3,
+      "usage_score": 13.2,
+      "player_score": 23.7
     },
     {
       "player": "Dante Pettis",
@@ -3134,9 +3107,9 @@
       "volatility": 0.58,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 22.8,
-      "usage_score": 22.2,
-      "player_score": 23.4
+      "opp_score": 22.4,
+      "usage_score": 21.9,
+      "player_score": 23.2
     },
     {
       "player": "Jonathan Mingo",
@@ -3161,9 +3134,9 @@
       "volatility": 0.49,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 21.9,
+      "opp_score": 21.5,
       "usage_score": 19.1,
-      "player_score": 23.1
+      "player_score": 23.0
     },
     {
       "player": "Kevin Austin",
@@ -3188,9 +3161,9 @@
       "volatility": 0.44,
       "career_arc": null,
       "exp_tier": null,
-      "opp_score": 12.4,
+      "opp_score": 12.2,
       "usage_score": 26.6,
-      "player_score": 22.7
+      "player_score": 22.5
     },
     {
       "player": "Robert Woods",
@@ -3215,9 +3188,9 @@
       "volatility": 0.5,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 16.2,
-      "usage_score": 13.8,
-      "player_score": 22.4
+      "opp_score": 16.0,
+      "usage_score": 13.7,
+      "player_score": 22.3
     },
     {
       "player": "Luke McCaffrey",
@@ -3242,9 +3215,9 @@
       "volatility": 0.5,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 10.5,
-      "usage_score": 8.5,
-      "player_score": 22.4
+      "opp_score": 10.3,
+      "usage_score": 8.4,
+      "player_score": 22.3
     },
     {
       "player": "Jahan Dotson",
@@ -3269,9 +3242,9 @@
       "volatility": 1.09,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 19.9,
-      "usage_score": 17.9,
-      "player_score": 22.3
+      "opp_score": 19.5,
+      "usage_score": 17.8,
+      "player_score": 22.1
     },
     {
       "player": "Bub Means",
@@ -3296,9 +3269,9 @@
       "volatility": 0.79,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 10.7,
-      "usage_score": 27.4,
-      "player_score": 21.6
+      "opp_score": 10.4,
+      "usage_score": 27.2,
+      "player_score": 21.4
     },
     {
       "player": "Ja'Lynn Polk",
@@ -3323,9 +3296,9 @@
       "volatility": 0.76,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 22.6,
-      "usage_score": 16.0,
-      "player_score": 20.6
+      "opp_score": 22.4,
+      "usage_score": 15.9,
+      "player_score": 20.5
     },
     {
       "player": "Ryan Miller",
@@ -3350,9 +3323,9 @@
       "volatility": 0.57,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 9.9,
-      "usage_score": 13.1,
-      "player_score": 19.6
+      "opp_score": 9.7,
+      "usage_score": 13.0,
+      "player_score": 19.5
     },
     {
       "player": "Derius Davis",
@@ -3377,9 +3350,9 @@
       "volatility": 0.46,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 3.7,
-      "usage_score": 3.3,
-      "player_score": 19.6
+      "opp_score": 3.5,
+      "usage_score": 3.2,
+      "player_score": 19.5
     },
     {
       "player": "Tobais Palmer",
@@ -3404,9 +3377,9 @@
       "volatility": 0.53,
       "career_arc": null,
       "exp_tier": "Rookie",
-      "opp_score": 12.4,
-      "usage_score": 9.6,
-      "player_score": 19.0
+      "opp_score": 12.1,
+      "usage_score": 9.5,
+      "player_score": 18.8
     },
     {
       "player": "Simi Fehoko",
@@ -3431,9 +3404,9 @@
       "volatility": 0.54,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 11.6,
+      "opp_score": 11.5,
       "usage_score": 25.7,
-      "player_score": 18.6
+      "player_score": 18.5
     },
     {
       "player": "Devin Duvernay",
@@ -3458,9 +3431,9 @@
       "volatility": 0.56,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 5.4,
-      "usage_score": 8.9,
-      "player_score": 18.1
+      "opp_score": 5.2,
+      "usage_score": 8.8,
+      "player_score": 18.0
     },
     {
       "player": "Mason Tipton",
@@ -3485,9 +3458,9 @@
       "volatility": 0.82,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 16.4,
+      "opp_score": 16.2,
       "usage_score": 22.8,
-      "player_score": 18.0
+      "player_score": 17.9
     },
     {
       "player": "Ja'Corey Brooks",
@@ -3512,9 +3485,9 @@
       "volatility": 0.68,
       "career_arc": null,
       "exp_tier": "Rookie",
-      "opp_score": 17.8,
-      "usage_score": 14.9,
-      "player_score": 17.7
+      "opp_score": 17.6,
+      "usage_score": 14.8,
+      "player_score": 17.5
     },
     {
       "player": "Jake Bobo",
@@ -3539,9 +3512,9 @@
       "volatility": 0.7,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 3.9,
-      "usage_score": 3.8,
-      "player_score": 17.1
+      "opp_score": 3.7,
+      "usage_score": 3.6,
+      "player_score": 17.0
     },
     {
       "player": "Xavier Hutchinson",
@@ -3566,9 +3539,9 @@
       "volatility": 0.61,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 10.5,
-      "usage_score": 9.8,
-      "player_score": 12.9
+      "opp_score": 10.2,
+      "usage_score": 9.7,
+      "player_score": 12.7
     },
     {
       "player": "K.J. Osborn",
@@ -3593,8 +3566,8 @@
       "volatility": 0.64,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "opp_score": 9.4,
-      "usage_score": 17.6,
+      "opp_score": 9.3,
+      "usage_score": 17.5,
       "player_score": 12.7
     },
     {
@@ -3620,9 +3593,9 @@
       "volatility": 0.6,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "opp_score": 10.3,
-      "usage_score": 10.7,
-      "player_score": 12.2
+      "opp_score": 10.1,
+      "usage_score": 10.6,
+      "player_score": 12.1
     },
     {
       "player": "Odell Beckham",
@@ -3647,8 +3620,8 @@
       "volatility": 0.36,
       "career_arc": null,
       "exp_tier": null,
-      "opp_score": 9.0,
-      "usage_score": 6.4,
+      "opp_score": 8.9,
+      "usage_score": 6.3,
       "player_score": 12.1
     },
     {
@@ -3674,9 +3647,9 @@
       "volatility": 0.53,
       "career_arc": null,
       "exp_tier": null,
-      "opp_score": 9.8,
-      "usage_score": 7.4,
-      "player_score": 11.1
+      "opp_score": 9.6,
+      "usage_score": 7.3,
+      "player_score": 10.9
     },
     {
       "player": "Johnny Wilson",
@@ -3701,9 +3674,9 @@
       "volatility": 0.7,
       "career_arc": null,
       "exp_tier": "Year 2",
-      "opp_score": 7.1,
-      "usage_score": 4.2,
-      "player_score": 10.4
+      "opp_score": 6.9,
+      "usage_score": 4.0,
+      "player_score": 10.3
     }
   ]
 }
