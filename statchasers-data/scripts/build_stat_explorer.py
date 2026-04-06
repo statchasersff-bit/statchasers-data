@@ -40,6 +40,7 @@ Union file:
 from __future__ import annotations
 
 import json
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -145,9 +146,11 @@ RB_FIELDS: list[FieldDef] = [
     FieldDef("long",              "LNG",     "number",  "core",      False, "Longest rush"),
     FieldDef("explosive_runs",    "20+",     "number",  "explosive", False, "Runs of 15+ yards"),
     FieldDef("rz_carries",        "RZ CAR",  "number",  "redZone",   False, "Carries inside the 20"),
-    FieldDef("broken_tackles",    "BRK TKL", "number",  "contact",   False, "Rushing broken tackles (PFR)"),
-    FieldDef("yds_after_contact", "YAC",     "number",  "contact",   False, "Rushing yards after contact (PFR)"),
-    FieldDef("yac_per_carry",     "YAC/C",   "decimal", "contact",   False, "Yards after contact per carry (PFR)"),
+    FieldDef("broken_tackles",     "BRK TKL", "number",  "contact",   False, "Rushing broken tackles (PFR)"),
+    FieldDef("yds_before_contact", "YBC",     "number",  "contact",   False, "Rushing yards before contact (PFR)"),
+    FieldDef("ybc_per_carry",      "YBC/C",   "decimal", "contact",   False, "Yards before contact per carry (PFR)"),
+    FieldDef("yds_after_contact",  "YAC",     "number",  "contact",   False, "Rushing yards after contact (PFR)"),
+    FieldDef("yac_per_carry",      "YAC/C",   "decimal", "contact",   False, "Yards after contact per carry (PFR)"),
     FieldDef("tgt",               "TGT",     "number",  "receiving", False, "Receiving targets"),
     FieldDef("rec",               "REC",     "number",  "receiving", False, "Receptions"),
     FieldDef("rec_yds",           "R YDS",   "number",  "receiving", False, "Receiving yards"),
@@ -263,10 +266,34 @@ def _build_pfr_abbrev_lookup(pfr_df: pd.DataFrame | None) -> dict[str, str]:
     return {ab: fn for ab, fn in mapping.items() if counts[ab] == 1}
 
 
+# Generational suffixes PFR appends that Sleeper / PBP canonical names omit.
+_PFR_SUFFIXES = frozenset(["jr", "jr.", "sr", "sr.", "ii", "iii", "iv", "v"])
+
+
+def _norm_pfr(name: str) -> str:
+    """Normalise a player name for PFR → canonical matching.
+
+    Strips punctuation (dots, hyphens, apostrophes), lowercases, and drops
+    trailing generational suffixes so that:
+      'Kenneth Walker III' → 'kennethwalker'
+      'Tyrone Tracy Jr.'   → 'tyronetracy'
+      'Brian Robinson Jr.' → 'brianrobinson'
+      'Ty.Johnson'         → 'tyjohnson'  (PBP 2-char dot prefix → PFR full name)
+    """
+    clean = re.sub(r"[.\-']", " ", name).lower()
+    parts = clean.split()
+    while parts and parts[-1] in _PFR_SUFFIXES:
+        parts.pop()
+    return "".join(parts)
+
+
 _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "T.Etienne": {"JAX": "Travis Etienne", "CAR": "Trevor Etienne"},
     "B.Robinson": {"ATL": "Bijan Robinson", "SF": "Brian Robinson", "WAS": "Brian Robinson"},
     "J.Williams": {"DEN": "Javonte Williams", "NO": "Jamaal Williams"},
+    # "K.Walker" is ambiguous in Sleeper (multiple players) so the unambiguous
+    # abbrev lookup misses it and the name stays abbreviated.
+    "K.Walker":  {"SEA": "Kenneth Walker"},
 }
 
 
@@ -395,8 +422,9 @@ def _aggregate_pfr_rush(pfr: pd.DataFrame | None) -> dict[str, dict]:
     if pfr is None or pfr.empty:
         return {}
     cols = {
-        "broken_tackles":    "rushing_broken_tackles",
-        "yds_after_contact": "rushing_yards_after_contact",
+        "broken_tackles":     "rushing_broken_tackles",
+        "yds_before_contact": "rushing_yards_before_contact",
+        "yds_after_contact":  "rushing_yards_after_contact",
     }
     agg_spec = {
         out_key: (src_col, "sum")
@@ -673,23 +701,26 @@ def _sanitize_qb(raw: dict, full_name: str, team: str,
 
 def _sanitize_rb(raw_rush: dict, raw_rec: dict | None,
                   full_name: str, team: str, pfr_stats: dict) -> dict[str, Any]:
+    pfr_ybc  = pfr_stats.get("yds_before_contact")
     pfr_yac  = pfr_stats.get("yds_after_contact")
     carries  = raw_rush.get("carries") or 0
     return {
-        "player":            full_name,
-        "team":              team,
-        "position":          "RB",
-        "gp":                raw_rush.get("gp"),
-        "carries":           carries,
-        "yds":               raw_rush.get("yds"),
-        "ypc":               raw_rush.get("ypc"),
-        "td":                raw_rush.get("td"),
-        "long":              raw_rush.get("long"),
-        "explosive_runs":    raw_rush.get("explosive_runs"),
-        "rz_carries":        raw_rush.get("rz_carries"),
-        "broken_tackles":    pfr_stats.get("broken_tackles"),
-        "yds_after_contact": round(pfr_yac, 1) if pfr_yac is not None else None,
-        "yac_per_carry":     round(pfr_yac / carries, 2) if (pfr_yac and carries > 0) else None,
+        "player":             full_name,
+        "team":               team,
+        "position":           "RB",
+        "gp":                 raw_rush.get("gp"),
+        "carries":            carries,
+        "yds":                raw_rush.get("yds"),
+        "ypc":                raw_rush.get("ypc"),
+        "td":                 raw_rush.get("td"),
+        "long":               raw_rush.get("long"),
+        "explosive_runs":     raw_rush.get("explosive_runs"),
+        "rz_carries":         raw_rush.get("rz_carries"),
+        "broken_tackles":     pfr_stats.get("broken_tackles"),
+        "yds_before_contact": round(pfr_ybc, 1) if pfr_ybc is not None else None,
+        "ybc_per_carry":      round(pfr_ybc / carries, 2) if (pfr_ybc is not None and carries > 0) else None,
+        "yds_after_contact":  round(pfr_yac, 1) if pfr_yac is not None else None,
+        "yac_per_carry":      round(pfr_yac / carries, 2) if (pfr_yac is not None and carries > 0) else None,
         "tgt":               raw_rec.get("tgt") if raw_rec else None,
         "rec":               raw_rec.get("rec") if raw_rec else None,
         "rec_yds":           raw_rec.get("rec_yds") if raw_rec else None,
@@ -760,6 +791,9 @@ def build_stat_explorer_dataset(
         pfr_agg = _aggregate_pfr_rush(pfr_rush)
     else:
         pfr_agg = _aggregate_pfr_rec(pfr_rec)
+    # Normalised fallback: strips suffixes (Jr., III) and punctuation (Ty.Johnson)
+    # so canonical Sleeper names match PFR names that include suffixes.
+    pfr_agg_norm: dict[str, dict] = {_norm_pfr(k): v for k, v in pfr_agg.items()}
 
     # ── compute PBP raw stats ────────────────────────────────────────────────
     if position == "QB":
@@ -812,7 +846,9 @@ def build_stat_explorer_dataset(
         # which reflects current roster and is stale for historical seasons.
         team = raw.get("team_pbp", "") or info.get("team", "")
 
-        pfr_stats = pfr_agg.get(full_name, {})
+        pfr_stats = pfr_agg.get(full_name) \
+                    or pfr_agg_norm.get(_norm_pfr(full_name)) \
+                    or {}
 
         if position == "QB":
             row = _sanitize_qb(raw.to_dict(), full_name, team, pfr_stats)
