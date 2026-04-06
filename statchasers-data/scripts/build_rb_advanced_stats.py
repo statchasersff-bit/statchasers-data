@@ -26,6 +26,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import re
+
 import pandas as pd
 
 ROOT         = Path(__file__).resolve().parent.parent
@@ -88,6 +90,27 @@ def _abbrev(full_name: str) -> str:
     if len(parts) < 2:
         return full_name
     return f"{parts[0][0].upper()}.{parts[-1]}"
+
+
+# Generational suffixes that PFR appends but Sleeper / PBP omit.
+_NAME_SUFFIXES = frozenset(["jr", "jr.", "sr", "sr.", "ii", "iii", "iv", "v"])
+
+
+def _norm_pfr(name: str) -> str:
+    """Normalise a player name for PFR → canonical matching.
+
+    Strips punctuation (dots, hyphens), lowercases, and drops trailing
+    generational suffixes (Jr., III, …) so that:
+      'Kenneth Walker III' → 'kennethwalker'
+      'Tyrone Tracy Jr.'   → 'tyronetracy'
+      'Brian Robinson Jr.' → 'brianrobinson'
+      'Ty.Johnson'         → 'tyjohnson'   (PBP 2-char prefix → PFR full name)
+    """
+    clean = re.sub(r"[.\-']", " ", name).lower()
+    parts = clean.split()
+    while parts and parts[-1] in _NAME_SUFFIXES:
+        parts.pop()
+    return "".join(parts)
 
 
 def _build_sleeper_abbrev_lookup(sleeper_players: list[dict]) -> dict[str, str]:
@@ -230,6 +253,9 @@ def build_season(
     """Build one season's worth of RB advanced stats rows (no rank assigned yet)."""
 
     pfr_agg = _aggregate_pfr_rush(pfr, season)
+    # Normalised fallback: strips suffixes (Jr., III) and punctuation (Ty.Johnson)
+    # so 'Kenneth Walker' matches 'Kenneth Walker III', etc.
+    pfr_agg_norm: dict[str, dict] = {_norm_pfr(k): v for k, v in pfr_agg.items()}
 
     rush = pbp_season[pbp_season["rush_attempt"] == 1].copy()
     if rush.empty:
@@ -340,7 +366,9 @@ def build_season(
         td_val         = grp.loc[max_idx, "touchdown"] if "touchdown" in grp.columns else 0
         longest_run_td = 1 if td_val == 1 or td_val is True else 0
 
-        pd_stats    = pfr_agg.get(str(full_name), {})
+        pd_stats    = (pfr_agg.get(str(full_name))
+                       or pfr_agg_norm.get(_norm_pfr(str(full_name)))
+                       or {})
         pfr_carries = pd_stats.get("carries") or 0
         ybc_total   = pd_stats.get("ybc")
         yac_total   = pd_stats.get("yac")
