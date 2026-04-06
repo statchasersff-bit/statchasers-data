@@ -213,7 +213,14 @@ def compute_qb_trends(
         total_dbs = len(grp)
 
         if not rush_plays.empty and "rusher_player_name" in rush_plays.columns:
-            qb_rush = rush_plays[rush_plays["rusher_player_name"] == pbp_name]
+            # Filter by BOTH name AND team to avoid collisions with same-abbreviation
+            # non-QB players (e.g. "B.Allen" matches both Brandon Allen QB/TEN and
+            # Breelton Allen RB/NYJ — without the team filter all 19 RB rushes were
+            # credited to the QB).
+            qb_rush = rush_plays[
+                (rush_plays["rusher_player_name"] == pbp_name) &
+                (rush_plays["posteam"] == pbp_team)
+            ]
         else:
             qb_rush = pd.DataFrame()
 

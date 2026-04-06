@@ -167,8 +167,8 @@
       "games": 12,
       "dropbacksPerGame": 36.3,
       "deltaDropbacksPerGame": -22.6,
-      "rushAttPerGame": 1.8,
-      "deltaRushAttPerGame": -0.2,
+      "rushAttPerGame": 1.2,
+      "deltaRushAttPerGame": 0.5,
       "rushTd": 1,
       "recentWindowGames": 4,
       "priorWindowGames": 8
@@ -453,9 +453,9 @@
       "games": 1,
       "dropbacksPerGame": 31.0,
       "deltaDropbacksPerGame": null,
-      "rushAttPerGame": 19.0,
+      "rushAttPerGame": 0.0,
       "deltaRushAttPerGame": null,
-      "rushTd": 1,
+      "rushTd": 0,
       "recentWindowGames": null,
       "priorWindowGames": null
     },
