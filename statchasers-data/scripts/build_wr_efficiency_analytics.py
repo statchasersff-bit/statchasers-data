@@ -65,6 +65,16 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "J.Smith":      {"ATL": "Jonnu Smith",       "MIA": "Jonnu Smith",     "PIT": "Jonnu Smith"},
     "Mi.Wilson":    {"ARI": "Michael Wilson"},
     "K.Juszczyk":   {"SF": "Kyle Juszczyk"},
+    # nflverse abbreviates "Amon-Ra St. Brown" as "A.St. Brown" (multi-word last name).
+    # _abbrev("Amon-Ra St. Brown") produces "A.Brown" which collides with A.J. Brown,
+    # so we handle this manually.
+    "A.St. Brown":  {"DET": "Amon-Ra St. Brown"},
+}
+
+# PFR sometimes uses a different given name than Sleeper/PBP (nickname vs full).
+# Keys are _norm(canonical_name), values are _norm(pfr_player_name).
+_CANONICAL_TO_PFR_NORM: dict[str, str] = {
+    "joshua palmer": "josh palmer",
 }
 
 
@@ -206,16 +216,39 @@ def _norm_pfr(name: str) -> str:
     return _norm(name)
 
 
+_BTKL_NORM_SUFFIXES = frozenset(["jr", "sr", "ii", "iii", "iv", "v"])
+
+
+def _strip_btkl_suffixes(norm: str) -> str:
+    """'marvin harrison jr' → 'marvin harrison', 'calvin austin iii' → 'calvin austin'."""
+    parts = norm.split()
+    while parts and parts[-1] in _BTKL_NORM_SUFFIXES:
+        parts.pop()
+    return " ".join(parts)
+
+
 def _build_btkl_lookup(season: int) -> dict[str, float]:
-    """Return {norm_full_name → total receiving_broken_tackles} for season."""
+    """Return {norm_full_name → total receiving_broken_tackles} for season.
+
+    The dict is augmented with suffix-stripped aliases so that Sleeper canonical
+    names without generational suffixes (e.g. 'Marvin Harrison') match PFR names
+    that include them (e.g. 'Marvin Harrison Jr.').
+    """
     pfr = pd.read_parquet(PFR_REC_PATH)
     pfr = pfr[pfr["season"] == season].copy()
     pfr["_nname"] = pfr["pfr_player_name"].fillna("").apply(_norm_pfr)
-    agg = (
+    agg: dict[str, float] = (
         pfr.groupby("_nname")["receiving_broken_tackles"]
         .sum()
         .to_dict()
     )
+    # Add suffix-stripped aliases (only when the stripped key doesn't already exist).
+    stripped_aliases = {
+        _strip_btkl_suffixes(k): v
+        for k, v in agg.items()
+        if _strip_btkl_suffixes(k) != k and _strip_btkl_suffixes(k) not in agg
+    }
+    agg.update(stripped_aliases)
     return agg
 
 
@@ -496,6 +529,12 @@ def build_season(season: int) -> list[dict[str, Any]]:
         # ---- Broken tackles (PFR) ----
         norm_name = _norm(canonical)
         btkl_raw  = btkl_by_name.get(norm_name)
+        # Nickname alias fallback (e.g. "joshua palmer" → "josh palmer").
+        # Only try when the direct lookup truly missed (None), not when it returned 0.
+        if btkl_raw is None:
+            alias_norm = _CANONICAL_TO_PFR_NORM.get(norm_name, "")
+            if alias_norm:
+                btkl_raw = btkl_by_name.get(alias_norm)
         broken_tackles = int(btkl_raw) if btkl_raw is not None and not np.isnan(btkl_raw) else None
         btkl_per_rec   = (
             round(float(broken_tackles / rec), 3)
