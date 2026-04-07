@@ -1,0 +1,381 @@
+Build the full TE explorer data pipeline with 4 separate 2025-only datasets, modeled similarly to the WR tables but adjusted for TE-specific usage.
+
+Goal
+
+Create 4 TE-only JSON datasets for the explorer:
+
+te_advanced_stats_2025.json
+te_player_overview_2025.json
+te_trends_2025.json
+te_efficiency_analytics_2025.json
+
+Store them in the same output folder pattern as the QB, RB, and WR datasets.
+
+Position filter
+
+Only include TE players.
+
+General rules
+2025 season only for now
+no duplicate players by canonical id
+percentages stored as decimals, not formatted strings
+guard divide-by-zero on all rate stats
+use null only when data is truly unavailable
+count stats should be integers
+rate stats should be rounded to sensible precision before output
+each output should include a meta object with:
+position: "TE"
+table
+season: "2025"
+generated_at
+columns
+Dataset 1: TE Stat Explorer / Advanced Stats
+Output file
+te_advanced_stats_2025.json
+Purpose
+
+Broad receiving profile table for TEs:
+
+receiving production
+target role
+after-catch profile
+explosive plays
+Required row shape
+type TeAdvancedStatsRow = {
+  rank: number
+  player: string
+  team: string
+  g: number
+
+  rec: number
+  yds: number
+  ypr: number | null
+  ybc: number | null
+  ybc_per_rec: number | null
+  yac: number | null
+  yac_per_rec: number | null
+  brktkl: number | null
+
+  tgt: number
+  target_share: number | null
+  rz_tgt: number | null
+
+  rec_10_plus: number | null
+  rec_20_plus: number | null
+  rec_30_plus: number | null
+  rec_40_plus: number | null
+  rec_50_plus: number | null
+  lng: number | null
+}
+Column order
+[
+  "rank",
+  "player",
+  "team",
+  "g",
+  "rec",
+  "yds",
+  "ypr",
+  "ybc",
+  "ybc_per_rec",
+  "yac",
+  "yac_per_rec",
+  "brktkl",
+  "tgt",
+  "target_share",
+  "rz_tgt",
+  "rec_10_plus",
+  "rec_20_plus",
+  "rec_30_plus",
+  "rec_40_plus",
+  "rec_50_plus",
+  "lng"
+]
+Definitions
+rank = default sort rank
+g = games played
+rec = receptions
+yds = receiving yards
+ypr = yards per reception
+ybc = yards before catch
+ybc_per_rec = yards before catch / receptions
+yac = yards after catch
+yac_per_rec = yards after catch / receptions
+brktkl = broken tackles on receptions
+tgt = targets
+target_share = team target share as decimal
+rz_tgt = red-zone targets
+rec_10_plus through rec_50_plus = receptions gaining at least that many yards
+lng = longest reception
+Default sort
+
+Sort by:
+
+yds desc
+rec desc
+tgt desc
+
+Then assign rank.
+
+Dataset 2: TE Player Overview
+Output file
+te_player_overview_2025.json
+Purpose
+
+High-level TE profile table similar to WR Player Overview, but tailored to TE usage.
+
+Required row shape
+type TePlayerOverviewRow = {
+  player: string
+  team: string
+  age: number | null
+  games: number
+
+  snap_pct: number | null
+
+  routes_per_gm: number | null
+  targets_per_gm: number | null
+  receptions_per_gm: number | null
+  air_yards_per_gm: number | null
+
+  target_share_pct: number | null
+  air_yards_share_pct: number | null
+  wopr: number | null
+  rz_tgt: number | null
+
+  catch_rate: number | null
+  yards_per_route_run: number | null
+  yards_per_target: number | null
+  yac_per_rec: number | null
+  fpoe: number | null
+
+  stability: number | null
+  volatility: number | null
+
+  career_arc: string | null
+  exp_tier: string | null
+
+  opp_score: number | null
+  usage_score: number | null
+  player_score: number | null
+}
+Column order
+[
+  "player",
+  "team",
+  "age",
+  "games",
+  "snap_pct",
+  "routes_per_gm",
+  "targets_per_gm",
+  "receptions_per_gm",
+  "air_yards_per_gm",
+  "target_share_pct",
+  "air_yards_share_pct",
+  "wopr",
+  "rz_tgt",
+  "catch_rate",
+  "yards_per_route_run",
+  "yards_per_target",
+  "yac_per_rec",
+  "fpoe",
+  "stability",
+  "volatility",
+  "career_arc",
+  "exp_tier",
+  "opp_score",
+  "usage_score",
+  "player_score"
+]
+Definitions
+same logic as WR overview where applicable
+TE-specific emphasis should still come from route participation and red-zone role
+do not compute te_tier in backend; that will be client-side
+Default sort
+
+Sort by:
+
+player_score desc
+opp_score desc
+targets_per_gm desc
+Dataset 3: TE Role & Usage Trends
+Output file
+te_trends_2025.json
+Purpose
+
+Track recent-vs-prior role movement for TEs in 2025.
+
+Required row shape
+type TeTrendsRow = {
+  player: string
+  team: string
+  games: number
+
+  snap_pct: number | null
+  delta_snap_pct: number | null
+
+  routes_per_gm: number | null
+  delta_routes_per_gm: number | null
+
+  targets_per_gm: number | null
+  delta_targets_per_gm: number | null
+
+  air_yards_per_gm: number | null
+  delta_air_yards_per_gm: number | null
+
+  adot: number | null
+  delta_adot: number | null
+
+  rz_tgt: number | null
+  end_zone_tgt: number | null
+
+  usage_score: number | null
+  role_trend: string | null
+}
+Column order
+[
+  "player",
+  "team",
+  "games",
+  "snap_pct",
+  "delta_snap_pct",
+  "routes_per_gm",
+  "delta_routes_per_gm",
+  "targets_per_gm",
+  "delta_targets_per_gm",
+  "air_yards_per_gm",
+  "delta_air_yards_per_gm",
+  "adot",
+  "delta_adot",
+  "rz_tgt",
+  "end_zone_tgt",
+  "usage_score",
+  "role_trend"
+]
+Trend window logic
+
+Use:
+
+recent window = last 4 games
+prior window = previous 4 games
+
+If too few games:
+
+delta fields = null
+role_trend = "Insufficient Data"
+Usage Score formula
+
+Compute usage_score as a percentile-based 0–100 role score among TEs in 2025 using:
+
+Routes/Gm = 25%
+TGT/Gm = 25%
+Snap % = 15%
+Air/Gm = 15%
+RZ TGT = 10%
+End Zone TGT = 10%
+Role Trend labels
+
+Use:
+
+Rising Fast
+Trending Up
+Stable
+Trending Down
+Falling Fast
+Boom/Bust Role
+Insufficient Data
+Default sort
+
+Sort by:
+
+usage_score desc
+delta_targets_per_gm desc
+delta_air_yards_per_gm desc
+Dataset 4: TE Efficiency Analytics
+Output file
+te_efficiency_analytics_2025.json
+Purpose
+
+TE efficiency table similar to WR efficiency, but with TE-specific weighting.
+
+Required row shape
+type TeEfficiencyAnalyticsRow = {
+  player: string
+  team: string
+  games: number
+  targets: number
+
+  epa_per_target: number | null
+  success_rate: number | null
+  yards_per_target: number | null
+  catch_rate: number | null
+  fpoe: number | null
+
+  yards_per_route_run: number | null
+  targets_per_route_run: number | null
+  air_yards_per_target: number | null
+  air_yards_share_pct: number | null
+
+  explosive_play_rate: number | null
+  explosive_rec_20_plus: number | null
+  explosive_rec_40_plus: number | null
+  longest_reception: number | null
+
+  yac_per_rec: number | null
+  ybc_per_rec: number | null
+  broken_tackles: number | null
+  btkl_per_rec: number | null
+
+  te_efficiency_score: number | null
+}
+Column order
+[
+  "player",
+  "team",
+  "games",
+  "targets",
+  "epa_per_target",
+  "success_rate",
+  "yards_per_target",
+  "catch_rate",
+  "fpoe",
+  "yards_per_route_run",
+  "targets_per_route_run",
+  "air_yards_per_target",
+  "air_yards_share_pct",
+  "explosive_play_rate",
+  "explosive_rec_20_plus",
+  "explosive_rec_40_plus",
+  "longest_reception",
+  "yac_per_rec",
+  "ybc_per_rec",
+  "broken_tackles",
+  "btkl_per_rec",
+  "te_efficiency_score"
+]
+TE Efficiency Score formula
+
+Compute in pipeline as a percentile-based 0–100 composite:
+
+EPA / TGT = 20%
+YPRR = 25%
+Success Rate = 20%
+Yds / TGT = 15%
+Catch Rate = 10%
+Explosive Play Rate = 5%
+BTKL / Rec = 5%
+Default sort
+
+Sort by:
+
+te_efficiency_score desc
+yards_per_route_run desc
+Validation for all 4 outputs
+
+Before writing:
+
+only TEs included
+no duplicate players
+all required keys present
+meta.columns match exact frontend order
+files write successfully
