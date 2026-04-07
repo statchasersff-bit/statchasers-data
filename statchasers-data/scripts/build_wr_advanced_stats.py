@@ -26,6 +26,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import re
+
 import pandas as pd
 
 ROOT         = Path(__file__).resolve().parent.parent
@@ -174,6 +176,10 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "Mi.Wilson": {"ARI": "Michael Wilson"},
     # K.Juszczyk: maps to Kyle Juszczyk (FB) so WR pos filter correctly excludes him
     "K.Juszczyk": {"SF": "Kyle Juszczyk"},
+    # A.St. Brown: nflverse uses "A.St. Brown"; Sleeper canonical is "Amon-Ra St. Brown".
+    # Without this override the unambiguous lookup misses it and the player appears
+    # in output with the abbreviated name instead of resolving to Amon-Ra.
+    "A.St. Brown": {"DET": "Amon-Ra St. Brown"},
 }
 
 
@@ -234,19 +240,54 @@ def _resolve_with_team(
 
 
 # ---------------------------------------------------------------------------
+# PFR name normalisation helper
+# ---------------------------------------------------------------------------
+
+_PFR_NAME_SUFFIXES = frozenset(["jr", "jr.", "sr", "sr.", "ii", "iii", "iv", "v"])
+
+# Sleeper canonical → PFR normalised name when a player's common name in PFR
+# differs from the legal name stored in Sleeper (e.g. Josh vs Joshua).
+_CANONICAL_TO_PFR_NORM: dict[str, str] = {
+    "joshuapalmer": "joshpalmer",
+}
+
+
+def _norm_pfr(name: str) -> str:
+    """Strip punctuation, lower-case, and remove trailing generational suffixes.
+
+    Allows cross-matching between PFR's raw name ('Marvin Harrison Jr.')
+    and Sleeper's canonical name ('Marvin Harrison') or vice versa.
+    """
+    parts = re.sub(r"[.\-']", " ", name).lower().split()
+    if parts and parts[-1] in _PFR_NAME_SUFFIXES:
+        parts.pop()
+    return "".join(parts)
+
+
+# ---------------------------------------------------------------------------
 # PFR broken-tackle aggregation (receiving)
 # ---------------------------------------------------------------------------
 
-def _aggregate_pfr_rec(pfr: pd.DataFrame, season: int) -> dict[str, dict]:
+def _aggregate_pfr_rec(
+    pfr: pd.DataFrame, season: int
+) -> tuple[dict[str, dict], dict[str, dict]]:
+    """Return (pfr_agg, pfr_agg_norm) for the given season.
+
+    *pfr_agg*      keyed by the raw PFR player name  (e.g. 'Marvin Harrison Jr.')
+    *pfr_agg_norm* keyed by _norm_pfr(raw_name)      (e.g. 'marvinharrison')
+    The normalised dict is used as a fallback when the canonical Sleeper name
+    (which lacks the suffix) misses in the primary dict.
+    """
     s = pfr[pfr["season"] == season].copy()
     if s.empty:
-        return {}
+        return {}, {}
     agg = (
         s.groupby("pfr_player_name")
         .agg(brktkl=("receiving_broken_tackles", "sum"))
         .to_dict("index")
     )
-    return agg
+    agg_norm = {_norm_pfr(k): v for k, v in agg.items()}
+    return agg, agg_norm
 
 
 # ---------------------------------------------------------------------------
@@ -267,7 +308,7 @@ def build_season(
 ) -> list[dict]:
     """Build one season's WR advanced stats rows (no rank assigned yet)."""
 
-    pfr_agg = _aggregate_pfr_rec(pfr, season)
+    pfr_agg, pfr_agg_norm = _aggregate_pfr_rec(pfr, season)
 
     pass_plays = pbp_season[pbp_season["pass_attempt"] == 1].copy()
     if pass_plays.empty:
@@ -369,8 +410,15 @@ def build_season(
         rec_50   = int((comp_yds >= 50).sum())
         lng      = int(comp_yds.max()) if rec > 0 else None
 
-        # Broken tackles from PFR (matched by abbreviation → full name)
-        pfr_stats = pfr_agg.get(full_name, {})
+        # Broken tackles from PFR — primary key is raw PFR name; fall back to
+        # normalised key so suffix variants ('Marvin Harrison Jr.' → 'marvinharrison')
+        # match the Sleeper canonical name ('Marvin Harrison').  A secondary
+        # alias table handles nickname mismatches (Joshua vs Josh Palmer).
+        _pfr_key = _norm_pfr(full_name)
+        _pfr_key = _CANONICAL_TO_PFR_NORM.get(_pfr_key, _pfr_key)
+        pfr_stats = pfr_agg.get(full_name) \
+                    or pfr_agg_norm.get(_pfr_key) \
+                    or {}
         bt = pfr_stats.get("brktkl")
         brktkl = int(bt) if bt is not None and not pd.isna(bt) else None
 
