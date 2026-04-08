@@ -3,7 +3,7 @@
     "position": "TE",
     "table": "te_player_overview",
     "season": "2025",
-    "generated_at": "2026-04-08T00:09:19Z",
+    "generated_at": "2026-04-08T00:14:59Z",
     "columns": [
       "player",
       "team",
@@ -29,7 +29,7 @@
       "exp_tier",
       "opp_score",
       "usage_score",
-      "player_score"
+      "efficiency_score"
     ]
   },
   "players": [
@@ -58,7 +58,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 68.4,
       "usage_score": 42.5,
-      "player_score": 85.3
+      "efficiency_score": 85.3
     },
     {
       "player": "Sam LaPorta",
@@ -85,7 +85,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 50.7,
       "usage_score": 76.8,
-      "player_score": 82.7
+      "efficiency_score": 82.7
     },
     {
       "player": "Greg Dulcich",
@@ -112,7 +112,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 41.2,
       "usage_score": 35.7,
-      "player_score": 80.1
+      "efficiency_score": 80.1
     },
     {
       "player": "George Kittle",
@@ -139,7 +139,7 @@
       "exp_tier": "Veteran",
       "opp_score": 74.8,
       "usage_score": 80.1,
-      "player_score": 79.9
+      "efficiency_score": 79.9
     },
     {
       "player": "Pat Freiermuth",
@@ -166,7 +166,7 @@
       "exp_tier": "Veteran",
       "opp_score": 66.9,
       "usage_score": 43.1,
-      "player_score": 75.9
+      "efficiency_score": 75.9
     },
     {
       "player": "Tucker Kraft",
@@ -193,7 +193,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 53.5,
       "usage_score": 78.3,
-      "player_score": 75.9
+      "efficiency_score": 75.9
     },
     {
       "player": "Brenton Strange",
@@ -220,7 +220,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 65.7,
       "usage_score": 69.4,
-      "player_score": 73.8
+      "efficiency_score": 73.8
     },
     {
       "player": "Trey McBride",
@@ -247,7 +247,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 99.3,
       "usage_score": 95.5,
-      "player_score": 71.7
+      "efficiency_score": 71.7
     },
     {
       "player": "Juwan Johnson",
@@ -274,7 +274,7 @@
       "exp_tier": "Veteran",
       "opp_score": 82.9,
       "usage_score": 76.6,
-      "player_score": 70.6
+      "efficiency_score": 70.6
     },
     {
       "player": "Colby Parkinson",
@@ -301,7 +301,7 @@
       "exp_tier": "Veteran",
       "opp_score": 59.2,
       "usage_score": 54.1,
-      "player_score": 70.3
+      "efficiency_score": 70.3
     },
     {
       "player": "Jackson Hawes",
@@ -328,7 +328,7 @@
       "exp_tier": "Rookie",
       "opp_score": 21.5,
       "usage_score": 20.2,
-      "player_score": 70.2
+      "efficiency_score": 70.2
     },
     {
       "player": "Brock Bowers",
@@ -355,7 +355,7 @@
       "exp_tier": "Year 2",
       "opp_score": 89.5,
       "usage_score": 85.7,
-      "player_score": 67.3
+      "efficiency_score": 67.3
     },
     {
       "player": "Kyle Pitts",
@@ -382,7 +382,7 @@
       "exp_tier": "Veteran",
       "opp_score": 94.7,
       "usage_score": 90.9,
-      "player_score": 65.6
+      "efficiency_score": 65.6
     },
     {
       "player": "Travis Kelce",
@@ -409,7 +409,7 @@
       "exp_tier": "Senior Veteran",
       "opp_score": 90.1,
       "usage_score": 83.7,
-      "player_score": 65.6
+      "efficiency_score": 65.6
     },
     {
       "player": "Hunter Henry",
@@ -436,7 +436,7 @@
       "exp_tier": "Senior Veteran",
       "opp_score": 89.7,
       "usage_score": 78.2,
-      "player_score": 63.1
+      "efficiency_score": 63.1
     },
     {
       "player": "Dalton Schultz",
@@ -463,7 +463,7 @@
       "exp_tier": "Veteran",
       "opp_score": 87.6,
       "usage_score": 74.9,
-      "player_score": 63.0
+      "efficiency_score": 63.0
     },
     {
       "player": "AJ Barner",
@@ -490,7 +490,7 @@
       "exp_tier": "Year 2",
       "opp_score": 72.8,
       "usage_score": 65.8,
-      "player_score": 62.9
+      "efficiency_score": 62.9
     },
     {
       "player": "Taysom Hill",
@@ -517,7 +517,7 @@
       "exp_tier": "Veteran",
       "opp_score": 47.1,
       "usage_score": 74.1,
-      "player_score": 62.6
+      "efficiency_score": 62.6
     },
     {
       "player": "Tyler Warren",
@@ -544,7 +544,7 @@
       "exp_tier": "Rookie",
       "opp_score": 93.1,
       "usage_score": 83.1,
-      "player_score": 62.3
+      "efficiency_score": 62.3
     },
     {
       "player": "Oronde Gadsden",
@@ -571,7 +571,7 @@
       "exp_tier": "Veteran",
       "opp_score": 77.7,
       "usage_score": 71.9,
-      "player_score": 62.3
+      "efficiency_score": 62.3
     },
     {
       "player": "Colston Loveland",
@@ -598,7 +598,7 @@
       "exp_tier": "Rookie",
       "opp_score": 83.7,
       "usage_score": 70.9,
-      "player_score": 61.5
+      "efficiency_score": 61.5
     },
     {
       "player": "Daniel Bellinger",
@@ -625,7 +625,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 34.3,
       "usage_score": 47.1,
-      "player_score": 59.7
+      "efficiency_score": 59.7
     },
     {
       "player": "Chig Okonkwo",
@@ -652,7 +652,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 64.3,
       "usage_score": 56.2,
-      "player_score": 59.5
+      "efficiency_score": 59.5
     },
     {
       "player": "Darnell Washington",
@@ -679,7 +679,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 52.0,
       "usage_score": 50.7,
-      "player_score": 57.9
+      "efficiency_score": 57.9
     },
     {
       "player": "Dawson Knox",
@@ -706,7 +706,7 @@
       "exp_tier": "Veteran",
       "opp_score": 67.7,
       "usage_score": 45.1,
-      "player_score": 56.9
+      "efficiency_score": 56.9
     },
     {
       "player": "Elijah Higgins",
@@ -733,7 +733,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 29.7,
       "usage_score": 29.8,
-      "player_score": 56.6
+      "efficiency_score": 56.6
     },
     {
       "player": "Tyler Higbee",
@@ -760,7 +760,7 @@
       "exp_tier": "Senior Veteran",
       "opp_score": 33.0,
       "usage_score": 43.1,
-      "player_score": 56.5
+      "efficiency_score": 56.5
     },
     {
       "player": "Noah Fant",
@@ -787,7 +787,7 @@
       "exp_tier": "Veteran",
       "opp_score": 30.8,
       "usage_score": 25.1,
-      "player_score": 56.0
+      "efficiency_score": 56.0
     },
     {
       "player": "Josh Oliver",
@@ -814,7 +814,7 @@
       "exp_tier": "Veteran",
       "opp_score": 23.9,
       "usage_score": 20.6,
-      "player_score": 54.6
+      "efficiency_score": 54.6
     },
     {
       "player": "Isaiah Likely",
@@ -841,7 +841,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 51.1,
       "usage_score": 46.7,
-      "player_score": 54.0
+      "efficiency_score": 54.0
     },
     {
       "player": "Adam Trautman",
@@ -868,7 +868,7 @@
       "exp_tier": "Veteran",
       "opp_score": 16.4,
       "usage_score": 41.5,
-      "player_score": 53.3
+      "efficiency_score": 53.3
     },
     {
       "player": "Darren Waller",
@@ -895,7 +895,7 @@
       "exp_tier": "Veteran",
       "opp_score": 57.9,
       "usage_score": 50.1,
-      "player_score": 53.0
+      "efficiency_score": 53.0
     },
     {
       "player": "Austin Hooper",
@@ -922,7 +922,7 @@
       "exp_tier": "Senior Veteran",
       "opp_score": 32.3,
       "usage_score": 32.3,
-      "player_score": 52.5
+      "efficiency_score": 52.5
     },
     {
       "player": "Dallas Goedert",
@@ -949,7 +949,7 @@
       "exp_tier": "Veteran",
       "opp_score": 84.1,
       "usage_score": 80.5,
-      "player_score": 52.4
+      "efficiency_score": 52.4
     },
     {
       "player": "Julian Hill",
@@ -976,7 +976,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 20.9,
       "usage_score": 36.0,
-      "player_score": 51.3
+      "efficiency_score": 51.3
     },
     {
       "player": "Charlie Kolar",
@@ -1003,7 +1003,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 17.6,
       "usage_score": 28.7,
-      "player_score": 51.1
+      "efficiency_score": 51.1
     },
     {
       "player": "Jake Ferguson",
@@ -1030,7 +1030,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 83.4,
       "usage_score": 71.7,
-      "player_score": 49.9
+      "efficiency_score": 49.9
     },
     {
       "player": "T.J. Hockenson",
@@ -1057,7 +1057,7 @@
       "exp_tier": "Veteran",
       "opp_score": 70.6,
       "usage_score": 63.0,
-      "player_score": 49.6
+      "efficiency_score": 49.6
     },
     {
       "player": "Evan Engram",
@@ -1084,7 +1084,7 @@
       "exp_tier": "Veteran",
       "opp_score": 66.6,
       "usage_score": 45.3,
-      "player_score": 47.3
+      "efficiency_score": 47.3
     },
     {
       "player": "Cade Otton",
@@ -1111,7 +1111,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 69.7,
       "usage_score": 79.2,
-      "player_score": 47.0
+      "efficiency_score": 47.0
     },
     {
       "player": "Luke Musgrave",
@@ -1138,7 +1138,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 32.7,
       "usage_score": 25.8,
-      "player_score": 46.1
+      "efficiency_score": 46.1
     },
     {
       "player": "Harold Fannin",
@@ -1165,7 +1165,7 @@
       "exp_tier": null,
       "opp_score": 90.3,
       "usage_score": 82.5,
-      "player_score": 46.0
+      "efficiency_score": 46.0
     },
     {
       "player": "Gunnar Helm",
@@ -1192,7 +1192,7 @@
       "exp_tier": "Rookie",
       "opp_score": 57.6,
       "usage_score": 42.3,
-      "player_score": 44.4
+      "efficiency_score": 44.4
     },
     {
       "player": "Mike Gesicki",
@@ -1219,7 +1219,7 @@
       "exp_tier": "Veteran",
       "opp_score": 51.5,
       "usage_score": 39.1,
-      "player_score": 43.8
+      "efficiency_score": 43.8
     },
     {
       "player": "Theo Johnson",
@@ -1246,7 +1246,7 @@
       "exp_tier": "Year 2",
       "opp_score": 94.6,
       "usage_score": 57.9,
-      "player_score": 43.5
+      "efficiency_score": 43.5
     },
     {
       "player": "Tanner Hudson",
@@ -1273,7 +1273,7 @@
       "exp_tier": "Veteran",
       "opp_score": 23.2,
       "usage_score": 22.4,
-      "player_score": 42.2
+      "efficiency_score": 42.2
     },
     {
       "player": "Tommy Tremble",
@@ -1300,7 +1300,7 @@
       "exp_tier": "Veteran",
       "opp_score": 39.3,
       "usage_score": 40.9,
-      "player_score": 41.8
+      "efficiency_score": 41.8
     },
     {
       "player": "Cole Kmet",
@@ -1327,7 +1327,7 @@
       "exp_tier": "Veteran",
       "opp_score": 55.9,
       "usage_score": 56.2,
-      "player_score": 41.1
+      "efficiency_score": 41.1
     },
     {
       "player": "Michael Mayer",
@@ -1354,7 +1354,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 53.6,
       "usage_score": 53.4,
-      "player_score": 40.9
+      "efficiency_score": 40.9
     },
     {
       "player": "Zach Ertz",
@@ -1381,7 +1381,7 @@
       "exp_tier": "Senior Veteran",
       "opp_score": 81.2,
       "usage_score": 70.4,
-      "player_score": 40.5
+      "efficiency_score": 40.5
     },
     {
       "player": "Will Dissly",
@@ -1408,7 +1408,7 @@
       "exp_tier": "Veteran",
       "opp_score": 5.1,
       "usage_score": 12.5,
-      "player_score": 39.9
+      "efficiency_score": 39.9
     },
     {
       "player": "John Bates",
@@ -1435,7 +1435,7 @@
       "exp_tier": "Veteran",
       "opp_score": 9.6,
       "usage_score": 35.1,
-      "player_score": 38.8
+      "efficiency_score": 38.8
     },
     {
       "player": "Mark Andrews",
@@ -1462,7 +1462,7 @@
       "exp_tier": "Veteran",
       "opp_score": 84.9,
       "usage_score": 54.8,
-      "player_score": 38.6
+      "efficiency_score": 38.6
     },
     {
       "player": "Jake Tonges",
@@ -1489,7 +1489,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 46.3,
       "usage_score": 63.1,
-      "player_score": 37.3
+      "efficiency_score": 37.3
     },
     {
       "player": "Elijah Arroyo",
@@ -1516,7 +1516,7 @@
       "exp_tier": "Rookie",
       "opp_score": 34.7,
       "usage_score": 19.5,
-      "player_score": 37.2
+      "efficiency_score": 37.2
     },
     {
       "player": "Terrance Ferguson",
@@ -1543,7 +1543,7 @@
       "exp_tier": "Rookie",
       "opp_score": 34.4,
       "usage_score": 39.5,
-      "player_score": 37.2
+      "efficiency_score": 37.2
     },
     {
       "player": "John FitzPatrick",
@@ -1570,7 +1570,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 9.5,
       "usage_score": 11.7,
-      "player_score": 36.6
+      "efficiency_score": 36.6
     },
     {
       "player": "Jeremy Ruckert",
@@ -1597,7 +1597,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 25.8,
       "usage_score": 30.1,
-      "player_score": 36.4
+      "efficiency_score": 36.4
     },
     {
       "player": "Drew Sample",
@@ -1624,7 +1624,7 @@
       "exp_tier": "Veteran",
       "opp_score": 4.7,
       "usage_score": 35.7,
-      "player_score": 36.1
+      "efficiency_score": 36.1
     },
     {
       "player": "Johnny Mundt",
@@ -1651,7 +1651,7 @@
       "exp_tier": "Veteran",
       "opp_score": 10.1,
       "usage_score": 15.1,
-      "player_score": 35.9
+      "efficiency_score": 35.9
     },
     {
       "player": "Davis Allen",
@@ -1678,7 +1678,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 31.6,
       "usage_score": 37.7,
-      "player_score": 35.7
+      "efficiency_score": 35.7
     },
     {
       "player": "David Njoku",
@@ -1705,7 +1705,7 @@
       "exp_tier": "Veteran",
       "opp_score": 52.6,
       "usage_score": 59.9,
-      "player_score": 35.6
+      "efficiency_score": 35.6
     },
     {
       "player": "Tanner Conner",
@@ -1732,7 +1732,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 16.5,
       "usage_score": 17.4,
-      "player_score": 35.5
+      "efficiency_score": 35.5
     },
     {
       "player": "Mitchell Evans",
@@ -1759,7 +1759,7 @@
       "exp_tier": "Rookie",
       "opp_score": 91.5,
       "usage_score": 50.4,
-      "player_score": 33.9
+      "efficiency_score": 33.9
     },
     {
       "player": "Ja'Tavion Sanders",
@@ -1786,7 +1786,7 @@
       "exp_tier": "Year 2",
       "opp_score": 45.8,
       "usage_score": 41.8,
-      "player_score": 33.4
+      "efficiency_score": 33.4
     },
     {
       "player": "Hunter Long",
@@ -1813,7 +1813,7 @@
       "exp_tier": "Veteran",
       "opp_score": 10.1,
       "usage_score": 29.8,
-      "player_score": 33.3
+      "efficiency_score": 33.3
     },
     {
       "player": "Jonnu Smith",
@@ -1840,7 +1840,7 @@
       "exp_tier": "Veteran",
       "opp_score": 58.9,
       "usage_score": 34.9,
-      "player_score": 31.7
+      "efficiency_score": 31.7
     },
     {
       "player": "Cade Stover",
@@ -1867,7 +1867,7 @@
       "exp_tier": "Year 2",
       "opp_score": 6.6,
       "usage_score": 39.9,
-      "player_score": 29.0
+      "efficiency_score": 29.0
     },
     {
       "player": "Mason Taylor",
@@ -1894,7 +1894,7 @@
       "exp_tier": "Rookie",
       "opp_score": 72.0,
       "usage_score": 70.7,
-      "player_score": 28.7
+      "efficiency_score": 28.7
     },
     {
       "player": "Luke Schoonmaker",
@@ -1921,7 +1921,7 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 19.7,
       "usage_score": 18.5,
-      "player_score": 25.4
+      "efficiency_score": 25.4
     },
     {
       "player": "Mo Alie-Cox",
@@ -1948,7 +1948,7 @@
       "exp_tier": "Veteran",
       "opp_score": 20.0,
       "usage_score": 33.0,
-      "player_score": 24.3
+      "efficiency_score": 24.3
     },
     {
       "player": "Brock Wright",
@@ -1975,7 +1975,7 @@
       "exp_tier": "Veteran",
       "opp_score": 12.5,
       "usage_score": 46.3,
-      "player_score": 19.8
+      "efficiency_score": 19.8
     },
     {
       "player": "Noah Gray",
@@ -2002,7 +2002,7 @@
       "exp_tier": "Veteran",
       "opp_score": 34.7,
       "usage_score": 41.9,
-      "player_score": 18.4
+      "efficiency_score": 18.4
     }
   ]
 }

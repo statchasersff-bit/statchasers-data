@@ -62,7 +62,7 @@ COLUMNS: list[str] = [
     "catch_rate", "yards_per_route_run", "yards_per_target", "yac_per_rec", "fpoe",
     "stability", "volatility",
     "career_arc", "exp_tier",
-    "opp_score", "usage_score", "player_score",
+    "opp_score", "usage_score", "efficiency_score",
 ]
 
 # ---------------------------------------------------------------------------
@@ -496,7 +496,7 @@ def build_season(
             # Scores added below
             "opp_score":    None,
             "usage_score":  None,
-            "player_score": None,
+            "efficiency_score": None,
         })
 
     return rows
@@ -542,7 +542,7 @@ def _add_composite_scores(rows: list[dict]) -> list[dict]:
         + _pct_rank("fpoe")              * 0.10
         + _pct_rank("stability")         * 0.10
     )
-    df["player_score"] = player.round(1)
+    df["efficiency_score"] = player.round(1)
 
     return df.to_dict(orient="records")
 
@@ -624,10 +624,10 @@ def main() -> None:
 
     rows = _add_composite_scores(rows)
 
-    # Sort: player_score desc, opp_score desc, targets_per_gm desc
+    # Sort: efficiency_score desc, opp_score desc, targets_per_gm desc
     rows.sort(
         key=lambda r: (
-            -(r["player_score"] or 0),
+            -(r["efficiency_score"] or 0),
             -(r["opp_score"] or 0),
             -(r["targets_per_gm"] or 0),
         )
