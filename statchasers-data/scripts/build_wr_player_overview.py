@@ -70,7 +70,7 @@ COLUMNS: list[str] = [
     "catch_rate", "yards_per_route_run", "yards_per_target", "yac_per_rec", "fpoe",
     "stability", "volatility",
     "career_arc", "exp_tier",
-    "opp_score", "usage_score", "player_score",
+    "opp_score", "usage_score", "efficiency_score", "overall_score", "player_score",
 ]
 
 
@@ -673,6 +673,8 @@ def _add_scores(rows: list[dict]) -> list[dict]:
     arr_yac      = col("yac_per_rec")
     arr_fpoe     = col("fpoe")
     arr_stab     = col("stability")
+    arr_vol      = col("volatility")
+    arr_yprr     = col("yards_per_route_run")
 
     final: list[dict] = []
     for r in rows:
@@ -689,6 +691,8 @@ def _add_scores(rows: list[dict]) -> list[dict]:
         p_yac     = _pct(r["yac_per_rec"],         arr_yac)
         p_fpoe    = _pct(r["fpoe"],                arr_fpoe)
         p_stab    = _pct(r["stability"],           arr_stab)
+        p_vol_inv = 100.0 - _pct(r["volatility"],         arr_vol)
+        p_yprr    = _pct(r["yards_per_route_run"],        arr_yprr)
 
         # Opportunity Score — how coveted is this WR's role?
         opp_score = round(
@@ -709,24 +713,41 @@ def _add_scores(rows: list[dict]) -> list[dict]:
             1,
         )
 
-        # Efficiency Score (internal component)
-        eff_score = (
-            p_ypt   * 0.35
-            + p_catch * 0.25
-            + p_yac   * 0.20
+        # Efficiency Score — per-touch production quality (exposed field)
+        efficiency_score = round(
+            p_ypt    * 0.25
+            + p_catch * 0.20
+            + p_yac   * 0.15
             + p_fpoe  * 0.20
-        )
-
-        # Player Score — overall WR fantasy/production value
-        player_score = round(
-            opp_score   * 0.45
-            + usage_score * 0.25
-            + eff_score   * 0.25
-            + p_stab      * 0.05,
+            + p_yprr  * 0.20,
             1,
         )
 
-        final.append({**r, "opp_score": opp_score, "usage_score": usage_score, "player_score": player_score})
+        # Overall Score — blended profile composite (0–100)
+        opp_role        = opp_score * 0.55 + usage_score * 0.45
+        stability_block = p_stab * 0.60 + p_vol_inv * 0.40
+        premium_block   = p_tgt_shr * 0.40 + p_air_shr * 0.35 + p_rz * 0.25
+        overall_score = round(
+            min(100.0, max(0.0,
+                opp_role          * 0.35
+                + efficiency_score * 0.35
+                + stability_block  * 0.10
+                + premium_block    * 0.20,
+            )),
+            1,
+        )
+
+        # player_score kept as alias of overall_score for backward compatibility
+        player_score = overall_score
+
+        final.append({
+            **r,
+            "opp_score":        opp_score,
+            "usage_score":      usage_score,
+            "efficiency_score": efficiency_score,
+            "overall_score":    overall_score,
+            "player_score":     player_score,
+        })
 
     return final
 
@@ -954,10 +975,9 @@ def main() -> None:
         # Composite scores within-season pool
         scored = _add_scores(raw_rows)
 
-        # Sort: player_score → opp_score → targets_per_gm (all desc)
+        # Sort: overall_score → opp_score → usage_score (all desc)
         scored.sort(
-            key=lambda r: (r.get("player_score") or 0, r.get("opp_score") or 0, r.get("targets_per_gm") or 0),
-            reverse=True,
+            key=lambda r: (-(r.get("overall_score") or 0), -(r.get("opp_score") or 0), -(r.get("usage_score") or 0)),
         )
         print(f"  {len(scored)} WRs qualified for {season}.")
         _validate(scored, str(season))
@@ -975,8 +995,7 @@ def main() -> None:
     all_agg   = _aggregate_all(all_raw_rows, yoe_lookup)
     all_scored = _add_scores(all_agg)
     all_scored.sort(
-        key=lambda r: (r.get("player_score") or 0, r.get("opp_score") or 0, r.get("targets_per_gm") or 0),
-        reverse=True,
+        key=lambda r: (-(r.get("overall_score") or 0), -(r.get("opp_score") or 0), -(r.get("usage_score") or 0)),
     )
     _validate(all_scored, "all-seasons")
 

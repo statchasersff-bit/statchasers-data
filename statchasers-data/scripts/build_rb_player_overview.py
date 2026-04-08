@@ -80,11 +80,13 @@ COLUMNS: list[dict] = [
     {"key": "volatility",        "label": "Volatility",     "type": "number", "group": "Stability",              "defaultVisible": True},
     {"key": "career_arc",        "label": "Career Arc",     "type": "string", "group": "Career Context",         "defaultVisible": True},
     {"key": "exp_tier",          "label": "Exp. Tier",      "type": "string", "group": "Career Context",         "defaultVisible": True},
-    {"key": "opp_score",         "label": "Opp Score",      "type": "number", "group": "Composite Scores",       "defaultVisible": True},
-    {"key": "usage_score",       "label": "Usage Score",    "type": "number", "group": "Composite Scores",       "defaultVisible": True},
-    {"key": "player_score",      "label": "Player Score",   "type": "number", "group": "Composite Scores",       "defaultVisible": True},
-    {"key": "rb_tier_score",     "label": "Tier Score",     "type": "number", "group": "Composite Scores",       "defaultVisible": True},
-    {"key": "rb_tier",           "label": "Tier",           "type": "string", "group": "Composite Scores",       "defaultVisible": True},
+    {"key": "opp_score",         "label": "Opp Score",        "type": "number", "group": "Composite Scores",       "defaultVisible": True},
+    {"key": "usage_score",       "label": "Usage Score",      "type": "number", "group": "Composite Scores",       "defaultVisible": True},
+    {"key": "efficiency_score",  "label": "Efficiency Score", "type": "number", "group": "Composite Scores",       "defaultVisible": True},
+    {"key": "overall_score",     "label": "Overall Score",    "type": "number", "group": "Composite Scores",       "defaultVisible": True},
+    {"key": "player_score",      "label": "Player Score",     "type": "number", "group": "Composite Scores",       "defaultVisible": False},
+    {"key": "rb_tier_score",     "label": "Tier Score",       "type": "number", "group": "Composite Scores",       "defaultVisible": True},
+    {"key": "rb_tier",           "label": "Tier",             "type": "string", "group": "Composite Scores",       "defaultVisible": True},
 ]
 
 
@@ -517,6 +519,7 @@ def build(
     arr_break    = _col("breakaway_run_pct")
     arr_fpoe     = _col("fpoe")
     arr_stab     = _col("stability")
+    arr_vol      = _col("volatility")
 
     final_rows: list[dict] = []
     for r in raw_rows:
@@ -533,42 +536,55 @@ def build(
         p_break    = _pct(r["breakaway_run_pct"], arr_break)
         p_fpoe     = _pct(r["fpoe"],              arr_fpoe)
         p_stab     = _pct(r["stability"],         arr_stab)
+        p_vol_inv  = 100.0 - _pct(r["volatility"], arr_vol)
 
         # 1. Opportunity Score
         opp_score = round(
-            p_touches  * 0.40
-            + p_snap   * 0.20
-            + p_rz     * 0.20
-            + p_gl     * 0.10
+            p_touches    * 0.40
+            + p_snap     * 0.20
+            + p_rz       * 0.20
+            + p_gl       * 0.10
             + p_tgtshare * 0.10,
             1,
         )
 
         # 2. Usage Score (all role/deployment signals — no efficiency metrics)
         usage_score = round(
-            p_tgtspg    * 0.35
-            + p_route   * 0.25
-            + p_rush_pg * 0.25
+            p_tgtspg     * 0.35
+            + p_route    * 0.25
+            + p_rush_pg  * 0.25
             + p_tgtshare * 0.15,
             1,
         )
 
-        # 3. Efficiency Score (internal, also used in player_score)
-        eff_score = (
-            p_ypts  * 0.35
-            + p_break * 0.25
-            + p_fpoe  * 0.40
-        )
-
-        # 4. Player Score
-        player_score = round(
-            opp_score   * 0.50
-            + usage_score * 0.25
-            + eff_score   * 0.25,
+        # 3. Efficiency Score — exposed field (per-touch production quality)
+        efficiency_score = round(
+            p_ypts   * 0.30
+            + p_exp10 * 0.20
+            + p_break * 0.20
+            + p_fpoe  * 0.20
+            + p_stab  * 0.10,
             1,
         )
 
-        # 5. RB Tier Score
+        # 4. Overall Score — blended profile composite (0–100)
+        opp_role        = opp_score * 0.55 + usage_score * 0.45
+        stability_block = p_stab * 0.60 + p_vol_inv * 0.40
+        premium_block   = p_gl * 0.40 + p_rz * 0.35 + p_tgtshare * 0.25
+        overall_score = round(
+            min(100.0, max(0.0,
+                opp_role        * 0.40
+                + efficiency_score * 0.30
+                + stability_block  * 0.15
+                + premium_block    * 0.15,
+            )),
+            1,
+        )
+
+        # player_score kept as alias of overall_score for backward compatibility
+        player_score = overall_score
+
+        # 5. RB Tier Score (kept for tier labelling)
         receiving_sub = (
             p_tgtspg   * 0.50
             + p_route  * 0.30
@@ -577,22 +593,30 @@ def build(
         rb_tier_score = round(
             opp_score       * 0.50
             + receiving_sub * 0.20
-            + eff_score     * 0.20
+            + efficiency_score * 0.20
             + p_stab        * 0.10,
             1,
         )
 
         final_rows.append({
             **r,
-            "opp_score":    opp_score,
-            "usage_score":  usage_score,
-            "player_score": player_score,
-            "rb_tier_score":rb_tier_score,
-            "rb_tier":      _rb_tier_label(rb_tier_score),
+            "opp_score":        opp_score,
+            "usage_score":      usage_score,
+            "efficiency_score": efficiency_score,
+            "overall_score":    overall_score,
+            "player_score":     player_score,
+            "rb_tier_score":    rb_tier_score,
+            "rb_tier":          _rb_tier_label(rb_tier_score),
         })
 
     # ── Sort + rank ──────────────────────────────────────────────────────────
-    final_rows.sort(key=lambda r: (r.get("rb_tier_score") or 0.0), reverse=True)
+    final_rows.sort(
+        key=lambda r: (
+            -(r.get("overall_score") or 0.0),
+            -(r.get("opp_score") or 0.0),
+            -(r.get("usage_score") or 0.0),
+        ),
+    )
     ordered_keys = [c["key"] for c in COLUMNS]
     result: list[dict] = []
     for i, r in enumerate(final_rows, start=1):

@@ -648,12 +648,12 @@ def main() -> None:
 
     rows = _add_composite_scores(rows)
 
-    # Sort: overall_score desc, usage_score desc, targets_per_gm desc
+    # Sort: overall_score → opp_score → usage_score (all desc)
     rows.sort(
         key=lambda r: (
             -(r["overall_score"] or 0),
+            -(r["opp_score"] or 0),
             -(r["usage_score"] or 0),
-            -(r["targets_per_gm"] or 0),
         )
     )
 
