@@ -23,6 +23,7 @@ Output JSON shape:
 from __future__ import annotations
 
 import json
+import math
 import re
 import sys
 from datetime import datetime, timezone
@@ -74,6 +75,8 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "J.Smith":      {"ATL": "Jonnu Smith",       "MIA": "Jonnu Smith",     "PIT": "Jonnu Smith"},
     "Mi.Wilson":    {"ARI": "Michael Wilson"},
     "K.Juszczyk":   {"SF": "Kyle Juszczyk"},
+    # Multi-word last name — nflverse uses A.St. Brown, _abbrev() produces A.Brown
+    "A.St. Brown":  {"DET": "Amon-Ra St. Brown"},
     # Non-WR receivers whose Sleeper team field is stale (None) or uses a different
     # team code than nflverse PBP, causing the pos-based fallback to pick the wrong
     # WR with the same abbreviation.
@@ -277,6 +280,20 @@ def _delta(recent: float | None, prior: float | None) -> float | None:
 
 
 # ---------------------------------------------------------------------------
+# NaN / Inf cleanup for JSON serialisation
+# ---------------------------------------------------------------------------
+
+def _clean_rows(rows: list[dict]) -> list[dict]:
+    """Replace float NaN/Inf with None so json.dump produces valid JSON."""
+    cleaned = []
+    for row in rows:
+        cleaned.append({
+            k: (None if isinstance(v, float) and not math.isfinite(v) else v)
+            for k, v in row.items()
+        })
+    return cleaned
+
+
 # Usage score (0-100 percentile composite)
 # ---------------------------------------------------------------------------
 
@@ -566,6 +583,38 @@ def main() -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
     players = build()
+
+    # ── Patch usage_score from player overview (single source of truth) ──────
+    overview_path = OUTPUT_DIR / f"wr_player_overview_{SEASON}.json"
+    if overview_path.exists():
+        with open(overview_path) as _f:
+            _ov = json.load(_f)
+        _ov_rows = _ov.get("players", [])
+        # Two-pass lookup: exact name, then (team, last_name) fallback
+        _ov_exact: dict[str, float | None] = {
+            p["player"]: p.get("usage_score") for p in _ov_rows
+        }
+        _ov_team_last: dict[tuple, float | None] = {
+            (p["team"], p["player"].split()[-1]): p.get("usage_score")
+            for p in _ov_rows
+        }
+        patched = 0
+        for p in players:
+            if p["player"] in _ov_exact:
+                p["usage_score"] = _ov_exact[p["player"]]
+                patched += 1
+            else:
+                key = (p.get("team"), p["player"].split()[-1])
+                if key in _ov_team_last:
+                    p["usage_score"] = _ov_team_last[key]
+                    patched += 1
+        players.sort(key=lambda p: p.get("usage_score") or 0.0, reverse=True)
+        print(f"[{SEASON}] Patched usage_score from player overview for {patched} WRs")
+    else:
+        print(f"[{SEASON}] WARN: {overview_path} not found — using analytics-computed usage_score")
+
+    # ── NaN → None before serialisation ──────────────────────────────────────
+    players = _clean_rows(players)
 
     out = {
         "meta": {

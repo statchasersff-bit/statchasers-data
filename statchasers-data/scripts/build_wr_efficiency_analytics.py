@@ -620,14 +620,28 @@ def main() -> None:
         if overview_path.exists():
             with open(overview_path) as _f:
                 _ov = json.load(_f)
-            _ov_scores: dict[str, float | None] = {
-                p["player"]: p.get("efficiency_score") for p in _ov.get("players", [])
+            _ov_rows = _ov.get("players", [])
+            # Two-pass lookup: exact name, then (team, last_name) fallback
+            # needed for cases like Amon-Ra St. Brown (analytics) vs A.St. Brown (overview)
+            _ov_exact: dict[str, float | None] = {
+                p["player"]: p.get("efficiency_score") for p in _ov_rows
             }
+            _ov_team_last: dict[tuple, float | None] = {
+                (p["team"], p["player"].split()[-1]): p.get("efficiency_score")
+                for p in _ov_rows
+            }
+            patched = 0
             for p in players:
-                if p["player"] in _ov_scores:
-                    p["efficiency_score"] = _ov_scores[p["player"]]
+                if p["player"] in _ov_exact:
+                    p["efficiency_score"] = _ov_exact[p["player"]]
+                    patched += 1
+                else:
+                    key = (p.get("team"), p["player"].split()[-1])
+                    if key in _ov_team_last:
+                        p["efficiency_score"] = _ov_team_last[key]
+                        patched += 1
             players.sort(key=lambda p: p.get("efficiency_score") or 0.0, reverse=True)
-            print(f"[{season}] Patched efficiency_score from player overview for {len(_ov_scores)} WRs")
+            print(f"[{season}] Patched efficiency_score from player overview for {patched} WRs")
         else:
             print(f"[{season}] WARN: {overview_path} not found — using analytics-computed efficiency_score")
 
