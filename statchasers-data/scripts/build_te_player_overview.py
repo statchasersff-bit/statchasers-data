@@ -62,7 +62,7 @@ COLUMNS: list[str] = [
     "catch_rate", "yards_per_route_run", "yards_per_target", "yac_per_rec", "fpoe",
     "stability", "volatility",
     "career_arc", "exp_tier",
-    "opp_score", "usage_score", "efficiency_score",
+    "opp_score", "usage_score", "efficiency_score", "overall_score",
 ]
 
 # ---------------------------------------------------------------------------
@@ -494,9 +494,10 @@ def build_season(
             "career_arc":         career_arc,
             "exp_tier":           exp_tier,
             # Scores added below
-            "opp_score":    None,
-            "usage_score":  None,
+            "opp_score":       None,
+            "usage_score":     None,
             "efficiency_score": None,
+            "overall_score":   None,
         })
 
     return rows
@@ -533,7 +534,7 @@ def _add_composite_scores(rows: list[dict]) -> list[dict]:
     )
     df["opp_score"] = opp.round(1)
 
-    # Player score: overall production composite
+    # Efficiency score: per-touch production quality
     player = (
         _pct_rank("yards_per_route_run") * 0.25
         + _pct_rank("catch_rate")        * 0.20
@@ -543,6 +544,29 @@ def _add_composite_scores(rows: list[dict]) -> list[dict]:
         + _pct_rank("stability")         * 0.10
     )
     df["efficiency_score"] = player.round(1)
+
+    # Overall score: blended composite across all four dimensions
+    # Opportunity / Role block (35%): 55% opp + 45% usage
+    opp_role = df["opp_score"] * 0.55 + df["usage_score"] * 0.45
+    # Efficiency block (35%): efficiency_score directly
+    efficiency = df["efficiency_score"]
+    # Stability / Reliability block (15%): stability pct + inverse volatility pct
+    stability_block = (
+        _pct_rank("stability")             * 0.60
+        + (100 - _pct_rank("volatility"))  * 0.40
+    )
+    # Premium Role block (15%): red zone targets + target share pct
+    premium_block = (
+        _pct_rank("rz_tgt")            * 0.50
+        + _pct_rank("target_share_pct") * 0.50
+    )
+    overall = (
+        opp_role        * 0.35
+        + efficiency    * 0.35
+        + stability_block * 0.15
+        + premium_block   * 0.15
+    ).clip(0, 100).round(1)
+    df["overall_score"] = overall
 
     return df.to_dict(orient="records")
 
@@ -624,11 +648,11 @@ def main() -> None:
 
     rows = _add_composite_scores(rows)
 
-    # Sort: efficiency_score desc, opp_score desc, targets_per_gm desc
+    # Sort: overall_score desc, usage_score desc, targets_per_gm desc
     rows.sort(
         key=lambda r: (
-            -(r["efficiency_score"] or 0),
-            -(r["opp_score"] or 0),
+            -(r["overall_score"] or 0),
+            -(r["usage_score"] or 0),
             -(r["targets_per_gm"] or 0),
         )
     )
@@ -641,6 +665,8 @@ def main() -> None:
     for r in rows:
         missing = set(COLUMNS) - set(r.keys())
         assert not missing, f"Missing columns for {r['player']}: {missing}"
+        assert r.get("efficiency_score") is not None, f"Null efficiency_score: {r['player']}"
+        assert r.get("overall_score") is not None, f"Null overall_score: {r['player']}"
     print(f"Validation OK: {len(rows)} TEs, no duplicates")
 
     ordered_rows = [{c: r.get(c) for c in COLUMNS} for r in rows]
