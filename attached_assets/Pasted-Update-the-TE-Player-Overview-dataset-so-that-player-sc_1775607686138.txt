@@ -1,0 +1,110 @@
+Update the TE Player Overview dataset so that:
+
+player_score is renamed to efficiency_score
+add a new backend-computed field called overall_score
+Goal
+
+The TE Player Overview composite section should now include:
+
+opp_score
+usage_score
+efficiency_score
+overall_score
+
+Do not remove the existing client-side te_tier logic in frontend.
+
+Required row shape update
+type TePlayerOverviewRow = {
+  player: string
+  team: string
+  age: number | null
+  games: number
+
+  snap_pct: number | null
+
+  routes_per_gm: number | null
+  targets_per_gm: number | null
+  receptions_per_gm: number | null
+  air_yards_per_gm: number | null
+
+  target_share_pct: number | null
+  air_yards_share_pct: number | null
+  wopr: number | null
+  rz_tgt: number | null
+
+  catch_rate: number | null
+  yards_per_route_run: number | null
+  yards_per_target: number | null
+  yac_per_rec: number | null
+  fpoe: number | null
+
+  stability: number | null
+  volatility: number | null
+
+  career_arc: string | null
+  exp_tier: string | null
+
+  opp_score: number | null
+  usage_score: number | null
+  efficiency_score: number | null
+  overall_score: number | null
+}
+Column order
+
+Update meta.columns to:
+
+[
+  "player",
+  "team",
+  "age",
+  "games",
+  "snap_pct",
+  "routes_per_gm",
+  "targets_per_gm",
+  "receptions_per_gm",
+  "air_yards_per_gm",
+  "target_share_pct",
+  "air_yards_share_pct",
+  "wopr",
+  "rz_tgt",
+  "catch_rate",
+  "yards_per_route_run",
+  "yards_per_target",
+  "yac_per_rec",
+  "fpoe",
+  "stability",
+  "volatility",
+  "career_arc",
+  "exp_tier",
+  "opp_score",
+  "usage_score",
+  "efficiency_score",
+  "overall_score"
+]
+Overall Score formula
+
+Compute overall_score as a 0–100 backend composite using percentile-style normalization and weighted blending:
+
+Opportunity / Role block — 35%
+55% opp_score
+45% usage_score
+Efficiency block — 35%
+100% efficiency_score
+Stability / Reliability block — 15%
+60% stability
+40% inverse volatility
+Premium Role block — 15%
+50% percentile of rz_tgt
+50% percentile of target_share_pct
+Output requirements
+final overall_score should be clamped 0–100
+round to whole number or 1 decimal, whichever is already standard for composite scores
+if an input is missing, use best-effort normalization and avoid breaking the row
+validate all TE rows contain efficiency_score and overall_score
+Default sort
+
+Update backend default sort to:
+
+overall_score descending
+usage_score descending
+targets_per_gm descending
