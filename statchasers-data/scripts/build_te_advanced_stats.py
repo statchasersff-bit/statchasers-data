@@ -153,6 +153,11 @@ _PFR_NAME_SUFFIXES = frozenset(["jr", "jr.", "sr", "sr.", "ii", "iii", "iv", "v"
 
 _CANONICAL_TO_PFR_NORM: dict[str, str] = {}
 
+_EXCLUDED_PLAYERS: frozenset[str] = frozenset({
+    "Eli Wilson",
+    "Daniel Brown",
+})
+
 
 def _norm_pfr(name: str) -> str:
     """Strip punctuation, lower-case, remove trailing generational suffixes."""
@@ -395,6 +400,7 @@ def main() -> None:
     player_metrics = raw_m if isinstance(raw_m, list) else raw_m.get("players", [])
 
     rows = build_season(pbp_full, pfr, sleeper_players, player_metrics)
+    rows = [r for r in rows if r["player"] not in _EXCLUDED_PLAYERS]
     _validate(rows)
 
     ordered_keys = [c["key"] for c in COLUMNS]

@@ -3,7 +3,7 @@
     "position": "TE",
     "table": "role_usage_trends",
     "season": "2025",
-    "generated_at": "2026-04-07T23:58:21Z",
+    "generated_at": "2026-04-08T00:09:18Z",
     "columns": [
       "player",
       "team",
@@ -195,25 +195,6 @@
       "end_zone_tgt": 5,
       "usage_score": 88.6,
       "role_trend": "Boom/Bust Role"
-    },
-    {
-      "player": "Daniel Brown",
-      "team": "JAX",
-      "games": 10,
-      "snap_pct": null,
-      "delta_snap_pct": null,
-      "routes_per_gm": null,
-      "delta_routes_per_gm": null,
-      "targets_per_gm": 3.7,
-      "delta_targets_per_gm": -1.5,
-      "air_yards_per_gm": 51.8,
-      "delta_air_yards_per_gm": -18.25,
-      "adot": 14.0,
-      "delta_adot": 1.7,
-      "rz_tgt": 9,
-      "end_zone_tgt": 3,
-      "usage_score": 86.9,
-      "role_trend": "Trending Down"
     },
     {
       "player": "Dalton Schultz",
@@ -803,25 +784,6 @@
       "end_zone_tgt": 2,
       "usage_score": 63.2,
       "role_trend": "Falling Fast"
-    },
-    {
-      "player": "Eli Wilson",
-      "team": "GB",
-      "games": 10,
-      "snap_pct": null,
-      "delta_snap_pct": null,
-      "routes_per_gm": null,
-      "delta_routes_per_gm": null,
-      "targets_per_gm": 1.8,
-      "delta_targets_per_gm": -0.5,
-      "air_yards_per_gm": -3.2,
-      "delta_air_yards_per_gm": 3.5,
-      "adot": -1.78,
-      "delta_adot": 1.75,
-      "rz_tgt": 3,
-      "end_zone_tgt": 2,
-      "usage_score": 63.1,
-      "role_trend": "Boom/Bust Role"
     },
     {
       "player": "Jonnu Smith",

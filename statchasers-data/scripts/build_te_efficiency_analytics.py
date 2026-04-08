@@ -74,6 +74,11 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
 
 _CANONICAL_TO_PFR_NORM: dict[str, str] = {}
 
+_EXCLUDED_PLAYERS: frozenset[str] = frozenset({
+    "Eli Wilson",
+    "Daniel Brown",
+})
+
 
 def _norm(name: str) -> str:
     if not name:
@@ -518,6 +523,7 @@ def main() -> None:
             sys.exit(1)
 
     rows = build_season(SEASON)
+    rows = [r for r in rows if r["player"] not in _EXCLUDED_PLAYERS]
 
     assert len({r["player"] for r in rows}) == len(rows), "Duplicate players found"
     for r in rows:

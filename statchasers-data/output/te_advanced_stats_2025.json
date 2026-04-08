@@ -3,7 +3,7 @@
     "position": "TE",
     "table": "te_advanced_stats",
     "season": "2025",
-    "generated_at": "2026-04-07T23:55:36Z",
+    "generated_at": "2026-04-08T00:09:12Z",
     "columns": [
       {
         "key": "rank",
@@ -1285,29 +1285,6 @@
       "lng": 36
     },
     {
-      "rank": 51,
-      "player": "Daniel Brown",
-      "team": "JAX",
-      "g": 10,
-      "rec": 20,
-      "yds": 227,
-      "ypr": 11.3,
-      "ybc": 196,
-      "ybc_per_rec": 9.8,
-      "yac": 31,
-      "yac_per_rec": 1.6,
-      "brktkl": null,
-      "tgt": 37,
-      "target_share": 0.0611,
-      "rz_tgt": 9,
-      "rec_10_plus": 10,
-      "rec_20_plus": 2,
-      "rec_30_plus": 1,
-      "rec_40_plus": 0,
-      "rec_50_plus": 0,
-      "lng": 39
-    },
-    {
       "rank": 52,
       "player": "Jonnu Smith",
       "team": "PIT",
@@ -1720,29 +1697,6 @@
       "rec_40_plus": 0,
       "rec_50_plus": 0,
       "lng": 22
-    },
-    {
-      "rank": 70,
-      "player": "Eli Wilson",
-      "team": "GB",
-      "g": 10,
-      "rec": 15,
-      "yds": 99,
-      "ypr": 6.6,
-      "ybc": -34,
-      "ybc_per_rec": -2.3,
-      "yac": 133,
-      "yac_per_rec": 8.9,
-      "brktkl": null,
-      "tgt": 18,
-      "target_share": 0.0346,
-      "rz_tgt": 3,
-      "rec_10_plus": 4,
-      "rec_20_plus": 1,
-      "rec_30_plus": 0,
-      "rec_40_plus": 0,
-      "rec_50_plus": 0,
-      "lng": 25
     },
     {
       "rank": 71,

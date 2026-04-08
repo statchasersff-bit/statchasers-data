@@ -49,6 +49,11 @@ OUTPUT_DIR         = ROOT / "output"
 SEASON      = 2025
 MIN_TARGETS = 15
 
+_EXCLUDED_PLAYERS: frozenset[str] = frozenset({
+    "Eli Wilson",
+    "Daniel Brown",
+})
+
 COLUMNS: list[str] = [
     "player", "team", "age", "games",
     "snap_pct",
@@ -627,6 +632,8 @@ def main() -> None:
             -(r["targets_per_gm"] or 0),
         )
     )
+
+    rows = [r for r in rows if r["player"] not in _EXCLUDED_PLAYERS]
 
     # Validation
     assert all(r["player"] for r in rows), "Empty player name"

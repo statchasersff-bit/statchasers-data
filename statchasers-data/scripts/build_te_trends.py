@@ -55,6 +55,11 @@ MIN_GAMES     = 1
 RECENT_WINDOW = 4
 PRIOR_WINDOW  = 4
 
+_EXCLUDED_PLAYERS: frozenset[str] = frozenset({
+    "Eli Wilson",
+    "Daniel Brown",
+})
+
 META_COLUMNS = [
     "player", "team", "games",
     "snap_pct", "delta_snap_pct",
@@ -521,6 +526,8 @@ def build() -> list[dict[str, Any]]:
             -(r["delta_air_yards_per_gm"] or 0),
         )
     )
+
+    rows = [r for r in rows if r["player"] not in _EXCLUDED_PLAYERS]
 
     assert all(r["player"] for r in rows), "Empty player name found"
     assert len({r["player"] for r in rows}) == len(rows), "Duplicate players found"
