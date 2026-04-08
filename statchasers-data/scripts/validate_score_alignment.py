@@ -147,16 +147,16 @@ check_scores("TE efficiency analytics", te_eff,  te_ov, "efficiency_score")
 check_scores("WR efficiency analytics", wr_eff,  wr_ov, "efficiency_score")
 check_scores("RB efficiency analytics", rb_eff,  rb_ov, "efficiency_score")
 
-print("\n--- usage_score exact match ---")
-check_scores("TE trends", te_trnd, te_ov, "usage_score")
-check_scores("WR trends", wr_trnd, wr_ov, "usage_score")
+print("\n--- role_score exact match (trends vs overview) ---")
+check_scores("TE trends", te_trnd, te_ov, "role_score")
+check_scores("WR trends", wr_trnd, wr_ov, "role_score")
 
 print("\n--- top-10 ranking alignment ---")
 check_top10("TE efficiency analytics", te_eff,  te_ov,  "efficiency_score")
 check_top10("WR efficiency analytics", wr_eff,  wr_ov,  "efficiency_score")
 check_top10("RB efficiency analytics", rb_eff,  rb_ov,  "efficiency_score")
-check_top10("TE trends",               te_trnd, te_ov,  "usage_score")
-check_top10("WR trends",               wr_trnd, wr_ov,  "usage_score")
+check_top10("TE trends",               te_trnd, te_ov,  "role_score")
+check_top10("WR trends",               wr_trnd, wr_ov,  "role_score")
 
 print()
 if failures:

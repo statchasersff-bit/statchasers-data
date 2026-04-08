@@ -68,7 +68,7 @@ META_COLUMNS = [
     "air_yards_per_gm", "delta_air_yards_per_gm",
     "adot", "delta_adot",
     "rz_tgt", "end_zone_tgt",
-    "usage_score", "role_trend",
+    "usage_score", "role_score", "role_trend",
 ]
 
 # ---------------------------------------------------------------------------
@@ -521,6 +521,7 @@ def build() -> list[dict[str, Any]]:
             "rz_tgt":                 total_rz,
             "end_zone_tgt":           total_ez,
             "usage_score":            None,
+            "role_score":             None,   # patched from overview
             "role_trend":             trend,
         })
 
@@ -566,25 +567,39 @@ def main() -> None:
         with open(overview_path) as _f:
             _ov = json.load(_f)
         _ov_rows = _ov.get("players", [])
-        _ov_exact: dict[str, float | None] = {
+        _ov_exact_usage: dict[str, float | None] = {
             p["player"]: p.get("usage_score") for p in _ov_rows
         }
-        _ov_team_last: dict[tuple, float | None] = {
+        _ov_exact_role: dict[str, float | None] = {
+            p["player"]: p.get("role_score") for p in _ov_rows
+        }
+        _ov_team_last_usage: dict[tuple, float | None] = {
             (p["team"], p["player"].split()[-1]): p.get("usage_score")
             for p in _ov_rows
         }
+        _ov_team_last_role: dict[tuple, float | None] = {
+            (p["team"], p["player"].split()[-1]): p.get("role_score")
+            for p in _ov_rows
+        }
         patched = 0
+        role_patched = 0
         for p in players:
-            if p["player"] in _ov_exact:
-                p["usage_score"] = _ov_exact[p["player"]]
+            key = (p.get("team"), p["player"].split()[-1])
+            if p["player"] in _ov_exact_usage:
+                p["usage_score"] = _ov_exact_usage[p["player"]]
                 patched += 1
-            else:
-                key = (p.get("team"), p["player"].split()[-1])
-                if key in _ov_team_last:
-                    p["usage_score"] = _ov_team_last[key]
-                    patched += 1
-        players.sort(key=lambda p: p.get("usage_score") or 0.0, reverse=True)
+            elif key in _ov_team_last_usage:
+                p["usage_score"] = _ov_team_last_usage[key]
+                patched += 1
+            if p["player"] in _ov_exact_role:
+                p["role_score"] = _ov_exact_role[p["player"]]
+                role_patched += 1
+            elif key in _ov_team_last_role:
+                p["role_score"] = _ov_team_last_role[key]
+                role_patched += 1
+        players.sort(key=lambda p: p.get("role_score") or 0.0, reverse=True)
         print(f"[{SEASON}] Patched usage_score from player overview for {patched} TEs")
+        print(f"[{SEASON}] Patched role_score from player overview for {role_patched} TEs")
     else:
         print(f"[{SEASON}] WARN: {overview_path} not found — using analytics-computed usage_score")
 

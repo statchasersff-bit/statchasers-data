@@ -66,7 +66,7 @@ COLUMNS: list[dict] = [
     {"key": "touches_per_gm",    "label": "Touches / Gm",  "type": "number", "group": "Role & Usage",           "defaultVisible": True},
     {"key": "rush_att_per_gm",   "label": "Rush / Gm",     "type": "number", "group": "Role & Usage",           "defaultVisible": True},
     {"key": "targets_per_gm",    "label": "Targets / Gm",  "type": "number", "group": "Role & Usage",           "defaultVisible": True},
-    {"key": "route_pct",         "label": "Route %",        "type": "number", "group": "Role & Usage",           "defaultVisible": False},
+    {"key": "routes_per_gm",     "label": "Routes / Gm",   "type": "number", "group": "Role & Usage",           "defaultVisible": False},
     {"key": "rz_rush_att",       "label": "RZ Att",         "type": "number", "group": "Opportunity",            "defaultVisible": True},
     {"key": "goal_line_att",     "label": "GL Att",         "type": "number", "group": "Opportunity",            "defaultVisible": True},
     {"key": "target_share_pct",  "label": "Tgt Share %",   "type": "number", "group": "Opportunity",            "defaultVisible": True},
@@ -80,11 +80,9 @@ COLUMNS: list[dict] = [
     {"key": "volatility",        "label": "Volatility",     "type": "number", "group": "Stability",              "defaultVisible": True},
     {"key": "career_arc",        "label": "Career Arc",     "type": "string", "group": "Career Context",         "defaultVisible": True},
     {"key": "exp_tier",          "label": "Exp. Tier",      "type": "string", "group": "Career Context",         "defaultVisible": True},
-    {"key": "opp_score",         "label": "Opp Score",        "type": "number", "group": "Composite Scores",       "defaultVisible": True},
-    {"key": "usage_score",       "label": "Usage Score",      "type": "number", "group": "Composite Scores",       "defaultVisible": True},
+    {"key": "role_score",        "label": "Role Score",       "type": "number", "group": "Composite Scores",       "defaultVisible": True},
     {"key": "efficiency_score",  "label": "Efficiency Score", "type": "number", "group": "Composite Scores",       "defaultVisible": True},
     {"key": "overall_score",     "label": "Overall Score",    "type": "number", "group": "Composite Scores",       "defaultVisible": True},
-    {"key": "player_score",      "label": "Player Score",     "type": "number", "group": "Composite Scores",       "defaultVisible": False},
     {"key": "rb_tier_score",     "label": "Tier Score",       "type": "number", "group": "Composite Scores",       "defaultVisible": True},
     {"key": "rb_tier",           "label": "Tier",             "type": "string", "group": "Composite Scores",       "defaultVisible": True},
 ]
@@ -485,7 +483,7 @@ def build(
             "touches_per_gm":   touches_pg,
             "rush_att_per_gm":  rush_att_pg,
             "targets_per_gm":   targets_pg,
-            "route_pct":        route_pct,
+            "routes_per_gm":    route_pct,
             "rz_rush_att":      rs.get("rz_rush_att"),
             "goal_line_att":    goal_line_att,
             "target_share_pct": tgt_share,
@@ -512,7 +510,7 @@ def build(
     arr_gl       = _col("goal_line_att")
     arr_tgtshare = _col("target_share_pct")
     arr_tgtspg   = _col("targets_per_gm")
-    arr_route    = _col("route_pct")
+    arr_route    = _col("routes_per_gm")
     arr_rush_pg  = _col("rush_att_per_gm")
     arr_exp10    = _col("explosive_run_pct")
     arr_ypts     = _col("yards_per_touch")
@@ -529,7 +527,7 @@ def build(
         p_gl       = _pct(r["goal_line_att"],     arr_gl)
         p_tgtshare = _pct(r["target_share_pct"],  arr_tgtshare)
         p_tgtspg   = _pct(r["targets_per_gm"],    arr_tgtspg)
-        p_route    = _pct(r["route_pct"],         arr_route)
+        p_route    = _pct(r["routes_per_gm"],      arr_route)
         p_rush_pg  = _pct(r["rush_att_per_gm"],   arr_rush_pg)
         p_exp10    = _pct(r["explosive_run_pct"], arr_exp10)
         p_ypts     = _pct(r["yards_per_touch"],   arr_ypts)
@@ -538,26 +536,24 @@ def build(
         p_stab     = _pct(r["stability"],         arr_stab)
         p_vol_inv  = 100.0 - _pct(r["volatility"], arr_vol)
 
-        # 1. Opportunity Score
-        opp_score = round(
-            p_touches    * 0.40
-            + p_snap     * 0.20
-            + p_rz       * 0.20
-            + p_gl       * 0.10
-            + p_tgtshare * 0.10,
+        # 1. Role Score — unified opportunity + deployment profile (0–100)
+        #    Answers: how strong and fantasy-relevant is this RB's offensive role?
+        role_score = round(
+            min(100.0, max(0.0,
+                p_touches  * 0.25
+                + p_rz     * 0.15
+                + p_rush_pg * 0.15
+                + p_gl     * 0.10
+                + p_tgtspg * 0.10
+                + p_snap   * 0.10
+                + p_tgtshare * 0.05
+                + p_route  * 0.05
+                + p_exp10  * 0.05,
+            )),
             1,
         )
 
-        # 2. Usage Score (all role/deployment signals — no efficiency metrics)
-        usage_score = round(
-            p_tgtspg     * 0.35
-            + p_route    * 0.25
-            + p_rush_pg  * 0.25
-            + p_tgtshare * 0.15,
-            1,
-        )
-
-        # 3. Efficiency Score — exposed field (per-touch production quality)
+        # 2. Efficiency Score — per-touch production quality (0–100)
         efficiency_score = round(
             p_ypts   * 0.30
             + p_exp10 * 0.20
@@ -567,44 +563,36 @@ def build(
             1,
         )
 
-        # 4. Overall Score — blended profile composite (0–100)
-        opp_role        = opp_score * 0.55 + usage_score * 0.45
+        # 3. Overall Score — blended profile composite (0–100)
         stability_block = p_stab * 0.60 + p_vol_inv * 0.40
-        premium_block   = p_gl * 0.40 + p_rz * 0.35 + p_tgtshare * 0.25
         overall_score = round(
             min(100.0, max(0.0,
-                opp_role        * 0.40
+                role_score       * 0.50
                 + efficiency_score * 0.30
-                + stability_block  * 0.15
-                + premium_block    * 0.15,
+                + stability_block  * 0.20,
             )),
             1,
         )
 
-        # player_score kept as alias of overall_score for backward compatibility
-        player_score = overall_score
-
-        # 5. RB Tier Score (kept for tier labelling)
+        # 4. RB Tier Score (kept for tier labelling — uses role_score as primary input)
         receiving_sub = (
             p_tgtspg   * 0.50
             + p_route  * 0.30
             + p_tgtshare * 0.20
         )
         rb_tier_score = round(
-            opp_score       * 0.50
-            + receiving_sub * 0.20
+            role_score         * 0.50
+            + receiving_sub    * 0.20
             + efficiency_score * 0.20
-            + p_stab        * 0.10,
+            + p_stab           * 0.10,
             1,
         )
 
         final_rows.append({
             **r,
-            "opp_score":        opp_score,
-            "usage_score":      usage_score,
+            "role_score":       role_score,
             "efficiency_score": efficiency_score,
             "overall_score":    overall_score,
-            "player_score":     player_score,
             "rb_tier_score":    rb_tier_score,
             "rb_tier":          _rb_tier_label(rb_tier_score),
         })
@@ -613,8 +601,8 @@ def build(
     final_rows.sort(
         key=lambda r: (
             -(r.get("overall_score") or 0.0),
-            -(r.get("opp_score") or 0.0),
-            -(r.get("usage_score") or 0.0),
+            -(r.get("role_score") or 0.0),
+            -(r.get("efficiency_score") or 0.0),
         ),
     )
     ordered_keys = [c["key"] for c in COLUMNS]

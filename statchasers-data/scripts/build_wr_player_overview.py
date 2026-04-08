@@ -70,7 +70,7 @@ COLUMNS: list[str] = [
     "catch_rate", "yards_per_route_run", "yards_per_target", "yac_per_rec", "fpoe",
     "stability", "volatility",
     "career_arc", "exp_tier",
-    "opp_score", "usage_score", "efficiency_score", "overall_score", "player_score",
+    "role_score", "efficiency_score", "overall_score",
 ]
 
 
@@ -697,26 +697,23 @@ def _add_scores(rows: list[dict]) -> list[dict]:
         p_vol_inv = 100.0 - _pct(r["volatility"],         arr_vol)
         p_yprr    = _pct(r["yards_per_route_run"],        arr_yprr)
 
-        # Opportunity Score — how coveted is this WR's role?
-        opp_score = round(
-            p_tgt_pg  * 0.25
-            + p_tgt_shr * 0.25
-            + p_air_shr * 0.20
-            + p_wopr    * 0.20
-            + p_rz      * 0.10,
+        # 1. Role Score — unified opportunity + deployment profile (0–100)
+        #    Answers: how strong and fantasy-relevant is this WR's offensive role?
+        role_score = round(
+            min(100.0, max(0.0,
+                p_tgt_pg  * 0.20
+                + p_tgt_shr * 0.20
+                + p_air_shr * 0.15
+                + p_wopr    * 0.15
+                + p_snap    * 0.10
+                + p_air_pg  * 0.10
+                + p_rec_pg  * 0.05
+                + p_rz      * 0.05,
+            )),
             1,
         )
 
-        # Usage Score — how much of the offense runs through this WR?
-        usage_score = round(
-            p_tgt_pg  * 0.35
-            + p_snap  * 0.30
-            + p_air_pg * 0.20
-            + p_rec_pg * 0.15,
-            1,
-        )
-
-        # Efficiency Score — per-touch production quality (exposed field)
+        # 2. Efficiency Score — per-touch production quality (0–100)
         efficiency_score = round(
             p_ypt    * 0.25
             + p_catch * 0.20
@@ -726,30 +723,22 @@ def _add_scores(rows: list[dict]) -> list[dict]:
             1,
         )
 
-        # Overall Score — blended profile composite (0–100)
-        opp_role        = opp_score * 0.55 + usage_score * 0.45
+        # 3. Overall Score — blended profile composite (0–100)
         stability_block = p_stab * 0.60 + p_vol_inv * 0.40
-        premium_block   = p_tgt_shr * 0.40 + p_air_shr * 0.35 + p_rz * 0.25
         overall_score = round(
             min(100.0, max(0.0,
-                opp_role          * 0.35
+                role_score         * 0.50
                 + efficiency_score * 0.35
-                + stability_block  * 0.10
-                + premium_block    * 0.20,
+                + stability_block  * 0.15,
             )),
             1,
         )
 
-        # player_score kept as alias of overall_score for backward compatibility
-        player_score = overall_score
-
         final.append({
             **r,
-            "opp_score":        opp_score,
-            "usage_score":      usage_score,
+            "role_score":       role_score,
             "efficiency_score": efficiency_score,
             "overall_score":    overall_score,
-            "player_score":     player_score,
         })
 
     return final
@@ -978,9 +967,9 @@ def main() -> None:
         # Composite scores within-season pool
         scored = _add_scores(raw_rows)
 
-        # Sort: overall_score → opp_score → usage_score (all desc)
+        # Sort: overall_score → role_score → efficiency_score (all desc)
         scored.sort(
-            key=lambda r: (-(r.get("overall_score") or 0), -(r.get("opp_score") or 0), -(r.get("usage_score") or 0)),
+            key=lambda r: (-(r.get("overall_score") or 0), -(r.get("role_score") or 0), -(r.get("efficiency_score") or 0)),
         )
         print(f"  {len(scored)} WRs qualified for {season}.")
         _validate(scored, str(season))
@@ -998,7 +987,7 @@ def main() -> None:
     all_agg   = _aggregate_all(all_raw_rows, yoe_lookup)
     all_scored = _add_scores(all_agg)
     all_scored.sort(
-        key=lambda r: (-(r.get("overall_score") or 0), -(r.get("opp_score") or 0), -(r.get("usage_score") or 0)),
+        key=lambda r: (-(r.get("overall_score") or 0), -(r.get("role_score") or 0), -(r.get("efficiency_score") or 0)),
     )
     _validate(all_scored, "all-seasons")
 

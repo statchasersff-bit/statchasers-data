@@ -62,7 +62,7 @@ COLUMNS: list[str] = [
     "catch_rate", "yards_per_route_run", "yards_per_target", "yac_per_rec", "fpoe",
     "stability", "volatility",
     "career_arc", "exp_tier",
-    "opp_score", "usage_score", "efficiency_score", "overall_score",
+    "role_score", "efficiency_score", "overall_score",
 ]
 
 # ---------------------------------------------------------------------------
@@ -524,26 +524,21 @@ def _add_composite_scores(rows: list[dict]) -> list[dict]:
             return pd.Series(50.0, index=df.index)
         return df[col].rank(pct=True, na_option="bottom") * 100
 
-    # Usage score: target load + routes + air yards + snap
-    usage = (
-        _pct_rank("targets_per_gm")     * 0.30
-        + _pct_rank("routes_per_gm")    * 0.25
-        + _pct_rank("air_yards_per_gm") * 0.20
-        + _pct_rank("snap_pct")         * 0.15
-        + _pct_rank("rz_tgt")           * 0.10
+    # Role score: unified opportunity + deployment profile
+    #   Answers: how strong and fantasy-relevant is this TE's offensive role?
+    role = (
+        _pct_rank("target_share_pct")     * 0.20
+        + _pct_rank("targets_per_gm")     * 0.15
+        + _pct_rank("routes_per_gm")      * 0.15
+        + _pct_rank("air_yards_share_pct") * 0.10
+        + _pct_rank("wopr")               * 0.10
+        + _pct_rank("air_yards_per_gm")   * 0.10
+        + _pct_rank("snap_pct")           * 0.10
+        + _pct_rank("rz_tgt")             * 0.10
     )
-    df["usage_score"] = usage.round(1)
+    df["role_score"] = role.clip(0, 100).round(1)
 
-    # Opportunity score: target efficiency + air share + usage
-    opp = (
-        _pct_rank("target_share_pct")   * 0.35
-        + _pct_rank("air_yards_share_pct") * 0.25
-        + _pct_rank("rz_tgt")           * 0.20
-        + _pct_rank("wopr")             * 0.20
-    )
-    df["opp_score"] = opp.round(1)
-
-    # Efficiency score: per-touch production quality
+    # Efficiency score: per-touch production quality (unchanged formula)
     player = (
         _pct_rank("yards_per_route_run") * 0.25
         + _pct_rank("catch_rate")        * 0.20
@@ -554,26 +549,15 @@ def _add_composite_scores(rows: list[dict]) -> list[dict]:
     )
     df["efficiency_score"] = player.round(1)
 
-    # Overall score: blended composite across all four dimensions
-    # Opportunity / Role block (35%): 55% opp + 45% usage
-    opp_role = df["opp_score"] * 0.55 + df["usage_score"] * 0.45
-    # Efficiency block (35%): efficiency_score directly
-    efficiency = df["efficiency_score"]
-    # Stability / Reliability block (15%): stability pct + inverse volatility pct
+    # Overall score: role 50% + efficiency 35% + stability/reliability 15%
     stability_block = (
         _pct_rank("stability")             * 0.60
         + (100 - _pct_rank("volatility"))  * 0.40
     )
-    # Premium Role block (15%): red zone targets + target share pct
-    premium_block = (
-        _pct_rank("rz_tgt")            * 0.50
-        + _pct_rank("target_share_pct") * 0.50
-    )
     overall = (
-        opp_role        * 0.35
-        + efficiency    * 0.35
-        + stability_block * 0.15
-        + premium_block   * 0.15
+        df["role_score"]       * 0.50
+        + df["efficiency_score"] * 0.35
+        + stability_block        * 0.15
     ).clip(0, 100).round(1)
     df["overall_score"] = overall
 
@@ -657,12 +641,12 @@ def main() -> None:
 
     rows = _add_composite_scores(rows)
 
-    # Sort: overall_score → opp_score → usage_score (all desc)
+    # Sort: overall_score → role_score → efficiency_score (all desc)
     rows.sort(
         key=lambda r: (
             -(r["overall_score"] or 0),
-            -(r["opp_score"] or 0),
-            -(r["usage_score"] or 0),
+            -(r["role_score"] or 0),
+            -(r["efficiency_score"] or 0),
         )
     )
 
@@ -674,6 +658,7 @@ def main() -> None:
     for r in rows:
         missing = set(COLUMNS) - set(r.keys())
         assert not missing, f"Missing columns for {r['player']}: {missing}"
+        assert r.get("role_score") is not None, f"Null role_score: {r['player']}"
         assert r.get("efficiency_score") is not None, f"Null efficiency_score: {r['player']}"
         assert r.get("overall_score") is not None, f"Null overall_score: {r['player']}"
     print(f"Validation OK: {len(rows)} TEs, no duplicates")
