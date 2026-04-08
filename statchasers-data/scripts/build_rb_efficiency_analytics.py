@@ -18,11 +18,21 @@ Data sources:
 Data rules:
   - RBs only, one row per player, 2025 season
   - Minimum 15 rush_att to appear in output
-  - Percentile pool for runner_score uses players with ≥ 25 rush_att
+  - Percentile pool for efficiency_score uses players with ≥ 25 rush_att
   - null for missing values, never empty strings
   - Rate/percentage stats: 2 decimals
   - Counting stats: integers
-  - runner_score: 2 decimals (0-100)
+  - efficiency_score: 1 decimal (0-100)
+
+efficiency_score weights (mirrors RB player overview — source of truth):
+  Yds / Touch     = 30%
+  Explosive Run % = 20%
+  Breakaway Run % = 20%
+  FPOE            = 20%
+  Stability       = 10%
+
+Note: efficiency_score values are patched from rb_player_overview.json
+at build time to guarantee exact cross-tab alignment.
 
 Output:
   output/rb_efficiency_analytics.json

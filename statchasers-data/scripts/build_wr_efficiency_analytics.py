@@ -11,7 +11,19 @@ Metrics produced per WR (15+ targets, REG season):
   Explosive: explosive_play_rate, explosive_rec_20_plus, explosive_rec_40_plus,
              longest_reception
   Contact : yac_per_rec, ybc_per_rec, broken_tackles, btkl_per_rec
-  Composite: wr_efficiency_score (0-100, percentile-weighted)
+  Composite: efficiency_score (0-100, percentile-weighted)
+
+efficiency_score weights (mirrors WR player overview — source of truth):
+  Yds / TGT  = 25%
+  Catch Rate = 20%
+  FPOE       = 20%
+  YPRR       = 20%
+  YAC / Rec  = 15%
+
+Note: efficiency_score values are patched from wr_player_overview_{season}.json
+at build time to guarantee exact cross-tab alignment. The patch uses a 2-pass
+lookup (exact name, then team+last_name) to handle players like Amon-Ra St. Brown
+whose analytics canonical name differs from the overview abbreviation.
 """
 
 from __future__ import annotations

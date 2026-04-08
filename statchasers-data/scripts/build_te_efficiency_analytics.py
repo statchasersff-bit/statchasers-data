@@ -11,16 +11,18 @@ Metrics per TE (15+ targets, REG season, 2025):
   Explosive: explosive_play_rate, explosive_rec_20_plus, explosive_rec_40_plus,
              longest_reception
   Contact : yac_per_rec, ybc_per_rec, broken_tackles, btkl_per_rec
-  Composite: te_efficiency_score (0-100, percentile-weighted)
+  Composite: efficiency_score (0-100, percentile-weighted)
 
-TE Efficiency Score weights:
-  EPA / TGT      = 20%
+efficiency_score weights (mirrors TE player overview — source of truth):
   YPRR           = 25%
-  Success Rate   = 20%
-  Yds / TGT      = 15%
-  Catch Rate     = 10%
-  Explosive Rate = 5%
-  BTKL / Rec     = 5%
+  Catch Rate     = 20%
+  Yds / TGT      = 20%
+  YAC / Rec      = 15%
+  FPOE           = 10%
+  Stability      = 10%
+
+Note: efficiency_score values are patched from te_player_overview_{season}.json
+at build time to guarantee exact cross-tab alignment.
 """
 
 from __future__ import annotations
