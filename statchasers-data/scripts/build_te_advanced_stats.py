@@ -108,6 +108,10 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "D.Njoku":   {"CLE": "David Njoku"},
     # M.Andrews: Mark Andrews vs other M. Andrews
     "M.Andrews": {"BAL": "Mark Andrews"},
+    # M.Evans: Mitchell Evans (TE, CAR) vs Mike Evans (WR, TB)
+    "M.Evans":   {"CAR": "Mitchell Evans"},
+    # T.Johnson: Theo Johnson (TE, NYG) vs Ty Johnson (RB)
+    "T.Johnson": {"NYG": "Theo Johnson"},
     # B.Likely: Likely is unique enough; belt-and-suspenders
     "I.Thomas":  {"NYG": "Isaiah Thomas"},
 }
