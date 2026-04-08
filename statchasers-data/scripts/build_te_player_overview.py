@@ -108,10 +108,15 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "M.Andrews": {"BAL": "Mark Andrews"},
     "D.Njoku":   {"CLE": "David Njoku"},
     "I.Thomas":  {"NYG": "Isaiah Thomas"},
-    # M.Evans: Mitchell Evans (TE, CAR) vs Mike Evans (WR, TB)
-    "M.Evans":   {"CAR": "Mitchell Evans"},
-    # T.Johnson: Theo Johnson (TE, NYG) vs Ty Johnson (RB)
-    "T.Johnson": {"NYG": "Theo Johnson"},
+    # M.Evans: Mitchell Evans (TE, CAR) vs Mike Evans (WR, TB).
+    # Sleeper lists Mike Evans as team=SF (stale); without the TB entry the
+    # TB plays fall through to the TE positional fallback → Mitchell Evans.
+    "M.Evans":   {"CAR": "Mitchell Evans", "TB": "Mike Evans"},
+    # T.Johnson: Theo Johnson (TE, NYG) vs Tyler Johnson (WR, NYJ),
+    # Tez Johnson (WR, TB) and Ty Johnson (RB, BUF).
+    # Only NYG was defined before; other-team plays fell through to Theo Johnson.
+    "T.Johnson": {"NYG": "Theo Johnson", "NYJ": "Tyler Johnson",
+                  "TB": "Tez Johnson",   "BUF": "Ty Johnson"},
 }
 
 _SNAP_PLAYER_ALIASES: dict[str, str] = {}

@@ -55,13 +55,19 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     # Jamaal Williams played NO 2023 (retired, team=None in Sleeper).
     # Both fall through to Jarveon Williams (None slot) without this override.
     "J.Williams": {"DEN": "Javonte Williams", "NO": "Jamaal Williams"},
-    # Three distinct T.Johnson players in 2025 PBP — none in Sleeper by gsis_id.
+    # Four distinct T.Johnson players in 2025 PBP — none in Sleeper by gsis_id.
     # Without overrides the ambiguous T.Johnson abbreviation maps to Tony Johnson (K).
-    "T.Johnson": {"NYG": "Theo Johnson", "NYJ": "Tyler Johnson", "TB": "Tez Johnson"},
+    # BUF entry covers Ty Johnson (RB) who can appear as a receiver in screen plays.
+    "T.Johnson": {"NYG": "Theo Johnson", "NYJ": "Tyler Johnson",
+                  "TB": "Tez Johnson",   "BUF": "Ty Johnson"},
     # nflverse uses multi-word abbreviation A.St. Brown; _abbrev() produces A.Brown
     # which collides with A.J. Brown. Store under full Sleeper name so analytics
     # scripts that resolve via Sleeper (Amon-Ra St. Brown) can find the FPOE.
     "A.St. Brown": {"DET": "Amon-Ra St. Brown"},
+    # Mike Evans (WR, TB): Sleeper lists him as team=SF (stale, moved to TB).
+    # Without this override M.Evans/TB is stored under the PBP abbreviation
+    # rather than the canonical full name.
+    "M.Evans": {"CAR": "Mitchell Evans", "TB": "Mike Evans"},
 }
 
 # Minimum 2025-season games before applying narrative labels
