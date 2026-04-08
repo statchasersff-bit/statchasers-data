@@ -544,12 +544,12 @@ def build(
             1,
         )
 
-        # 2. Usage Score
+        # 2. Usage Score (all role/deployment signals — no efficiency metrics)
         usage_score = round(
-            p_tgtspg  * 0.35
-            + p_route * 0.25
+            p_tgtspg    * 0.35
+            + p_route   * 0.25
             + p_rush_pg * 0.25
-            + p_exp10 * 0.15,
+            + p_tgtshare * 0.15,
             1,
         )
 
