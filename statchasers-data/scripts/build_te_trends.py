@@ -270,12 +270,11 @@ def _delta(recent: float | None, prior: float | None) -> float | None:
 # ---------------------------------------------------------------------------
 
 _USAGE_WEIGHTS = [
+    ("targets_per_gm",   0.30),
     ("routes_per_gm",    0.25),
-    ("targets_per_gm",   0.25),
+    ("air_yards_per_gm", 0.20),
     ("snap_pct",         0.15),
-    ("air_yards_per_gm", 0.15),
     ("rz_tgt",           0.10),
-    ("end_zone_tgt",     0.10),
 ]
 
 

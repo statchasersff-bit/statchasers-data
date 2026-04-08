@@ -76,7 +76,7 @@ COLUMNS: list[dict] = [
     {"key": "broken_tackles_per_att", "label": "BTKL / Att",      "type": "number", "group": "Elusiveness"},
     {"key": "yac_per_att",            "label": "YAC / Att",       "type": "number", "group": "Elusiveness"},
     {"key": "ybc_per_att",            "label": "YBC / Att",       "type": "number", "group": "Elusiveness"},
-    {"key": "runner_score",           "label": "Runner Score",    "type": "number", "group": "Composite"},
+    {"key": "efficiency_score",        "label": "Efficiency Score","type": "number", "group": "Composite"},
 ]
 
 
@@ -184,6 +184,41 @@ def _pct(value: float | None, arr: list[float | None]) -> float:
     below = float(np.sum(clean < v))
     equal = float(np.sum(clean == v))
     return float((below + 0.5 * equal) / len(clean) * 100.0)
+
+
+# ---------------------------------------------------------------------------
+# Stability / volatility from per-game touch sequence
+# ---------------------------------------------------------------------------
+
+def _stability_volatility(
+    game_touch_map: dict[str, int],
+    game_order: list[str],
+) -> tuple[float | None, float | None]:
+    """
+    stability  = (1 – σ/μ of last-6 games) × 10, clamped 0–10
+    volatility = σ/μ of all games (coefficient of variation)
+    Mirrors build_rb_player_overview._stability_volatility exactly.
+    """
+    ordered = [game_touch_map[g] for g in game_order if g in game_touch_map]
+    extra   = [v for g, v in game_touch_map.items() if g not in game_order]
+    ordered = ordered + extra
+    if len(ordered) < 2:
+        return (None, None)
+
+    mean_all = float(np.mean(ordered))
+    std_all  = float(np.std(ordered))
+    volatility = round(std_all / mean_all, 2) if mean_all > 0 else None
+
+    window = ordered[-6:] if len(ordered) >= 6 else ordered
+    if len(window) < 2:
+        return (None, volatility)
+    mean_w = float(np.mean(window))
+    std_w  = float(np.std(window))
+    if mean_w == 0:
+        return (None, volatility)
+    raw = 1.0 - (std_w / mean_w)
+    stability = round(max(0.0, min(10.0, raw * 10.0)), 2)
+    return (stability, volatility)
 
 
 # ---------------------------------------------------------------------------
@@ -354,6 +389,14 @@ def build(
         yac_per_att    = round(float(yac_raw) / pfr_carries, 2) if yac_raw is not None and pfr_carries > 0 else None
         ybc_per_att    = round(float(ybc_raw) / pfr_carries, 2) if ybc_raw is not None and pfr_carries > 0 else None
 
+        # Per-game rush map for stability (mirrors RB Player Overview logic)
+        game_rush_map = {
+            str(gid): int(cnt)
+            for gid, cnt in grp.groupby("game_id").size().items()
+        }
+        game_order_rb = sorted(game_rush_map.keys())
+        stability_val, _ = _stability_volatility(game_rush_map, game_order_rb)
+
         raw_rows.append({
             "player":                 fn,
             "team":                   team,
@@ -372,38 +415,38 @@ def build(
             "broken_tackles_per_att": bt_per_att,
             "yac_per_att":            yac_per_att,
             "ybc_per_att":            ybc_per_att,
+            "stability":              stability_val,
         })
 
-    # ── Runner Score ─────────────────────────────────────────────────────────
+    # ── Efficiency Score ──────────────────────────────────────────────────────
+    # Mirrors build_rb_player_overview.py efficiency_score formula exactly:
+    #   yards/touch 30%, explosive% 20%, breakaway% 20%, fpoe 20%, stability 10%
     # Percentile pool: only players with ≥ MIN_CARRIES_PCT_POOL rush attempts
     pool = [r for r in raw_rows if r["rush_attempts"] >= MIN_CARRIES_PCT_POOL]
 
     def _pool_col(key: str) -> list[float | None]:
         return [r.get(key) for r in pool]
 
-    arr_epa     = _pool_col("epa_per_rush")
-    arr_success = _pool_col("success_rate")
-    arr_ypa     = _pool_col("yards_per_attempt")
-    arr_exp10   = _pool_col("explosive_run_pct")
-    arr_btpa    = _pool_col("broken_tackles_per_att")
-    arr_yac     = _pool_col("yac_per_att")
+    arr_ypts  = _pool_col("yards_per_touch")
+    arr_exp10 = _pool_col("explosive_run_pct")
+    arr_break = _pool_col("breakaway_run_pct")
+    arr_fpoe  = _pool_col("fpoe")
+    arr_stab  = _pool_col("stability")
 
     final_rows: list[dict] = []
     for r in raw_rows:
-        # Runner Score = weighted sum of percentiles
-        runner_score = round(
-            _pct(r["epa_per_rush"],           arr_epa)     * 0.25
-            + _pct(r["success_rate"],          arr_success) * 0.20
-            + _pct(r["yards_per_attempt"],     arr_ypa)     * 0.15
-            + _pct(r["explosive_run_pct"],     arr_exp10)   * 0.15
-            + _pct(r["broken_tackles_per_att"],arr_btpa)    * 0.15
-            + _pct(r["yac_per_att"],           arr_yac)     * 0.10,
-            2,
+        efficiency_score = round(
+            _pct(r.get("yards_per_touch"),    arr_ypts)  * 0.30
+            + _pct(r.get("explosive_run_pct"), arr_exp10) * 0.20
+            + _pct(r.get("breakaway_run_pct"), arr_break) * 0.20
+            + _pct(r.get("fpoe"),              arr_fpoe)  * 0.20
+            + _pct(r.get("stability"),         arr_stab)  * 0.10,
+            1,
         )
-        final_rows.append({**r, "runner_score": runner_score})
+        final_rows.append({**r, "efficiency_score": efficiency_score})
 
     # ── Sort and emit ─────────────────────────────────────────────────────────
-    final_rows.sort(key=lambda r: r.get("runner_score") or 0.0, reverse=True)
+    final_rows.sort(key=lambda r: r.get("efficiency_score") or 0.0, reverse=True)
     ordered_keys = [c["key"] for c in COLUMNS]
     return [{k: r.get(k) for k in ordered_keys} for r in final_rows]
 
@@ -437,6 +480,22 @@ def main() -> None:
     print("Building RB Efficiency Analytics...")
     rows = build(pbp, pfr, sleeper_players, player_metrics)
     print(f"  {len(rows)} RBs qualified.")
+
+    # ── Patch efficiency_score from player overview (single source of truth) ──
+    overview_path = OUTPUT_PATH.parent / "rb_player_overview.json"
+    if overview_path.exists():
+        with open(overview_path) as _f:
+            _ov = json.load(_f)
+        _ov_scores: dict[str, float | None] = {
+            p["player"]: p.get("efficiency_score") for p in _ov.get("rows", [])
+        }
+        for r in rows:
+            if r["player"] in _ov_scores:
+                r["efficiency_score"] = _ov_scores[r["player"]]
+        rows.sort(key=lambda r: r.get("efficiency_score") or 0.0, reverse=True)
+        print(f"  Patched efficiency_score from player overview for {len(_ov_scores)} RBs")
+    else:
+        print(f"  WARN: {overview_path} not found — using analytics-computed efficiency_score")
 
     latest_week = int(pbp["week"].max()) if "week" in pbp.columns else None
 

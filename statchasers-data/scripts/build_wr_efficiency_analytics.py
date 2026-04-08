@@ -46,7 +46,7 @@ COLUMNS = [
     "explosive_play_rate", "explosive_rec_20_plus", "explosive_rec_40_plus",
     "longest_reception",
     "yac_per_rec", "ybc_per_rec", "broken_tackles", "btkl_per_rec",
-    "wr_efficiency_score",
+    "efficiency_score",
 ]
 
 # ---------------------------------------------------------------------------
@@ -301,26 +301,26 @@ def _build_team_air_yards(pbp: pd.DataFrame) -> dict[str, float]:
 # ---------------------------------------------------------------------------
 
 _SCORE_COMPONENTS = [
-    ("epa_per_target",   0.25),
-    ("yards_per_route_run", 0.25),
-    ("success_rate",     0.20),
-    ("yards_per_target", 0.15),
-    ("explosive_play_rate", 0.10),
-    ("btkl_per_rec",     0.05),
+    ("yards_per_target",    0.25),
+    ("catch_rate",          0.20),
+    ("fpoe",                0.20),
+    ("yards_per_route_run", 0.20),
+    ("yac_per_rec",         0.15),
 ]
 
 
 def _add_efficiency_scores(df: pd.DataFrame) -> pd.DataFrame:
-    """Add wr_efficiency_score column (0–100) using percentile ranks."""
+    """Add efficiency_score column (0–100) using percentile ranks.
+    Mirrors the WR Player Overview efficiency_score formula exactly.
+    """
     df = df.copy()
     score = pd.Series(0.0, index=df.index)
     for col, weight in _SCORE_COMPONENTS:
         if col not in df.columns:
             continue
-        # pct=True gives rank in [0,1]; NaN rows get NaN rank → fill with 0
         ranks = df[col].rank(pct=True, na_option="bottom")
         score += ranks * weight
-    df["wr_efficiency_score"] = (score * 100).round(1)
+    df["efficiency_score"] = (score * 100).round(1)
     return df
 
 
@@ -576,20 +576,20 @@ def build_season(season: int) -> list[dict[str, Any]]:
             "broken_tackles": broken_tackles,
             "btkl_per_rec":   btkl_per_rec,
             # Efficiency score added below
-            "wr_efficiency_score": None,
+            "efficiency_score": None,
         })
 
     print(f"[{season}] Built {len(rows)} qualifying WRs before scoring …")
 
     # -----------------------------------------------------------------------
-    # Add WR efficiency score
+    # Add efficiency score (mirrors WR Player Overview formula)
     # -----------------------------------------------------------------------
     df = pd.DataFrame(rows)
     df = _add_efficiency_scores(df)
 
     # Sort: efficiency score desc, then yards_per_route_run desc
     df = df.sort_values(
-        ["wr_efficiency_score", "yards_per_route_run"],
+        ["efficiency_score", "yards_per_route_run"],
         ascending=[False, False],
         na_position="last",
     ).reset_index(drop=True)
@@ -614,6 +614,22 @@ def main() -> None:
     for season in SEASONS:
         print(f"\n=== Season {season} ===")
         players = build_season(season)
+
+        # ── Patch efficiency_score from player overview (single source of truth) ──
+        overview_path = OUTPUT_DIR / f"wr_player_overview_{season}.json"
+        if overview_path.exists():
+            with open(overview_path) as _f:
+                _ov = json.load(_f)
+            _ov_scores: dict[str, float | None] = {
+                p["player"]: p.get("efficiency_score") for p in _ov.get("players", [])
+            }
+            for p in players:
+                if p["player"] in _ov_scores:
+                    p["efficiency_score"] = _ov_scores[p["player"]]
+            players.sort(key=lambda p: p.get("efficiency_score") or 0.0, reverse=True)
+            print(f"[{season}] Patched efficiency_score from player overview for {len(_ov_scores)} WRs")
+        else:
+            print(f"[{season}] WARN: {overview_path} not found — using analytics-computed efficiency_score")
 
         out_path = OUTPUT_DIR / f"wr_efficiency_analytics_{season}.json"
         with open(out_path, "w") as f:

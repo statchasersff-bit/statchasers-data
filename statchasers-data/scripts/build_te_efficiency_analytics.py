@@ -57,7 +57,8 @@ COLUMNS = [
     "explosive_play_rate", "explosive_rec_20_plus", "explosive_rec_40_plus",
     "longest_reception",
     "yac_per_rec", "ybc_per_rec", "broken_tackles", "btkl_per_rec",
-    "te_efficiency_score",
+    "stability",
+    "efficiency_score",
 ]
 
 # ---------------------------------------------------------------------------
@@ -257,14 +258,44 @@ def _build_team_air_yards(pbp: pd.DataFrame) -> dict[str, float]:
 # ---------------------------------------------------------------------------
 
 _SCORE_COMPONENTS = [
-    ("epa_per_target",      0.20),
     ("yards_per_route_run", 0.25),
-    ("success_rate",        0.20),
-    ("yards_per_target",    0.15),
-    ("catch_rate",          0.10),
-    ("explosive_play_rate", 0.05),
-    ("btkl_per_rec",        0.05),
+    ("catch_rate",          0.20),
+    ("yards_per_target",    0.20),
+    ("yac_per_rec",         0.15),
+    ("fpoe",                0.10),
+    ("stability",           0.10),
 ]
+
+
+def _stability_volatility(
+    game_target_map: dict[str, int],
+    game_order: list[str],
+) -> tuple[float | None, float | None]:
+    """
+    stability  = (1 – σ/μ of last-6 games) × 10, clamped 0–10
+    volatility = σ/μ of all games (coefficient of variation)
+    Mirrors build_te_player_overview._stability_volatility exactly.
+    """
+    ordered = [game_target_map[g] for g in game_order if g in game_target_map]
+    extra   = [v for g, v in game_target_map.items() if g not in game_order]
+    ordered = ordered + extra
+    if len(ordered) < 2:
+        return (None, None)
+
+    mean_all = float(np.mean(ordered))
+    std_all  = float(np.std(ordered))
+    volatility = round(std_all / mean_all, 2) if mean_all > 0 else None
+
+    window = ordered[-6:] if len(ordered) >= 6 else ordered
+    if len(window) < 2:
+        return (None, volatility)
+    mean_w = float(np.mean(window))
+    std_w  = float(np.std(window))
+    if mean_w == 0:
+        return (None, volatility)
+    raw = 1.0 - (std_w / mean_w)
+    stability = round(max(0.0, min(10.0, raw * 10.0)), 2)
+    return (stability, volatility)
 
 
 def _clean_rows(rows: list[dict]) -> list[dict]:
@@ -279,6 +310,9 @@ def _clean_rows(rows: list[dict]) -> list[dict]:
 
 
 def _add_efficiency_scores(df: pd.DataFrame) -> pd.DataFrame:
+    """Add efficiency_score column (0–100) using percentile ranks.
+    Mirrors the TE Player Overview efficiency_score formula exactly.
+    """
     df = df.copy()
     score = pd.Series(0.0, index=df.index)
     for col, weight in _SCORE_COMPONENTS:
@@ -286,7 +320,7 @@ def _add_efficiency_scores(df: pd.DataFrame) -> pd.DataFrame:
             continue
         ranks = df[col].rank(pct=True, na_option="bottom")
         score += ranks * weight
-    df["te_efficiency_score"] = (score * 100).round(1)
+    df["efficiency_score"] = (score * 100).round(1)
     return df
 
 
@@ -476,6 +510,14 @@ def build_season(season: int) -> list[dict[str, Any]]:
             if broken_tackles is not None and rec > 0 else None
         )
 
+        # Per-game target map for stability (mirrors TE Player Overview logic)
+        game_tgt_map = {
+            str(gid): int(cnt)
+            for gid, cnt in grp.groupby("game_id").size().items()
+        }
+        game_order = sorted(game_tgt_map.keys())
+        stability, _ = _stability_volatility(game_tgt_map, game_order)
+
         rows.append({
             "player":  canonical,
             "team":    team,
@@ -498,7 +540,8 @@ def build_season(season: int) -> list[dict[str, Any]]:
             "ybc_per_rec":           ybc_per_rec,
             "broken_tackles":        broken_tackles,
             "btkl_per_rec":          btkl_per_rec,
-            "te_efficiency_score":   None,
+            "stability":             stability,
+            "efficiency_score":      None,
         })
 
     print(f"[{season}] Built {len(rows)} qualifying TEs — scoring …")
@@ -507,7 +550,7 @@ def build_season(season: int) -> list[dict[str, Any]]:
     df = _add_efficiency_scores(df)
 
     df = df.sort_values(
-        ["te_efficiency_score", "yards_per_route_run"],
+        ["efficiency_score", "yards_per_route_run"],
         ascending=[False, False],
     ).reset_index(drop=True)
 
@@ -528,6 +571,22 @@ def main() -> None:
 
     rows = build_season(SEASON)
     rows = [r for r in rows if r["player"] not in _EXCLUDED_PLAYERS]
+
+    # ── Patch efficiency_score from player overview (single source of truth) ──
+    overview_path = OUTPUT_DIR / f"te_player_overview_{SEASON}.json"
+    if overview_path.exists():
+        with open(overview_path) as _f:
+            _ov = json.load(_f)
+        _ov_scores: dict[str, float | None] = {
+            p["player"]: p.get("efficiency_score") for p in _ov.get("players", [])
+        }
+        for r in rows:
+            if r["player"] in _ov_scores:
+                r["efficiency_score"] = _ov_scores[r["player"]]
+        rows.sort(key=lambda r: r.get("efficiency_score") or 0.0, reverse=True)
+        print(f"Patched efficiency_score from player overview for {len(_ov_scores)} TEs")
+    else:
+        print(f"WARN: {overview_path} not found — using analytics-computed efficiency_score")
 
     assert len({r["player"] for r in rows}) == len(rows), "Duplicate players found"
     for r in rows:

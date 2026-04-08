@@ -55,6 +55,7 @@ META_COLUMNS = [
     "air_yards_per_gm", "delta_air_yards_per_gm",
     "adot", "delta_adot",
     "rz_tgt", "end_zone_tgt",
+    "receptions_per_gm",
     "usage_score", "role_trend",
 ]
 
@@ -280,11 +281,10 @@ def _delta(recent: float | None, prior: float | None) -> float | None:
 # ---------------------------------------------------------------------------
 
 _USAGE_WEIGHTS = [
-    ("routes_per_gm",   0.25),
-    ("targets_per_gm",  0.30),
-    ("snap_pct",        0.15),
-    ("air_yards_per_gm", 0.20),
-    ("rz_tgt",          0.10),
+    ("targets_per_gm",    0.35),
+    ("snap_pct",          0.30),
+    ("air_yards_per_gm",  0.20),
+    ("receptions_per_gm", 0.15),
 ]
 
 
@@ -441,6 +441,7 @@ def build() -> list[dict[str, Any]]:
         game_air_yards: dict[str, float] = {}
         game_rz_tgt:    dict[str, int]   = {}
         game_ez_tgt:    dict[str, int]   = {}
+        game_recs:      dict[str, int]   = {}
 
         for game_id, g in grp.groupby("game_id"):
             game_targets[game_id]   = len(g)
@@ -448,6 +449,7 @@ def build() -> list[dict[str, Any]]:
             game_air_yards[game_id] = float(ays) if not np.isnan(ays) else 0.0
             game_rz_tgt[game_id]    = int(g["is_rz"].sum())
             game_ez_tgt[game_id]    = int(g["is_ez"].sum())
+            game_recs[game_id]      = int(g["complete_pass"].sum())
 
         game_routes: dict[str, int] = (
             per_game_routes.get(gsis_id, {}) if gsis_id else {}
@@ -460,11 +462,13 @@ def build() -> list[dict[str, Any]]:
         total_rz        = sum(game_rz_tgt.values())
         total_ez        = sum(game_ez_tgt.values())
         total_routes    = sum(game_routes.values())
+        total_recs      = sum(game_recs.values())
         snap_vals       = [game_snaps.get(g) for g in all_game_ids if g in game_snaps]
 
         targets_per_gm   = round(total_targets / games, 2)  if games > 0 else None
         air_yards_per_gm = round(total_air_yards / games, 2) if games > 0 else None
         routes_per_gm    = round(total_routes / games, 2)    if total_routes > 0 and games > 0 else None
+        receptions_per_gm = round(total_recs / games, 2)    if games > 0 else None
         snap_pct         = round(float(sum(snap_vals) / len(snap_vals)), 4) if snap_vals else None
 
         # ADOT = total target air yards / total targets (season)
@@ -527,6 +531,7 @@ def build() -> list[dict[str, Any]]:
             "delta_adot":         round(delta_adot, 2) if delta_adot is not None else None,
             "rz_tgt":             total_rz,
             "end_zone_tgt":       total_ez,
+            "receptions_per_gm":  receptions_per_gm,
             "usage_score":        None,   # filled below
             "role_trend":         trend,
         })
