@@ -1,0 +1,311 @@
+We want to remove the separation between Opp Score and Usage Score on the Player Overview tabs and replace them with a single unified composite:
+
+role_score
+Goal
+
+For Player Overview datasets, combine the old:
+
+opp_score
+usage_score
+
+into one new metric:
+
+role_score
+
+This should represent the player’s total role + opportunity profile in one 0–100 score.
+
+Important architecture change
+
+Going forward, the Player Overview composite stack should be:
+
+role_score
+efficiency_score
+overall_score
+
+And then the frontend can still compute/display:
+
+rb_tier
+wr_tier
+te_tier
+
+If opp_score and usage_score still exist in backend temporarily for compatibility, that is okay short-term, but the preferred final UI should not show them.
+
+What Role Score should mean
+
+role_score = a unified measure of:
+
+raw opportunity volume
+role strength
+weekly deployment quality
+premium/scoring-area usage
+
+This should answer:
+
+How strong and fantasy-relevant is this player’s offensive role right now?
+
+It replaces the old “Opp Score” + “Usage Score” split.
+
+Position-specific Role Score formulas
+
+Use percentile-based normalization within each position pool, then blend the components into a 0–100 score.
+
+RB Player Overview — role_score
+Inputs and weights
+touches_per_gm = 25%
+snap_pct = 10%
+rush_att_per_gm = 15%
+targets_per_gm = 10%
+rz_rush_att = 15%
+goal_line_att = 10%
+target_share_pct = 5%
+routes_per_gm = 5%
+explosive_run_pct = 5%
+Why
+
+For RBs, role is primarily:
+
+total workload
+rushing volume
+pass-game involvement
+scoring-area trust
+snap presence
+Output
+role_score: number | null
+WR Player Overview — role_score
+Inputs and weights
+targets_per_gm = 20%
+target_share_pct = 20%
+air_yards_share_pct = 15%
+wopr = 15%
+snap_pct = 10%
+air_yards_per_gm = 10%
+receptions_per_gm = 5%
+rz_tgt = 5%
+Why
+
+For WRs, role is driven by:
+
+target earning
+air-yard importance
+offensive prominence
+weekly route/snap presence
+scoring-area involvement
+Output
+role_score: number | null
+TE Player Overview — role_score
+Inputs and weights
+target_share_pct = 20%
+targets_per_gm = 15%
+routes_per_gm = 15%
+air_yards_share_pct = 10%
+wopr = 10%
+air_yards_per_gm = 10%
+snap_pct = 10%
+rz_tgt = 10%
+Why
+
+For TEs, role is best captured by:
+
+target earning
+route participation
+passing-game prominence
+scoring-area role
+snap presence
+Output
+role_score: number | null
+Updated Overall Score formulas
+
+Now that role_score replaces opp + usage, simplify overall_score.
+
+RB Overall Score
+role_score = 50%
+efficiency_score = 30%
+Stability/Reliability block = 20%
+60% stability
+40% inverse volatility
+WR Overall Score
+role_score = 50%
+efficiency_score = 35%
+Stability/Reliability block = 15%
+60% stability
+40% inverse volatility
+TE Overall Score
+role_score = 50%
+efficiency_score = 35%
+Stability/Reliability block = 15%
+60% stability
+40% inverse volatility
+General rules
+all composite scores clamped 0–100
+use percentile-style normalization
+round to whole number for final output unless current composite convention requires 1 decimal
+Backend dataset changes
+
+Update these Player Overview datasets:
+
+rb_player_overview_2025.json
+wr_player_overview_2025.json
+te_player_overview_2025.json
+Required row shape changes
+RB
+type RbPlayerOverviewRow = {
+  player: string
+  team: string
+  age: number | null
+  games: number
+
+  snap_pct: number | null
+
+  touches_per_gm: number | null
+  rush_att_per_gm: number | null
+  targets_per_gm: number | null
+  routes_per_gm: number | null
+
+  rz_rush_att: number | null
+  goal_line_att: number | null
+  target_share_pct: number | null
+
+  yards_per_touch: number | null
+  explosive_run_pct: number | null
+  breakaway_run_pct: number | null
+  fpoe: number | null
+
+  stability: number | null
+  volatility: number | null
+
+  career_arc: string | null
+  exp_tier: string | null
+
+  role_score: number | null
+  efficiency_score: number | null
+  overall_score: number | null
+}
+WR
+type WrPlayerOverviewRow = {
+  player: string
+  team: string
+  age: number | null
+  games: number
+
+  snap_pct: number | null
+
+  routes_per_gm: number | null
+  targets_per_gm: number | null
+  receptions_per_gm: number | null
+  air_yards_per_gm: number | null
+
+  target_share_pct: number | null
+  air_yards_share_pct: number | null
+  wopr: number | null
+  rz_tgt: number | null
+
+  catch_rate: number | null
+  yards_per_route_run: number | null
+  yards_per_target: number | null
+  yac_per_rec: number | null
+  fpoe: number | null
+
+  stability: number | null
+  volatility: number | null
+
+  career_arc: string | null
+  exp_tier: string | null
+
+  role_score: number | null
+  efficiency_score: number | null
+  overall_score: number | null
+}
+TE
+type TePlayerOverviewRow = {
+  player: string
+  team: string
+  age: number | null
+  games: number
+
+  snap_pct: number | null
+
+  routes_per_gm: number | null
+  targets_per_gm: number | null
+  receptions_per_gm: number | null
+  air_yards_per_gm: number | null
+
+  target_share_pct: number | null
+  air_yards_share_pct: number | null
+  wopr: number | null
+  rz_tgt: number | null
+
+  catch_rate: number | null
+  yards_per_route_run: number | null
+  yards_per_target: number | null
+  yac_per_rec: number | null
+  fpoe: number | null
+
+  stability: number | null
+  volatility: number | null
+
+  career_arc: string | null
+  exp_tier: string | null
+
+  role_score: number | null
+  efficiency_score: number | null
+  overall_score: number | null
+}
+Efficiency score migration notes
+
+If RB and WR still only have player_score, replace that concept with a true efficiency_score.
+
+RB efficiency_score
+
+Create from percentile ranks of:
+
+yards_per_touch = 30%
+explosive_run_pct = 20%
+breakaway_run_pct = 20%
+fpoe = 20%
+stability = 10%
+WR efficiency_score
+
+Create from percentile ranks of:
+
+yards_per_target = 25%
+catch_rate = 20%
+yac_per_rec = 15%
+fpoe = 20%
+yards_per_route_run = 20%
+TE efficiency_score
+
+Keep current TE efficiency score logic.
+
+Meta columns update
+
+Update meta.columns so the composite portion becomes:
+
+[
+  "role_score",
+  "efficiency_score",
+  "overall_score"
+]
+
+If old opp_score, usage_score, or player_score need to remain temporarily for compatibility, keep them in the raw row only if needed, but they should not be treated as primary fields anymore.
+
+Preferred final Player Overview output should use:
+
+role_score
+efficiency_score
+overall_score
+Default backend sorting
+
+For all Player Overview datasets, change backend default sort to:
+
+overall_score descending
+role_score descending
+efficiency_score descending
+Validation
+
+Before writing files:
+
+every Player Overview row has role_score, efficiency_score, overall_score
+all three are clamped 0–100
+no duplicate players
+only correct position included
+meta.columns matches frontend order
