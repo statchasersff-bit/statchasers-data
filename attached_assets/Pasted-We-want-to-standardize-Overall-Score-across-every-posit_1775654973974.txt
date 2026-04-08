@@ -1,0 +1,344 @@
+We want to standardize Overall Score across every position’s Player Overview tab.
+
+Goal
+
+Add a backend-computed field called:
+
+overall_score
+
+to these Player Overview datasets:
+
+rb_player_overview_2025.json
+wr_player_overview_2025.json
+te_player_overview_2025.json
+
+If/when QB Player Overview exists, use the same architecture there too.
+
+Important naming standard
+
+Going forward, the composite stack on Player Overview should be:
+
+opp_score
+usage_score
+efficiency_score
+overall_score
+
+If RB and WR still currently use player_score, keep backward compatibility only if needed temporarily, but the preferred final field is:
+
+efficiency_score
+overall_score
+
+If easy, migrate RB and WR Player Overview rows from player_score to:
+
+efficiency_score for the old pure-performance score
+overall_score for the new blended score
+
+If the frontend still depends on player_score, keep it temporarily as an alias of overall_score only until the frontend is updated, then remove it later.
+
+Overall Score philosophy
+
+overall_score should be a 0–100 blended profile score that answers:
+
+How strong is this player’s total fantasy profile right now, relative to his position peers?
+
+It should blend:
+
+opportunity
+role/deployment
+efficiency
+stability/reliability
+premium/scoring-role indicators
+
+Use percentile-style normalization within each position pool.
+
+Clamp final outputs to 0–100.
+
+Round to whole number for display unless there is already a composite-score convention requiring 1 decimal.
+
+Position-specific formulas
+RB Player Overview — Overall Score
+Inputs
+opp_score
+usage_score
+efficiency_score
+stability
+volatility
+goal_line_att
+rz_rush_att
+target_share_pct
+Formula
+Opportunity / Role block — 40%
+55% opp_score
+45% usage_score
+Efficiency block — 30%
+100% efficiency_score
+Stability / Reliability block — 15%
+60% stability
+40% inverse volatility
+Premium Role block — 15%
+40% percentile of goal_line_att
+35% percentile of rz_rush_att
+25% percentile of target_share_pct
+Why
+
+RBs earn value from:
+
+raw workload
+trusted role
+goal-line work
+target involvement
+weekly reliability
+Final backend field
+overall_score
+WR Player Overview — Overall Score
+Inputs
+opp_score
+usage_score
+efficiency_score
+stability
+volatility
+target_share_pct
+air_yards_share_pct
+rz_tgt
+Formula
+Opportunity / Role block — 35%
+55% opp_score
+45% usage_score
+Efficiency block — 35%
+100% efficiency_score
+Stability / Reliability block — 10%
+60% stability
+40% inverse volatility
+Premium Role block — 20%
+40% percentile of target_share_pct
+35% percentile of air_yards_share_pct
+25% percentile of rz_tgt
+Why
+
+WR value should lean heavily on:
+
+role and opportunity
+actual efficiency
+target-earning
+air-yard importance
+scoring-area involvement
+Final backend field
+overall_score
+TE Player Overview — Overall Score
+
+Keep TE logic, but standardize it under the same cross-position architecture.
+
+Inputs
+opp_score
+usage_score
+efficiency_score
+stability
+volatility
+rz_tgt
+target_share_pct
+Formula
+Opportunity / Role block — 35%
+55% opp_score
+45% usage_score
+Efficiency block — 35%
+100% efficiency_score
+Stability / Reliability block — 15%
+60% stability
+40% inverse volatility
+Premium Role block — 15%
+50% percentile of rz_tgt
+50% percentile of target_share_pct
+Final backend field
+overall_score
+QB Player Overview — Overall Score (for future use if QB overview is added)
+
+If a QB Player Overview dataset exists later, use:
+
+Inputs
+opp_score
+usage_score
+efficiency_score
+stability
+volatility
+rush_att_per_gm
+rz_pass_att
+rz_rush_att
+Formula
+Opportunity / Role block — 35%
+55% opp_score
+45% usage_score
+Efficiency block — 35%
+100% efficiency_score
+Stability / Reliability block — 15%
+60% stability
+40% inverse volatility
+Premium Scoring block — 15%
+40% percentile of rz_pass_att
+25% percentile of rz_rush_att
+35% percentile of rush_att_per_gm
+Why
+
+For fantasy QBs, rushing and red-zone involvement matter a lot.
+
+Required backend dataset changes
+RB row shape update
+type RbPlayerOverviewRow = {
+  player: string
+  team: string
+  age: number | null
+  games: number
+
+  snap_pct: number | null
+
+  touches_per_gm: number | null
+  rush_att_per_gm: number | null
+  targets_per_gm: number | null
+
+  rz_rush_att: number | null
+  goal_line_att: number | null
+  target_share_pct: number | null
+
+  yards_per_touch: number | null
+  explosive_run_pct: number | null
+  breakaway_run_pct: number | null
+  fpoe: number | null
+
+  stability: number | null
+  volatility: number | null
+
+  career_arc: string | null
+  exp_tier: string | null
+
+  opp_score: number | null
+  usage_score: number | null
+  efficiency_score: number | null
+  overall_score: number | null
+}
+WR row shape update
+type WrPlayerOverviewRow = {
+  player: string
+  team: string
+  age: number | null
+  games: number
+
+  snap_pct: number | null
+
+  routes_per_gm: number | null
+  targets_per_gm: number | null
+  receptions_per_gm: number | null
+  air_yards_per_gm: number | null
+
+  target_share_pct: number | null
+  air_yards_share_pct: number | null
+  wopr: number | null
+  rz_tgt: number | null
+
+  catch_rate: number | null
+  yards_per_route_run: number | null
+  yards_per_target: number | null
+  yac_per_rec: number | null
+  fpoe: number | null
+
+  stability: number | null
+  volatility: number | null
+
+  career_arc: string | null
+  exp_tier: string | null
+
+  opp_score: number | null
+  usage_score: number | null
+  efficiency_score: number | null
+  overall_score: number | null
+}
+TE row shape update
+type TePlayerOverviewRow = {
+  player: string
+  team: string
+  age: number | null
+  games: number
+
+  snap_pct: number | null
+
+  routes_per_gm: number | null
+  targets_per_gm: number | null
+  receptions_per_gm: number | null
+  air_yards_per_gm: number | null
+
+  target_share_pct: number | null
+  air_yards_share_pct: number | null
+  wopr: number | null
+  rz_tgt: number | null
+
+  catch_rate: number | null
+  yards_per_route_run: number | null
+  yards_per_target: number | null
+  yac_per_rec: number | null
+  fpoe: number | null
+
+  stability: number | null
+  volatility: number | null
+
+  career_arc: string | null
+  exp_tier: string | null
+
+  opp_score: number | null
+  usage_score: number | null
+  efficiency_score: number | null
+  overall_score: number | null
+}
+RB efficiency_score migration logic
+
+If RB currently has no efficiency_score field and instead has player_score, split the concepts now.
+
+Create RB efficiency_score from percentile ranks of:
+yards_per_touch = 30%
+explosive_run_pct = 20%
+breakaway_run_pct = 20%
+fpoe = 20%
+stability = 10%
+
+Then use that efficiency_score inside overall_score.
+
+Do not let RB overall_score just equal the old player_score.
+
+WR efficiency_score migration logic
+
+If WR currently has no efficiency_score field and instead has player_score, create efficiency_score from percentile ranks of:
+
+yards_per_target = 25%
+catch_rate = 20%
+yac_per_rec = 15%
+fpoe = 20%
+yards_per_route_run = 20%
+
+Then use that efficiency_score inside overall_score.
+
+Meta columns update
+
+For each Player Overview output, update meta.columns so composite columns end with:
+
+[
+  "opp_score",
+  "usage_score",
+  "efficiency_score",
+  "overall_score"
+]
+
+If player_score must remain temporarily for compatibility, place it after overall_score as deprecated, but preferred final output is without it.
+
+Default backend sorting
+
+Update backend default sort for all Player Overview datasets to:
+
+overall_score descending
+opp_score descending
+usage_score descending
+Validation
+
+Before writing files:
+
+every Player Overview row has opp_score, usage_score, efficiency_score, overall_score
+all scores are clamped 0–100
+no duplicate players
+only the correct position is included in each file
+meta.columns matches the frontend’s expected order
