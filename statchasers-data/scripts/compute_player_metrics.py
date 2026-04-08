@@ -37,7 +37,9 @@ OUTPUT_PATH  = os.path.join(PROCESSED_DIR, "player_metrics.json")
 CURRENT_SEASON = 2025
 
 # Minimum 2025-season plays to include a player
-MIN_PLAYS = 20
+# Aligned with WR/TE overview MIN_TARGETS=15 so FPOE is available for
+# all players that appear in the analytics outputs
+MIN_PLAYS = 15
 
 # Hardcoded team overrides for cases where Sleeper team data is stale and
 # pos_hint alone cannot disambiguate two same-position players.
@@ -53,6 +55,13 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     # Jamaal Williams played NO 2023 (retired, team=None in Sleeper).
     # Both fall through to Jarveon Williams (None slot) without this override.
     "J.Williams": {"DEN": "Javonte Williams", "NO": "Jamaal Williams"},
+    # Three distinct T.Johnson players in 2025 PBP — none in Sleeper by gsis_id.
+    # Without overrides the ambiguous T.Johnson abbreviation maps to Tony Johnson (K).
+    "T.Johnson": {"NYG": "Theo Johnson", "NYJ": "Tyler Johnson", "TB": "Tez Johnson"},
+    # nflverse uses multi-word abbreviation A.St. Brown; _abbrev() produces A.Brown
+    # which collides with A.J. Brown. Store under full Sleeper name so analytics
+    # scripts that resolve via Sleeper (Amon-Ra St. Brown) can find the FPOE.
+    "A.St. Brown": {"DET": "Amon-Ra St. Brown"},
 }
 
 # Minimum 2025-season games before applying narrative labels

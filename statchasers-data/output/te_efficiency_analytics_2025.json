@@ -3,7 +3,7 @@
     "position": "TE",
     "table": "te_efficiency_analytics",
     "season": "2025",
-    "generated_at": "2026-04-08T14:52:14Z",
+    "generated_at": "2026-04-08T15:06:57Z",
     "columns": [
       "player",
       "team",
@@ -54,7 +54,7 @@
       "broken_tackles": 1.0,
       "btkl_per_rec": 0.026,
       "stability": 5.64,
-      "efficiency_score": 85.3
+      "efficiency_score": 86.3
     },
     {
       "player": "Sam LaPorta",
@@ -79,7 +79,7 @@
       "broken_tackles": 5.0,
       "btkl_per_rec": 0.125,
       "stability": 7.0,
-      "efficiency_score": 82.7
+      "efficiency_score": 83.8
     },
     {
       "player": "Greg Dulcich",
@@ -104,7 +104,7 @@
       "broken_tackles": 2.0,
       "btkl_per_rec": 0.077,
       "stability": 6.4,
-      "efficiency_score": 80.1
+      "efficiency_score": 81.1
     },
     {
       "player": "George Kittle",
@@ -129,7 +129,7 @@
       "broken_tackles": 2.0,
       "btkl_per_rec": 0.035,
       "stability": 7.72,
-      "efficiency_score": 79.9
+      "efficiency_score": 80.9
     },
     {
       "player": "Pat Freiermuth",
@@ -154,7 +154,7 @@
       "broken_tackles": 3.0,
       "btkl_per_rec": 0.073,
       "stability": 7.85,
-      "efficiency_score": 75.9
+      "efficiency_score": 77.0
     },
     {
       "player": "Tucker Kraft",
@@ -179,7 +179,7 @@
       "broken_tackles": 6.0,
       "btkl_per_rec": 0.188,
       "stability": 4.57,
-      "efficiency_score": 75.9
+      "efficiency_score": 76.9
     },
     {
       "player": "Brenton Strange",
@@ -204,7 +204,7 @@
       "broken_tackles": 2.0,
       "btkl_per_rec": 0.043,
       "stability": 7.4,
-      "efficiency_score": 73.8
+      "efficiency_score": 74.9
     },
     {
       "player": "Trey McBride",
@@ -229,7 +229,7 @@
       "broken_tackles": 9.0,
       "btkl_per_rec": 0.071,
       "stability": 7.84,
-      "efficiency_score": 71.7
+      "efficiency_score": 72.7
     },
     {
       "player": "Juwan Johnson",
@@ -254,7 +254,7 @@
       "broken_tackles": 5.0,
       "btkl_per_rec": 0.065,
       "stability": 6.11,
-      "efficiency_score": 70.6
+      "efficiency_score": 71.7
     },
     {
       "player": "Colby Parkinson",
@@ -279,32 +279,7 @@
       "broken_tackles": 4.0,
       "btkl_per_rec": 0.093,
       "stability": 7.92,
-      "efficiency_score": 70.3
-    },
-    {
-      "player": "Jackson Hawes",
-      "team": "BUF",
-      "games": 13,
-      "targets": 19,
-      "epa_per_target": 0.781,
-      "success_rate": 0.7368,
-      "yards_per_target": 9.84,
-      "catch_rate": 0.8421,
-      "fpoe": null,
-      "yards_per_route_run": 0.331,
-      "targets_per_route_run": 0.034,
-      "air_yards_per_target": 7.32,
-      "air_yards_share_pct": 0.0398,
-      "explosive_play_rate": 0.375,
-      "explosive_rec_20_plus": 2,
-      "explosive_rec_40_plus": 0,
-      "longest_reception": 29,
-      "yac_per_rec": 5.69,
-      "ybc_per_rec": 6.0,
-      "broken_tackles": 2.0,
-      "btkl_per_rec": 0.125,
-      "stability": 6.46,
-      "efficiency_score": 70.2
+      "efficiency_score": 71.3
     },
     {
       "player": "Brock Bowers",
@@ -329,7 +304,7 @@
       "broken_tackles": 3.0,
       "btkl_per_rec": 0.047,
       "stability": 6.1,
-      "efficiency_score": 67.3
+      "efficiency_score": 68.4
     },
     {
       "player": "Travis Kelce",
@@ -354,7 +329,7 @@
       "broken_tackles": 1.0,
       "btkl_per_rec": 0.013,
       "stability": 7.45,
-      "efficiency_score": 65.6
+      "efficiency_score": 66.6
     },
     {
       "player": "Kyle Pitts",
@@ -379,7 +354,7 @@
       "broken_tackles": 2.0,
       "btkl_per_rec": 0.023,
       "stability": 6.56,
-      "efficiency_score": 65.6
+      "efficiency_score": 66.6
     },
     {
       "player": "Hunter Henry",
@@ -404,7 +379,7 @@
       "broken_tackles": 1.0,
       "btkl_per_rec": 0.017,
       "stability": 5.72,
-      "efficiency_score": 63.1
+      "efficiency_score": 64.2
     },
     {
       "player": "Dalton Schultz",
@@ -429,7 +404,7 @@
       "broken_tackles": 3.0,
       "btkl_per_rec": 0.037,
       "stability": 6.37,
-      "efficiency_score": 63.0
+      "efficiency_score": 64.1
     },
     {
       "player": "AJ Barner",
@@ -454,32 +429,32 @@
       "broken_tackles": 3.0,
       "btkl_per_rec": 0.058,
       "stability": 7.2,
-      "efficiency_score": 62.9
+      "efficiency_score": 64.0
     },
     {
-      "player": "Taysom Hill",
-      "team": "MIA",
-      "games": 11,
-      "targets": 45,
-      "epa_per_target": 0.432,
-      "success_rate": 0.5556,
-      "yards_per_target": 7.91,
-      "catch_rate": 0.7111,
-      "fpoe": null,
-      "yards_per_route_run": null,
-      "targets_per_route_run": null,
-      "air_yards_per_target": 10.07,
-      "air_yards_share_pct": 0.1373,
-      "explosive_play_rate": 0.1875,
-      "explosive_rec_20_plus": 4,
-      "explosive_rec_40_plus": 1,
-      "longest_reception": 47,
-      "yac_per_rec": 4.47,
-      "ybc_per_rec": 6.66,
-      "broken_tackles": 0.0,
-      "btkl_per_rec": 0.0,
-      "stability": 2.31,
-      "efficiency_score": 62.6
+      "player": "Jackson Hawes",
+      "team": "BUF",
+      "games": 13,
+      "targets": 19,
+      "epa_per_target": 0.781,
+      "success_rate": 0.7368,
+      "yards_per_target": 9.84,
+      "catch_rate": 0.8421,
+      "fpoe": 6.61,
+      "yards_per_route_run": 0.331,
+      "targets_per_route_run": 0.034,
+      "air_yards_per_target": 7.32,
+      "air_yards_share_pct": 0.0398,
+      "explosive_play_rate": 0.375,
+      "explosive_rec_20_plus": 2,
+      "explosive_rec_40_plus": 0,
+      "longest_reception": 29,
+      "yac_per_rec": 5.69,
+      "ybc_per_rec": 6.0,
+      "broken_tackles": 2.0,
+      "btkl_per_rec": 0.125,
+      "stability": 6.46,
+      "efficiency_score": 64.0
     },
     {
       "player": "Oronde Gadsden",
@@ -504,7 +479,7 @@
       "broken_tackles": 1.0,
       "btkl_per_rec": 0.02,
       "stability": 4.61,
-      "efficiency_score": 62.3
+      "efficiency_score": 63.4
     },
     {
       "player": "Tyler Warren",
@@ -529,7 +504,32 @@
       "broken_tackles": 4.0,
       "btkl_per_rec": 0.053,
       "stability": 7.37,
-      "efficiency_score": 62.3
+      "efficiency_score": 63.4
+    },
+    {
+      "player": "Taysom Hill",
+      "team": "MIA",
+      "games": 11,
+      "targets": 45,
+      "epa_per_target": 0.432,
+      "success_rate": 0.5556,
+      "yards_per_target": 7.91,
+      "catch_rate": 0.7111,
+      "fpoe": null,
+      "yards_per_route_run": null,
+      "targets_per_route_run": null,
+      "air_yards_per_target": 10.07,
+      "air_yards_share_pct": 0.1373,
+      "explosive_play_rate": 0.1875,
+      "explosive_rec_20_plus": 4,
+      "explosive_rec_40_plus": 1,
+      "longest_reception": 47,
+      "yac_per_rec": 4.47,
+      "ybc_per_rec": 6.66,
+      "broken_tackles": 0.0,
+      "btkl_per_rec": 0.0,
+      "stability": 2.31,
+      "efficiency_score": 63.1
     },
     {
       "player": "Colston Loveland",
@@ -554,7 +554,7 @@
       "broken_tackles": 4.0,
       "btkl_per_rec": 0.069,
       "stability": 5.78,
-      "efficiency_score": 61.5
+      "efficiency_score": 62.6
     },
     {
       "player": "Daniel Bellinger",
@@ -579,7 +579,7 @@
       "broken_tackles": 0.0,
       "btkl_per_rec": 0.0,
       "stability": 5.96,
-      "efficiency_score": 59.7
+      "efficiency_score": 60.8
     },
     {
       "player": "Chig Okonkwo",
@@ -604,7 +604,7 @@
       "broken_tackles": null,
       "btkl_per_rec": null,
       "stability": 6.56,
-      "efficiency_score": 59.5
+      "efficiency_score": 60.6
     },
     {
       "player": "Darnell Washington",
@@ -629,7 +629,7 @@
       "broken_tackles": 4.0,
       "btkl_per_rec": 0.129,
       "stability": 5.72,
-      "efficiency_score": 57.9
+      "efficiency_score": 59.0
     },
     {
       "player": "Dawson Knox",
@@ -654,7 +654,7 @@
       "broken_tackles": 0.0,
       "btkl_per_rec": 0.0,
       "stability": 5.12,
-      "efficiency_score": 56.9
+      "efficiency_score": 58.0
     },
     {
       "player": "Elijah Higgins",
@@ -679,7 +679,7 @@
       "broken_tackles": 5.0,
       "btkl_per_rec": 0.167,
       "stability": 1.5,
-      "efficiency_score": 56.6
+      "efficiency_score": 57.5
     },
     {
       "player": "Tyler Higbee",
@@ -704,7 +704,7 @@
       "broken_tackles": 0.0,
       "btkl_per_rec": 0.0,
       "stability": 6.49,
-      "efficiency_score": 56.5
+      "efficiency_score": 57.5
     },
     {
       "player": "Noah Fant",
@@ -729,7 +729,7 @@
       "broken_tackles": 1.0,
       "btkl_per_rec": 0.029,
       "stability": 1.82,
-      "efficiency_score": 56.0
+      "efficiency_score": 57.1
     },
     {
       "player": "Josh Oliver",
@@ -754,7 +754,7 @@
       "broken_tackles": 0.0,
       "btkl_per_rec": 0.0,
       "stability": 6.25,
-      "efficiency_score": 54.6
+      "efficiency_score": 55.7
     },
     {
       "player": "Isaiah Likely",
@@ -779,7 +779,7 @@
       "broken_tackles": 1.0,
       "btkl_per_rec": 0.037,
       "stability": 5.9,
-      "efficiency_score": 54.0
+      "efficiency_score": 55.0
     },
     {
       "player": "Adam Trautman",
@@ -804,7 +804,7 @@
       "broken_tackles": 3.0,
       "btkl_per_rec": 0.15,
       "stability": 5.07,
-      "efficiency_score": 53.3
+      "efficiency_score": 54.1
     },
     {
       "player": "Darren Waller",
@@ -829,32 +829,7 @@
       "broken_tackles": 0.0,
       "btkl_per_rec": 0.0,
       "stability": 4.9,
-      "efficiency_score": 53.0
-    },
-    {
-      "player": "Austin Hooper",
-      "team": "NE",
-      "games": 13,
-      "targets": 26,
-      "epa_per_target": 0.646,
-      "success_rate": 0.7308,
-      "yards_per_target": 10.12,
-      "catch_rate": 0.8077,
-      "fpoe": 7.33,
-      "yards_per_route_run": 0.434,
-      "targets_per_route_run": 0.043,
-      "air_yards_per_target": 9.0,
-      "air_yards_share_pct": 0.0523,
-      "explosive_play_rate": 0.3333,
-      "explosive_rec_20_plus": 6,
-      "explosive_rec_40_plus": 0,
-      "longest_reception": 31,
-      "yac_per_rec": 4.1,
-      "ybc_per_rec": 8.43,
-      "broken_tackles": 0.0,
-      "btkl_per_rec": 0.0,
-      "stability": 3.8,
-      "efficiency_score": 52.5
+      "efficiency_score": 54.1
     },
     {
       "player": "Dallas Goedert",
@@ -879,7 +854,32 @@
       "broken_tackles": 3.0,
       "btkl_per_rec": 0.05,
       "stability": 4.96,
-      "efficiency_score": 52.4
+      "efficiency_score": 53.5
+    },
+    {
+      "player": "Austin Hooper",
+      "team": "NE",
+      "games": 13,
+      "targets": 26,
+      "epa_per_target": 0.646,
+      "success_rate": 0.7308,
+      "yards_per_target": 10.12,
+      "catch_rate": 0.8077,
+      "fpoe": 7.33,
+      "yards_per_route_run": 0.434,
+      "targets_per_route_run": 0.043,
+      "air_yards_per_target": 9.0,
+      "air_yards_share_pct": 0.0523,
+      "explosive_play_rate": 0.3333,
+      "explosive_rec_20_plus": 6,
+      "explosive_rec_40_plus": 0,
+      "longest_reception": 31,
+      "yac_per_rec": 4.1,
+      "ybc_per_rec": 8.43,
+      "broken_tackles": 0.0,
+      "btkl_per_rec": 0.0,
+      "stability": 3.8,
+      "efficiency_score": 53.5
     },
     {
       "player": "Julian Hill",
@@ -904,32 +904,7 @@
       "broken_tackles": 1.0,
       "btkl_per_rec": 0.067,
       "stability": 6.67,
-      "efficiency_score": 51.3
-    },
-    {
-      "player": "Charlie Kolar",
-      "team": "BAL",
-      "games": 11,
-      "targets": 15,
-      "epa_per_target": 0.344,
-      "success_rate": 0.6667,
-      "yards_per_target": 9.47,
-      "catch_rate": 0.6667,
-      "fpoe": null,
-      "yards_per_route_run": 0.232,
-      "targets_per_route_run": 0.025,
-      "air_yards_per_target": 7.07,
-      "air_yards_share_pct": 0.0314,
-      "explosive_play_rate": 0.6,
-      "explosive_rec_20_plus": 2,
-      "explosive_rec_40_plus": 0,
-      "longest_reception": 23,
-      "yac_per_rec": 5.2,
-      "ybc_per_rec": 9.0,
-      "broken_tackles": 1.0,
-      "btkl_per_rec": 0.1,
-      "stability": 6.81,
-      "efficiency_score": 51.1
+      "efficiency_score": 51.9
     },
     {
       "player": "Jake Ferguson",
@@ -954,7 +929,7 @@
       "broken_tackles": 6.0,
       "btkl_per_rec": 0.073,
       "stability": 5.07,
-      "efficiency_score": 49.9
+      "efficiency_score": 51.0
     },
     {
       "player": "T.J. Hockenson",
@@ -979,7 +954,7 @@
       "broken_tackles": 2.0,
       "btkl_per_rec": 0.039,
       "stability": 5.75,
-      "efficiency_score": 49.6
+      "efficiency_score": 50.6
     },
     {
       "player": "Evan Engram",
@@ -1004,7 +979,7 @@
       "broken_tackles": 2.0,
       "btkl_per_rec": 0.04,
       "stability": 4.9,
-      "efficiency_score": 47.3
+      "efficiency_score": 48.4
     },
     {
       "player": "Cade Otton",
@@ -1029,32 +1004,7 @@
       "broken_tackles": 6.0,
       "btkl_per_rec": 0.102,
       "stability": 4.51,
-      "efficiency_score": 47.0
-    },
-    {
-      "player": "Luke Musgrave",
-      "team": "GB",
-      "games": 13,
-      "targets": 31,
-      "epa_per_target": 0.327,
-      "success_rate": 0.5806,
-      "yards_per_target": 8.13,
-      "catch_rate": 0.7742,
-      "fpoe": 4.7,
-      "yards_per_route_run": 0.534,
-      "targets_per_route_run": 0.066,
-      "air_yards_per_target": 8.58,
-      "air_yards_share_pct": 0.0651,
-      "explosive_play_rate": 0.25,
-      "explosive_rec_20_plus": 5,
-      "explosive_rec_40_plus": 0,
-      "longest_reception": 26,
-      "yac_per_rec": 2.88,
-      "ybc_per_rec": 7.62,
-      "broken_tackles": 0.0,
-      "btkl_per_rec": 0.0,
-      "stability": 4.56,
-      "efficiency_score": 46.1
+      "efficiency_score": 48.1
     },
     {
       "player": "Harold Fannin",
@@ -1079,7 +1029,32 @@
       "broken_tackles": 7.0,
       "btkl_per_rec": 0.097,
       "stability": 4.56,
-      "efficiency_score": 46.0
+      "efficiency_score": 47.1
+    },
+    {
+      "player": "Luke Musgrave",
+      "team": "GB",
+      "games": 13,
+      "targets": 31,
+      "epa_per_target": 0.327,
+      "success_rate": 0.5806,
+      "yards_per_target": 8.13,
+      "catch_rate": 0.7742,
+      "fpoe": 4.7,
+      "yards_per_route_run": 0.534,
+      "targets_per_route_run": 0.066,
+      "air_yards_per_target": 8.58,
+      "air_yards_share_pct": 0.0651,
+      "explosive_play_rate": 0.25,
+      "explosive_rec_20_plus": 5,
+      "explosive_rec_40_plus": 0,
+      "longest_reception": 26,
+      "yac_per_rec": 2.88,
+      "ybc_per_rec": 7.62,
+      "broken_tackles": 0.0,
+      "btkl_per_rec": 0.0,
+      "stability": 4.56,
+      "efficiency_score": 46.9
     },
     {
       "player": "Gunnar Helm",
@@ -1104,7 +1079,7 @@
       "broken_tackles": 0.0,
       "btkl_per_rec": 0.0,
       "stability": 4.92,
-      "efficiency_score": 44.4
+      "efficiency_score": 45.5
     },
     {
       "player": "Mike Gesicki",
@@ -1129,7 +1104,7 @@
       "broken_tackles": 0.0,
       "btkl_per_rec": 0.0,
       "stability": 6.04,
-      "efficiency_score": 43.8
+      "efficiency_score": 44.8
     },
     {
       "player": "Theo Johnson",
@@ -1154,7 +1129,32 @@
       "broken_tackles": 1.0,
       "btkl_per_rec": 0.018,
       "stability": 2.86,
-      "efficiency_score": 43.5
+      "efficiency_score": 44.6
+    },
+    {
+      "player": "Charlie Kolar",
+      "team": "BAL",
+      "games": 11,
+      "targets": 15,
+      "epa_per_target": 0.344,
+      "success_rate": 0.6667,
+      "yards_per_target": 9.47,
+      "catch_rate": 0.6667,
+      "fpoe": 4.72,
+      "yards_per_route_run": 0.232,
+      "targets_per_route_run": 0.025,
+      "air_yards_per_target": 7.07,
+      "air_yards_share_pct": 0.0314,
+      "explosive_play_rate": 0.6,
+      "explosive_rec_20_plus": 2,
+      "explosive_rec_40_plus": 0,
+      "longest_reception": 23,
+      "yac_per_rec": 5.2,
+      "ybc_per_rec": 9.0,
+      "broken_tackles": 1.0,
+      "btkl_per_rec": 0.1,
+      "stability": 6.81,
+      "efficiency_score": 44.3
     },
     {
       "player": "Tanner Hudson",
@@ -1179,7 +1179,7 @@
       "broken_tackles": 1.0,
       "btkl_per_rec": 0.053,
       "stability": 2.93,
-      "efficiency_score": 42.2
+      "efficiency_score": 43.2
     },
     {
       "player": "Tommy Tremble",
@@ -1204,7 +1204,7 @@
       "broken_tackles": 0.0,
       "btkl_per_rec": 0.0,
       "stability": 4.65,
-      "efficiency_score": 41.8
+      "efficiency_score": 42.9
     },
     {
       "player": "Cole Kmet",
@@ -1229,7 +1229,7 @@
       "broken_tackles": 2.0,
       "btkl_per_rec": 0.067,
       "stability": 8.59,
-      "efficiency_score": 41.1
+      "efficiency_score": 42.2
     },
     {
       "player": "Michael Mayer",
@@ -1254,7 +1254,7 @@
       "broken_tackles": 1.0,
       "btkl_per_rec": 0.029,
       "stability": 3.88,
-      "efficiency_score": 40.9
+      "efficiency_score": 42.0
     },
     {
       "player": "Zach Ertz",
@@ -1279,57 +1279,7 @@
       "broken_tackles": 1.0,
       "btkl_per_rec": 0.02,
       "stability": 4.48,
-      "efficiency_score": 40.5
-    },
-    {
-      "player": "Will Dissly",
-      "team": "LAC",
-      "games": 8,
-      "targets": 16,
-      "epa_per_target": 0.175,
-      "success_rate": 0.375,
-      "yards_per_target": 6.06,
-      "catch_rate": 0.6875,
-      "fpoe": null,
-      "yards_per_route_run": 0.375,
-      "targets_per_route_run": 0.062,
-      "air_yards_per_target": 4.5,
-      "air_yards_share_pct": 0.0163,
-      "explosive_play_rate": 0.2727,
-      "explosive_rec_20_plus": 0,
-      "explosive_rec_40_plus": 0,
-      "longest_reception": 18,
-      "yac_per_rec": 6.0,
-      "ybc_per_rec": 2.82,
-      "broken_tackles": 0.0,
-      "btkl_per_rec": 0.0,
-      "stability": 4.11,
-      "efficiency_score": 39.9
-    },
-    {
-      "player": "John Bates",
-      "team": "WAS",
-      "games": 9,
-      "targets": 16,
-      "epa_per_target": 0.488,
-      "success_rate": 0.625,
-      "yards_per_target": 6.44,
-      "catch_rate": 0.6875,
-      "fpoe": null,
-      "yards_per_route_run": 0.153,
-      "targets_per_route_run": 0.024,
-      "air_yards_per_target": 3.0,
-      "air_yards_share_pct": 0.0128,
-      "explosive_play_rate": 0.1818,
-      "explosive_rec_20_plus": 1,
-      "explosive_rec_40_plus": 0,
-      "longest_reception": 22,
-      "yac_per_rec": 6.18,
-      "ybc_per_rec": 3.18,
-      "broken_tackles": 0.0,
-      "btkl_per_rec": 0.0,
-      "stability": 5.0,
-      "efficiency_score": 38.8
+      "efficiency_score": 41.6
     },
     {
       "player": "Mark Andrews",
@@ -1354,32 +1304,7 @@
       "broken_tackles": 0.0,
       "btkl_per_rec": 0.0,
       "stability": 7.11,
-      "efficiency_score": 38.6
-    },
-    {
-      "player": "Jake Tonges",
-      "team": "SF",
-      "games": 9,
-      "targets": 46,
-      "epa_per_target": 0.309,
-      "success_rate": 0.6087,
-      "yards_per_target": 6.37,
-      "catch_rate": 0.7391,
-      "fpoe": 11.99,
-      "yards_per_route_run": 0.5,
-      "targets_per_route_run": 0.078,
-      "air_yards_per_target": 5.07,
-      "air_yards_share_pct": 0.0564,
-      "explosive_play_rate": 0.1176,
-      "explosive_rec_20_plus": 2,
-      "explosive_rec_40_plus": 0,
-      "longest_reception": 23,
-      "yac_per_rec": 4.21,
-      "ybc_per_rec": 4.41,
-      "broken_tackles": 1.0,
-      "btkl_per_rec": 0.029,
-      "stability": 3.87,
-      "efficiency_score": 37.3
+      "efficiency_score": 39.7
     },
     {
       "player": "Terrance Ferguson",
@@ -1404,7 +1329,32 @@
       "broken_tackles": 0.0,
       "btkl_per_rec": 0.0,
       "stability": 4.65,
-      "efficiency_score": 37.2
+      "efficiency_score": 38.3
+    },
+    {
+      "player": "Jake Tonges",
+      "team": "SF",
+      "games": 9,
+      "targets": 46,
+      "epa_per_target": 0.309,
+      "success_rate": 0.6087,
+      "yards_per_target": 6.37,
+      "catch_rate": 0.7391,
+      "fpoe": 11.99,
+      "yards_per_route_run": 0.5,
+      "targets_per_route_run": 0.078,
+      "air_yards_per_target": 5.07,
+      "air_yards_share_pct": 0.0564,
+      "explosive_play_rate": 0.1176,
+      "explosive_rec_20_plus": 2,
+      "explosive_rec_40_plus": 0,
+      "longest_reception": 23,
+      "yac_per_rec": 4.21,
+      "ybc_per_rec": 4.41,
+      "broken_tackles": 1.0,
+      "btkl_per_rec": 0.029,
+      "stability": 3.87,
+      "efficiency_score": 38.3
     },
     {
       "player": "Elijah Arroyo",
@@ -1429,32 +1379,7 @@
       "broken_tackles": 0.0,
       "btkl_per_rec": 0.0,
       "stability": 6.67,
-      "efficiency_score": 37.2
-    },
-    {
-      "player": "John FitzPatrick",
-      "team": "GB",
-      "games": 10,
-      "targets": 15,
-      "epa_per_target": 0.251,
-      "success_rate": 0.5333,
-      "yards_per_target": 4.8,
-      "catch_rate": 0.8,
-      "fpoe": null,
-      "yards_per_route_run": 0.187,
-      "targets_per_route_run": 0.039,
-      "air_yards_per_target": 1.6,
-      "air_yards_share_pct": 0.0059,
-      "explosive_play_rate": 0.0,
-      "explosive_rec_20_plus": 0,
-      "explosive_rec_40_plus": 0,
-      "longest_reception": 11,
-      "yac_per_rec": 4.75,
-      "ybc_per_rec": 1.25,
-      "broken_tackles": 0.0,
-      "btkl_per_rec": 0.0,
-      "stability": 3.37,
-      "efficiency_score": 36.6
+      "efficiency_score": 38.0
     },
     {
       "player": "Jeremy Ruckert",
@@ -1479,57 +1404,7 @@
       "broken_tackles": 0.0,
       "btkl_per_rec": 0.0,
       "stability": 6.67,
-      "efficiency_score": 36.4
-    },
-    {
-      "player": "Drew Sample",
-      "team": "CIN",
-      "games": 11,
-      "targets": 20,
-      "epa_per_target": 0.133,
-      "success_rate": 0.4,
-      "yards_per_target": 5.3,
-      "catch_rate": 0.75,
-      "fpoe": 2.99,
-      "yards_per_route_run": 0.124,
-      "targets_per_route_run": 0.023,
-      "air_yards_per_target": -0.35,
-      "air_yards_share_pct": -0.0015,
-      "explosive_play_rate": 0.1333,
-      "explosive_rec_20_plus": 1,
-      "explosive_rec_40_plus": 0,
-      "longest_reception": 27,
-      "yac_per_rec": 7.27,
-      "ybc_per_rec": -0.2,
-      "broken_tackles": 1.0,
-      "btkl_per_rec": 0.067,
-      "stability": 6.25,
-      "efficiency_score": 36.1
-    },
-    {
-      "player": "Johnny Mundt",
-      "team": "JAX",
-      "games": 11,
-      "targets": 19,
-      "epa_per_target": 0.209,
-      "success_rate": 0.4737,
-      "yards_per_target": 5.84,
-      "catch_rate": 0.4737,
-      "fpoe": null,
-      "yards_per_route_run": 0.236,
-      "targets_per_route_run": 0.04,
-      "air_yards_per_target": 5.26,
-      "air_yards_share_pct": 0.0205,
-      "explosive_play_rate": 0.3333,
-      "explosive_rec_20_plus": 1,
-      "explosive_rec_40_plus": 0,
-      "longest_reception": 21,
-      "yac_per_rec": 8.44,
-      "ybc_per_rec": 3.89,
-      "broken_tackles": 2.0,
-      "btkl_per_rec": 0.222,
-      "stability": 5.07,
-      "efficiency_score": 35.9
+      "efficiency_score": 37.2
     },
     {
       "player": "Davis Allen",
@@ -1554,7 +1429,32 @@
       "broken_tackles": 2.0,
       "btkl_per_rec": 0.083,
       "stability": 4.45,
-      "efficiency_score": 35.7
+      "efficiency_score": 36.8
+    },
+    {
+      "player": "Drew Sample",
+      "team": "CIN",
+      "games": 11,
+      "targets": 20,
+      "epa_per_target": 0.133,
+      "success_rate": 0.4,
+      "yards_per_target": 5.3,
+      "catch_rate": 0.75,
+      "fpoe": 2.99,
+      "yards_per_route_run": 0.124,
+      "targets_per_route_run": 0.023,
+      "air_yards_per_target": -0.35,
+      "air_yards_share_pct": -0.0015,
+      "explosive_play_rate": 0.1333,
+      "explosive_rec_20_plus": 1,
+      "explosive_rec_40_plus": 0,
+      "longest_reception": 27,
+      "yac_per_rec": 7.27,
+      "ybc_per_rec": -0.2,
+      "broken_tackles": 1.0,
+      "btkl_per_rec": 0.067,
+      "stability": 6.25,
+      "efficiency_score": 36.8
     },
     {
       "player": "David Njoku",
@@ -1579,32 +1479,7 @@
       "broken_tackles": 3.0,
       "btkl_per_rec": 0.091,
       "stability": 3.91,
-      "efficiency_score": 35.6
-    },
-    {
-      "player": "Tanner Conner",
-      "team": "MIA",
-      "games": 7,
-      "targets": 15,
-      "epa_per_target": -0.434,
-      "success_rate": 0.4,
-      "yards_per_target": 6.07,
-      "catch_rate": 0.6,
-      "fpoe": null,
-      "yards_per_route_run": 0.484,
-      "targets_per_route_run": 0.08,
-      "air_yards_per_target": 7.93,
-      "air_yards_share_pct": 0.0361,
-      "explosive_play_rate": 0.2222,
-      "explosive_rec_20_plus": 1,
-      "explosive_rec_40_plus": 0,
-      "longest_reception": 28,
-      "yac_per_rec": 4.33,
-      "ybc_per_rec": 5.78,
-      "broken_tackles": 0.0,
-      "btkl_per_rec": 0.0,
-      "stability": 6.25,
-      "efficiency_score": 35.5
+      "efficiency_score": 36.6
     },
     {
       "player": "Mitchell Evans",
@@ -1629,7 +1504,7 @@
       "broken_tackles": 0.0,
       "btkl_per_rec": 0.0,
       "stability": 3.9,
-      "efficiency_score": 33.9
+      "efficiency_score": 34.9
     },
     {
       "player": "Ja'Tavion Sanders",
@@ -1654,32 +1529,7 @@
       "broken_tackles": 1.0,
       "btkl_per_rec": 0.034,
       "stability": 4.0,
-      "efficiency_score": 33.4
-    },
-    {
-      "player": "Hunter Long",
-      "team": "JAX",
-      "games": 7,
-      "targets": 17,
-      "epa_per_target": 0.457,
-      "success_rate": 0.5882,
-      "yards_per_target": 5.0,
-      "catch_rate": 0.7059,
-      "fpoe": null,
-      "yards_per_route_run": 0.255,
-      "targets_per_route_run": 0.051,
-      "air_yards_per_target": 3.88,
-      "air_yards_share_pct": 0.0135,
-      "explosive_play_rate": 0.0,
-      "explosive_rec_20_plus": 0,
-      "explosive_rec_40_plus": 0,
-      "longest_reception": 11,
-      "yac_per_rec": 2.58,
-      "ybc_per_rec": 4.5,
-      "broken_tackles": 0.0,
-      "btkl_per_rec": 0.0,
-      "stability": 7.2,
-      "efficiency_score": 33.3
+      "efficiency_score": 34.2
     },
     {
       "player": "Jonnu Smith",
@@ -1704,7 +1554,82 @@
       "broken_tackles": 3.0,
       "btkl_per_rec": 0.079,
       "stability": 3.8,
-      "efficiency_score": 31.7
+      "efficiency_score": 32.3
+    },
+    {
+      "player": "Will Dissly",
+      "team": "LAC",
+      "games": 8,
+      "targets": 16,
+      "epa_per_target": 0.175,
+      "success_rate": 0.375,
+      "yards_per_target": 6.06,
+      "catch_rate": 0.6875,
+      "fpoe": 1.75,
+      "yards_per_route_run": 0.375,
+      "targets_per_route_run": 0.062,
+      "air_yards_per_target": 4.5,
+      "air_yards_share_pct": 0.0163,
+      "explosive_play_rate": 0.2727,
+      "explosive_rec_20_plus": 0,
+      "explosive_rec_40_plus": 0,
+      "longest_reception": 18,
+      "yac_per_rec": 6.0,
+      "ybc_per_rec": 2.82,
+      "broken_tackles": 0.0,
+      "btkl_per_rec": 0.0,
+      "stability": 4.11,
+      "efficiency_score": 31.1
+    },
+    {
+      "player": "John Bates",
+      "team": "WAS",
+      "games": 9,
+      "targets": 16,
+      "epa_per_target": 0.488,
+      "success_rate": 0.625,
+      "yards_per_target": 6.44,
+      "catch_rate": 0.6875,
+      "fpoe": 2.93,
+      "yards_per_route_run": 0.153,
+      "targets_per_route_run": 0.024,
+      "air_yards_per_target": 3.0,
+      "air_yards_share_pct": 0.0128,
+      "explosive_play_rate": 0.1818,
+      "explosive_rec_20_plus": 1,
+      "explosive_rec_40_plus": 0,
+      "longest_reception": 22,
+      "yac_per_rec": 6.18,
+      "ybc_per_rec": 3.18,
+      "broken_tackles": 0.0,
+      "btkl_per_rec": 0.0,
+      "stability": 5.0,
+      "efficiency_score": 30.5
+    },
+    {
+      "player": "Mason Taylor",
+      "team": "NYJ",
+      "games": 13,
+      "targets": 66,
+      "epa_per_target": 0.147,
+      "success_rate": 0.5758,
+      "yards_per_target": 5.59,
+      "catch_rate": 0.6667,
+      "fpoe": 7.76,
+      "yards_per_route_run": 0.543,
+      "targets_per_route_run": 0.097,
+      "air_yards_per_target": 5.68,
+      "air_yards_share_pct": 0.1165,
+      "explosive_play_rate": 0.1136,
+      "explosive_rec_20_plus": 2,
+      "explosive_rec_40_plus": 0,
+      "longest_reception": 27,
+      "yac_per_rec": 3.02,
+      "ybc_per_rec": 5.36,
+      "broken_tackles": 0.0,
+      "btkl_per_rec": 0.0,
+      "stability": 5.76,
+      "efficiency_score": 29.7
     },
     {
       "player": "Cade Stover",
@@ -1732,29 +1657,79 @@
       "efficiency_score": 29.0
     },
     {
-      "player": "Mason Taylor",
-      "team": "NYJ",
-      "games": 13,
-      "targets": 66,
-      "epa_per_target": 0.147,
-      "success_rate": 0.5758,
-      "yards_per_target": 5.59,
-      "catch_rate": 0.6667,
-      "fpoe": 7.76,
-      "yards_per_route_run": 0.543,
-      "targets_per_route_run": 0.097,
-      "air_yards_per_target": 5.68,
-      "air_yards_share_pct": 0.1165,
-      "explosive_play_rate": 0.1136,
-      "explosive_rec_20_plus": 2,
+      "player": "John FitzPatrick",
+      "team": "GB",
+      "games": 10,
+      "targets": 15,
+      "epa_per_target": 0.251,
+      "success_rate": 0.5333,
+      "yards_per_target": 4.8,
+      "catch_rate": 0.8,
+      "fpoe": 2.38,
+      "yards_per_route_run": 0.187,
+      "targets_per_route_run": 0.039,
+      "air_yards_per_target": 1.6,
+      "air_yards_share_pct": 0.0059,
+      "explosive_play_rate": 0.0,
+      "explosive_rec_20_plus": 0,
       "explosive_rec_40_plus": 0,
-      "longest_reception": 27,
-      "yac_per_rec": 3.02,
-      "ybc_per_rec": 5.36,
+      "longest_reception": 11,
+      "yac_per_rec": 4.75,
+      "ybc_per_rec": 1.25,
       "broken_tackles": 0.0,
       "btkl_per_rec": 0.0,
-      "stability": 5.76,
-      "efficiency_score": 28.7
+      "stability": 3.37,
+      "efficiency_score": 28.1
+    },
+    {
+      "player": "Johnny Mundt",
+      "team": "JAX",
+      "games": 11,
+      "targets": 19,
+      "epa_per_target": 0.209,
+      "success_rate": 0.4737,
+      "yards_per_target": 5.84,
+      "catch_rate": 0.4737,
+      "fpoe": 2.0,
+      "yards_per_route_run": 0.236,
+      "targets_per_route_run": 0.04,
+      "air_yards_per_target": 5.26,
+      "air_yards_share_pct": 0.0205,
+      "explosive_play_rate": 0.3333,
+      "explosive_rec_20_plus": 1,
+      "explosive_rec_40_plus": 0,
+      "longest_reception": 21,
+      "yac_per_rec": 8.44,
+      "ybc_per_rec": 3.89,
+      "broken_tackles": 2.0,
+      "btkl_per_rec": 0.222,
+      "stability": 5.07,
+      "efficiency_score": 27.2
+    },
+    {
+      "player": "Tanner Conner",
+      "team": "MIA",
+      "games": 7,
+      "targets": 15,
+      "epa_per_target": -0.434,
+      "success_rate": 0.4,
+      "yards_per_target": 6.07,
+      "catch_rate": 0.6,
+      "fpoe": 1.64,
+      "yards_per_route_run": 0.484,
+      "targets_per_route_run": 0.08,
+      "air_yards_per_target": 7.93,
+      "air_yards_share_pct": 0.0361,
+      "explosive_play_rate": 0.2222,
+      "explosive_rec_20_plus": 1,
+      "explosive_rec_40_plus": 0,
+      "longest_reception": 28,
+      "yac_per_rec": 4.33,
+      "ybc_per_rec": 5.78,
+      "broken_tackles": 0.0,
+      "btkl_per_rec": 0.0,
+      "stability": 6.25,
+      "efficiency_score": 26.5
     },
     {
       "player": "Luke Schoonmaker",
@@ -1779,7 +1754,32 @@
       "broken_tackles": 1.0,
       "btkl_per_rec": 0.071,
       "stability": 6.46,
-      "efficiency_score": 25.4
+      "efficiency_score": 25.9
+    },
+    {
+      "player": "Hunter Long",
+      "team": "JAX",
+      "games": 7,
+      "targets": 17,
+      "epa_per_target": 0.457,
+      "success_rate": 0.5882,
+      "yards_per_target": 5.0,
+      "catch_rate": 0.7059,
+      "fpoe": 3.69,
+      "yards_per_route_run": 0.255,
+      "targets_per_route_run": 0.051,
+      "air_yards_per_target": 3.88,
+      "air_yards_share_pct": 0.0135,
+      "explosive_play_rate": 0.0,
+      "explosive_rec_20_plus": 0,
+      "explosive_rec_40_plus": 0,
+      "longest_reception": 11,
+      "yac_per_rec": 2.58,
+      "ybc_per_rec": 4.5,
+      "broken_tackles": 0.0,
+      "btkl_per_rec": 0.0,
+      "stability": 7.2,
+      "efficiency_score": 25.6
     },
     {
       "player": "Mo Alie-Cox",
@@ -1804,7 +1804,7 @@
       "broken_tackles": 1.0,
       "btkl_per_rec": 0.077,
       "stability": 5.07,
-      "efficiency_score": 24.3
+      "efficiency_score": 24.9
     },
     {
       "player": "Brock Wright",
@@ -1829,7 +1829,7 @@
       "broken_tackles": 0.0,
       "btkl_per_rec": 0.0,
       "stability": 3.58,
-      "efficiency_score": 19.8
+      "efficiency_score": 20.6
     },
     {
       "player": "Noah Gray",
@@ -1854,7 +1854,7 @@
       "broken_tackles": 0.0,
       "btkl_per_rec": 0.0,
       "stability": 4.84,
-      "efficiency_score": 18.4
+      "efficiency_score": 19.0
     }
   ]
 }

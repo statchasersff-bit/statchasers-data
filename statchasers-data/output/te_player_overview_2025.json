@@ -3,7 +3,7 @@
     "position": "TE",
     "table": "te_player_overview",
     "season": "2025",
-    "generated_at": "2026-04-08T13:59:51Z",
+    "generated_at": "2026-04-08T15:06:54Z",
     "columns": [
       "player",
       "team",
@@ -59,8 +59,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 99.3,
       "usage_score": 95.5,
-      "efficiency_score": 71.7,
-      "overall_score": 88.8
+      "efficiency_score": 72.7,
+      "overall_score": 89.2
     },
     {
       "player": "Tyler Warren",
@@ -87,8 +87,8 @@
       "exp_tier": "Rookie",
       "opp_score": 93.1,
       "usage_score": 83.1,
-      "efficiency_score": 62.3,
-      "overall_score": 81.4
+      "efficiency_score": 63.4,
+      "overall_score": 81.8
     },
     {
       "player": "Kyle Pitts",
@@ -115,8 +115,8 @@
       "exp_tier": "Veteran",
       "opp_score": 94.7,
       "usage_score": 90.9,
-      "efficiency_score": 65.6,
-      "overall_score": 80.7
+      "efficiency_score": 66.6,
+      "overall_score": 81.1
     },
     {
       "player": "Travis Kelce",
@@ -143,8 +143,8 @@
       "exp_tier": "Senior Veteran",
       "opp_score": 90.1,
       "usage_score": 83.7,
-      "efficiency_score": 65.6,
-      "overall_score": 80.5
+      "efficiency_score": 66.6,
+      "overall_score": 80.9
     },
     {
       "player": "George Kittle",
@@ -171,8 +171,8 @@
       "exp_tier": "Veteran",
       "opp_score": 74.8,
       "usage_score": 80.1,
-      "efficiency_score": 79.9,
-      "overall_score": 79.8
+      "efficiency_score": 80.9,
+      "overall_score": 80.2
     },
     {
       "player": "Brock Bowers",
@@ -199,8 +199,8 @@
       "exp_tier": "Year 2",
       "opp_score": 89.5,
       "usage_score": 85.7,
-      "efficiency_score": 67.3,
-      "overall_score": 77.7
+      "efficiency_score": 68.4,
+      "overall_score": 78.1
     },
     {
       "player": "Dalton Schultz",
@@ -227,8 +227,8 @@
       "exp_tier": "Veteran",
       "opp_score": 87.6,
       "usage_score": 74.9,
-      "efficiency_score": 63.0,
-      "overall_score": 74.3
+      "efficiency_score": 64.1,
+      "overall_score": 74.7
     },
     {
       "player": "Juwan Johnson",
@@ -255,8 +255,8 @@
       "exp_tier": "Veteran",
       "opp_score": 82.9,
       "usage_score": 76.6,
-      "efficiency_score": 70.6,
-      "overall_score": 73.5
+      "efficiency_score": 71.7,
+      "overall_score": 73.9
     },
     {
       "player": "Brenton Strange",
@@ -283,8 +283,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 65.7,
       "usage_score": 69.4,
-      "efficiency_score": 73.8,
-      "overall_score": 73.5
+      "efficiency_score": 74.9,
+      "overall_score": 73.9
     },
     {
       "player": "Hunter Henry",
@@ -311,8 +311,8 @@
       "exp_tier": "Senior Veteran",
       "opp_score": 89.7,
       "usage_score": 78.2,
-      "efficiency_score": 63.1,
-      "overall_score": 72.7
+      "efficiency_score": 64.2,
+      "overall_score": 73.1
     },
     {
       "player": "Sam LaPorta",
@@ -339,8 +339,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 50.7,
       "usage_score": 76.8,
-      "efficiency_score": 82.7,
-      "overall_score": 70.9
+      "efficiency_score": 83.8,
+      "overall_score": 71.3
     },
     {
       "player": "Pat Freiermuth",
@@ -367,8 +367,8 @@
       "exp_tier": "Veteran",
       "opp_score": 66.9,
       "usage_score": 43.1,
-      "efficiency_score": 75.9,
-      "overall_score": 69.8
+      "efficiency_score": 77.0,
+      "overall_score": 70.2
     },
     {
       "player": "AJ Barner",
@@ -395,8 +395,8 @@
       "exp_tier": "Year 2",
       "opp_score": 72.8,
       "usage_score": 65.8,
-      "efficiency_score": 62.9,
-      "overall_score": 68.5
+      "efficiency_score": 64.0,
+      "overall_score": 68.9
     },
     {
       "player": "Colston Loveland",
@@ -423,8 +423,8 @@
       "exp_tier": "Rookie",
       "opp_score": 83.7,
       "usage_score": 70.9,
-      "efficiency_score": 61.5,
-      "overall_score": 68.3
+      "efficiency_score": 62.6,
+      "overall_score": 68.7
     },
     {
       "player": "Dalton Kincaid",
@@ -451,8 +451,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 68.4,
       "usage_score": 42.5,
-      "efficiency_score": 85.3,
-      "overall_score": 68.3
+      "efficiency_score": 86.3,
+      "overall_score": 68.7
     },
     {
       "player": "Colby Parkinson",
@@ -479,8 +479,8 @@
       "exp_tier": "Veteran",
       "opp_score": 59.2,
       "usage_score": 54.1,
-      "efficiency_score": 70.3,
-      "overall_score": 68.3
+      "efficiency_score": 71.3,
+      "overall_score": 68.6
     },
     {
       "player": "Dallas Goedert",
@@ -507,8 +507,8 @@
       "exp_tier": "Veteran",
       "opp_score": 84.1,
       "usage_score": 80.5,
-      "efficiency_score": 52.4,
-      "overall_score": 66.7
+      "efficiency_score": 53.5,
+      "overall_score": 67.1
     },
     {
       "player": "Harold Fannin",
@@ -535,8 +535,8 @@
       "exp_tier": null,
       "opp_score": 90.3,
       "usage_score": 82.5,
-      "efficiency_score": 46.0,
-      "overall_score": 65.7
+      "efficiency_score": 47.1,
+      "overall_score": 66.1
     },
     {
       "player": "Oronde Gadsden",
@@ -563,8 +563,8 @@
       "exp_tier": "Veteran",
       "opp_score": 77.7,
       "usage_score": 71.9,
-      "efficiency_score": 62.3,
-      "overall_score": 65.6
+      "efficiency_score": 63.4,
+      "overall_score": 66.0
     },
     {
       "player": "Tucker Kraft",
@@ -591,8 +591,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 53.5,
       "usage_score": 78.3,
-      "efficiency_score": 75.9,
-      "overall_score": 65.1
+      "efficiency_score": 76.9,
+      "overall_score": 65.4
     },
     {
       "player": "Jake Ferguson",
@@ -619,8 +619,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 83.4,
       "usage_score": 71.7,
-      "efficiency_score": 49.9,
-      "overall_score": 64.9
+      "efficiency_score": 51.0,
+      "overall_score": 65.2
     },
     {
       "player": "Mark Andrews",
@@ -647,8 +647,8 @@
       "exp_tier": "Veteran",
       "opp_score": 84.9,
       "usage_score": 54.8,
-      "efficiency_score": 38.6,
-      "overall_score": 63.4
+      "efficiency_score": 39.7,
+      "overall_score": 63.8
     },
     {
       "player": "Chig Okonkwo",
@@ -675,8 +675,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 64.3,
       "usage_score": 56.2,
-      "efficiency_score": 59.5,
-      "overall_score": 62.0
+      "efficiency_score": 60.6,
+      "overall_score": 62.4
     },
     {
       "player": "T.J. Hockenson",
@@ -703,8 +703,8 @@
       "exp_tier": "Veteran",
       "opp_score": 70.6,
       "usage_score": 63.0,
-      "efficiency_score": 49.6,
-      "overall_score": 60.7
+      "efficiency_score": 50.6,
+      "overall_score": 61.0
     },
     {
       "player": "Greg Dulcich",
@@ -731,8 +731,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 41.2,
       "usage_score": 35.7,
-      "efficiency_score": 80.1,
-      "overall_score": 60.4
+      "efficiency_score": 81.1,
+      "overall_score": 60.7
     },
     {
       "player": "Theo Johnson",
@@ -759,8 +759,8 @@
       "exp_tier": "Year 2",
       "opp_score": 94.6,
       "usage_score": 57.9,
-      "efficiency_score": 43.5,
-      "overall_score": 58.4
+      "efficiency_score": 44.6,
+      "overall_score": 58.8
     },
     {
       "player": "Cade Otton",
@@ -787,8 +787,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 69.7,
       "usage_score": 79.2,
-      "efficiency_score": 47.0,
-      "overall_score": 57.0
+      "efficiency_score": 48.1,
+      "overall_score": 57.3
     },
     {
       "player": "Dawson Knox",
@@ -815,8 +815,8 @@
       "exp_tier": "Veteran",
       "opp_score": 67.7,
       "usage_score": 45.1,
-      "efficiency_score": 56.9,
-      "overall_score": 56.6
+      "efficiency_score": 58.0,
+      "overall_score": 56.9
     },
     {
       "player": "Zach Ertz",
@@ -843,8 +843,8 @@
       "exp_tier": "Senior Veteran",
       "opp_score": 81.2,
       "usage_score": 70.4,
-      "efficiency_score": 40.5,
-      "overall_score": 56.4
+      "efficiency_score": 41.6,
+      "overall_score": 56.8
     },
     {
       "player": "Evan Engram",
@@ -871,8 +871,8 @@
       "exp_tier": "Veteran",
       "opp_score": 66.6,
       "usage_score": 45.3,
-      "efficiency_score": 47.3,
-      "overall_score": 55.4
+      "efficiency_score": 48.4,
+      "overall_score": 55.8
     },
     {
       "player": "Darnell Washington",
@@ -899,8 +899,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 52.0,
       "usage_score": 50.7,
-      "efficiency_score": 57.9,
-      "overall_score": 55.0
+      "efficiency_score": 59.0,
+      "overall_score": 55.4
     },
     {
       "player": "Darren Waller",
@@ -927,8 +927,8 @@
       "exp_tier": "Veteran",
       "opp_score": 57.9,
       "usage_score": 50.1,
-      "efficiency_score": 53.0,
-      "overall_score": 52.6
+      "efficiency_score": 54.1,
+      "overall_score": 53.0
     },
     {
       "player": "Mitchell Evans",
@@ -955,8 +955,8 @@
       "exp_tier": "Rookie",
       "opp_score": 91.5,
       "usage_score": 50.4,
-      "efficiency_score": 33.9,
-      "overall_score": 51.7
+      "efficiency_score": 34.9,
+      "overall_score": 52.1
     },
     {
       "player": "Isaiah Likely",
@@ -983,8 +983,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 51.1,
       "usage_score": 46.7,
-      "efficiency_score": 54.0,
-      "overall_score": 51.7
+      "efficiency_score": 55.0,
+      "overall_score": 52.1
     },
     {
       "player": "Tyler Higbee",
@@ -1011,8 +1011,8 @@
       "exp_tier": "Senior Veteran",
       "opp_score": 33.0,
       "usage_score": 43.1,
-      "efficiency_score": 56.5,
-      "overall_score": 51.7
+      "efficiency_score": 57.5,
+      "overall_score": 52.1
     },
     {
       "player": "Cole Kmet",
@@ -1039,8 +1039,8 @@
       "exp_tier": "Veteran",
       "opp_score": 55.9,
       "usage_score": 56.2,
-      "efficiency_score": 41.1,
-      "overall_score": 51.3
+      "efficiency_score": 42.2,
+      "overall_score": 51.7
     },
     {
       "player": "Mason Taylor",
@@ -1067,8 +1067,8 @@
       "exp_tier": "Rookie",
       "opp_score": 72.0,
       "usage_score": 70.7,
-      "efficiency_score": 28.7,
-      "overall_score": 50.6
+      "efficiency_score": 29.7,
+      "overall_score": 51.0
     },
     {
       "player": "Mike Gesicki",
@@ -1095,8 +1095,8 @@
       "exp_tier": "Veteran",
       "opp_score": 51.5,
       "usage_score": 39.1,
-      "efficiency_score": 43.8,
-      "overall_score": 48.5
+      "efficiency_score": 44.8,
+      "overall_score": 48.8
     },
     {
       "player": "Gunnar Helm",
@@ -1123,8 +1123,8 @@
       "exp_tier": "Rookie",
       "opp_score": 57.6,
       "usage_score": 42.3,
-      "efficiency_score": 44.4,
-      "overall_score": 47.9
+      "efficiency_score": 45.5,
+      "overall_score": 48.2
     },
     {
       "player": "Taysom Hill",
@@ -1151,8 +1151,8 @@
       "exp_tier": "Veteran",
       "opp_score": 47.1,
       "usage_score": 74.1,
-      "efficiency_score": 62.6,
-      "overall_score": 47.6
+      "efficiency_score": 63.1,
+      "overall_score": 47.7
     },
     {
       "player": "Daniel Bellinger",
@@ -1179,36 +1179,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 34.3,
       "usage_score": 47.1,
-      "efficiency_score": 59.7,
-      "overall_score": 47.0
-    },
-    {
-      "player": "Jackson Hawes",
-      "team": "BUF",
-      "age": 25.0,
-      "games": 13,
-      "snap_pct": 0.4388,
-      "routes_per_gm": 43.46,
-      "targets_per_gm": 1.46,
-      "receptions_per_gm": 1.23,
-      "air_yards_per_gm": 10.69,
-      "target_share_pct": 0.0349,
-      "air_yards_share_pct": 0.0385,
-      "wopr": 0.08,
-      "rz_tgt": 3,
-      "catch_rate": 0.8421,
-      "yards_per_route_run": 0.33,
-      "yards_per_target": 9.84,
-      "yac_per_rec": 5.69,
-      "fpoe": null,
-      "stability": 6.46,
-      "volatility": 0.43,
-      "career_arc": null,
-      "exp_tier": "Rookie",
-      "opp_score": 21.5,
-      "usage_score": 20.2,
-      "efficiency_score": 70.2,
-      "overall_score": 45.1
+      "efficiency_score": 60.8,
+      "overall_score": 47.4
     },
     {
       "player": "David Njoku",
@@ -1235,8 +1207,36 @@
       "exp_tier": "Veteran",
       "opp_score": 52.6,
       "usage_score": 59.9,
-      "efficiency_score": 35.6,
-      "overall_score": 44.3
+      "efficiency_score": 36.6,
+      "overall_score": 44.7
+    },
+    {
+      "player": "Jackson Hawes",
+      "team": "BUF",
+      "age": 25.0,
+      "games": 13,
+      "snap_pct": 0.4388,
+      "routes_per_gm": 43.46,
+      "targets_per_gm": 1.46,
+      "receptions_per_gm": 1.23,
+      "air_yards_per_gm": 10.69,
+      "target_share_pct": 0.0349,
+      "air_yards_share_pct": 0.0385,
+      "wopr": 0.08,
+      "rz_tgt": 3,
+      "catch_rate": 0.8421,
+      "yards_per_route_run": 0.33,
+      "yards_per_target": 9.84,
+      "yac_per_rec": 5.69,
+      "fpoe": 6.61,
+      "stability": 6.46,
+      "volatility": 0.43,
+      "career_arc": "Ascending",
+      "exp_tier": "Rookie",
+      "opp_score": 21.5,
+      "usage_score": 20.2,
+      "efficiency_score": 64.0,
+      "overall_score": 42.9
     },
     {
       "player": "Michael Mayer",
@@ -1263,8 +1263,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 53.6,
       "usage_score": 53.4,
-      "efficiency_score": 40.9,
-      "overall_score": 42.4
+      "efficiency_score": 42.0,
+      "overall_score": 42.8
     },
     {
       "player": "Josh Oliver",
@@ -1291,8 +1291,8 @@
       "exp_tier": "Veteran",
       "opp_score": 23.9,
       "usage_score": 20.6,
-      "efficiency_score": 54.6,
-      "overall_score": 42.0
+      "efficiency_score": 55.7,
+      "overall_score": 42.4
     },
     {
       "player": "Jonnu Smith",
@@ -1319,8 +1319,8 @@
       "exp_tier": "Veteran",
       "opp_score": 58.9,
       "usage_score": 34.9,
-      "efficiency_score": 31.7,
-      "overall_score": 41.6
+      "efficiency_score": 32.3,
+      "overall_score": 41.8
     },
     {
       "player": "Jake Tonges",
@@ -1347,8 +1347,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 46.3,
       "usage_score": 63.1,
-      "efficiency_score": 37.3,
-      "overall_score": 41.5
+      "efficiency_score": 38.3,
+      "overall_score": 41.8
     },
     {
       "player": "Julian Hill",
@@ -1375,36 +1375,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 20.9,
       "usage_score": 36.0,
-      "efficiency_score": 51.3,
-      "overall_score": 39.5
-    },
-    {
-      "player": "Charlie Kolar",
-      "team": "BAL",
-      "age": 27.0,
-      "games": 11,
-      "snap_pct": 0.4035,
-      "routes_per_gm": 55.64,
-      "targets_per_gm": 1.36,
-      "receptions_per_gm": 0.91,
-      "air_yards_per_gm": 9.64,
-      "target_share_pct": 0.032,
-      "air_yards_share_pct": 0.031,
-      "wopr": 0.07,
-      "rz_tgt": 3,
-      "catch_rate": 0.6667,
-      "yards_per_route_run": 0.23,
-      "yards_per_target": 9.47,
-      "yac_per_rec": 5.2,
-      "fpoe": null,
-      "stability": 6.81,
-      "volatility": 0.47,
-      "career_arc": null,
-      "exp_tier": "Year 3\u20134",
-      "opp_score": 17.6,
-      "usage_score": 28.7,
-      "efficiency_score": 51.1,
-      "overall_score": 39.1
+      "efficiency_score": 51.9,
+      "overall_score": 39.7
     },
     {
       "player": "Adam Trautman",
@@ -1431,8 +1403,8 @@
       "exp_tier": "Veteran",
       "opp_score": 16.4,
       "usage_score": 41.5,
-      "efficiency_score": 53.3,
-      "overall_score": 37.6
+      "efficiency_score": 54.1,
+      "overall_score": 37.9
     },
     {
       "player": "Tommy Tremble",
@@ -1459,64 +1431,8 @@
       "exp_tier": "Veteran",
       "opp_score": 39.3,
       "usage_score": 40.9,
-      "efficiency_score": 41.8,
-      "overall_score": 37.5
-    },
-    {
-      "player": "Noah Fant",
-      "team": "CIN",
-      "age": 28.0,
-      "games": 13,
-      "snap_pct": 0.3793,
-      "routes_per_gm": 31.23,
-      "targets_per_gm": 3.15,
-      "receptions_per_gm": 2.62,
-      "air_yards_per_gm": 10.54,
-      "target_share_pct": 0.0603,
-      "air_yards_share_pct": 0.0291,
-      "wopr": 0.11,
-      "rz_tgt": 4,
-      "catch_rate": 0.8293,
-      "yards_per_route_run": 0.71,
-      "yards_per_target": 7.02,
-      "yac_per_rec": 5.12,
-      "fpoe": 11.66,
-      "stability": 1.82,
-      "volatility": 0.51,
-      "career_arc": "Peak",
-      "exp_tier": "Veteran",
-      "opp_score": 30.8,
-      "usage_score": 25.1,
-      "efficiency_score": 56.0,
-      "overall_score": 37.5
-    },
-    {
-      "player": "Ja'Tavion Sanders",
-      "team": "CAR",
-      "age": 22.0,
-      "games": 11,
-      "snap_pct": 0.4831,
-      "routes_per_gm": 47.55,
-      "targets_per_gm": 3.09,
-      "receptions_per_gm": 2.64,
-      "air_yards_per_gm": 14.91,
-      "target_share_pct": 0.0615,
-      "air_yards_share_pct": 0.0475,
-      "wopr": 0.13,
-      "rz_tgt": 10,
-      "catch_rate": 0.8529,
-      "yards_per_route_run": 0.36,
-      "yards_per_target": 5.59,
-      "yac_per_rec": 2.97,
-      "fpoe": 4.5,
-      "stability": 4.0,
-      "volatility": 0.71,
-      "career_arc": "Ascending",
-      "exp_tier": "Year 2",
-      "opp_score": 45.8,
-      "usage_score": 41.8,
-      "efficiency_score": 33.4,
-      "overall_score": 37.4
+      "efficiency_score": 42.9,
+      "overall_score": 37.8
     },
     {
       "player": "Austin Hooper",
@@ -1543,8 +1459,92 @@
       "exp_tier": "Senior Veteran",
       "opp_score": 32.3,
       "usage_score": 32.3,
-      "efficiency_score": 52.5,
-      "overall_score": 37.4
+      "efficiency_score": 53.5,
+      "overall_score": 37.8
+    },
+    {
+      "player": "Noah Fant",
+      "team": "CIN",
+      "age": 28.0,
+      "games": 13,
+      "snap_pct": 0.3793,
+      "routes_per_gm": 31.23,
+      "targets_per_gm": 3.15,
+      "receptions_per_gm": 2.62,
+      "air_yards_per_gm": 10.54,
+      "target_share_pct": 0.0603,
+      "air_yards_share_pct": 0.0291,
+      "wopr": 0.11,
+      "rz_tgt": 4,
+      "catch_rate": 0.8293,
+      "yards_per_route_run": 0.71,
+      "yards_per_target": 7.02,
+      "yac_per_rec": 5.12,
+      "fpoe": 11.66,
+      "stability": 1.82,
+      "volatility": 0.51,
+      "career_arc": "Peak",
+      "exp_tier": "Veteran",
+      "opp_score": 30.8,
+      "usage_score": 25.1,
+      "efficiency_score": 57.1,
+      "overall_score": 37.8
+    },
+    {
+      "player": "Ja'Tavion Sanders",
+      "team": "CAR",
+      "age": 22.0,
+      "games": 11,
+      "snap_pct": 0.4831,
+      "routes_per_gm": 47.55,
+      "targets_per_gm": 3.09,
+      "receptions_per_gm": 2.64,
+      "air_yards_per_gm": 14.91,
+      "target_share_pct": 0.0615,
+      "air_yards_share_pct": 0.0475,
+      "wopr": 0.13,
+      "rz_tgt": 10,
+      "catch_rate": 0.8529,
+      "yards_per_route_run": 0.36,
+      "yards_per_target": 5.59,
+      "yac_per_rec": 2.97,
+      "fpoe": 4.5,
+      "stability": 4.0,
+      "volatility": 0.71,
+      "career_arc": "Ascending",
+      "exp_tier": "Year 2",
+      "opp_score": 45.8,
+      "usage_score": 41.8,
+      "efficiency_score": 34.2,
+      "overall_score": 37.7
+    },
+    {
+      "player": "Charlie Kolar",
+      "team": "BAL",
+      "age": 27.0,
+      "games": 11,
+      "snap_pct": 0.4035,
+      "routes_per_gm": 55.64,
+      "targets_per_gm": 1.36,
+      "receptions_per_gm": 0.91,
+      "air_yards_per_gm": 9.64,
+      "target_share_pct": 0.032,
+      "air_yards_share_pct": 0.031,
+      "wopr": 0.07,
+      "rz_tgt": 3,
+      "catch_rate": 0.6667,
+      "yards_per_route_run": 0.23,
+      "yards_per_target": 9.47,
+      "yac_per_rec": 5.2,
+      "fpoe": 4.72,
+      "stability": 6.81,
+      "volatility": 0.47,
+      "career_arc": "Peak",
+      "exp_tier": "Year 3\u20134",
+      "opp_score": 17.6,
+      "usage_score": 28.7,
+      "efficiency_score": 44.3,
+      "overall_score": 36.7
     },
     {
       "player": "Elijah Higgins",
@@ -1571,8 +1571,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 29.7,
       "usage_score": 29.8,
-      "efficiency_score": 56.6,
-      "overall_score": 35.5
+      "efficiency_score": 57.5,
+      "overall_score": 35.8
     },
     {
       "player": "Terrance Ferguson",
@@ -1599,8 +1599,8 @@
       "exp_tier": "Rookie",
       "opp_score": 34.4,
       "usage_score": 39.5,
-      "efficiency_score": 37.2,
-      "overall_score": 35.3
+      "efficiency_score": 38.3,
+      "overall_score": 35.7
     },
     {
       "player": "Elijah Arroyo",
@@ -1627,8 +1627,8 @@
       "exp_tier": "Rookie",
       "opp_score": 34.7,
       "usage_score": 19.5,
-      "efficiency_score": 37.2,
-      "overall_score": 35.2
+      "efficiency_score": 38.0,
+      "overall_score": 35.5
     },
     {
       "player": "Jeremy Ruckert",
@@ -1655,8 +1655,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 25.8,
       "usage_score": 30.1,
-      "efficiency_score": 36.4,
-      "overall_score": 35.1
+      "efficiency_score": 37.2,
+      "overall_score": 35.4
     },
     {
       "player": "Davis Allen",
@@ -1683,36 +1683,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 31.6,
       "usage_score": 37.7,
-      "efficiency_score": 35.7,
-      "overall_score": 33.7
-    },
-    {
-      "player": "Hunter Long",
-      "team": "JAX",
-      "age": 27.0,
-      "games": 7,
-      "snap_pct": 0.3989,
-      "routes_per_gm": 47.57,
-      "targets_per_gm": 2.43,
-      "receptions_per_gm": 1.71,
-      "air_yards_per_gm": 9.43,
-      "target_share_pct": 0.0281,
-      "air_yards_share_pct": 0.0135,
-      "wopr": 0.05,
-      "rz_tgt": 4,
-      "catch_rate": 0.7059,
-      "yards_per_route_run": 0.26,
-      "yards_per_target": 5.0,
-      "yac_per_rec": 2.58,
-      "fpoe": null,
-      "stability": 7.2,
-      "volatility": 0.37,
-      "career_arc": null,
-      "exp_tier": "Veteran",
-      "opp_score": 10.1,
-      "usage_score": 29.8,
-      "efficiency_score": 33.3,
-      "overall_score": 33.7
+      "efficiency_score": 36.8,
+      "overall_score": 34.1
     },
     {
       "player": "Luke Musgrave",
@@ -1739,8 +1711,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 32.7,
       "usage_score": 25.8,
-      "efficiency_score": 46.1,
-      "overall_score": 33.4
+      "efficiency_score": 46.9,
+      "overall_score": 33.7
     },
     {
       "player": "Cade Stover",
@@ -1795,36 +1767,36 @@
       "exp_tier": "Veteran",
       "opp_score": 4.7,
       "usage_score": 35.7,
-      "efficiency_score": 36.1,
-      "overall_score": 30.8
+      "efficiency_score": 36.8,
+      "overall_score": 31.1
     },
     {
-      "player": "Tanner Conner",
-      "team": "MIA",
+      "player": "Hunter Long",
+      "team": "JAX",
       "age": 27.0,
       "games": 7,
-      "snap_pct": 0.3433,
-      "routes_per_gm": 26.86,
-      "targets_per_gm": 2.14,
-      "receptions_per_gm": 1.29,
-      "air_yards_per_gm": 17.0,
-      "target_share_pct": 0.0288,
-      "air_yards_share_pct": 0.0354,
-      "wopr": 0.07,
-      "rz_tgt": 3,
-      "catch_rate": 0.6,
-      "yards_per_route_run": 0.48,
-      "yards_per_target": 6.07,
-      "yac_per_rec": 4.33,
-      "fpoe": null,
-      "stability": 6.25,
-      "volatility": 0.46,
-      "career_arc": null,
-      "exp_tier": "Year 3\u20134",
-      "opp_score": 16.5,
-      "usage_score": 17.4,
-      "efficiency_score": 35.5,
-      "overall_score": 29.8
+      "snap_pct": 0.3989,
+      "routes_per_gm": 47.57,
+      "targets_per_gm": 2.43,
+      "receptions_per_gm": 1.71,
+      "air_yards_per_gm": 9.43,
+      "target_share_pct": 0.0281,
+      "air_yards_share_pct": 0.0135,
+      "wopr": 0.05,
+      "rz_tgt": 4,
+      "catch_rate": 0.7059,
+      "yards_per_route_run": 0.26,
+      "yards_per_target": 5.0,
+      "yac_per_rec": 2.58,
+      "fpoe": 3.69,
+      "stability": 7.2,
+      "volatility": 0.37,
+      "career_arc": "Peak",
+      "exp_tier": "Veteran",
+      "opp_score": 10.1,
+      "usage_score": 29.8,
+      "efficiency_score": 25.6,
+      "overall_score": 31.0
     },
     {
       "player": "Luke Schoonmaker",
@@ -1851,8 +1823,8 @@
       "exp_tier": "Year 3\u20134",
       "opp_score": 19.7,
       "usage_score": 18.5,
-      "efficiency_score": 25.4,
-      "overall_score": 29.3
+      "efficiency_score": 25.9,
+      "overall_score": 29.5
     },
     {
       "player": "Tanner Hudson",
@@ -1879,36 +1851,8 @@
       "exp_tier": "Veteran",
       "opp_score": 23.2,
       "usage_score": 22.4,
-      "efficiency_score": 42.2,
-      "overall_score": 29.0
-    },
-    {
-      "player": "John Bates",
-      "team": "WAS",
-      "age": 28.0,
-      "games": 9,
-      "snap_pct": 0.514,
-      "routes_per_gm": 74.67,
-      "targets_per_gm": 1.78,
-      "receptions_per_gm": 1.22,
-      "air_yards_per_gm": 5.33,
-      "target_share_pct": 0.0314,
-      "air_yards_share_pct": 0.012,
-      "wopr": 0.06,
-      "rz_tgt": 2,
-      "catch_rate": 0.6875,
-      "yards_per_route_run": 0.15,
-      "yards_per_target": 6.44,
-      "yac_per_rec": 6.18,
-      "fpoe": null,
-      "stability": 5.0,
-      "volatility": 0.52,
-      "career_arc": null,
-      "exp_tier": "Veteran",
-      "opp_score": 9.6,
-      "usage_score": 35.1,
-      "efficiency_score": 38.8,
-      "overall_score": 28.8
+      "efficiency_score": 43.2,
+      "overall_score": 29.3
     },
     {
       "player": "Noah Gray",
@@ -1935,8 +1879,8 @@
       "exp_tier": "Veteran",
       "opp_score": 34.7,
       "usage_score": 41.9,
-      "efficiency_score": 18.4,
-      "overall_score": 28.5
+      "efficiency_score": 19.0,
+      "overall_score": 28.7
     },
     {
       "player": "Mo Alie-Cox",
@@ -1963,36 +1907,64 @@
       "exp_tier": "Veteran",
       "opp_score": 20.0,
       "usage_score": 33.0,
-      "efficiency_score": 24.3,
-      "overall_score": 28.4
+      "efficiency_score": 24.9,
+      "overall_score": 28.6
     },
     {
-      "player": "Johnny Mundt",
-      "team": "JAX",
-      "age": 31.0,
-      "games": 11,
-      "snap_pct": 0.3581,
-      "routes_per_gm": 42.73,
-      "targets_per_gm": 1.73,
-      "receptions_per_gm": 0.82,
-      "air_yards_per_gm": 9.09,
+      "player": "Tanner Conner",
+      "team": "MIA",
+      "age": 27.0,
+      "games": 7,
+      "snap_pct": 0.3433,
+      "routes_per_gm": 26.86,
+      "targets_per_gm": 2.14,
+      "receptions_per_gm": 1.29,
+      "air_yards_per_gm": 17.0,
+      "target_share_pct": 0.0288,
+      "air_yards_share_pct": 0.0354,
+      "wopr": 0.07,
+      "rz_tgt": 3,
+      "catch_rate": 0.6,
+      "yards_per_route_run": 0.48,
+      "yards_per_target": 6.07,
+      "yac_per_rec": 4.33,
+      "fpoe": 1.64,
+      "stability": 6.25,
+      "volatility": 0.46,
+      "career_arc": "Plateau",
+      "exp_tier": "Year 3\u20134",
+      "opp_score": 16.5,
+      "usage_score": 17.4,
+      "efficiency_score": 26.5,
+      "overall_score": 26.6
+    },
+    {
+      "player": "John Bates",
+      "team": "WAS",
+      "age": 28.0,
+      "games": 9,
+      "snap_pct": 0.514,
+      "routes_per_gm": 74.67,
+      "targets_per_gm": 1.78,
+      "receptions_per_gm": 1.22,
+      "air_yards_per_gm": 5.33,
       "target_share_pct": 0.0314,
-      "air_yards_share_pct": 0.0205,
+      "air_yards_share_pct": 0.012,
       "wopr": 0.06,
-      "rz_tgt": 1,
-      "catch_rate": 0.4737,
-      "yards_per_route_run": 0.24,
-      "yards_per_target": 5.84,
-      "yac_per_rec": 8.44,
-      "fpoe": null,
-      "stability": 5.07,
-      "volatility": 0.56,
-      "career_arc": null,
+      "rz_tgt": 2,
+      "catch_rate": 0.6875,
+      "yards_per_route_run": 0.15,
+      "yards_per_target": 6.44,
+      "yac_per_rec": 6.18,
+      "fpoe": 2.93,
+      "stability": 5.0,
+      "volatility": 0.52,
+      "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "opp_score": 10.1,
-      "usage_score": 15.1,
-      "efficiency_score": 35.9,
-      "overall_score": 23.8
+      "opp_score": 9.6,
+      "usage_score": 35.1,
+      "efficiency_score": 30.5,
+      "overall_score": 25.9
     },
     {
       "player": "Brock Wright",
@@ -2019,8 +1991,36 @@
       "exp_tier": "Veteran",
       "opp_score": 12.5,
       "usage_score": 46.3,
-      "efficiency_score": 19.8,
-      "overall_score": 21.0
+      "efficiency_score": 20.6,
+      "overall_score": 21.2
+    },
+    {
+      "player": "Johnny Mundt",
+      "team": "JAX",
+      "age": 31.0,
+      "games": 11,
+      "snap_pct": 0.3581,
+      "routes_per_gm": 42.73,
+      "targets_per_gm": 1.73,
+      "receptions_per_gm": 0.82,
+      "air_yards_per_gm": 9.09,
+      "target_share_pct": 0.0314,
+      "air_yards_share_pct": 0.0205,
+      "wopr": 0.06,
+      "rz_tgt": 1,
+      "catch_rate": 0.4737,
+      "yards_per_route_run": 0.24,
+      "yards_per_target": 5.84,
+      "yac_per_rec": 8.44,
+      "fpoe": 2.0,
+      "stability": 5.07,
+      "volatility": 0.56,
+      "career_arc": "Peak",
+      "exp_tier": "Veteran",
+      "opp_score": 10.1,
+      "usage_score": 15.1,
+      "efficiency_score": 27.2,
+      "overall_score": 20.8
     },
     {
       "player": "John FitzPatrick",
@@ -2040,15 +2040,15 @@
       "yards_per_route_run": 0.19,
       "yards_per_target": 4.8,
       "yac_per_rec": 4.75,
-      "fpoe": null,
+      "fpoe": 2.38,
       "stability": 3.37,
       "volatility": 0.61,
-      "career_arc": null,
+      "career_arc": "Peak",
       "exp_tier": "Year 3\u20134",
       "opp_score": 9.5,
       "usage_score": 11.7,
-      "efficiency_score": 36.6,
-      "overall_score": 20.6
+      "efficiency_score": 28.1,
+      "overall_score": 17.6
     },
     {
       "player": "Will Dissly",
@@ -2068,15 +2068,15 @@
       "yards_per_route_run": 0.37,
       "yards_per_target": 6.06,
       "yac_per_rec": 6.0,
-      "fpoe": null,
+      "fpoe": 1.75,
       "stability": 4.11,
       "volatility": 0.66,
-      "career_arc": null,
+      "career_arc": "Peak",
       "exp_tier": "Veteran",
       "opp_score": 5.1,
       "usage_score": 12.5,
-      "efficiency_score": 39.9,
-      "overall_score": 19.6
+      "efficiency_score": 31.1,
+      "overall_score": 16.6
     }
   ]
 }

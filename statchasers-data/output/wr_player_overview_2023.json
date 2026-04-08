@@ -3,7 +3,7 @@
     "position": "WR",
     "table": "player_overview",
     "season": "2023",
-    "generated_at": "2026-04-08T13:33:53Z",
+    "generated_at": "2026-04-08T15:14:15Z",
     "columns": [
       "player",
       "team",
@@ -65,7 +65,7 @@
       "player_score": 89.5
     },
     {
-      "player": "A.St. Brown",
+      "player": "Amon-Ra St. Brown",
       "team": "DET",
       "age": 26,
       "games": 16,
@@ -86,7 +86,7 @@
       "stability": 7.55,
       "volatility": 0.31,
       "career_arc": null,
-      "exp_tier": null,
+      "exp_tier": "Veteran",
       "opp_score": 94.6,
       "usage_score": 94.3,
       "efficiency_score": 77.5,

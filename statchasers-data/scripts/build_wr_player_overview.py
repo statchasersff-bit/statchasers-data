@@ -132,6 +132,9 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "M.Carter":     {"ARI": "Michael Carter"},                      # RB/ARI, not Malachi Carter
     "D.Allen":      {"LA": "Davis Allen", "LAR": "Davis Allen"},    # TE/LAR, not Devon Allen
     "J.Ford":       {"CLE": "Jerome Ford"},                         # RB/CLE, not Jacoby Ford
+    # Multi-word last name — nflverse uses A.St. Brown; _abbrev() produces A.Brown
+    # which collides with A.J. Brown (PHI). Explicit override needed for correct resolution.
+    "A.St. Brown":  {"DET": "Amon-Ra St. Brown"},
 }
 
 
