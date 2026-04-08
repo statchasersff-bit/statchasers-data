@@ -3,7 +3,7 @@
     "position": "TE",
     "table": "te_player_overview",
     "season": "2025",
-    "generated_at": "2026-04-08T21:43:35Z",
+    "generated_at": "2026-04-08T22:05:32Z",
     "columns": [
       "player",
       "team",
@@ -56,9 +56,9 @@
       "volatility": 0.21,
       "career_arc": "Peak",
       "exp_tier": "Year 3\u20134",
-      "role_score": 97.2,
+      "role_score": 97.6,
       "efficiency_score": 72.5,
-      "overall_score": 88.5
+      "overall_score": 88.7
     },
     {
       "player": "Kyle Pitts",
@@ -83,9 +83,9 @@
       "volatility": 0.39,
       "career_arc": "Ascending",
       "exp_tier": "Veteran",
-      "role_score": 93.2,
+      "role_score": 93.6,
       "efficiency_score": 66.6,
-      "overall_score": 81.4
+      "overall_score": 81.6
     },
     {
       "player": "Travis Kelce",
@@ -110,9 +110,9 @@
       "volatility": 0.35,
       "career_arc": "Veteran",
       "exp_tier": "Senior Veteran",
-      "role_score": 87.3,
+      "role_score": 87.7,
       "efficiency_score": 66.8,
-      "overall_score": 80.9
+      "overall_score": 81.1
     },
     {
       "player": "George Kittle",
@@ -137,9 +137,9 @@
       "volatility": 0.39,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 77.3,
+      "role_score": 77.7,
       "efficiency_score": 80.7,
-      "overall_score": 80.2
+      "overall_score": 80.4
     },
     {
       "player": "Tyler Warren",
@@ -164,9 +164,9 @@
       "volatility": 0.26,
       "career_arc": "Ascending",
       "exp_tier": "Rookie",
-      "role_score": 87.7,
+      "role_score": 88.1,
       "efficiency_score": 63.7,
-      "overall_score": 80.1
+      "overall_score": 80.3
     },
     {
       "player": "Brock Bowers",
@@ -191,9 +191,9 @@
       "volatility": 0.4,
       "career_arc": "Ascending",
       "exp_tier": "Year 2",
-      "role_score": 87.3,
+      "role_score": 87.7,
       "efficiency_score": 68.1,
-      "overall_score": 77.4
+      "overall_score": 77.6
     },
     {
       "player": "Sam LaPorta",
@@ -218,9 +218,9 @@
       "volatility": 0.35,
       "career_arc": "Ascending",
       "exp_tier": "Year 3\u20134",
-      "role_score": 66.8,
+      "role_score": 67.2,
       "efficiency_score": 84.1,
-      "overall_score": 75.9
+      "overall_score": 76.1
     },
     {
       "player": "Juwan Johnson",
@@ -245,9 +245,9 @@
       "volatility": 0.43,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 81.3,
+      "role_score": 81.7,
       "efficiency_score": 71.4,
-      "overall_score": 75.3
+      "overall_score": 75.5
     },
     {
       "player": "Brenton Strange",
@@ -272,9 +272,9 @@
       "volatility": 0.35,
       "career_arc": "Ascending",
       "exp_tier": "Year 3\u20134",
-      "role_score": 68.0,
+      "role_score": 68.4,
       "efficiency_score": 75.0,
-      "overall_score": 74.0
+      "overall_score": 74.2
     },
     {
       "player": "Dalton Schultz",
@@ -299,9 +299,9 @@
       "volatility": 0.4,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 81.3,
+      "role_score": 81.7,
       "efficiency_score": 64.6,
-      "overall_score": 73.8
+      "overall_score": 74.0
     },
     {
       "player": "Hunter Henry",
@@ -326,9 +326,9 @@
       "volatility": 0.52,
       "career_arc": "Peak",
       "exp_tier": "Senior Veteran",
-      "role_score": 83.5,
+      "role_score": 83.9,
       "efficiency_score": 63.8,
-      "overall_score": 70.9
+      "overall_score": 71.1
     },
     {
       "player": "AJ Barner",
@@ -353,9 +353,9 @@
       "volatility": 0.54,
       "career_arc": "Ascending",
       "exp_tier": "Year 2",
-      "role_score": 70.3,
+      "role_score": 70.7,
       "efficiency_score": 64.5,
-      "overall_score": 67.8
+      "overall_score": 68.0
     },
     {
       "player": "Pat Freiermuth",
@@ -380,9 +380,9 @@
       "volatility": 0.38,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 53.9,
+      "role_score": 54.0,
       "efficiency_score": 77.0,
-      "overall_score": 67.7
+      "overall_score": 67.8
     },
     {
       "player": "Colston Loveland",
@@ -407,9 +407,9 @@
       "volatility": 0.56,
       "career_arc": "Ascending",
       "exp_tier": "Rookie",
-      "role_score": 76.4,
+      "role_score": 76.8,
       "efficiency_score": 62.5,
-      "overall_score": 66.7
+      "overall_score": 66.9
     },
     {
       "player": "Dallas Goedert",
@@ -434,9 +434,9 @@
       "volatility": 0.51,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 82.8,
+      "role_score": 83.2,
       "efficiency_score": 53.7,
-      "overall_score": 66.4
+      "overall_score": 66.6
     },
     {
       "player": "Tucker Kraft",
@@ -461,9 +461,9 @@
       "volatility": 0.49,
       "career_arc": "Ascending",
       "exp_tier": "Year 3\u20134",
-      "role_score": 67.5,
+      "role_score": 67.9,
       "efficiency_score": 76.7,
-      "overall_score": 66.1
+      "overall_score": 66.3
     },
     {
       "player": "Harold Fannin",
@@ -488,9 +488,9 @@
       "volatility": 0.44,
       "career_arc": "Developing",
       "exp_tier": null,
-      "role_score": 87.0,
+      "role_score": 87.4,
       "efficiency_score": 46.4,
-      "overall_score": 65.9
+      "overall_score": 66.1
     },
     {
       "player": "Dalton Kincaid",
@@ -515,36 +515,9 @@
       "volatility": 0.4,
       "career_arc": "Peak",
       "exp_tier": "Year 3\u20134",
-      "role_score": 52.9,
+      "role_score": 53.0,
       "efficiency_score": 86.1,
-      "overall_score": 65.3
-    },
-    {
-      "player": "Colby Parkinson",
-      "team": "LA",
-      "age": 27.0,
-      "games": 14,
-      "snap_pct": 0.604,
-      "routes_per_gm": 47.29,
-      "targets_per_gm": 4.0,
-      "receptions_per_gm": 3.07,
-      "air_yards_per_gm": 17.71,
-      "target_share_pct": 0.0902,
-      "air_yards_share_pct": 0.0457,
-      "wopr": 0.17,
-      "rz_tgt": 22,
-      "catch_rate": 0.7679,
-      "yards_per_route_run": 0.62,
-      "yards_per_target": 7.29,
-      "yac_per_rec": 6.3,
-      "fpoe": 19.8,
-      "stability": 7.92,
-      "volatility": 0.5,
-      "career_arc": "Peak",
-      "exp_tier": "Veteran",
-      "role_score": 55.6,
-      "efficiency_score": 72.3,
-      "overall_score": 65.0
+      "overall_score": 65.4
     },
     {
       "player": "Theo Johnson",
@@ -569,16 +542,43 @@
       "volatility": 0.38,
       "career_arc": "Ascending",
       "exp_tier": "Year 2",
-      "role_score": 81.6,
+      "role_score": 82.0,
       "efficiency_score": 40.8,
-      "overall_score": 64.9
+      "overall_score": 65.1
+    },
+    {
+      "player": "Colby Parkinson",
+      "team": "LA",
+      "age": 27.0,
+      "games": 14,
+      "snap_pct": 0.604,
+      "routes_per_gm": 47.29,
+      "targets_per_gm": 4.0,
+      "receptions_per_gm": 3.07,
+      "air_yards_per_gm": 17.71,
+      "target_share_pct": 0.0902,
+      "air_yards_share_pct": 0.0457,
+      "wopr": 0.17,
+      "rz_tgt": 22,
+      "catch_rate": 0.7679,
+      "yards_per_route_run": 0.62,
+      "yards_per_target": 7.29,
+      "yac_per_rec": 6.3,
+      "fpoe": 19.8,
+      "stability": 7.92,
+      "volatility": 0.5,
+      "career_arc": "Peak",
+      "exp_tier": "Veteran",
+      "role_score": 55.8,
+      "efficiency_score": 72.3,
+      "overall_score": 65.1
     },
     {
       "player": "Oronde Gadsden",
       "team": "LAC",
       "age": 22.0,
       "games": 15,
-      "snap_pct": null,
+      "snap_pct": 0.626,
       "routes_per_gm": 47.13,
       "targets_per_gm": 4.6,
       "receptions_per_gm": 3.27,
@@ -596,16 +596,16 @@
       "volatility": 0.51,
       "career_arc": "Ascending",
       "exp_tier": "Veteran",
-      "role_score": 73.9,
+      "role_score": 70.6,
       "efficiency_score": 63.0,
-      "overall_score": 64.3
+      "overall_score": 62.7
     },
     {
       "player": "Chig Okonkwo",
       "team": "TEN",
       "age": 26.0,
       "games": 17,
-      "snap_pct": null,
+      "snap_pct": 0.6371,
       "routes_per_gm": 40.12,
       "targets_per_gm": 4.65,
       "receptions_per_gm": 3.29,
@@ -623,9 +623,9 @@
       "volatility": 0.38,
       "career_arc": "Peak",
       "exp_tier": "Year 3\u20134",
-      "role_score": 62.3,
+      "role_score": 59.1,
       "efficiency_score": 60.5,
-      "overall_score": 64.0
+      "overall_score": 62.4
     },
     {
       "player": "Jake Ferguson",
@@ -650,9 +650,9 @@
       "volatility": 0.55,
       "career_arc": "Peak",
       "exp_tier": "Year 3\u20134",
-      "role_score": 76.8,
+      "role_score": 77.2,
       "efficiency_score": 51.2,
-      "overall_score": 62.1
+      "overall_score": 62.3
     },
     {
       "player": "Cade Otton",
@@ -677,9 +677,9 @@
       "volatility": 0.51,
       "career_arc": "Peak",
       "exp_tier": "Year 3\u20134",
-      "role_score": 78.0,
+      "role_score": 78.4,
       "efficiency_score": 47.7,
-      "overall_score": 60.5
+      "overall_score": 60.7
     },
     {
       "player": "Mark Andrews",
@@ -704,9 +704,9 @@
       "volatility": 0.41,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 68.5,
+      "role_score": 68.7,
       "efficiency_score": 40.1,
-      "overall_score": 60.3
+      "overall_score": 60.4
     },
     {
       "player": "T.J. Hockenson",
@@ -731,9 +731,9 @@
       "volatility": 0.45,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 67.2,
+      "role_score": 67.6,
       "efficiency_score": 50.8,
-      "overall_score": 59.7
+      "overall_score": 59.9
     },
     {
       "player": "Greg Dulcich",
@@ -758,9 +758,9 @@
       "volatility": 0.3,
       "career_arc": "Ascending",
       "exp_tier": "Year 3\u20134",
-      "role_score": 38.1,
+      "role_score": 38.3,
       "efficiency_score": 81.0,
-      "overall_score": 59.2
+      "overall_score": 59.3
     },
     {
       "player": "Zach Ertz",
@@ -785,36 +785,9 @@
       "volatility": 0.53,
       "career_arc": "Veteran",
       "exp_tier": "Senior Veteran",
-      "role_score": 75.9,
+      "role_score": 76.3,
       "efficiency_score": 41.4,
-      "overall_score": 56.6
-    },
-    {
-      "player": "Taysom Hill",
-      "team": "NO",
-      "age": 35.0,
-      "games": 11,
-      "snap_pct": null,
-      "routes_per_gm": null,
-      "targets_per_gm": 4.09,
-      "receptions_per_gm": 2.91,
-      "air_yards_per_gm": 41.18,
-      "target_share_pct": 0.0702,
-      "air_yards_share_pct": 0.0946,
-      "wopr": 0.17,
-      "rz_tgt": 2,
-      "catch_rate": 0.7111,
-      "yards_per_route_run": null,
-      "yards_per_target": 7.91,
-      "yac_per_rec": 4.47,
-      "fpoe": null,
-      "stability": 2.31,
-      "volatility": 0.71,
-      "career_arc": null,
-      "exp_tier": "Veteran",
-      "role_score": 65.1,
-      "efficiency_score": 62.7,
-      "overall_score": 55.0
+      "overall_score": 56.8
     },
     {
       "player": "Darnell Washington",
@@ -839,9 +812,9 @@
       "volatility": 0.47,
       "career_arc": "Ascending",
       "exp_tier": "Year 3\u20134",
-      "role_score": 51.6,
+      "role_score": 51.7,
       "efficiency_score": 58.9,
-      "overall_score": 54.3
+      "overall_score": 54.4
     },
     {
       "player": "Cole Kmet",
@@ -866,9 +839,9 @@
       "volatility": 0.63,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 57.9,
+      "role_score": 58.3,
       "efficiency_score": 42.3,
-      "overall_score": 53.3
+      "overall_score": 53.5
     },
     {
       "player": "Dawson Knox",
@@ -893,9 +866,9 @@
       "volatility": 0.59,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 55.0,
+      "role_score": 55.1,
       "efficiency_score": 57.9,
-      "overall_score": 53.0
+      "overall_score": 53.1
     },
     {
       "player": "Isaiah Likely",
@@ -920,9 +893,9 @@
       "volatility": 0.47,
       "career_arc": "Ascending",
       "exp_tier": "Year 3\u20134",
-      "role_score": 49.8,
+      "role_score": 49.9,
       "efficiency_score": 55.3,
-      "overall_score": 52.8
+      "overall_score": 52.9
     },
     {
       "player": "Darren Waller",
@@ -947,9 +920,9 @@
       "volatility": 0.44,
       "career_arc": "Plateau",
       "exp_tier": "Veteran",
-      "role_score": 52.1,
+      "role_score": 52.3,
       "efficiency_score": 53.3,
-      "overall_score": 51.7
+      "overall_score": 51.8
     },
     {
       "player": "Mason Taylor",
@@ -974,9 +947,9 @@
       "volatility": 0.64,
       "career_arc": "Ascending",
       "exp_tier": "Rookie",
-      "role_score": 72.2,
+      "role_score": 72.6,
       "efficiency_score": 29.4,
-      "overall_score": 51.5
+      "overall_score": 51.7
     },
     {
       "player": "Evan Engram",
@@ -1001,9 +974,9 @@
       "volatility": 0.4,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 54.1,
+      "role_score": 54.2,
       "efficiency_score": 48.2,
-      "overall_score": 51.5
+      "overall_score": 51.6
     },
     {
       "player": "Tyler Higbee",
@@ -1028,9 +1001,36 @@
       "volatility": 0.35,
       "career_arc": "Plateau",
       "exp_tier": "Senior Veteran",
-      "role_score": 38.1,
+      "role_score": 38.2,
       "efficiency_score": 57.9,
       "overall_score": 51.3
+    },
+    {
+      "player": "Taysom Hill",
+      "team": "NO",
+      "age": 35.0,
+      "games": 11,
+      "snap_pct": 0.2462,
+      "routes_per_gm": null,
+      "targets_per_gm": 4.09,
+      "receptions_per_gm": 2.91,
+      "air_yards_per_gm": 41.18,
+      "target_share_pct": 0.0702,
+      "air_yards_share_pct": 0.0946,
+      "wopr": 0.17,
+      "rz_tgt": 2,
+      "catch_rate": 0.7111,
+      "yards_per_route_run": null,
+      "yards_per_target": 7.91,
+      "yac_per_rec": 4.47,
+      "fpoe": null,
+      "stability": 2.31,
+      "volatility": 0.71,
+      "career_arc": null,
+      "exp_tier": "Veteran",
+      "role_score": 55.7,
+      "efficiency_score": 62.7,
+      "overall_score": 50.3
     },
     {
       "player": "Daniel Bellinger",
@@ -1055,9 +1055,9 @@
       "volatility": 0.56,
       "career_arc": "Ascending",
       "exp_tier": "Year 3\u20134",
-      "role_score": 42.1,
+      "role_score": 42.2,
       "efficiency_score": 60.7,
-      "overall_score": 49.1
+      "overall_score": 49.2
     },
     {
       "player": "Mike Gesicki",
@@ -1082,9 +1082,9 @@
       "volatility": 0.42,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 43.2,
+      "role_score": 43.3,
       "efficiency_score": 44.9,
-      "overall_score": 46.8
+      "overall_score": 46.9
     },
     {
       "player": "Gunnar Helm",
@@ -1109,7 +1109,7 @@
       "volatility": 0.53,
       "career_arc": "Ascending",
       "exp_tier": "Rookie",
-      "role_score": 49.9,
+      "role_score": 50.0,
       "efficiency_score": 45.1,
       "overall_score": 46.3
     },
@@ -1136,9 +1136,9 @@
       "volatility": 0.56,
       "career_arc": "Plateau",
       "exp_tier": "Veteran",
-      "role_score": 56.7,
+      "role_score": 57.1,
       "efficiency_score": 36.2,
-      "overall_score": 44.1
+      "overall_score": 44.3
     },
     {
       "player": "Michael Mayer",
@@ -1163,9 +1163,9 @@
       "volatility": 0.63,
       "career_arc": "Ascending",
       "exp_tier": "Year 3\u20134",
-      "role_score": 55.0,
+      "role_score": 55.2,
       "efficiency_score": 41.4,
-      "overall_score": 43.8
+      "overall_score": 43.9
     },
     {
       "player": "Jackson Hawes",
@@ -1190,7 +1190,7 @@
       "volatility": 0.43,
       "career_arc": "Ascending",
       "exp_tier": "Rookie",
-      "role_score": 21.2,
+      "role_score": 21.3,
       "efficiency_score": 63.9,
       "overall_score": 43.4
     },
@@ -1217,7 +1217,7 @@
       "volatility": 0.61,
       "career_arc": "Peak",
       "exp_tier": "Year 3\u20134",
-      "role_score": 55.7,
+      "role_score": 55.9,
       "efficiency_score": 38.0,
       "overall_score": 43.2
     },
@@ -1244,7 +1244,7 @@
       "volatility": 0.48,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 32.8,
+      "role_score": 32.9,
       "efficiency_score": 53.7,
       "overall_score": 42.3
     },
@@ -1271,7 +1271,7 @@
       "volatility": 0.61,
       "career_arc": null,
       "exp_tier": "Year 3\u20134",
-      "role_score": 30.5,
+      "role_score": 30.6,
       "efficiency_score": 51.2,
       "overall_score": 41.0
     },
@@ -1298,9 +1298,9 @@
       "volatility": 0.45,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 21.6,
+      "role_score": 21.7,
       "efficiency_score": 55.3,
-      "overall_score": 39.7
+      "overall_score": 39.8
     },
     {
       "player": "Jonnu Smith",
@@ -1325,7 +1325,7 @@
       "volatility": 0.48,
       "career_arc": null,
       "exp_tier": "Veteran",
-      "role_score": 46.9,
+      "role_score": 47.0,
       "efficiency_score": 32.0,
       "overall_score": 39.0
     },
@@ -1352,36 +1352,9 @@
       "volatility": 0.75,
       "career_arc": "Ascending",
       "exp_tier": "Veteran",
-      "role_score": 42.4,
+      "role_score": 42.5,
       "efficiency_score": 42.1,
-      "overall_score": 38.6
-    },
-    {
-      "player": "Charlie Kolar",
-      "team": "BAL",
-      "age": 27.0,
-      "games": 11,
-      "snap_pct": 0.4035,
-      "routes_per_gm": 55.64,
-      "targets_per_gm": 1.36,
-      "receptions_per_gm": 0.91,
-      "air_yards_per_gm": 9.64,
-      "target_share_pct": 0.032,
-      "air_yards_share_pct": 0.031,
-      "wopr": 0.07,
-      "rz_tgt": 3,
-      "catch_rate": 0.6667,
-      "yards_per_route_run": 0.23,
-      "yards_per_target": 9.47,
-      "yac_per_rec": 5.2,
-      "fpoe": 4.72,
-      "stability": 6.81,
-      "volatility": 0.47,
-      "career_arc": "Peak",
-      "exp_tier": "Year 3\u20134",
-      "role_score": 24.5,
-      "efficiency_score": 43.7,
-      "overall_score": 38.4
+      "overall_score": 38.7
     },
     {
       "player": "Austin Hooper",
@@ -1406,9 +1379,36 @@
       "volatility": 0.55,
       "career_arc": "Peak",
       "exp_tier": "Senior Veteran",
-      "role_score": 33.2,
+      "role_score": 33.3,
       "efficiency_score": 53.5,
-      "overall_score": 38.3
+      "overall_score": 38.4
+    },
+    {
+      "player": "Charlie Kolar",
+      "team": "BAL",
+      "age": 27.0,
+      "games": 11,
+      "snap_pct": 0.4035,
+      "routes_per_gm": 55.64,
+      "targets_per_gm": 1.36,
+      "receptions_per_gm": 0.91,
+      "air_yards_per_gm": 9.64,
+      "target_share_pct": 0.032,
+      "air_yards_share_pct": 0.031,
+      "wopr": 0.07,
+      "rz_tgt": 3,
+      "catch_rate": 0.6667,
+      "yards_per_route_run": 0.23,
+      "yards_per_target": 9.47,
+      "yac_per_rec": 5.2,
+      "fpoe": 4.72,
+      "stability": 6.81,
+      "volatility": 0.47,
+      "career_arc": "Peak",
+      "exp_tier": "Year 3\u20134",
+      "role_score": 24.6,
+      "efficiency_score": 43.7,
+      "overall_score": 38.4
     },
     {
       "player": "Terrance Ferguson",
@@ -1433,9 +1433,9 @@
       "volatility": 0.48,
       "career_arc": "Ascending",
       "exp_tier": "Rookie",
-      "role_score": 36.6,
+      "role_score": 36.7,
       "efficiency_score": 38.1,
-      "overall_score": 37.6
+      "overall_score": 37.7
     },
     {
       "player": "Mitchell Evans",
@@ -1460,7 +1460,7 @@
       "volatility": 0.52,
       "career_arc": "Ascending",
       "exp_tier": "Rookie",
-      "role_score": 20.7,
+      "role_score": 20.8,
       "efficiency_score": 49.5,
       "overall_score": 37.6
     },
@@ -1487,7 +1487,7 @@
       "volatility": 0.51,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 28.4,
+      "role_score": 28.5,
       "efficiency_score": 57.5,
       "overall_score": 37.4
     },
@@ -1514,7 +1514,7 @@
       "volatility": 0.56,
       "career_arc": "Ascending",
       "exp_tier": "Year 3\u20134",
-      "role_score": 30.1,
+      "role_score": 30.2,
       "efficiency_score": 36.9,
       "overall_score": 36.7
     },
@@ -1541,7 +1541,7 @@
       "volatility": 0.28,
       "career_arc": "Ascending",
       "exp_tier": "Year 2",
-      "role_score": 25.4,
+      "role_score": 25.5,
       "efficiency_score": 28.8,
       "overall_score": 36.5
     },
@@ -1568,36 +1568,9 @@
       "volatility": 0.68,
       "career_arc": "Ascending",
       "exp_tier": "Year 3\u20134",
-      "role_score": 30.6,
+      "role_score": 30.8,
       "efficiency_score": 57.9,
-      "overall_score": 35.9
-    },
-    {
-      "player": "Luke Musgrave",
-      "team": "GB",
-      "age": 25.0,
-      "games": 13,
-      "snap_pct": 0.4006,
-      "routes_per_gm": 36.31,
-      "targets_per_gm": 2.38,
-      "receptions_per_gm": 1.85,
-      "air_yards_per_gm": 20.46,
-      "target_share_pct": 0.0596,
-      "air_yards_share_pct": 0.0621,
-      "wopr": 0.13,
-      "rz_tgt": 1,
-      "catch_rate": 0.7742,
-      "yards_per_route_run": 0.53,
-      "yards_per_target": 8.13,
-      "yac_per_rec": 2.88,
-      "fpoe": 4.7,
-      "stability": 4.56,
-      "volatility": 0.58,
-      "career_arc": "Ascending",
-      "exp_tier": "Year 3\u20134",
-      "role_score": 30.5,
-      "efficiency_score": 47.0,
-      "overall_score": 35.3
+      "overall_score": 36.0
     },
     {
       "player": "Ja'Tavion Sanders",
@@ -1622,9 +1595,36 @@
       "volatility": 0.71,
       "career_arc": "Ascending",
       "exp_tier": "Year 2",
-      "role_score": 43.2,
+      "role_score": 43.3,
       "efficiency_score": 34.1,
-      "overall_score": 35.2
+      "overall_score": 35.3
+    },
+    {
+      "player": "Luke Musgrave",
+      "team": "GB",
+      "age": 25.0,
+      "games": 13,
+      "snap_pct": 0.4006,
+      "routes_per_gm": 36.31,
+      "targets_per_gm": 2.38,
+      "receptions_per_gm": 1.85,
+      "air_yards_per_gm": 20.46,
+      "target_share_pct": 0.0596,
+      "air_yards_share_pct": 0.0621,
+      "wopr": 0.13,
+      "rz_tgt": 1,
+      "catch_rate": 0.7742,
+      "yards_per_route_run": 0.53,
+      "yards_per_target": 8.13,
+      "yac_per_rec": 2.88,
+      "fpoe": 4.7,
+      "stability": 4.56,
+      "volatility": 0.58,
+      "career_arc": "Ascending",
+      "exp_tier": "Year 3\u20134",
+      "role_score": 30.6,
+      "efficiency_score": 47.0,
+      "overall_score": 35.3
     },
     {
       "player": "Drew Sample",
@@ -1649,7 +1649,7 @@
       "volatility": 0.39,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 23.7,
+      "role_score": 23.8,
       "efficiency_score": 36.4,
       "overall_score": 35.2
     },
@@ -1676,9 +1676,9 @@
       "volatility": 0.62,
       "career_arc": "Developing",
       "exp_tier": "Rookie",
-      "role_score": 26.5,
+      "role_score": 26.7,
       "efficiency_score": 37.7,
-      "overall_score": 34.1
+      "overall_score": 34.2
     },
     {
       "player": "Davis Allen",
@@ -1703,9 +1703,9 @@
       "volatility": 0.6,
       "career_arc": "Ascending",
       "exp_tier": "Year 3\u20134",
-      "role_score": 35.9,
+      "role_score": 36.1,
       "efficiency_score": 36.0,
-      "overall_score": 33.4
+      "overall_score": 33.5
     },
     {
       "player": "Hunter Long",
@@ -1730,9 +1730,9 @@
       "volatility": 0.37,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 20.4,
+      "role_score": 20.5,
       "efficiency_score": 25.3,
-      "overall_score": 32.2
+      "overall_score": 32.3
     },
     {
       "player": "Noah Gray",
@@ -1757,9 +1757,9 @@
       "volatility": 0.58,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 40.5,
+      "role_score": 40.7,
       "efficiency_score": 18.6,
-      "overall_score": 31.0
+      "overall_score": 31.1
     },
     {
       "player": "Luke Schoonmaker",
@@ -1784,7 +1784,7 @@
       "volatility": 0.37,
       "career_arc": "Peak",
       "exp_tier": "Year 3\u20134",
-      "role_score": 19.5,
+      "role_score": 19.6,
       "efficiency_score": 25.7,
       "overall_score": 30.3
     },
@@ -1811,9 +1811,9 @@
       "volatility": 0.52,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 25.3,
+      "role_score": 25.4,
       "efficiency_score": 29.7,
-      "overall_score": 29.0
+      "overall_score": 29.1
     },
     {
       "player": "Mo Alie-Cox",
@@ -1838,9 +1838,9 @@
       "volatility": 0.51,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 27.0,
+      "role_score": 27.1,
       "efficiency_score": 24.4,
-      "overall_score": 28.6
+      "overall_score": 28.7
     },
     {
       "player": "Tanner Hudson",
@@ -1892,9 +1892,9 @@
       "volatility": 0.46,
       "career_arc": "Plateau",
       "exp_tier": "Year 3\u20134",
-      "role_score": 16.0,
+      "role_score": 16.1,
       "efficiency_score": 26.5,
-      "overall_score": 26.7
+      "overall_score": 26.8
     },
     {
       "player": "Brock Wright",
@@ -1919,7 +1919,7 @@
       "volatility": 0.6,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 33.2,
+      "role_score": 33.3,
       "efficiency_score": 20.2,
       "overall_score": 25.6
     },
@@ -1946,7 +1946,7 @@
       "volatility": 0.56,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 13.2,
+      "role_score": 13.3,
       "efficiency_score": 26.9,
       "overall_score": 21.5
     },
@@ -1973,9 +1973,9 @@
       "volatility": 0.66,
       "career_arc": "Peak",
       "exp_tier": "Veteran",
-      "role_score": 8.9,
+      "role_score": 9.1,
       "efficiency_score": 30.9,
-      "overall_score": 17.3
+      "overall_score": 17.4
     },
     {
       "player": "John FitzPatrick",
@@ -2000,9 +2000,9 @@
       "volatility": 0.61,
       "career_arc": "Peak",
       "exp_tier": "Year 3\u20134",
-      "role_score": 10.0,
+      "role_score": 10.1,
       "efficiency_score": 27.8,
-      "overall_score": 16.2
+      "overall_score": 16.3
     }
   ]
 }

@@ -68,6 +68,19 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     # Without this override M.Evans/TB is stored under the PBP abbreviation
     # rather than the canonical full name.
     "M.Evans": {"CAR": "Mitchell Evans", "TB": "Mike Evans"},
+    # Keenan Allen (WR): Sleeper team=None (was released by LAC, now FA/retired).
+    # "K.Allen" is ambiguous (Kaytron Allen RB, Kyle Allen QB) so abbreviated
+    # lookup skips it; team_disambig fails because no Sleeper team matches LAC.
+    "K.Allen": {"LAC": "Keenan Allen"},
+    # DJ Moore (WR): Sleeper full_name="DJ Moore" team=BUF.
+    # "D.Moore" is ambiguous (Denarius Moore, David Moore); when PBP team is CHI
+    # or CAR the disambig fails because DJ Moore's Sleeper team is now BUF.
+    "D.Moore": {"CHI": "DJ Moore", "CAR": "DJ Moore", "BUF": "DJ Moore"},
+    # DeAndre Hopkins (WR): Sleeper team=None. "D.Hopkins" collides with
+    # Dustin Hopkins (K, also team=None) — position hint not applied in receiving loop.
+    "D.Hopkins": {"BAL": "DeAndre Hopkins", "TEN": "DeAndre Hopkins"},
+    # Gabe Davis (WR): Sleeper team=None. "G.Davis" is ambiguous (Geremy Davis).
+    "G.Davis": {"BUF": "Gabe Davis", "JAX": "Gabe Davis"},
 }
 
 # Minimum 2025-season games before applying narrative labels

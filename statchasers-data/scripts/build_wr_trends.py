@@ -87,7 +87,11 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
 
 # PFR snap-counts name → Sleeper canonical name aliases
 _SNAP_PLAYER_ALIASES: dict[str, str] = {
-    "Gabriel Davis": "Gabe Davis",
+    "Gabriel Davis":       "Gabe Davis",
+    "Michael Pittman Jr.": "Michael Pittman",
+    "Marvin Harrison Jr.": "Marvin Harrison",
+    "Calvin Austin III":   "Calvin Austin",
+    "Josh Palmer":         "Joshua Palmer",
 }
 
 

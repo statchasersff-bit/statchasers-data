@@ -29,6 +29,7 @@ Output:
 from __future__ import annotations
 
 import json
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -37,12 +38,15 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-ROOT         = Path(__file__).resolve().parent.parent
-PBP_PATH     = ROOT / "data" / "raw"       / "nflverse_play_by_play.parquet"
-METRICS_PATH = ROOT / "data" / "processed" / "player_metrics.json"
-NFL_PATH     = ROOT / "data" / "raw"       / "nflverse_players.parquet"
-SLEEPER_PATH = ROOT / "data" / "raw"       / "sleeper_players.json"
-OUTPUT_PATH  = ROOT / "output"             / "rb_player_overview.json"
+ROOT              = Path(__file__).resolve().parent.parent
+PBP_PATH          = ROOT / "data" / "raw"       / "nflverse_play_by_play.parquet"
+METRICS_PATH      = ROOT / "data" / "processed" / "player_metrics.json"
+NFL_PATH          = ROOT / "data" / "raw"       / "nflverse_players.parquet"
+PARTICIPATION_PATH= ROOT / "data" / "raw"       / "nflverse_participation.parquet"
+SLEEPER_PATH      = ROOT / "data" / "raw"       / "sleeper_players.json"
+OUTPUT_PATH       = ROOT / "output"             / "rb_player_overview.json"
+
+_SUFFIX_STRIP = re.compile(r"\s+(jr\.?|sr\.?|ii|iii|iv|v)$", re.IGNORECASE)
 
 SEASON       = 2025
 MIN_GAMES    = 3
@@ -257,6 +261,7 @@ def build(
     player_metrics: list[dict],
     nfl_players: pd.DataFrame,
     sleeper_players: list[dict],
+    routes_per_game: dict[str, float] | None = None,
 ) -> list[dict]:
 
     # ── Setup lookup tables ──────────────────────────────────────────────────
@@ -452,7 +457,9 @@ def build(
 
         # Fields from player_metrics (None for supplement-only players)
         m = metrics_map.get(fn, {})
-        route_pct  = m.get("routeParticipation")
+        # Use participation-parquet routes if available (player_metrics routeParticipation
+        # is always None because player_stats parquet has no receiving_routes_run column).
+        route_pct = (routes_per_game or {}).get(fn) or m.get("routeParticipation")
         fpoe       = m.get("fpoe")
         career_arc = m.get("careerArc")
         age        = m.get("age") or sleeper_age.get(fn)
@@ -615,6 +622,100 @@ def build(
 
 
 # ---------------------------------------------------------------------------
+# RB routes from participation parquet
+# ---------------------------------------------------------------------------
+
+def _build_rb_routes_per_game(
+    part_path: Path,
+    nfl_df: pd.DataFrame,
+    sleeper_players: list[dict],
+    season: int,
+) -> dict[str, float]:
+    """Return {sleeper_full_name → avg_routes_per_game} for RBs.
+
+    Uses the nflverse participation parquet (pass plays, offense_players gsis_ids).
+    Bridges gsis_id → display_name via nflverse_players, then strip Jr./III
+    suffixes to match Sleeper full_names.
+    """
+    if not part_path.exists():
+        print(f"  WARN: {part_path} not found — routes_per_gm will be null.", file=sys.stderr)
+        return {}
+
+    part = pd.read_parquet(
+        part_path,
+        columns=["nflverse_game_id", "season", "offense_players", "offense_positions"],
+    )
+    part = part[
+        (part["season"] == season) &
+        part["offense_players"].notna() &
+        part["offense_positions"].notna()
+    ].copy()
+
+    # Parse week from game_id (e.g. "2025_03_BUF_NE" → 3) and keep weeks 1-18
+    part["week_num"] = part["nflverse_game_id"].str.split("_").str[1].astype(int, errors="ignore")
+    part = part[part["week_num"] <= 18]
+
+    # Parse game number (unique per game_id)
+    # Explode semicolon-separated gsis_id / position lists
+    part["pid_list"] = part["offense_players"].str.split(";")
+    part["pos_list"] = part["offense_positions"].str.split(";")
+    exp = (
+        part[["nflverse_game_id", "pid_list", "pos_list"]]
+        .explode(["pid_list", "pos_list"])
+        .rename(columns={"pid_list": "gsis_id", "pos_list": "position"})
+    )
+    exp["gsis_id"]  = exp["gsis_id"].str.strip()
+    exp["position"] = exp["position"].str.strip()
+
+    # Keep RB position entries only
+    rb_exp = exp[exp["position"] == "RB"].copy()
+
+    # Per-player routes per game: count plays per (gsis_id, game_id), then average
+    rb_per_game = (
+        rb_exp.groupby(["gsis_id", "nflverse_game_id"])
+        .size()
+        .reset_index(name="routes")
+    )
+    rb_avg = rb_per_game.groupby("gsis_id")["routes"].mean().to_dict()
+
+    if rb_avg and not nfl_df.empty and "gsis_id" in nfl_df.columns and "display_name" in nfl_df.columns:
+        gsis_to_display = (
+            nfl_df[["gsis_id", "display_name"]]
+            .dropna(subset=["gsis_id", "display_name"])
+            .drop_duplicates("gsis_id")
+            .set_index("gsis_id")["display_name"]
+            .to_dict()
+        )
+    else:
+        gsis_to_display = {}
+
+    # Build sleeper_full_name → routes_per_gm
+    # Strip name suffixes (Jr., III, etc.) so "Kenneth Walker III" → "Kenneth Walker"
+    sleeper_names: set[str] = {
+        p.get("full_name", "").strip()
+        for p in sleeper_players
+        if p.get("full_name")
+    }
+
+    result: dict[str, float] = {}
+    for gsis_id, avg_routes in rb_avg.items():
+        display = gsis_to_display.get(str(gsis_id), "")
+        if not display:
+            continue
+        # Try exact match first
+        if display in sleeper_names:
+            result[display] = round(float(avg_routes), 2)
+            continue
+        # Strip suffix and retry
+        stripped = _SUFFIX_STRIP.sub("", display).strip()
+        if stripped in sleeper_names:
+            result[stripped] = round(float(avg_routes), 2)
+
+    print(f"  Routes/gm from participation: {len(result)} RBs mapped.")
+    return result
+
+
+# ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
 
@@ -644,8 +745,12 @@ def main() -> None:
     else:
         print("  nflverse_players.parquet not found — exp_tier will be null.", file=sys.stderr)
 
+    # ── Routes from participation parquet (must come before build so scores use it) ─
+    print("Computing routes_per_gm from participation data...")
+    rb_routes = _build_rb_routes_per_game(PARTICIPATION_PATH, nfl_players, sleeper_players, SEASON)
+
     print("Building RB Player Overview...")
-    rows = build(pbp, player_metrics, nfl_players, sleeper_players)
+    rows = build(pbp, player_metrics, nfl_players, sleeper_players, routes_per_game=rb_routes)
     print(f"  {len(rows)} RBs qualified.")
 
     latest_week = int(pbp["week"].max()) if "week" in pbp.columns else None

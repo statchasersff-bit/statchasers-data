@@ -3,7 +3,7 @@
     "position": "WR",
     "table": "role_usage_trends",
     "season": "2025",
-    "generated_at": "2026-04-08T21:47:16Z",
+    "generated_at": "2026-04-08T22:05:43Z",
     "columns": [
       "player",
       "team",
@@ -934,8 +934,8 @@
       "player": "Michael Pittman",
       "team": "IND",
       "games": 17,
-      "snap_pct": null,
-      "delta_snap_pct": null,
+      "snap_pct": 0.8553,
+      "delta_snap_pct": 0.07,
       "routes_per_gm": 55.0,
       "delta_routes_per_gm": 2.25,
       "targets_per_gm": 6.71,
@@ -997,8 +997,8 @@
       "player": "Marvin Harrison",
       "team": "ARI",
       "games": 12,
-      "snap_pct": null,
-      "delta_snap_pct": null,
+      "snap_pct": 0.7125,
+      "delta_snap_pct": -0.0525,
       "routes_per_gm": 48.33,
       "delta_routes_per_gm": -7.5,
       "targets_per_gm": 6.17,
@@ -1326,7 +1326,7 @@
       "end_zone_tgt": 6,
       "receptions_per_gm": 4.5,
       "usage_score": null,
-      "role_score": 57.2,
+      "role_score": 57.1,
       "role_trend": "Trending Down"
     },
     {
@@ -1480,8 +1480,8 @@
       "player": "Calvin Austin",
       "team": "PIT",
       "games": 14,
-      "snap_pct": null,
-      "delta_snap_pct": null,
+      "snap_pct": 0.535,
+      "delta_snap_pct": -0.185,
       "routes_per_gm": 32.21,
       "delta_routes_per_gm": -6.5,
       "targets_per_gm": 3.93,
@@ -1557,7 +1557,7 @@
       "end_zone_tgt": 2,
       "receptions_per_gm": 1.36,
       "usage_score": null,
-      "role_score": 48.0,
+      "role_score": 47.9,
       "role_trend": "Trending Up"
     },
     {
@@ -1750,27 +1750,6 @@
       "role_trend": "Insufficient Data"
     },
     {
-      "player": "Olamide Zaccheaus",
-      "team": "CHI",
-      "games": 16,
-      "snap_pct": 0.5362,
-      "delta_snap_pct": 0.3125,
-      "routes_per_gm": 37.19,
-      "delta_routes_per_gm": 19.5,
-      "targets_per_gm": 4.12,
-      "delta_targets_per_gm": 0.75,
-      "air_yards_per_gm": 28.88,
-      "delta_air_yards_per_gm": 13.75,
-      "adot": 7.0,
-      "delta_adot": 2.98,
-      "rz_tgt": 13,
-      "end_zone_tgt": 4,
-      "receptions_per_gm": 2.44,
-      "usage_score": null,
-      "role_score": 42.7,
-      "role_trend": "Trending Up"
-    },
-    {
       "player": "Rashod Bateman",
       "team": "BAL",
       "games": 13,
@@ -1808,6 +1787,27 @@
       "rz_tgt": 13,
       "end_zone_tgt": 7,
       "receptions_per_gm": 1.71,
+      "usage_score": null,
+      "role_score": 42.6,
+      "role_trend": "Trending Up"
+    },
+    {
+      "player": "Olamide Zaccheaus",
+      "team": "CHI",
+      "games": 16,
+      "snap_pct": 0.5362,
+      "delta_snap_pct": 0.3125,
+      "routes_per_gm": 37.19,
+      "delta_routes_per_gm": 19.5,
+      "targets_per_gm": 4.12,
+      "delta_targets_per_gm": 0.75,
+      "air_yards_per_gm": 28.88,
+      "delta_air_yards_per_gm": 13.75,
+      "adot": 7.0,
+      "delta_adot": 2.98,
+      "rz_tgt": 13,
+      "end_zone_tgt": 4,
+      "receptions_per_gm": 2.44,
       "usage_score": null,
       "role_score": 42.6,
       "role_trend": "Trending Up"
@@ -1893,7 +1893,7 @@
       "end_zone_tgt": 3,
       "receptions_per_gm": 1.12,
       "usage_score": null,
-      "role_score": 40.2,
+      "role_score": 40.0,
       "role_trend": "Stable"
     },
     {
@@ -1956,7 +1956,7 @@
       "end_zone_tgt": 2,
       "receptions_per_gm": 1.62,
       "usage_score": null,
-      "role_score": 38.8,
+      "role_score": 38.6,
       "role_trend": "Falling Fast"
     },
     {
@@ -1977,7 +1977,7 @@
       "end_zone_tgt": 7,
       "receptions_per_gm": 2.71,
       "usage_score": null,
-      "role_score": 38.7,
+      "role_score": 38.6,
       "role_trend": "Boom/Bust Role"
     },
     {
@@ -1998,7 +1998,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 0.5,
       "usage_score": null,
-      "role_score": 38.7,
+      "role_score": 38.6,
       "role_trend": "Insufficient Data"
     },
     {
@@ -2040,7 +2040,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 3.13,
       "usage_score": null,
-      "role_score": 36.4,
+      "role_score": 36.3,
       "role_trend": "Rising Fast"
     },
     {
@@ -2131,8 +2131,8 @@
       "player": "Joshua Palmer",
       "team": "BUF",
       "games": 12,
-      "snap_pct": null,
-      "delta_snap_pct": null,
+      "snap_pct": 0.4833,
+      "delta_snap_pct": 0.1875,
       "routes_per_gm": 33.42,
       "delta_routes_per_gm": 13.5,
       "targets_per_gm": 3.08,
@@ -2166,7 +2166,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 0.67,
       "usage_score": null,
-      "role_score": 34.3,
+      "role_score": 34.1,
       "role_trend": "Boom/Bust Role"
     },
     {
@@ -2208,8 +2208,29 @@
       "end_zone_tgt": 3,
       "receptions_per_gm": 1.3,
       "usage_score": null,
-      "role_score": 32.0,
+      "role_score": 31.8,
       "role_trend": "Rising Fast"
+    },
+    {
+      "player": "Gabe Davis",
+      "team": "BUF",
+      "games": 6,
+      "snap_pct": 0.5717,
+      "delta_snap_pct": 0.1375,
+      "routes_per_gm": 40.5,
+      "delta_routes_per_gm": 15.75,
+      "targets_per_gm": 3.0,
+      "delta_targets_per_gm": 0.0,
+      "air_yards_per_gm": 26.5,
+      "delta_air_yards_per_gm": -12.75,
+      "adot": 8.83,
+      "delta_adot": -4.25,
+      "rz_tgt": 6,
+      "end_zone_tgt": 6,
+      "receptions_per_gm": 2.0,
+      "usage_score": null,
+      "role_score": 29.7,
+      "role_trend": "Insufficient Data"
     },
     {
       "player": "Jalen Tolbert",
@@ -2229,7 +2250,7 @@
       "end_zone_tgt": 2,
       "receptions_per_gm": 1.38,
       "usage_score": null,
-      "role_score": 29.6,
+      "role_score": 29.4,
       "role_trend": "Trending Up"
     },
     {
@@ -2250,7 +2271,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 1.86,
       "usage_score": null,
-      "role_score": 29.4,
+      "role_score": 29.3,
       "role_trend": "Rising Fast"
     },
     {
@@ -2271,7 +2292,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 1.06,
       "usage_score": null,
-      "role_score": 28.9,
+      "role_score": 28.7,
       "role_trend": "Trending Up"
     },
     {
@@ -2292,7 +2313,7 @@
       "end_zone_tgt": 1,
       "receptions_per_gm": 1.5,
       "usage_score": null,
-      "role_score": 28.4,
+      "role_score": 28.1,
       "role_trend": "Trending Up"
     },
     {
@@ -2313,7 +2334,7 @@
       "end_zone_tgt": 1,
       "receptions_per_gm": 0.47,
       "usage_score": null,
-      "role_score": 27.9,
+      "role_score": 27.7,
       "role_trend": "Falling Fast"
     },
     {
@@ -2334,7 +2355,7 @@
       "end_zone_tgt": 1,
       "receptions_per_gm": 1.75,
       "usage_score": null,
-      "role_score": 27.7,
+      "role_score": 27.6,
       "role_trend": "Trending Down"
     },
     {
@@ -2355,7 +2376,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 0.24,
       "usage_score": null,
-      "role_score": 27.7,
+      "role_score": 27.6,
       "role_trend": "Insufficient Data"
     },
     {
@@ -2376,7 +2397,7 @@
       "end_zone_tgt": 3,
       "receptions_per_gm": 1.06,
       "usage_score": null,
-      "role_score": 26.6,
+      "role_score": 26.5,
       "role_trend": "Trending Up"
     },
     {
@@ -2397,7 +2418,7 @@
       "end_zone_tgt": 2,
       "receptions_per_gm": 1.19,
       "usage_score": null,
-      "role_score": 25.6,
+      "role_score": 25.5,
       "role_trend": "Rising Fast"
     },
     {
@@ -2418,7 +2439,7 @@
       "end_zone_tgt": 3,
       "receptions_per_gm": 1.88,
       "usage_score": null,
-      "role_score": 25.5,
+      "role_score": 25.2,
       "role_trend": "Stable"
     },
     {
@@ -2439,7 +2460,7 @@
       "end_zone_tgt": 4,
       "receptions_per_gm": 1.82,
       "usage_score": null,
-      "role_score": 25.1,
+      "role_score": 24.8,
       "role_trend": "Trending Down"
     },
     {
@@ -2460,7 +2481,7 @@
       "end_zone_tgt": 2,
       "receptions_per_gm": 1.57,
       "usage_score": null,
-      "role_score": 24.5,
+      "role_score": 24.3,
       "role_trend": "Trending Up"
     },
     {
@@ -2481,7 +2502,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 1.5,
       "usage_score": null,
-      "role_score": 22.9,
+      "role_score": 22.6,
       "role_trend": "Trending Up"
     },
     {
@@ -2502,7 +2523,7 @@
       "end_zone_tgt": 1,
       "receptions_per_gm": 1.29,
       "usage_score": null,
-      "role_score": 22.3,
+      "role_score": 22.1,
       "role_trend": "Trending Down"
     },
     {
@@ -2523,7 +2544,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 1.07,
       "usage_score": null,
-      "role_score": 21.8,
+      "role_score": 21.6,
       "role_trend": "Falling Fast"
     },
     {
@@ -2544,7 +2565,7 @@
       "end_zone_tgt": 3,
       "receptions_per_gm": 1.94,
       "usage_score": null,
-      "role_score": 20.8,
+      "role_score": 20.4,
       "role_trend": "Trending Up"
     },
     {
@@ -2565,7 +2586,7 @@
       "end_zone_tgt": 1,
       "receptions_per_gm": 1.76,
       "usage_score": null,
-      "role_score": 20.8,
+      "role_score": 20.4,
       "role_trend": "Rising Fast"
     },
     {
@@ -2586,7 +2607,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 2.42,
       "usage_score": null,
-      "role_score": 19.6,
+      "role_score": 19.4,
       "role_trend": "Rising Fast"
     },
     {
@@ -2607,7 +2628,7 @@
       "end_zone_tgt": 2,
       "receptions_per_gm": 1.22,
       "usage_score": null,
-      "role_score": 19.2,
+      "role_score": 19.0,
       "role_trend": "Trending Down"
     },
     {
@@ -2628,50 +2649,8 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 1.12,
       "usage_score": null,
-      "role_score": 18.1,
+      "role_score": 17.9,
       "role_trend": "Trending Up"
-    },
-    {
-      "player": "Gabe Davis",
-      "team": "BUF",
-      "games": 6,
-      "snap_pct": 0.5717,
-      "delta_snap_pct": 0.1375,
-      "routes_per_gm": 40.5,
-      "delta_routes_per_gm": 15.75,
-      "targets_per_gm": 3.0,
-      "delta_targets_per_gm": 0.0,
-      "air_yards_per_gm": 26.5,
-      "delta_air_yards_per_gm": -12.75,
-      "adot": 8.83,
-      "delta_adot": -4.25,
-      "rz_tgt": 6,
-      "end_zone_tgt": 6,
-      "receptions_per_gm": 2.0,
-      "usage_score": null,
-      "role_score": 17.0,
-      "role_trend": "Insufficient Data"
-    },
-    {
-      "player": "Jack Bech",
-      "team": "LV",
-      "games": 16,
-      "snap_pct": 0.3975,
-      "delta_snap_pct": 0.47,
-      "routes_per_gm": 27.19,
-      "delta_routes_per_gm": 24.75,
-      "targets_per_gm": 1.81,
-      "delta_targets_per_gm": 2.25,
-      "air_yards_per_gm": 15.0,
-      "delta_air_yards_per_gm": 30.5,
-      "adot": 8.28,
-      "delta_adot": 6.14,
-      "rz_tgt": 4,
-      "end_zone_tgt": 1,
-      "receptions_per_gm": 1.25,
-      "usage_score": null,
-      "role_score": 16.9,
-      "role_trend": "Rising Fast"
     },
     {
       "player": "Tyrell Shavers",
@@ -2691,8 +2670,29 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 0.88,
       "usage_score": null,
-      "role_score": 16.9,
+      "role_score": 16.7,
       "role_trend": "Stable"
+    },
+    {
+      "player": "Jack Bech",
+      "team": "LV",
+      "games": 16,
+      "snap_pct": 0.3975,
+      "delta_snap_pct": 0.47,
+      "routes_per_gm": 27.19,
+      "delta_routes_per_gm": 24.75,
+      "targets_per_gm": 1.81,
+      "delta_targets_per_gm": 2.25,
+      "air_yards_per_gm": 15.0,
+      "delta_air_yards_per_gm": 30.5,
+      "adot": 8.28,
+      "delta_adot": 6.14,
+      "rz_tgt": 4,
+      "end_zone_tgt": 1,
+      "receptions_per_gm": 1.25,
+      "usage_score": null,
+      "role_score": 16.5,
+      "role_trend": "Rising Fast"
     },
     {
       "player": "Mason Tipton",
@@ -2712,7 +2712,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 0.85,
       "usage_score": null,
-      "role_score": 16.8,
+      "role_score": 16.5,
       "role_trend": "Rising Fast"
     },
     {
@@ -2733,7 +2733,7 @@
       "end_zone_tgt": 3,
       "receptions_per_gm": 1.53,
       "usage_score": null,
-      "role_score": 15.9,
+      "role_score": 15.6,
       "role_trend": "Boom/Bust Role"
     },
     {
@@ -2754,7 +2754,7 @@
       "end_zone_tgt": 3,
       "receptions_per_gm": 0.94,
       "usage_score": null,
-      "role_score": 14.6,
+      "role_score": 14.3,
       "role_trend": "Trending Up"
     },
     {
@@ -2775,7 +2775,7 @@
       "end_zone_tgt": 1,
       "receptions_per_gm": 0.59,
       "usage_score": null,
-      "role_score": 14.6,
+      "role_score": 14.3,
       "role_trend": "Rising Fast"
     },
     {
@@ -2796,7 +2796,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 1.0,
       "usage_score": null,
-      "role_score": 14.0,
+      "role_score": 13.7,
       "role_trend": "Falling Fast"
     },
     {
@@ -2817,7 +2817,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 0.59,
       "usage_score": null,
-      "role_score": 13.7,
+      "role_score": 13.5,
       "role_trend": "Stable"
     },
     {
@@ -2838,7 +2838,7 @@
       "end_zone_tgt": 2,
       "receptions_per_gm": 1.73,
       "usage_score": null,
-      "role_score": 12.3,
+      "role_score": 12.0,
       "role_trend": "Boom/Bust Role"
     },
     {
@@ -2859,7 +2859,7 @@
       "end_zone_tgt": 1,
       "receptions_per_gm": 0.54,
       "usage_score": null,
-      "role_score": 12.2,
+      "role_score": 11.8,
       "role_trend": "Falling Fast"
     },
     {
@@ -2880,7 +2880,7 @@
       "end_zone_tgt": 1,
       "receptions_per_gm": 1.6,
       "usage_score": null,
-      "role_score": 12.1,
+      "role_score": 11.7,
       "role_trend": "Stable"
     },
     {
@@ -2922,7 +2922,7 @@
       "end_zone_tgt": 1,
       "receptions_per_gm": 0.73,
       "usage_score": null,
-      "role_score": 10.8,
+      "role_score": 10.5,
       "role_trend": "Falling Fast"
     },
     {
@@ -2943,7 +2943,7 @@
       "end_zone_tgt": 4,
       "receptions_per_gm": 1.0,
       "usage_score": null,
-      "role_score": 10.5,
+      "role_score": 10.1,
       "role_trend": "Stable"
     },
     {
@@ -2964,7 +2964,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 0.6,
       "usage_score": null,
-      "role_score": 10.4,
+      "role_score": 10.1,
       "role_trend": "Stable"
     },
     {
@@ -2985,7 +2985,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 0.88,
       "usage_score": null,
-      "role_score": 9.4,
+      "role_score": 9.0,
       "role_trend": "Boom/Bust Role"
     },
     {
@@ -3006,7 +3006,7 @@
       "end_zone_tgt": 1,
       "receptions_per_gm": 0.92,
       "usage_score": null,
-      "role_score": 8.9,
+      "role_score": 8.5,
       "role_trend": "Falling Fast"
     },
     {
@@ -3027,7 +3027,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 1.0,
       "usage_score": null,
-      "role_score": 8.3,
+      "role_score": 7.9,
       "role_trend": "Trending Up"
     },
     {
@@ -3048,7 +3048,7 @@
       "end_zone_tgt": 4,
       "receptions_per_gm": 0.94,
       "usage_score": null,
-      "role_score": 8.1,
+      "role_score": 7.8,
       "role_trend": "Falling Fast"
     },
     {
@@ -3069,7 +3069,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 0.44,
       "usage_score": null,
-      "role_score": 7.7,
+      "role_score": 7.4,
       "role_trend": "Insufficient Data"
     },
     {
@@ -3090,7 +3090,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 1.12,
       "usage_score": null,
-      "role_score": 7.1,
+      "role_score": 6.8,
       "role_trend": "Trending Down"
     },
     {
@@ -3111,7 +3111,7 @@
       "end_zone_tgt": 0,
       "receptions_per_gm": 1.11,
       "usage_score": null,
-      "role_score": 5.0,
+      "role_score": 4.6,
       "role_trend": "Trending Up"
     },
     {
@@ -3131,7 +3131,7 @@
       "rz_tgt": 0,
       "end_zone_tgt": 0,
       "receptions_per_gm": 0.67,
-      "usage_score": 61.7,
+      "usage_score": 61.9,
       "role_score": null,
       "role_trend": "Insufficient Data"
     },
@@ -3152,7 +3152,7 @@
       "rz_tgt": 0,
       "end_zone_tgt": 0,
       "receptions_per_gm": 2.0,
-      "usage_score": 57.6,
+      "usage_score": 58.1,
       "role_score": null,
       "role_trend": "Insufficient Data"
     },
@@ -3194,7 +3194,7 @@
       "rz_tgt": 3,
       "end_zone_tgt": 1,
       "receptions_per_gm": 1.94,
-      "usage_score": 54.1,
+      "usage_score": 54.4,
       "role_score": null,
       "role_trend": "Trending Down"
     },
@@ -3278,9 +3278,30 @@
       "rz_tgt": 2,
       "end_zone_tgt": 0,
       "receptions_per_gm": 0.69,
-      "usage_score": 45.3,
+      "usage_score": 45.6,
       "role_score": null,
       "role_trend": "Rising Fast"
+    },
+    {
+      "player": "Cedrick Wilson",
+      "team": "MIA",
+      "games": 10,
+      "snap_pct": null,
+      "delta_snap_pct": null,
+      "routes_per_gm": 23.0,
+      "delta_routes_per_gm": 16.0,
+      "targets_per_gm": 0.9,
+      "delta_targets_per_gm": 0.75,
+      "air_yards_per_gm": 7.9,
+      "delta_air_yards_per_gm": 1.0,
+      "adot": 8.78,
+      "delta_adot": -10.0,
+      "rz_tgt": 3,
+      "end_zone_tgt": 2,
+      "receptions_per_gm": 0.5,
+      "usage_score": 44.1,
+      "role_score": null,
+      "role_trend": "Trending Up"
     },
     {
       "player": "Jared Wayne",
@@ -3304,27 +3325,6 @@
       "role_trend": "Insufficient Data"
     },
     {
-      "player": "Cedrick Wilson",
-      "team": "MIA",
-      "games": 10,
-      "snap_pct": null,
-      "delta_snap_pct": null,
-      "routes_per_gm": 23.0,
-      "delta_routes_per_gm": 16.0,
-      "targets_per_gm": 0.9,
-      "delta_targets_per_gm": 0.75,
-      "air_yards_per_gm": 7.9,
-      "delta_air_yards_per_gm": 1.0,
-      "adot": 8.78,
-      "delta_adot": -10.0,
-      "rz_tgt": 3,
-      "end_zone_tgt": 2,
-      "receptions_per_gm": 0.5,
-      "usage_score": 43.8,
-      "role_score": null,
-      "role_trend": "Trending Up"
-    },
-    {
       "player": "Amari Rodgers",
       "team": "PIT",
       "games": 1,
@@ -3341,7 +3341,7 @@
       "rz_tgt": 0,
       "end_zone_tgt": 0,
       "receptions_per_gm": 1.0,
-      "usage_score": 42.8,
+      "usage_score": 43.0,
       "role_score": null,
       "role_trend": "Insufficient Data"
     },
@@ -3383,7 +3383,7 @@
       "rz_tgt": 0,
       "end_zone_tgt": 0,
       "receptions_per_gm": 0.31,
-      "usage_score": 40.1,
+      "usage_score": 40.4,
       "role_score": null,
       "role_trend": "Insufficient Data"
     },
@@ -3446,7 +3446,7 @@
       "rz_tgt": 1,
       "end_zone_tgt": 1,
       "receptions_per_gm": 0.0,
-      "usage_score": 38.6,
+      "usage_score": 38.8,
       "role_score": null,
       "role_trend": "Insufficient Data"
     },

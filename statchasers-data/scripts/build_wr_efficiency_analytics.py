@@ -221,9 +221,10 @@ def _build_routes_lookup(season: int) -> dict[str, int]:
     exp["gsis_id"]  = exp["gsis_id"].str.strip()
     exp["position"] = exp["position"].str.strip()
 
-    # Count WR appearances (each appearance = 1 route)
-    wr = exp[exp["position"] == "WR"]
-    return wr.groupby("gsis_id").size().to_dict()
+    # Count skill-position appearances on pass plays (each appearance = 1 route).
+    # Include RB so that pass-catching backs (e.g. Kenneth Walker) get YPRR/TPRR.
+    skill = exp[exp["position"].isin(["WR", "RB", "TE"])]
+    return skill.groupby("gsis_id").size().to_dict()
 
 
 # ---------------------------------------------------------------------------

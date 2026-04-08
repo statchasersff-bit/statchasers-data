@@ -119,7 +119,11 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
                   "TB": "Tez Johnson",   "BUF": "Ty Johnson"},
 }
 
-_SNAP_PLAYER_ALIASES: dict[str, str] = {}
+_SNAP_PLAYER_ALIASES: dict[str, str] = {
+    # snap_counts (PFR) full name → Sleeper canonical name
+    "Chigoziem Okonkwo": "Chig Okonkwo",
+    "Oronde Gadsden II": "Oronde Gadsden",
+}
 
 
 def _resolve(
@@ -280,7 +284,8 @@ def _build_snap_pct_lookup(
     te_set: set[str],
 ) -> dict[str, float]:
     """Return {_norm(canonical_name) → avg_snap_pct} for TEs."""
-    te_snaps = snap_df[snap_df["position"] == "TE"].copy()
+    # Include QB-designated players whose Sleeper position is TE (e.g. Taysom Hill).
+    te_snaps = snap_df[snap_df["position"].isin(["TE", "QB"])].copy()
     ns_to_canonical: dict[str, str] = {_norm(c): c for c in te_set}
 
     by_name: dict[str, list[float]] = defaultdict(list)
