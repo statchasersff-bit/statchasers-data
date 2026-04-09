@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-04-09T02:06:09Z",
+  "updated_at": "2026-04-09T02:20:42Z",
   "season": 2025,
   "week": 18,
   "table": "wr_advanced_stats",
@@ -2457,29 +2457,6 @@
     },
     {
       "rank": 102,
-      "player": "Malachi Carter",
-      "team": "ARI",
-      "g": 11,
-      "rec": 33,
-      "yds": 267,
-      "ypr": 8.1,
-      "ybc": 10,
-      "ybc_per_rec": 0.3,
-      "yac": 257,
-      "yac_per_rec": 7.8,
-      "brktkl": null,
-      "tgt": 45,
-      "target_share": 0.0633,
-      "rz_tgt": 7,
-      "rec_10_plus": 12,
-      "rec_20_plus": 0,
-      "rec_30_plus": 0,
-      "rec_40_plus": 0,
-      "rec_50_plus": 0,
-      "lng": 18
-    },
-    {
-      "rank": 103,
       "player": "Tyrell Shavers",
       "team": "BUF",
       "g": 10,
@@ -2502,7 +2479,7 @@
       "lng": 43
     },
     {
-      "rank": 104,
+      "rank": 103,
       "player": "Jahan Dotson",
       "team": "PHI",
       "g": 14,
@@ -2525,7 +2502,7 @@
       "lng": 51
     },
     {
-      "rank": 105,
+      "rank": 104,
       "player": "Christian Kirk",
       "team": "HOU",
       "g": 11,
@@ -2548,7 +2525,7 @@
       "lng": 47
     },
     {
-      "rank": 106,
+      "rank": 105,
       "player": "Isaac TeSlaa",
       "team": "DET",
       "g": 14,
@@ -2571,7 +2548,7 @@
       "lng": 29
     },
     {
-      "rank": 107,
+      "rank": 106,
       "player": "Jaylin Lane",
       "team": "WAS",
       "g": 13,
@@ -2594,7 +2571,7 @@
       "lng": 41
     },
     {
-      "rank": 108,
+      "rank": 107,
       "player": "Jack Bech",
       "team": "LV",
       "g": 12,
@@ -2617,7 +2594,7 @@
       "lng": 37
     },
     {
-      "rank": 109,
+      "rank": 108,
       "player": "Rashod Bateman",
       "team": "BAL",
       "g": 13,
@@ -2640,7 +2617,7 @@
       "lng": 36
     },
     {
-      "rank": 110,
+      "rank": 109,
       "player": "Kyle Williams",
       "team": "NE",
       "g": 11,
@@ -2663,30 +2640,7 @@
       "lng": 72
     },
     {
-      "rank": 111,
-      "player": "Devon Allen",
-      "team": "LA",
-      "g": 15,
-      "rec": 24,
-      "yds": 208,
-      "ypr": 8.7,
-      "ybc": 71,
-      "ybc_per_rec": 3.0,
-      "yac": 137,
-      "yac_per_rec": 5.7,
-      "brktkl": null,
-      "tgt": 33,
-      "target_share": 0.0531,
-      "rz_tgt": 7,
-      "rec_10_plus": 7,
-      "rec_20_plus": 2,
-      "rec_30_plus": 0,
-      "rec_40_plus": 0,
-      "rec_50_plus": 0,
-      "lng": 27
-    },
-    {
-      "rank": 112,
+      "rank": 110,
       "player": "Jayden Reed",
       "team": "GB",
       "g": 5,
@@ -2709,7 +2663,7 @@
       "lng": 31
     },
     {
-      "rank": 113,
+      "rank": 111,
       "player": "Chris Moore",
       "team": "WAS",
       "g": 8,
@@ -2732,7 +2686,7 @@
       "lng": 44
     },
     {
-      "rank": 114,
+      "rank": 112,
       "player": "Greg Dortch",
       "team": "ARI",
       "g": 10,
@@ -2755,7 +2709,7 @@
       "lng": 39
     },
     {
-      "rank": 115,
+      "rank": 113,
       "player": "Jalen Tolbert",
       "team": "DAL",
       "g": 11,
@@ -2778,7 +2732,7 @@
       "lng": 35
     },
     {
-      "rank": 116,
+      "rank": 114,
       "player": "Luke McCaffrey",
       "team": "WAS",
       "g": 7,
@@ -2801,7 +2755,7 @@
       "lng": 50
     },
     {
-      "rank": 117,
+      "rank": 115,
       "player": "Tyler Johnson",
       "team": "NYJ",
       "g": 9,
@@ -2824,7 +2778,7 @@
       "lng": 35
     },
     {
-      "rank": 118,
+      "rank": 116,
       "player": "Isaiah Williams",
       "team": "NYJ",
       "g": 9,
@@ -2847,7 +2801,7 @@
       "lng": 25
     },
     {
-      "rank": 119,
+      "rank": 117,
       "player": "Tutu Atwell",
       "team": "LA",
       "g": 8,
@@ -2870,7 +2824,7 @@
       "lng": 88
     },
     {
-      "rank": 120,
+      "rank": 118,
       "player": "David Sills",
       "team": "ATL",
       "g": 12,
@@ -2893,7 +2847,7 @@
       "lng": 21
     },
     {
-      "rank": 121,
+      "rank": 119,
       "player": "Tim Patrick",
       "team": "JAX",
       "g": 13,
@@ -2916,7 +2870,7 @@
       "lng": 37
     },
     {
-      "rank": 122,
+      "rank": 120,
       "player": "Adam Thielen",
       "team": "PIT",
       "g": 14,
@@ -2939,7 +2893,7 @@
       "lng": 28
     },
     {
-      "rank": 123,
+      "rank": 121,
       "player": "Zay Jones",
       "team": "ARI",
       "g": 6,
@@ -2962,7 +2916,7 @@
       "lng": 43
     },
     {
-      "rank": 124,
+      "rank": 122,
       "player": "Jalen McMillan",
       "team": "TB",
       "g": 4,
@@ -2985,7 +2939,7 @@
       "lng": 33
     },
     {
-      "rank": 125,
+      "rank": 123,
       "player": "Jordan Whittington",
       "team": "LA",
       "g": 12,
@@ -3008,7 +2962,7 @@
       "lng": 40
     },
     {
-      "rank": 126,
+      "rank": 124,
       "player": "Roman Wilson",
       "team": "PIT",
       "g": 9,
@@ -3031,7 +2985,7 @@
       "lng": 45
     },
     {
-      "rank": 127,
+      "rank": 125,
       "player": "Tory Horton",
       "team": "SEA",
       "g": 7,
@@ -3054,7 +3008,7 @@
       "lng": 25
     },
     {
-      "rank": 128,
+      "rank": 126,
       "player": "Brycen Tremayne",
       "team": "CAR",
       "g": 8,
@@ -3077,7 +3031,7 @@
       "lng": 26
     },
     {
-      "rank": 129,
+      "rank": 127,
       "player": "Lil'Jordan Humphrey",
       "team": "DEN",
       "g": 7,
@@ -3100,7 +3054,7 @@
       "lng": 34
     },
     {
-      "rank": 130,
+      "rank": 128,
       "player": "Kevin Austin",
       "team": "NO",
       "g": 5,
@@ -3123,7 +3077,7 @@
       "lng": 36
     },
     {
-      "rank": 131,
+      "rank": 129,
       "player": "Dont'e Thornton",
       "team": "LV",
       "g": 11,
@@ -3146,7 +3100,7 @@
       "lng": 36
     },
     {
-      "rank": 132,
+      "rank": 130,
       "player": "Treylon Burks",
       "team": "WAS",
       "g": 8,
@@ -3169,7 +3123,7 @@
       "lng": 37
     },
     {
-      "rank": 133,
+      "rank": 131,
       "player": "Gabe Davis",
       "team": "BUF",
       "g": 6,
@@ -3192,7 +3146,7 @@
       "lng": 22
     },
     {
-      "rank": 134,
+      "rank": 132,
       "player": "Marquez Valdes-Scantling",
       "team": "PIT",
       "g": 9,
@@ -3215,7 +3169,7 @@
       "lng": 19
     },
     {
-      "rank": 135,
+      "rank": 133,
       "player": "Mitch Tinsley",
       "team": "CIN",
       "g": 8,
@@ -3238,7 +3192,7 @@
       "lng": 27
     },
     {
-      "rank": 136,
+      "rank": 134,
       "player": "Isaiah Hodgins",
       "team": "NYG",
       "g": 6,
@@ -3261,7 +3215,7 @@
       "lng": 30
     },
     {
-      "rank": 137,
+      "rank": 135,
       "player": "Elijah Moore",
       "team": "BUF",
       "g": 8,
@@ -3284,7 +3238,7 @@
       "lng": 31
     },
     {
-      "rank": 138,
+      "rank": 136,
       "player": "Jimmy Horn",
       "team": "CAR",
       "g": 9,
@@ -3307,7 +3261,7 @@
       "lng": 34
     },
     {
-      "rank": 139,
+      "rank": 137,
       "player": "Jamari Thrash",
       "team": "CLE",
       "g": 8,
@@ -3330,30 +3284,7 @@
       "lng": 23
     },
     {
-      "rank": 140,
-      "player": "Jacoby Ford",
-      "team": "CLE",
-      "g": 11,
-      "rec": 26,
-      "yds": 103,
-      "ypr": 4.0,
-      "ybc": -51,
-      "ybc_per_rec": -2.0,
-      "yac": 154,
-      "yac_per_rec": 5.9,
-      "brktkl": null,
-      "tgt": 32,
-      "target_share": 0.0524,
-      "rz_tgt": 6,
-      "rec_10_plus": 3,
-      "rec_20_plus": 0,
-      "rec_30_plus": 0,
-      "rec_40_plus": 0,
-      "rec_50_plus": 0,
-      "lng": 17
-    },
-    {
-      "rank": 141,
+      "rank": 138,
       "player": "Josh Reynolds",
       "team": "NYJ",
       "g": 5,
@@ -3376,7 +3307,7 @@
       "lng": 13
     },
     {
-      "rank": 142,
+      "rank": 139,
       "player": "Konata Mumpfield",
       "team": "LA",
       "g": 9,
@@ -3399,7 +3330,7 @@
       "lng": 19
     },
     {
-      "rank": 143,
+      "rank": 140,
       "player": "Hunter Renfrow",
       "team": "CAR",
       "g": 6,
@@ -3422,7 +3353,7 @@
       "lng": 15
     },
     {
-      "rank": 144,
+      "rank": 141,
       "player": "Nick Westbrook-Ikhine",
       "team": "MIA",
       "g": 9,
@@ -3445,7 +3376,7 @@
       "lng": 18
     },
     {
-      "rank": 145,
+      "rank": 142,
       "player": "Mason Tipton",
       "team": "NO",
       "g": 6,
@@ -3468,7 +3399,7 @@
       "lng": 12
     },
     {
-      "rank": 146,
+      "rank": 143,
       "player": "Gage Larvadain",
       "team": "CLE",
       "g": 6,
@@ -3491,7 +3422,7 @@
       "lng": 14
     },
     {
-      "rank": 147,
+      "rank": 144,
       "player": "Allen Lazard",
       "team": "NYJ",
       "g": 9,
@@ -3514,7 +3445,7 @@
       "lng": 10
     },
     {
-      "rank": 148,
+      "rank": 145,
       "player": "Ray-Ray McCloud",
       "team": "NYG",
       "g": 5,
@@ -3537,7 +3468,7 @@
       "lng": 24
     },
     {
-      "rank": 149,
+      "rank": 146,
       "player": "Arian Smith",
       "team": "NYJ",
       "g": 10,

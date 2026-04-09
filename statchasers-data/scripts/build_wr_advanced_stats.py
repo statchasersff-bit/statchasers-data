@@ -127,7 +127,7 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     # ── Cross-position guards (RB abbreviations that appear in pass plays) ───
     "T.Etienne": {"JAX": "Travis Etienne", "CAR": "Trevor Etienne"},
     "B.Robinson": {"ATL": "Bijan Robinson", "SF": "Brian Robinson", "WAS": "Brian Robinson"},
-    "J.Williams": {"DEN": "Javonte Williams", "NO": "Jamaal Williams"},
+    "J.Williams": {"DEN": "Javonte Williams", "DAL": "Javonte Williams", "NO": "Jamaal Williams"},
     # ── WR / name-collision fixes ────────────────────────────────────────────
     # D.Moore: CHI/BUF = DJ Moore; CAR/TB = David Moore; Denarius Moore retired
     "D.Moore": {
@@ -184,6 +184,14 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     # "J.Horn" is ambiguous (Joe Horn, Jimmy Horn), so "Ji.Horn" stays unresolved
     # without this explicit override.
     "Ji.Horn": {"CAR": "Jimmy Horn"},
+    # Correct-name overrides: team_disambig WR-preference fallback wrongly picks
+    # the inactive WR over the active non-WR without explicit mapping.
+    # D.Allen+LA/LAR = Davis Allen (TE/LAR) — Devon Allen did not play in 2025.
+    "D.Allen":  {"LA": "Davis Allen", "LAR": "Davis Allen"},
+    # J.Ford+CLE = Jerome Ford (RB/CLE) — Jacoby Ford did not play in 2025.
+    "J.Ford":   {"CLE": "Jerome Ford"},
+    # M.Carter+ARI = Michael Carter (RB/ARI) — Malachi Carter did not play in 2025.
+    "M.Carter": {"ARI": "Michael Carter"},
 }
 
 

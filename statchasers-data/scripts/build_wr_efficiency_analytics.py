@@ -81,12 +81,14 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     # _abbrev("Amon-Ra St. Brown") produces "A.Brown" which collides with A.J. Brown,
     # so we handle this manually.
     "A.St. Brown":  {"DET": "Amon-Ra St. Brown"},
-    # Players whose Sleeper team field is stale (None) but who are active 2025 WRs:
-    # These abbreviations are shared with non-WR players on the same team, so
-    # receiver_player_name context (pass plays only) correctly maps to the WR.
-    "M.Carter":     {"ARI": "Malachi Carter"},                      # WR/ARI - Malachi Carter (receiver); Michael Carter is the ARI rusher
-    "D.Allen":      {"LA": "Devon Allen", "LAR": "Devon Allen"},    # WR/LAR - Devon Allen; Davis Allen (TE) is handled in TE analytics
-    "J.Ford":       {"CLE": "Jacoby Ford"},                         # WR/CLE - Jacoby Ford (receiver); Jerome Ford is the CLE rusher
+    # Correct-name overrides so the WR position filter can exclude non-WRs.
+    # The team_disambig WR-preference fallback wrongly picks inactive WRs without these.
+    # D.Allen+LA/LAR = Davis Allen (TE/LAR) — Devon Allen did not play in 2025.
+    "D.Allen":  {"LA": "Davis Allen", "LAR": "Davis Allen"},
+    # J.Ford+CLE = Jerome Ford (RB/CLE) — Jacoby Ford did not play in 2025.
+    "J.Ford":   {"CLE": "Jerome Ford"},
+    # M.Carter+ARI = Michael Carter (RB/ARI) — Malachi Carter did not play in 2025.
+    "M.Carter": {"ARI": "Michael Carter"},
     # Ji.Horn: nflverse 2-char prefix for Jimmy Horn (CAR). 1-char "J.Horn" is
     # ambiguous (Joe Horn etc.), so "Ji.Horn" stays unresolved without this override.
     "Ji.Horn":      {"CAR": "Jimmy Horn"},

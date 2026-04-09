@@ -82,15 +82,15 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "D.Hopkins": {"BAL": "DeAndre Hopkins", "TEN": "DeAndre Hopkins"},
     # Gabe Davis (WR): Sleeper team=None. "G.Davis" is ambiguous (Geremy Davis).
     "G.Davis": {"BUF": "Gabe Davis", "JAX": "Gabe Davis"},
-    # Devon Allen (WR/LAR): Sleeper team=None. "D.Allen" is ambiguous (Davis Allen TE/LAR).
-    # In receiving context D.Allen+LAR is Devon Allen (WR); Davis Allen (TE) is separate.
-    "D.Allen": {"LA": "Devon Allen", "LAR": "Devon Allen"},
-    # Jacoby Ford (WR/CLE): Sleeper team=None. "J.Ford" collides with Jerome Ford (RB/CLE).
-    # In receiving context J.Ford+CLE is Jacoby Ford (WR).
-    "J.Ford":  {"CLE": "Jacoby Ford"},
-    # Malachi Carter (WR/ARI): Sleeper team=None. "M.Carter" collides with Michael Carter (RB/ARI).
-    # In receiving context M.Carter+ARI is Malachi Carter (WR).
-    "M.Carter": {"ARI": "Malachi Carter"},
+    # Davis Allen (TE/LAR): "D.Allen" collides with Devon Allen (WR, inactive 2025).
+    # Davis Allen is the active LAR player — Devon Allen did not play in 2025.
+    "D.Allen": {"LA": "Davis Allen", "LAR": "Davis Allen"},
+    # Jerome Ford (RB/CLE): "J.Ford" collides with Jacoby Ford (WR, inactive 2025).
+    # Jerome Ford is the active CLE player — Jacoby Ford did not play in 2025.
+    "J.Ford":  {"CLE": "Jerome Ford"},
+    # Michael Carter (RB/ARI): "M.Carter" collides with Malachi Carter (WR, inactive 2025).
+    # Michael Carter is the active ARI player — Malachi Carter did not play in 2025.
+    "M.Carter": {"ARI": "Michael Carter"},
     # Jimmy Horn (WR/CAR): nflverse uses 2-char prefix "Ji.Horn"; 1-char "J.Horn" is
     # ambiguous (Joe Horn etc.). Explicit override for FPOE computation.
     "Ji.Horn": {"CAR": "Jimmy Horn"},

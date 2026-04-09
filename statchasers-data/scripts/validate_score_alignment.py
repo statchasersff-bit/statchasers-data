@@ -87,15 +87,17 @@ def check_top10(
     overview_rows: list[dict],
     field: str,
 ) -> None:
-    """Check that the top-10 set (by name) is the same in both outputs."""
-    a_top = {
-        r["player"].split()[-1]
-        for r in sorted(analytic_rows, key=lambda r: -(r.get(field) or 0))[:10]
-    }
-    ov_top = {
-        r["player"].split()[-1]
-        for r in sorted(overview_rows, key=lambda r: -(r.get(field) or 0))[:10]
-    }
+    """Check that the top-10 set (by name) is the same in both outputs.
+    Uses score-based cutoff to handle ties at the boundary correctly."""
+    def _top_set(rows: list[dict]) -> set[str]:
+        ranked = sorted(rows, key=lambda r: -(r.get(field) or 0))
+        if len(ranked) < 10:
+            return {r["player"].split()[-1] for r in ranked}
+        cutoff = ranked[9].get(field) or 0
+        return {r["player"].split()[-1] for r in ranked if (r.get(field) or 0) >= cutoff}
+
+    a_top  = _top_set(analytic_rows)
+    ov_top = _top_set(overview_rows)
     diff = a_top.symmetric_difference(ov_top)
     if diff:
         failures.append(

@@ -115,7 +115,7 @@ def _build_team_disambig(sleeper_players: list[dict]) -> dict[str, dict[str, str
 _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "T.Etienne":    {"JAX": "Travis Etienne",    "CAR": "Trevor Etienne"},
     "B.Robinson":   {"ATL": "Bijan Robinson",    "SF": "Brian Robinson", "WAS": "Brian Robinson"},
-    "J.Williams":   {"DEN": "Javonte Williams",  "NO": "Jamaal Williams"},
+    "J.Williams":   {"DEN": "Javonte Williams",  "DAL": "Javonte Williams", "NO": "Jamaal Williams"},
     "D.Moore":      {"CHI": "DJ Moore", "BUF": "DJ Moore", "CAR": "David Moore", "TB": "David Moore"},
     "K.Allen":      {"LAC": "Keenan Allen",      "CHI": "Keenan Allen"},
     "D.Montgomery": {"DET": "David Montgomery",  "HOU": "David Montgomery", "IND": "D.J. Montgomery"},
@@ -126,12 +126,16 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "Mi.Wilson":    {"ARI": "Michael Wilson"},   # nflverse 2-char prefix for Michael Wilson Jr.
     # K.Juszczyk resolution: maps to Kyle Juszczyk (FB) so WR filter will correctly exclude him
     "K.Juszczyk":   {"SF": "Kyle Juszczyk"},
-    # Players whose Sleeper team field is stale (None) but who are active 2025 WRs:
-    # These abbreviations are shared with non-WR players on the same team, so
-    # receiver_player_name context (pass plays only) correctly maps to the WR.
-    "M.Carter":     {"ARI": "Malachi Carter"},                      # WR/ARI - Malachi Carter (receiver); Michael Carter is the ARI rusher (M.Carter in rush plays)
-    "D.Allen":      {"LA": "Devon Allen", "LAR": "Devon Allen"},    # WR/LAR - Devon Allen; Davis Allen (TE) uses same abbrev but is handled in TE analytics
-    "J.Ford":       {"CLE": "Jacoby Ford"},                         # WR/CLE - Jacoby Ford (receiver); Jerome Ford is the CLE rusher
+    # Correct-name overrides: these resolve the PBP abbreviation to the ACTIVE player
+    # so the WR position filter can then correctly exclude them from WR analytics.
+    # Without explicit overrides the team_disambig ambiguity resolver falls through to
+    # a WR-position-preference filter that wrongly picks the inactive player.
+    # D.Allen+LA/LAR = Davis Allen (TE/LAR) — Devon Allen did not play in 2025.
+    "D.Allen":  {"LA": "Davis Allen", "LAR": "Davis Allen"},
+    # J.Ford+CLE = Jerome Ford (RB/CLE) — Jacoby Ford did not play in 2025.
+    "J.Ford":   {"CLE": "Jerome Ford"},
+    # M.Carter+ARI = Michael Carter (RB/ARI) — Malachi Carter did not play in 2025.
+    "M.Carter": {"ARI": "Michael Carter"},
     # Multi-word last name — nflverse uses A.St. Brown; _abbrev() produces A.Brown
     # which collides with A.J. Brown (PHI). Explicit override needed for correct resolution.
     "A.St. Brown":  {"DET": "Amon-Ra St. Brown"},
