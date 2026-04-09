@@ -81,13 +81,15 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     # _abbrev("Amon-Ra St. Brown") produces "A.Brown" which collides with A.J. Brown,
     # so we handle this manually.
     "A.St. Brown":  {"DET": "Amon-Ra St. Brown"},
-    # Non-WR receivers whose Sleeper team field is stale (None) or uses a different
-    # team code than nflverse PBP, causing the pos-based fallback to pick the wrong
-    # WR with the same abbreviation.  Explicit team→canonical locks the correct player
-    # so the WR position filter can then exclude them cleanly.
-    "M.Carter":     {"ARI": "Michael Carter"},                      # RB/ARI, not Malachi Carter
-    "D.Allen":      {"LA": "Davis Allen", "LAR": "Davis Allen"},    # TE/LAR, not Devon Allen
-    "J.Ford":       {"CLE": "Jerome Ford"},                         # RB/CLE, not Jacoby Ford
+    # Players whose Sleeper team field is stale (None) but who are active 2025 WRs:
+    # These abbreviations are shared with non-WR players on the same team, so
+    # receiver_player_name context (pass plays only) correctly maps to the WR.
+    "M.Carter":     {"ARI": "Malachi Carter"},                      # WR/ARI - Malachi Carter (receiver); Michael Carter is the ARI rusher
+    "D.Allen":      {"LA": "Devon Allen", "LAR": "Devon Allen"},    # WR/LAR - Devon Allen; Davis Allen (TE) is handled in TE analytics
+    "J.Ford":       {"CLE": "Jacoby Ford"},                         # WR/CLE - Jacoby Ford (receiver); Jerome Ford is the CLE rusher
+    # Ji.Horn: nflverse 2-char prefix for Jimmy Horn (CAR). 1-char "J.Horn" is
+    # ambiguous (Joe Horn etc.), so "Ji.Horn" stays unresolved without this override.
+    "Ji.Horn":      {"CAR": "Jimmy Horn"},
 }
 
 # PFR sometimes uses a different given name than Sleeper/PBP (nickname vs full).

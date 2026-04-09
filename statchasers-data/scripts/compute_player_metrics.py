@@ -51,10 +51,11 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     # Brian Robinson moved to SF; Sleeper still lists him as None (was WAS).
     # Both Robinson players are RBs so pos_hint cannot distinguish them.
     "B.Robinson": {"ATL": "Bijan Robinson", "SF": "Brian Robinson", "WAS": "Brian Robinson"},
-    # Javonte Williams played DEN 2023-2024 then DAL 2025 (DAL already in disambig).
+    # Javonte Williams played DEN 2023-2024 then DAL 2025 (Sleeper team still stale).
     # Jamaal Williams played NO 2023 (retired, team=None in Sleeper).
     # Both fall through to Jarveon Williams (None slot) without this override.
-    "J.Williams": {"DEN": "Javonte Williams", "NO": "Jamaal Williams"},
+    # (Full J.Williams override with DAL is defined later in this dict)
+
     # Four distinct T.Johnson players in 2025 PBP — none in Sleeper by gsis_id.
     # Without overrides the ambiguous T.Johnson abbreviation maps to Tony Johnson (K).
     # BUF entry covers Ty Johnson (RB) who can appear as a receiver in screen plays.
@@ -81,6 +82,25 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "D.Hopkins": {"BAL": "DeAndre Hopkins", "TEN": "DeAndre Hopkins"},
     # Gabe Davis (WR): Sleeper team=None. "G.Davis" is ambiguous (Geremy Davis).
     "G.Davis": {"BUF": "Gabe Davis", "JAX": "Gabe Davis"},
+    # Devon Allen (WR/LAR): Sleeper team=None. "D.Allen" is ambiguous (Davis Allen TE/LAR).
+    # In receiving context D.Allen+LAR is Devon Allen (WR); Davis Allen (TE) is separate.
+    "D.Allen": {"LA": "Devon Allen", "LAR": "Devon Allen"},
+    # Jacoby Ford (WR/CLE): Sleeper team=None. "J.Ford" collides with Jerome Ford (RB/CLE).
+    # In receiving context J.Ford+CLE is Jacoby Ford (WR).
+    "J.Ford":  {"CLE": "Jacoby Ford"},
+    # Malachi Carter (WR/ARI): Sleeper team=None. "M.Carter" collides with Michael Carter (RB/ARI).
+    # In receiving context M.Carter+ARI is Malachi Carter (WR).
+    "M.Carter": {"ARI": "Malachi Carter"},
+    # Jimmy Horn (WR/CAR): nflverse uses 2-char prefix "Ji.Horn"; 1-char "J.Horn" is
+    # ambiguous (Joe Horn etc.). Explicit override for FPOE computation.
+    "Ji.Horn": {"CAR": "Jimmy Horn"},
+    # Javonte Williams (RB/DAL): Moved from DEN to DAL in 2025; DAL not in Sleeper yet.
+    "J.Williams": {"DEN": "Javonte Williams", "DAL": "Javonte Williams", "NO": "Jamaal Williams"},
+    # Co.Heyward: nflverse 2-char prefix for Connor Heyward (PIT). Sleeper has him at LV
+    # (stale team) so the team-based disambig fails without this override.
+    "Co.Heyward": {"PIT": "Connor Heyward"},
+    # H.Luepke: Hunter Luepke (DAL fullback). Not in Sleeper registry; PFR has full name.
+    "H.Luepke":  {"DAL": "Hunter Luepke"},
 }
 
 # Minimum 2025-season games before applying narrative labels

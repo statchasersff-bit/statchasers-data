@@ -57,7 +57,13 @@ MIN_RUSH_ATT = 15  # include all meaningful RBs
 _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "T.Etienne": {"JAX": "Travis Etienne", "CAR": "Trevor Etienne"},
     "B.Robinson": {"ATL": "Bijan Robinson", "SF": "Brian Robinson", "WAS": "Brian Robinson"},
-    "J.Williams": {"DEN": "Javonte Williams", "NO": "Jamaal Williams"},
+    "J.Williams": {"DEN": "Javonte Williams", "DAL": "Javonte Williams", "NO": "Jamaal Williams"},
+    # Co.Heyward: nflverse 2-char prefix for Connor Heyward (PIT); 1-char "C.Heyward"
+    # doesn't match the PBP abbreviation so the name stays unresolved without this.
+    "Co.Heyward": {"PIT": "Connor Heyward"},
+    # H.Luepke: Hunter Luepke (DAL). Not in Sleeper registry; PFR lookup provides the
+    # full name but the RB overview doesn't use PFR, so explicit override needed.
+    "H.Luepke":  {"DAL": "Hunter Luepke"},
 }
 
 COLUMNS: list[dict] = [

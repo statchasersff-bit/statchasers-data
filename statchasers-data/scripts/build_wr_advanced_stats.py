@@ -180,6 +180,10 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     # Without this override the unambiguous lookup misses it and the player appears
     # in output with the abbreviated name instead of resolving to Amon-Ra.
     "A.St. Brown": {"DET": "Amon-Ra St. Brown"},
+    # Ji.Horn: nflverse 2-char prefix "Ji" for Jimmy Horn (CAR). The 1-char lookup
+    # "J.Horn" is ambiguous (Joe Horn, Jimmy Horn), so "Ji.Horn" stays unresolved
+    # without this explicit override.
+    "Ji.Horn": {"CAR": "Jimmy Horn"},
 }
 
 

@@ -290,10 +290,31 @@ def _norm_pfr(name: str) -> str:
 _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "T.Etienne": {"JAX": "Travis Etienne", "CAR": "Trevor Etienne"},
     "B.Robinson": {"ATL": "Bijan Robinson", "SF": "Brian Robinson", "WAS": "Brian Robinson"},
-    "J.Williams": {"DEN": "Javonte Williams", "NO": "Jamaal Williams"},
+    # J.Williams: multiple players share this abbreviation; map by team
+    "J.Williams": {"DEN": "Javonte Williams", "DAL": "Javonte Williams", "NO": "Jamaal Williams"},
     # "K.Walker" is ambiguous in Sleeper (multiple players) so the unambiguous
     # abbrev lookup misses it and the name stays abbreviated.
     "K.Walker":  {"SEA": "Kenneth Walker"},
+    # K.Williams: ambiguous (Kyren, Kyle, Ke'Shawn Williams etc.) — map by team
+    "K.Williams": {"LA": "Kyren Williams", "LAR": "Kyren Williams",
+                   "NE": "Kyle Williams", "CIN": "Ke'Shawn Williams"},
+    # J.Wright: ambiguous — Jaylen Wright (MIA) vs others
+    "J.Wright":  {"MIA": "Jaylen Wright"},
+    # K.Johnson: ambiguous — Kaleb Johnson (PIT) vs others
+    "K.Johnson": {"PIT": "Kaleb Johnson"},
+    # D.Moore: DJ Moore (CHI) vs David Moore (CAR/TB) etc.
+    "D.Moore":   {"CHI": "DJ Moore", "BUF": "DJ Moore",
+                  "CAR": "David Moore", "TB":  "David Moore"},
+    # J.Ford: Jacoby Ford (WR, CLE receiver) vs Jerome Ford (RB, CLE rusher)
+    # In RB stat explorer context (rushing plays), J.Ford+CLE = Jerome Ford
+    "J.Ford":    {"CLE": "Jerome Ford"},
+    # M.Carter: Malachi Carter (WR, ARI receiver) vs Michael Carter (RB, ARI rusher)
+    # In RB stat explorer context (rushing plays), M.Carter+ARI = Michael Carter
+    "M.Carter":  {"ARI": "Michael Carter"},
+    # Co.Heyward: 2-char first-name prefix for Connor Heyward (PIT)
+    "Co.Heyward": {"PIT": "Connor Heyward"},
+    # Ji.Horn: 2-char prefix for Jimmy Horn (CAR)
+    "Ji.Horn":   {"CAR": "Jimmy Horn"},
 }
 
 
