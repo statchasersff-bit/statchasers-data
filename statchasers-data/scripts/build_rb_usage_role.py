@@ -84,6 +84,7 @@ COLUMNS: list[dict] = [
     {"key": "delta_route_pct",      "label": "Δ Route %",         "type": "number", "group": "Receiving Role"},
     {"key": "rz_touches",           "label": "RZ Touches",        "type": "number", "group": "Scoring Role"},
     {"key": "goal_line_att",        "label": "GL Att",            "type": "number", "group": "Scoring Role"},
+    {"key": "role_score",           "label": "Role Score",        "type": "number", "group": "Composite"},
     {"key": "usage_role_score",     "label": "Usage & Role Score", "type": "number", "group": "Composite"},
     {"key": "role_trend",           "label": "Role Trend",        "type": "string", "group": "Composite"},
 ]
@@ -526,6 +527,21 @@ def build(pbp_path: Path, sleeper_path: Path) -> list[dict]:
 
 def main() -> None:
     rows = build(PBP_PATH, SLEEPER_PATH)
+
+    # ── Inject role_score from rb_player_overview.json ─────────────────────────
+    # The overview computes role_score using the canonical weighted formula
+    # (touches/snaps/RZ/etc.). Injecting it here ensures the Role & Usage tab
+    # displays the same score as the Player Overview tab for each RB.
+    ov_path = ROOT / "output" / "rb_player_overview.json"
+    if ov_path.exists():
+        ov_data = json.load(open(ov_path))
+        ov_rows = ov_data.get("rows", [])
+        ov_role = {r["player"]: r.get("role_score") for r in ov_rows if "player" in r}
+        for r in rows:
+            r["role_score"] = ov_role.get(r["player"])
+    else:
+        for r in rows:
+            r["role_score"] = None
 
     output = {
         "updated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),

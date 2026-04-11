@@ -66,7 +66,9 @@ META_COLUMNS = [
 _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "T.Etienne":    {"JAX": "Travis Etienne",    "CAR": "Trevor Etienne"},
     "B.Robinson":   {"ATL": "Bijan Robinson",    "SF": "Brian Robinson", "WAS": "Brian Robinson"},
-    "J.Williams":   {"DEN": "Javonte Williams",  "NO": "Jamaal Williams"},
+    # J.Williams: multiple players share this abbreviation; map by team.
+    # Javonte Williams moved to DAL in 2025; Sleeper still shows stale team.
+    "J.Williams":   {"DEN": "Javonte Williams", "DAL": "Javonte Williams", "NO": "Jamaal Williams"},
     "D.Moore":      {"CHI": "DJ Moore", "BUF": "DJ Moore", "CAR": "David Moore", "TB": "David Moore"},
     "K.Allen":      {"LAC": "Keenan Allen",      "CHI": "Keenan Allen"},
     "D.Montgomery": {"DET": "David Montgomery",  "HOU": "David Montgomery", "IND": "D.J. Montgomery"},
@@ -83,8 +85,8 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "M.Carter":     {"ARI": "Michael Carter"},                      # RB/ARI, not Malachi Carter
     "D.Allen":      {"LA": "Davis Allen", "LAR": "Davis Allen"},    # TE/LAR, not Devon Allen
     "J.Ford":       {"CLE": "Jerome Ford"},                         # RB/CLE, not Jacoby Ford
-    # Javonte Williams moved to DAL in 2025; Sleeper still shows stale team.
-    "J.Williams":   {"DEN": "Javonte Williams", "DAL": "Javonte Williams", "NO": "Jamaal Williams"},
+    # Ji.Horn: nflverse uses 2-char prefix for Jimmy Horn (CAR). "J.Horn" is ambiguous.
+    "Ji.Horn":      {"CAR": "Jimmy Horn"},
     # K.Walker: Sleeper has two "Kenneth Walker" players — one is a WR (team=None).
     # The RB K.Walker+SEA (Kenneth Walker III) must not resolve to the WR identity.
     # Mapping to "Kenneth Walker III" ensures he falls outside sleeper_wr_set.

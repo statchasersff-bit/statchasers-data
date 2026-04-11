@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-30T19:38:42Z",
+  "updated_at": "2026-04-11T06:08:32Z",
   "season": 2025,
   "week": null,
   "table": "rb_usage_role",
@@ -95,6 +95,12 @@
       "group": "Scoring Role"
     },
     {
+      "key": "role_score",
+      "label": "Role Score",
+      "type": "number",
+      "group": "Composite"
+    },
+    {
       "key": "usage_role_score",
       "label": "Usage & Role Score",
       "type": "number",
@@ -125,7 +131,8 @@
       "rz_touches": 55,
       "goal_line_att": 19,
       "usage_role_score": 93.92,
-      "role_trend": "Trending Up"
+      "role_trend": "Trending Up",
+      "role_score": 69.4
     },
     {
       "player": "Tank Bigsby",
@@ -144,7 +151,8 @@
       "rz_touches": 18,
       "goal_line_att": 6,
       "usage_role_score": 87.53,
-      "role_trend": "Rising Fast"
+      "role_trend": "Rising Fast",
+      "role_score": 34.3
     },
     {
       "player": "Chris Rodriguez",
@@ -163,7 +171,8 @@
       "rz_touches": 34,
       "goal_line_att": 14,
       "usage_role_score": 86.82,
-      "role_trend": "Rising Fast"
+      "role_trend": "Rising Fast",
+      "role_score": 53.6
     },
     {
       "player": "Malik Davis",
@@ -182,7 +191,8 @@
       "rz_touches": 8,
       "goal_line_att": 2,
       "usage_role_score": 86.59,
-      "role_trend": "Rising Fast"
+      "role_trend": "Rising Fast",
+      "role_score": 29.0
     },
     {
       "player": "Devin Neal",
@@ -201,7 +211,8 @@
       "rz_touches": 6,
       "goal_line_att": 2,
       "usage_role_score": 86.37,
-      "role_trend": "Rising Fast"
+      "role_trend": "Rising Fast",
+      "role_score": 41.5
     },
     {
       "player": "Audric Estime",
@@ -220,7 +231,8 @@
       "rz_touches": 6,
       "goal_line_att": 3,
       "usage_role_score": 80.13,
-      "role_trend": "Trending Up"
+      "role_trend": "Trending Up",
+      "role_score": 46.6
     },
     {
       "player": "Tyrone Tracy",
@@ -239,7 +251,8 @@
       "rz_touches": 26,
       "goal_line_att": 2,
       "usage_role_score": 76.93,
-      "role_trend": "Trending Up"
+      "role_trend": "Trending Up",
+      "role_score": 68.1
     },
     {
       "player": "Dare Ogunbowale",
@@ -258,7 +271,8 @@
       "rz_touches": 9,
       "goal_line_att": 3,
       "usage_role_score": 76.63,
-      "role_trend": "Trending Up"
+      "role_trend": "Trending Up",
+      "role_score": null
     },
     {
       "player": "Brashard Smith",
@@ -277,7 +291,8 @@
       "rz_touches": 17,
       "goal_line_att": 1,
       "usage_role_score": 76.01,
-      "role_trend": "Trending Up"
+      "role_trend": "Trending Up",
+      "role_score": 33.6
     },
     {
       "player": "Jacory Croskey-Merritt",
@@ -296,7 +311,8 @@
       "rz_touches": 33,
       "goal_line_att": 13,
       "usage_role_score": 75.46,
-      "role_trend": "Rising Fast"
+      "role_trend": "Rising Fast",
+      "role_score": 60.6
     },
     {
       "player": "RJ Harvey",
@@ -315,7 +331,8 @@
       "rz_touches": 40,
       "goal_line_att": 10,
       "usage_role_score": 74.1,
-      "role_trend": "Trending Up"
+      "role_trend": "Trending Up",
+      "role_score": 64.7
     },
     {
       "player": "Dylan Sampson",
@@ -334,7 +351,8 @@
       "rz_touches": 13,
       "goal_line_att": 0,
       "usage_role_score": 73.15,
-      "role_trend": "Trending Up"
+      "role_trend": "Trending Up",
+      "role_score": 33.6
     },
     {
       "player": "Samaje Perine",
@@ -353,7 +371,8 @@
       "rz_touches": 17,
       "goal_line_att": 4,
       "usage_role_score": 72.98,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 44.3
     },
     {
       "player": "Bijan Robinson",
@@ -372,7 +391,8 @@
       "rz_touches": 49,
       "goal_line_att": 11,
       "usage_role_score": 72.43,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 91.9
     },
     {
       "player": "Isaiah Davis",
@@ -391,7 +411,8 @@
       "rz_touches": 11,
       "goal_line_att": 0,
       "usage_role_score": 72.28,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 30.4
     },
     {
       "player": "Ameer Abdullah",
@@ -410,7 +431,8 @@
       "rz_touches": 4,
       "goal_line_att": 1,
       "usage_role_score": 71.54,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": null
     },
     {
       "player": "Jaydon Blue",
@@ -429,7 +451,8 @@
       "rz_touches": 7,
       "goal_line_att": 1,
       "usage_role_score": 70.28,
-      "role_trend": "Trending Up"
+      "role_trend": "Trending Up",
+      "role_score": 32.0
     },
     {
       "player": "Ray Davis",
@@ -448,7 +471,8 @@
       "rz_touches": 12,
       "goal_line_att": 2,
       "usage_role_score": 70.22,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 36.9
     },
     {
       "player": "Cam Skattebo",
@@ -467,7 +491,8 @@
       "rz_touches": 28,
       "goal_line_att": 10,
       "usage_role_score": 69.57,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 70.8
     },
     {
       "player": "Jordan Mason",
@@ -486,7 +511,8 @@
       "rz_touches": 30,
       "goal_line_att": 7,
       "usage_role_score": 69.27,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 59.0
     },
     {
       "player": "Raheim Sanders",
@@ -505,7 +531,8 @@
       "rz_touches": 7,
       "goal_line_att": 4,
       "usage_role_score": 68.63,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 32.0
     },
     {
       "player": "Jaret Patterson",
@@ -524,7 +551,8 @@
       "rz_touches": 6,
       "goal_line_att": 2,
       "usage_role_score": 65.79,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 30.0
     },
     {
       "player": "Kenneth Gainwell",
@@ -543,7 +571,8 @@
       "rz_touches": 40,
       "goal_line_att": 9,
       "usage_role_score": 65.11,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 67.7
     },
     {
       "player": "Ashton Jeanty",
@@ -562,7 +591,8 @@
       "rz_touches": 45,
       "goal_line_att": 11,
       "usage_role_score": 64.45,
-      "role_trend": "Rising Fast"
+      "role_trend": "Rising Fast",
+      "role_score": 86.8
     },
     {
       "player": "Quinshon Judkins",
@@ -581,7 +611,8 @@
       "rz_touches": 34,
       "goal_line_att": 12,
       "usage_role_score": 63.89,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 78.4
     },
     {
       "player": "Trey Benson",
@@ -600,7 +631,8 @@
       "rz_touches": 5,
       "goal_line_att": 1,
       "usage_role_score": 62.85,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 44.1
     },
     {
       "player": "Blake Corum",
@@ -619,7 +651,8 @@
       "rz_touches": 28,
       "goal_line_att": 13,
       "usage_role_score": 62.49,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 54.6
     },
     {
       "player": "Tony Pollard",
@@ -638,7 +671,8 @@
       "rz_touches": 20,
       "goal_line_att": 4,
       "usage_role_score": 62.25,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 70.5
     },
     {
       "player": "Jaylen Warren",
@@ -657,7 +691,8 @@
       "rz_touches": 45,
       "goal_line_att": 14,
       "usage_role_score": 61.57,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 78.0
     },
     {
       "player": "Derrick Henry",
@@ -676,7 +711,8 @@
       "rz_touches": 65,
       "goal_line_att": 27,
       "usage_role_score": 61.52,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 84.9
     },
     {
       "player": "Aaron Jones",
@@ -695,7 +731,8 @@
       "rz_touches": 19,
       "goal_line_att": 3,
       "usage_role_score": 61.1,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 63.3
     },
     {
       "player": "Travis Etienne",
@@ -714,7 +751,8 @@
       "rz_touches": 64,
       "goal_line_att": 12,
       "usage_role_score": 60.8,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 84.1
     },
     {
       "player": "Woody Marks",
@@ -733,7 +771,8 @@
       "rz_touches": 41,
       "goal_line_att": 9,
       "usage_role_score": 60.47,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 68.7
     },
     {
       "player": "Chris Brooks",
@@ -752,7 +791,8 @@
       "rz_touches": 6,
       "goal_line_att": 0,
       "usage_role_score": 60.31,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 26.1
     },
     {
       "player": "Tahj Brooks",
@@ -771,7 +811,8 @@
       "rz_touches": 0,
       "goal_line_att": 0,
       "usage_role_score": 60.19,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 3.1
     },
     {
       "player": "Jeremy McNichols",
@@ -790,7 +831,8 @@
       "rz_touches": 9,
       "goal_line_att": 2,
       "usage_role_score": 59.36,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 30.0
     },
     {
       "player": "Ollie Gordon",
@@ -809,7 +851,8 @@
       "rz_touches": 21,
       "goal_line_att": 6,
       "usage_role_score": 58.56,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 28.2
     },
     {
       "player": "Terrell Jennings",
@@ -828,7 +871,8 @@
       "rz_touches": 4,
       "goal_line_att": 2,
       "usage_role_score": 58.01,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 14.9
     },
     {
       "player": "J.K. Dobbins",
@@ -847,7 +891,8 @@
       "rz_touches": 20,
       "goal_line_att": 7,
       "usage_role_score": 57.64,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 67.0
     },
     {
       "player": "Miles Sanders",
@@ -866,7 +911,8 @@
       "rz_touches": 7,
       "goal_line_att": 1,
       "usage_role_score": 57.53,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 28.7
     },
     {
       "player": "Keaton Mitchell",
@@ -885,7 +931,8 @@
       "rz_touches": 14,
       "goal_line_att": 0,
       "usage_role_score": 57.5,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 30.2
     },
     {
       "player": "Antonio Gibson",
@@ -904,7 +951,8 @@
       "rz_touches": 4,
       "goal_line_att": 2,
       "usage_role_score": 55.22,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 22.1
     },
     {
       "player": "Isiah Pacheco",
@@ -923,7 +971,8 @@
       "rz_touches": 24,
       "goal_line_att": 0,
       "usage_role_score": 54.5,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 49.8
     },
     {
       "player": "Jaylen Wright",
@@ -942,7 +991,8 @@
       "rz_touches": 12,
       "goal_line_att": 4,
       "usage_role_score": 54.43,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 39.5
     },
     {
       "player": "Tyjae Spears",
@@ -961,7 +1011,8 @@
       "rz_touches": 17,
       "goal_line_att": 2,
       "usage_role_score": 53.75,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 47.8
     },
     {
       "player": "LeQuint Allen",
@@ -980,7 +1031,8 @@
       "rz_touches": 6,
       "goal_line_att": 1,
       "usage_role_score": 53.4,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 15.9
     },
     {
       "player": "Rasheen Ali",
@@ -999,7 +1051,8 @@
       "rz_touches": 3,
       "goal_line_att": 0,
       "usage_role_score": 52.91,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": null
     },
     {
       "player": "Tyler Badie",
@@ -1018,7 +1071,8 @@
       "rz_touches": 6,
       "goal_line_att": 1,
       "usage_role_score": 49.67,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": null
     },
     {
       "player": "Braelon Allen",
@@ -1037,7 +1091,8 @@
       "rz_touches": 9,
       "goal_line_att": 1,
       "usage_role_score": 48.94,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 20.0
     },
     {
       "player": "Saquon Barkley",
@@ -1056,7 +1111,8 @@
       "rz_touches": 52,
       "goal_line_att": 15,
       "usage_role_score": 48.88,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 89.9
     },
     {
       "player": "D'Andre Swift",
@@ -1075,7 +1131,8 @@
       "rz_touches": 41,
       "goal_line_att": 14,
       "usage_role_score": 48.49,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 81.3
     },
     {
       "player": "James Conner",
@@ -1094,7 +1151,8 @@
       "rz_touches": 6,
       "goal_line_att": 3,
       "usage_role_score": 48.25,
-      "role_trend": "Limited Sample"
+      "role_trend": "Limited Sample",
+      "role_score": 49.1
     },
     {
       "player": "Jonathan Taylor",
@@ -1113,7 +1171,8 @@
       "rz_touches": 76,
       "goal_line_att": 24,
       "usage_role_score": 48.11,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 95.1
     },
     {
       "player": "Christian McCaffrey",
@@ -1132,7 +1191,8 @@
       "rz_touches": 100,
       "goal_line_att": 20,
       "usage_role_score": 48.01,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 96.2
     },
     {
       "player": "Omarion Hampton",
@@ -1151,7 +1211,8 @@
       "rz_touches": 28,
       "goal_line_att": 8,
       "usage_role_score": 47.52,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 74.4
     },
     {
       "player": "Kyle Monangai",
@@ -1170,7 +1231,8 @@
       "rz_touches": 41,
       "goal_line_att": 12,
       "usage_role_score": 47.26,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 66.4
     },
     {
       "player": "Jaleel McLaughlin",
@@ -1189,7 +1251,8 @@
       "rz_touches": 5,
       "goal_line_att": 1,
       "usage_role_score": 46.47,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 22.1
     },
     {
       "player": "A.J. Dillon",
@@ -1208,7 +1271,8 @@
       "rz_touches": 3,
       "goal_line_att": 0,
       "usage_role_score": 46.22,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": null
     },
     {
       "player": "Rhamondre Stevenson",
@@ -1227,7 +1291,8 @@
       "rz_touches": 33,
       "goal_line_att": 12,
       "usage_role_score": 46.19,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 67.4
     },
     {
       "player": "British Brooks",
@@ -1246,7 +1311,8 @@
       "rz_touches": 2,
       "goal_line_att": 2,
       "usage_role_score": 45.92,
-      "role_trend": "Limited Sample"
+      "role_trend": "Limited Sample",
+      "role_score": 18.3
     },
     {
       "player": "Khalil Herbert",
@@ -1265,7 +1331,8 @@
       "rz_touches": 4,
       "goal_line_att": 0,
       "usage_role_score": 44.69,
-      "role_trend": "Limited Sample"
+      "role_trend": "Limited Sample",
+      "role_score": 17.2
     },
     {
       "player": "Najee Harris",
@@ -1284,7 +1351,8 @@
       "rz_touches": 1,
       "goal_line_att": 0,
       "usage_role_score": 43.88,
-      "role_trend": "Limited Sample"
+      "role_trend": "Limited Sample",
+      "role_score": 15.6
     },
     {
       "player": "DJ Giddens",
@@ -1303,7 +1371,8 @@
       "rz_touches": 6,
       "goal_line_att": 1,
       "usage_role_score": 43.72,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 23.1
     },
     {
       "player": "Zamir White",
@@ -1322,7 +1391,8 @@
       "rz_touches": 0,
       "goal_line_att": 0,
       "usage_role_score": 43.65,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": null
     },
     {
       "player": "Will Shipley",
@@ -1341,7 +1411,8 @@
       "rz_touches": 1,
       "goal_line_att": 0,
       "usage_role_score": 40.05,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": null
     },
     {
       "player": "Kenneth Walker",
@@ -1360,7 +1431,8 @@
       "rz_touches": 37,
       "goal_line_att": 8,
       "usage_role_score": 38.77,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 72.0
     },
     {
       "player": "Zonovan Knight",
@@ -1379,7 +1451,8 @@
       "rz_touches": 23,
       "goal_line_att": 8,
       "usage_role_score": 37.38,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 53.2
     },
     {
       "player": "Tyler Allgeier",
@@ -1398,7 +1471,8 @@
       "rz_touches": 33,
       "goal_line_att": 10,
       "usage_role_score": 36.78,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 53.4
     },
     {
       "player": "Trevor Etienne",
@@ -1417,7 +1491,8 @@
       "rz_touches": 4,
       "goal_line_att": 1,
       "usage_role_score": 36.36,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 14.5
     },
     {
       "player": "Javonte Williams",
@@ -1436,7 +1511,8 @@
       "rz_touches": 66,
       "goal_line_att": 20,
       "usage_role_score": 36.12,
-      "role_trend": "Falling Fast"
+      "role_trend": "Falling Fast",
+      "role_score": 87.3
     },
     {
       "player": "Evan Hull",
@@ -1455,7 +1531,8 @@
       "rz_touches": 3,
       "goal_line_att": 0,
       "usage_role_score": 35.71,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 6.1
     },
     {
       "player": "Chase Brown",
@@ -1474,7 +1551,8 @@
       "rz_touches": 49,
       "goal_line_att": 13,
       "usage_role_score": 35.66,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 84.9
     },
     {
       "player": "Kendre Miller",
@@ -1493,7 +1571,8 @@
       "rz_touches": 5,
       "goal_line_att": 0,
       "usage_role_score": 35.18,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 29.7
     },
     {
       "player": "Chuba Hubbard",
@@ -1512,7 +1591,8 @@
       "rz_touches": 25,
       "goal_line_att": 2,
       "usage_role_score": 34.2,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 55.4
     },
     {
       "player": "Jawhar Jordan",
@@ -1531,7 +1611,8 @@
       "rz_touches": 5,
       "goal_line_att": 1,
       "usage_role_score": 33.67,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 46.6
     },
     {
       "player": "Emari Demercado",
@@ -1550,7 +1631,8 @@
       "rz_touches": 9,
       "goal_line_att": 0,
       "usage_role_score": 30.59,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 27.2
     },
     {
       "player": "Hassan Haskins",
@@ -1569,7 +1651,8 @@
       "rz_touches": 2,
       "goal_line_att": 0,
       "usage_role_score": 30.4,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 9.8
     },
     {
       "player": "Bucky Irving",
@@ -1588,7 +1671,8 @@
       "rz_touches": 22,
       "goal_line_att": 0,
       "usage_role_score": 30.15,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 71.2
     },
     {
       "player": "Devin Singletary",
@@ -1607,7 +1691,8 @@
       "rz_touches": 24,
       "goal_line_att": 10,
       "usage_role_score": 29.73,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 46.2
     },
     {
       "player": "Rico Dowdle",
@@ -1626,7 +1711,8 @@
       "rz_touches": 40,
       "goal_line_att": 9,
       "usage_role_score": 29.28,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 77.8
     },
     {
       "player": "Jahmyr Gibbs",
@@ -1645,7 +1731,8 @@
       "rz_touches": 67,
       "goal_line_att": 10,
       "usage_role_score": 29.14,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 87.6
     },
     {
       "player": "Raheem Mostert",
@@ -1664,7 +1751,8 @@
       "rz_touches": 5,
       "goal_line_att": 0,
       "usage_role_score": 28.84,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 18.9
     },
     {
       "player": "Kaleb Johnson",
@@ -1683,7 +1771,8 @@
       "rz_touches": 4,
       "goal_line_att": 0,
       "usage_role_score": 28.11,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 6.7
     },
     {
       "player": "Justice Hill",
@@ -1702,7 +1791,8 @@
       "rz_touches": 4,
       "goal_line_att": 1,
       "usage_role_score": 27.52,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 24.5
     },
     {
       "player": "Breece Hall",
@@ -1721,7 +1811,8 @@
       "rz_touches": 33,
       "goal_line_att": 4,
       "usage_role_score": 26.57,
-      "role_trend": "Falling Fast"
+      "role_trend": "Falling Fast",
+      "role_score": 76.6
     },
     {
       "player": "Jeremy Hill",
@@ -1740,7 +1831,8 @@
       "rz_touches": 4,
       "goal_line_att": 0,
       "usage_role_score": 26.17,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": null
     },
     {
       "player": "Nick Chubb",
@@ -1759,7 +1851,8 @@
       "rz_touches": 15,
       "goal_line_att": 6,
       "usage_role_score": 25.92,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 45.5
     },
     {
       "player": "Kimani Vidal",
@@ -1778,7 +1871,8 @@
       "rz_touches": 32,
       "goal_line_att": 7,
       "usage_role_score": 25.34,
-      "role_trend": "Falling Fast"
+      "role_trend": "Falling Fast",
+      "role_score": 64.7
     },
     {
       "player": "James Cook",
@@ -1797,7 +1891,8 @@
       "rz_touches": 59,
       "goal_line_att": 16,
       "usage_role_score": 24.64,
-      "role_trend": "Falling Fast"
+      "role_trend": "Falling Fast",
+      "role_score": 88.7
     },
     {
       "player": "Josh Jacobs",
@@ -1816,7 +1911,8 @@
       "rz_touches": 58,
       "goal_line_att": 20,
       "usage_role_score": 24.39,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 85.0
     },
     {
       "player": "Zavier Scott",
@@ -1835,7 +1931,8 @@
       "rz_touches": 6,
       "goal_line_att": 1,
       "usage_role_score": 23.88,
-      "role_trend": "Stable"
+      "role_trend": "Stable",
+      "role_score": 21.9
     },
     {
       "player": "Brian Robinson",
@@ -1854,7 +1951,8 @@
       "rz_touches": 17,
       "goal_line_att": 2,
       "usage_role_score": 23.75,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 35.5
     },
     {
       "player": "Bhayshul Tuten",
@@ -1873,7 +1971,8 @@
       "rz_touches": 28,
       "goal_line_att": 8,
       "usage_role_score": 23.68,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 38.9
     },
     {
       "player": "Kareem Hunt",
@@ -1892,7 +1991,8 @@
       "rz_touches": 43,
       "goal_line_att": 15,
       "usage_role_score": 23.57,
-      "role_trend": "Falling Fast"
+      "role_trend": "Falling Fast",
+      "role_score": 62.3
     },
     {
       "player": "George Holani",
@@ -1911,7 +2011,8 @@
       "rz_touches": 5,
       "goal_line_att": 0,
       "usage_role_score": 23.15,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 17.3
     },
     {
       "player": "Sean Tucker",
@@ -1930,7 +2031,8 @@
       "rz_touches": 24,
       "goal_line_att": 11,
       "usage_role_score": 18.05,
-      "role_trend": "Falling Fast"
+      "role_trend": "Falling Fast",
+      "role_score": 40.8
     },
     {
       "player": "TreVeyon Henderson",
@@ -1949,7 +2051,8 @@
       "rz_touches": 40,
       "goal_line_att": 8,
       "usage_role_score": 17.06,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 68.8
     },
     {
       "player": "Alvin Kamara",
@@ -1968,7 +2071,8 @@
       "rz_touches": 20,
       "goal_line_att": 2,
       "usage_role_score": 15.79,
-      "role_trend": "Trending Down"
+      "role_trend": "Trending Down",
+      "role_score": 64.0
     },
     {
       "player": "De'Von Achane",
@@ -1987,7 +2091,8 @@
       "rz_touches": 43,
       "goal_line_att": 5,
       "usage_role_score": 12.1,
-      "role_trend": "Falling Fast"
+      "role_trend": "Falling Fast",
+      "role_score": 85.5
     }
   ]
 }
