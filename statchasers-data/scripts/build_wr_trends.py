@@ -83,6 +83,12 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "M.Carter":     {"ARI": "Michael Carter"},                      # RB/ARI, not Malachi Carter
     "D.Allen":      {"LA": "Davis Allen", "LAR": "Davis Allen"},    # TE/LAR, not Devon Allen
     "J.Ford":       {"CLE": "Jerome Ford"},                         # RB/CLE, not Jacoby Ford
+    # Javonte Williams moved to DAL in 2025; Sleeper still shows stale team.
+    "J.Williams":   {"DEN": "Javonte Williams", "DAL": "Javonte Williams", "NO": "Jamaal Williams"},
+    # K.Walker: Sleeper has two "Kenneth Walker" players — one is a WR (team=None).
+    # The RB K.Walker+SEA (Kenneth Walker III) must not resolve to the WR identity.
+    # Mapping to "Kenneth Walker III" ensures he falls outside sleeper_wr_set.
+    "K.Walker":     {"SEA": "Kenneth Walker III"},
 }
 
 # PFR snap-counts name → Sleeper canonical name aliases

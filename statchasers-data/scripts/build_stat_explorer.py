@@ -61,7 +61,7 @@ PIPELINE_YEAR    = 2025
 SEASONS          = [2023, 2024, 2025]
 MIN_QB_ATT       = 10
 MIN_RB_CARRIES   = 15
-MIN_WR_TGT       = 15
+MIN_WR_TGT       = 8
 MIN_TE_TGT       = 10
 
 
@@ -315,6 +315,10 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "Co.Heyward": {"PIT": "Connor Heyward"},
     # Ji.Horn: 2-char prefix for Jimmy Horn (CAR)
     "Ji.Horn":   {"CAR": "Jimmy Horn"},
+    # C.Wilson: three Sleeper players share this abbreviation (Cedrick/Clayton/Caleb Wilson).
+    # Cedrick Wilson Jr. (WR, MIA) must be resolved explicitly so the pos fallback
+    # does not pick a TE (Clayton/Caleb Wilson).
+    "C.Wilson":  {"MIA": "Cedrick Wilson"},
 }
 
 
