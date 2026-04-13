@@ -48,7 +48,7 @@ PFR_REC_PATH       = ROOT / "data" / "raw"       / "pfr_rec_advstats.parquet"
 OUTPUT_DIR         = ROOT / "output"
 
 SEASONS     = [2025]
-MIN_TARGETS = 15
+MIN_TARGETS = 8
 
 COLUMNS = [
     "player", "team", "games", "targets",

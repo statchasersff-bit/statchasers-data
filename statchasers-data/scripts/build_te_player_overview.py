@@ -47,7 +47,7 @@ SLEEPER_PATH       = ROOT / "data" / "raw"       / "sleeper_players.json"
 OUTPUT_DIR         = ROOT / "output"
 
 SEASON      = 2025
-MIN_TARGETS = 15
+MIN_TARGETS = 8
 
 _EXCLUDED_PLAYERS: frozenset[str] = frozenset({
     "Eli Wilson",

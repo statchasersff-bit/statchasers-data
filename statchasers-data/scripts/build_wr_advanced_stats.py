@@ -38,7 +38,7 @@ METRICS_PATH = ROOT / "data" / "processed" / "player_metrics.json"
 OUTPUT_DIR   = ROOT / "output"
 
 SEASONS     = [2023, 2024, 2025]
-MIN_TARGETS = 15
+MIN_TARGETS = 8
 
 # ---------------------------------------------------------------------------
 # Column definitions (match the spec exactly)

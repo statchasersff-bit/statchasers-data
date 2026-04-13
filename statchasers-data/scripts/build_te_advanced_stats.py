@@ -32,7 +32,7 @@ METRICS_PATH = ROOT / "data" / "processed" / "player_metrics.json"
 OUTPUT_DIR   = ROOT / "output"
 
 SEASON      = 2025
-MIN_TARGETS = 15
+MIN_TARGETS = 8
 
 COLUMNS: list[dict] = [
     {"key": "rank",         "label": "Rank",      "type": "number",  "defaultVisible": True},
