@@ -1405,7 +1405,7 @@ def compute_metrics(
                 return [0.0] * len(vals)
             return list((arr - arr.mean()) / std)
 
-        def _clip_scale(z: float, clip: float = 2.5) -> float:
+        def _clip_scale(z: float, clip: float = 1.75) -> float:
             """Clamp z to [-clip, clip], then map linearly to [0, 100]."""
             return round(max(0.0, min(100.0, (max(-clip, min(clip, z)) + clip) / (2 * clip) * 100)), 1)
 
