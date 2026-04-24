@@ -622,11 +622,15 @@ def main() -> None:
         role_patched = 0
         for p in players:
             key = (p.get("team"), p["player"].split()[-1])
-            if p["player"] in _ov_exact_usage:
-                p["usage_score"] = _ov_exact_usage[p["player"]]
-                patched += 1
-            elif key in _ov_team_last_usage:
-                p["usage_score"] = _ov_team_last_usage[key]
+            # usage_score: only overwrite the locally-computed value when the
+            # overview has an explicit non-null entry (overview currently does
+            # not compute usage_score, so guarding prevents it from wiping the
+            # rank-based score calculated by _add_usage_scores above).
+            ov_usage = _ov_exact_usage.get(p["player"])
+            if ov_usage is None:
+                ov_usage = _ov_team_last_usage.get(key)
+            if ov_usage is not None:
+                p["usage_score"] = ov_usage
                 patched += 1
             if p["player"] in _ov_exact_role:
                 p["role_score"] = _ov_exact_role[p["player"]]
