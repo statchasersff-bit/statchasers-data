@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-05-20T17:00:41Z",
+  "positions": {
+    "qb": {
+      "tabs": {
+        "overview": [
+          "2023",
+          "2024",
+          "2025",
+          "all"
+        ],
+        "efficiency": [
+          "2023",
+          "2024",
+          "2025",
+          "all"
+        ],
+        "usage": [
+          "2023",
+          "2024",
+          "2025",
+          "all"
+        ],
+        "stat_explorer": [
+          "2023",
+          "2024",
+          "2025",
+          "all"
+        ]
+      },
+      "unavailableSeasons": {}
+    },
+    "rb": {
+      "tabs": {
+        "overview": [
+          "2023",
+          "2024",
+          "2025",
+          "all"
+        ],
+        "efficiency": [
+          "2023",
+          "2024",
+          "2025",
+          "all"
+        ],
+        "usage": [
+          "2023",
+          "2024",
+          "2025",
+          "all"
+        ],
+        "stat_explorer": [
+          "2023",
+          "2024",
+          "2025",
+          "all"
+        ]
+      },
+      "unavailableSeasons": {}
+    },
+    "wr": {
+      "tabs": {
+        "overview": [
+          "2023",
+          "2024",
+          "2025",
+          "all"
+        ],
+        "efficiency": [
+          "2023",
+          "2024",
+          "2025",
+          "all"
+        ],
+        "usage": [
+          "2023",
+          "2024",
+          "2025",
+          "all"
+        ],
+        "stat_explorer": [
+          "2023",
+          "2024",
+          "2025",
+          "all"
+        ]
+      },
+      "unavailableSeasons": {}
+    },
+    "te": {
+      "tabs": {
+        "overview": [
+          "2023",
+          "2024",
+          "2025",
+          "all"
+        ],
+        "efficiency": [
+          "2023",
+          "2024",
+          "2025",
+          "all"
+        ],
+        "usage": [
+          "2023",
+          "2024",
+          "2025",
+          "all"
+        ],
+        "stat_explorer": [
+          "2023",
+          "2024",
+          "2025",
+          "all"
+        ]
+      },
+      "unavailableSeasons": {}
+    }
+  }
+}

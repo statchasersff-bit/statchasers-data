@@ -1,0 +1,168 @@
+{
+  "schemaVersion": "1.0.0",
+  "position": "QB",
+  "generatedAt": "2026-05-20T17:00:40Z",
+  "tabs": {
+    "overview": [
+      "2023",
+      "2024",
+      "2025",
+      "all"
+    ],
+    "efficiency": [
+      "2023",
+      "2024",
+      "2025",
+      "all"
+    ],
+    "usage": [
+      "2023",
+      "2024",
+      "2025",
+      "all"
+    ],
+    "stat_explorer": [
+      "2023",
+      "2024",
+      "2025",
+      "all"
+    ]
+  },
+  "seasons": [
+    "2023",
+    "2024",
+    "2025",
+    "all"
+  ],
+  "unavailableSeasons": {},
+  "files": [
+    {
+      "tab": "overview",
+      "season": "2023",
+      "filename": "overview_2023.json",
+      "path": "positions/qb/overview_2023.json",
+      "rowCount": 63,
+      "bytes": 34938
+    },
+    {
+      "tab": "overview",
+      "season": "2024",
+      "filename": "overview_2024.json",
+      "path": "positions/qb/overview_2024.json",
+      "rowCount": 57,
+      "bytes": 31606
+    },
+    {
+      "tab": "overview",
+      "season": "2025",
+      "filename": "overview_2025.json",
+      "path": "positions/qb/overview_2025.json",
+      "rowCount": 60,
+      "bytes": 33222
+    },
+    {
+      "tab": "overview",
+      "season": "all",
+      "filename": "overview_all.json",
+      "path": "positions/qb/overview_all.json",
+      "rowCount": 93,
+      "bytes": 51366
+    },
+    {
+      "tab": "efficiency",
+      "season": "2023",
+      "filename": "efficiency_2023.json",
+      "path": "positions/qb/efficiency_2023.json",
+      "rowCount": 63,
+      "bytes": 32130
+    },
+    {
+      "tab": "efficiency",
+      "season": "2024",
+      "filename": "efficiency_2024.json",
+      "path": "positions/qb/efficiency_2024.json",
+      "rowCount": 57,
+      "bytes": 29119
+    },
+    {
+      "tab": "efficiency",
+      "season": "2025",
+      "filename": "efficiency_2025.json",
+      "path": "positions/qb/efficiency_2025.json",
+      "rowCount": 60,
+      "bytes": 30596
+    },
+    {
+      "tab": "efficiency",
+      "season": "all",
+      "filename": "efficiency_all.json",
+      "path": "positions/qb/efficiency_all.json",
+      "rowCount": 93,
+      "bytes": 47163
+    },
+    {
+      "tab": "usage",
+      "season": "2023",
+      "filename": "usage_2023.json",
+      "path": "positions/qb/usage_2023.json",
+      "rowCount": 71,
+      "bytes": 29883
+    },
+    {
+      "tab": "usage",
+      "season": "2024",
+      "filename": "usage_2024.json",
+      "path": "positions/qb/usage_2024.json",
+      "rowCount": 66,
+      "bytes": 27862
+    },
+    {
+      "tab": "usage",
+      "season": "2025",
+      "filename": "usage_2025.json",
+      "path": "positions/qb/usage_2025.json",
+      "rowCount": 70,
+      "bytes": 29511
+    },
+    {
+      "tab": "usage",
+      "season": "all",
+      "filename": "usage_all.json",
+      "path": "positions/qb/usage_all.json",
+      "rowCount": 101,
+      "bytes": 42317
+    },
+    {
+      "tab": "stat_explorer",
+      "season": "2023",
+      "filename": "stat_explorer_2023.json",
+      "path": "positions/qb/stat_explorer_2023.json",
+      "rowCount": 71,
+      "bytes": 52577
+    },
+    {
+      "tab": "stat_explorer",
+      "season": "2024",
+      "filename": "stat_explorer_2024.json",
+      "path": "positions/qb/stat_explorer_2024.json",
+      "rowCount": 67,
+      "bytes": 49705
+    },
+    {
+      "tab": "stat_explorer",
+      "season": "2025",
+      "filename": "stat_explorer_2025.json",
+      "path": "positions/qb/stat_explorer_2025.json",
+      "rowCount": 70,
+      "bytes": 51820
+    },
+    {
+      "tab": "stat_explorer",
+      "season": "all",
+      "filename": "stat_explorer_all.json",
+      "path": "positions/qb/stat_explorer_all.json",
+      "rowCount": 101,
+      "bytes": 74427
+    }
+  ]
+}

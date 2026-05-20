@@ -800,7 +800,7 @@
     {
       "player": "Teddy Bridgewater",
       "team": "TB",
-      "age": null,
+      "age": 33,
       "games": 1,
       "dropbacksPerGame": 17.0,
       "deltaDropbacksPerGame": null,
@@ -891,7 +891,7 @@
     {
       "player": "Clayton Tune",
       "team": "GB",
-      "age": null,
+      "age": 26,
       "games": 2,
       "dropbacksPerGame": 10.0,
       "deltaDropbacksPerGame": null,

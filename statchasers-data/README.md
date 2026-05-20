@@ -23,7 +23,33 @@ statchasers-data/
 │   ├── pull_nflverse_data.py        # Step 2: Download play-by-play from nflverse
 │   ├── compute_player_metrics.py    # Step 3: Compute all advanced metrics
 │   ├── build_performance_analytics.py  # Step 4: Assemble Advanced Metrics JSON
-│   └── build_stat_explorer.py       # Step 5: Assemble Stat Explorer JSON (raw-stat layer)
+│   ├── build_stat_explorer.py       # Step 5: Assemble Stat Explorer JSON (raw-stat layer)
+│   │
+│   ├── build_qb_player_overview.py        # QB tabs (2025)
+│   ├── build_qb_efficiency_analytics.py
+│   ├── build_qb_advanced_stats.py
+│   ├── build_qb_trends.py
+│   │
+│   ├── build_rb_player_overview.py        # RB tabs
+│   ├── build_rb_advanced_stats.py
+│   ├── build_rb_efficiency_analytics.py
+│   ├── build_rb_usage_role.py
+│   │
+│   ├── build_wr_player_overview.py        # WR tabs (multi-season 2023–2025)
+│   ├── build_wr_advanced_stats.py
+│   ├── build_wr_efficiency_analytics.py
+│   ├── build_wr_trends.py
+│   │
+│   ├── build_te_player_overview.py        # TE tabs (2025; multi-season via wrapper)
+│   ├── build_te_advanced_stats.py
+│   ├── build_te_efficiency_analytics.py
+│   ├── build_te_trends.py
+│   ├── build_te_multi_season.py           # Wraps 3 TE builders to emit 2023 + 2024
+│   │
+│   ├── schema_config.py             # Canonical positions / tabs / seasons / camelCase map
+│   ├── build_canonical_outputs.py   # Project legacy outputs → output/positions/<pos>/<tab>_<season>.json
+│   ├── validate_position_outputs.py # Validate canonical tree + cross-tab score alignment
+│   └── validate_score_alignment.py  # (legacy) overview ↔ efficiency / trends alignment
 │
 ├── data/
 │   ├── raw/                         # Raw source data (not committed except Sleeper JSON)
@@ -32,13 +58,76 @@ statchasers-data/
 ├── output/
 │   ├── performance_analytics_latest.json  # Advanced Metrics — modeled / intelligence layer
 │   ├── performance_analytics_2025.json    # Season-specific snapshot
-│   ├── stat_explorer_qb.json             # Stat Explorer — QB raw counting stats
-│   └── stat_explorer_latest.json         # Stat Explorer — all positions (union)
+│   ├── stat_explorer_qb.json              # Stat Explorer — QB raw counting stats
+│   ├── stat_explorer_latest.json          # Stat Explorer — all positions (union)
+│   ├── <pos>_player_overview_<season>.json   # Legacy per-position outputs
+│   ├── <pos>_advanced_stats_<season>.json
+│   ├── <pos>_efficiency_analytics_<season>.json
+│   ├── <pos>_trends_<season>.json
+│   │
+│   └── positions/                   # Canonical, camelCase, predictably-named tree
+│       ├── manifest.json
+│       ├── qb/{overview,efficiency,advanced,usage,stat_explorer}_<season>.json + manifest.json
+│       ├── rb/{...}_<season>.json + manifest.json
+│       ├── wr/{...}_<season>.json + manifest.json
+│       └── te/{...}_<season>.json + manifest.json
 │
 ├── requirements.txt
 ├── README.md
 └── .github/workflows/update-data.yml     # Automated weekly update workflow
 ```
+
+### Canonical output tree
+
+The `output/positions/` tree is the canonical contract for the Performance
+Analytics frontend.  The frontend has 4 tabs; each tab maps to one canonical
+file per (position, season):
+
+```
+output/positions/<position>/<tab>_<season>.json
+  position ∈ {qb, rb, wr, te}
+  tab      ∈ {overview, efficiency, usage, stat_explorer}
+  season   ∈ {2025, all}
+```
+
+All row fields are **camelCase**.  Every row carries the shared identity
+fields:
+
+```
+playerId, playerName, position, team, age, season, games
+```
+
+Each file uses a consistent envelope:
+
+```json
+{
+  "meta":    { "schemaVersion": "1.0.0", "position": "WR", "tab": "overview", "season": "2025", "rowCount": 170, "generatedAt": "...", "sourceFiles": [...] },
+  "columns": [ "playerId", "playerName", ... ],
+  "rows":    [ { "playerId": "9488", "playerName": "Jaxon Smith-Njigba", "overallScore": 89.3, "tier": "Elite", ... }, ... ]
+}
+```
+
+**Source-of-truth rule** — the Overview file owns: `roleScore`,
+`efficiencyScore`, `overallScore`, `tier`, `careerArc`, `experienceTier`,
+`stabilityScore`.  Other tabs that include these fields copy them
+verbatim from Overview.  The validator enforces this contract.
+
+**Stat Explorer rule** — `stat_explorer_*` files contain raw counting /
+near-raw rate stats only.  Modeled fields (scores, tiers, archetypes,
+careerArc, roleTrend, experienceTier, stability) are stripped during
+projection.
+
+**Field schemas** — the exact field list per (position, tab) is defined in
+`scripts/schema_config.py:FIELD_SCHEMA`.
+
+**Manifests** — `output/positions/manifest.json` lists every available
+file across positions.  Each `output/positions/<pos>/manifest.json` lists
+file names, row counts, sizes, and seasons for that position.
+
+**Legacy aliases** — the legacy snake_case filenames listed in
+`scripts/schema_config.py:LEGACY_ALIASES` continue to be produced so
+existing consumers keep working.  The validator confirms each one still
+exists on disk.
 
 ---
 
@@ -82,11 +171,40 @@ pip install -r requirements.txt
 ### 2. Run the full pipeline (in order)
 
 ```bash
+# Data ingest
 python scripts/pull_sleeper_players.py
 python scripts/pull_nflverse_data.py
 python scripts/compute_player_metrics.py
+
+# Cross-position outputs
 python scripts/build_performance_analytics.py
 python scripts/build_stat_explorer.py
+
+# Per-position deep tables
+python scripts/build_qb_player_overview.py
+python scripts/build_qb_efficiency_analytics.py
+python scripts/build_qb_advanced_stats.py
+python scripts/build_qb_trends.py
+
+python scripts/build_rb_player_overview.py
+python scripts/build_rb_advanced_stats.py
+python scripts/build_rb_efficiency_analytics.py
+python scripts/build_rb_usage_role.py
+
+python scripts/build_wr_player_overview.py
+python scripts/build_wr_advanced_stats.py
+python scripts/build_wr_efficiency_analytics.py
+python scripts/build_wr_trends.py
+
+python scripts/build_te_player_overview.py
+python scripts/build_te_advanced_stats.py
+python scripts/build_te_efficiency_analytics.py
+python scripts/build_te_trends.py
+python scripts/build_te_multi_season.py        # emits 2023 + 2024 TE files
+
+# Canonical projection + validation
+python scripts/build_canonical_outputs.py
+python scripts/validate_position_outputs.py
 ```
 
 Each script can also be run individually for debugging.
