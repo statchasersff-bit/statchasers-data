@@ -70,12 +70,21 @@ MIN_TE_TGT       = 10
 # ---------------------------------------------------------------------------
 
 def _passer_rating(comp: int, att: int, yds: int, td: int, ints: int) -> float | None:
+    """Standard NFL passer rating.
+
+    Components (each clamped to [0, 2.375]):
+      a = (comp/att - 0.3) × 5         comp_pct contribution
+      b = (yds/att  - 3.0) × 0.25      yards per attempt
+      c = (td/att)        × 20         TD rate
+      d = 2.375 - (int/att) × 25       INT penalty
+      rating = (a+b+c+d) / 6 × 100
+    """
     if att <= 0:
         return None
-    a = min(max((comp / att - 0.3) / 0.2,    0.0), 2.375)
-    b = min(max((yds  / att - 3.0) / 4.0,    0.0), 2.375)
-    c = min(max((td   / att) / 0.05,          0.0), 2.375)
-    d = min(max(2.375 - (ints / att) / 0.095, 0.0), 2.375)
+    a = min(max((comp / att - 0.3) * 5.0,      0.0), 2.375)
+    b = min(max((yds  / att - 3.0) * 0.25,     0.0), 2.375)
+    c = min(max((td   / att) * 20.0,           0.0), 2.375)
+    d = min(max(2.375 - (ints / att) * 25.0,   0.0), 2.375)
     return round((a + b + c + d) / 6.0 * 100.0, 1)
 
 
@@ -319,6 +328,25 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     # Cedrick Wilson Jr. (WR, MIA) must be resolved explicitly so the pos fallback
     # does not pick a TE (Clayton/Caleb Wilson).
     "C.Wilson":  {"MIA": "Cedrick Wilson"},
+    # nflverse uses a 2-token last name "St. Brown" in PBP — the first-initial
+    # abbreviation is "A.St. Brown".  Without an override the combined_lookup
+    # misses (Sleeper has full name "Amon-Ra St. Brown", abbrev = "A.Brown"
+    # which collides with A.J. Brown).
+    "A.St. Brown": {"DET": "Amon-Ra St. Brown"},
+    # A.Brown is ambiguous (A.J. Brown PHI vs A.St. Brown DET vs Anthony Brown).
+    # PHI = A.J. Brown.  DET case is handled by the "A.St. Brown" entry above.
+    "A.Brown":    {"PHI": "A.J. Brown"},
+    # K.Pitts: PBP uses "K.Pitts" but Sleeper full_name is "Kyle Pitts Sr.".
+    "K.Pitts":    {"ATL": "Kyle Pitts"},
+    # M.Pittman: PBP uses "M.Pittman" but Sleeper has "Michael Pittman Jr.".
+    "M.Pittman":  {"PIT": "Michael Pittman", "IND": "Michael Pittman"},
+    # M.Harrison: Marvin Harrison Jr.
+    "M.Harrison": {"ARI": "Marvin Harrison"},
+    # A.Jones: Aaron Jones Sr.
+    "A.Jones":    {"MIN": "Aaron Jones"},
+    # T.Etienne handled above for RB.  T.Hill ambiguous (Tyreek Hill WR vs
+    # Taysom Hill TE) — map MIA/NO to Tyreek/Taysom respectively.
+    "T.Hill":     {"MIA": "Tyreek Hill", "NO": "Taysom Hill"},
 }
 
 
@@ -503,6 +531,9 @@ def compute_qb_raw_stats(pbp: pd.DataFrame) -> pd.DataFrame:
     INT requires the 'interception' PBP column; treated as 0 if absent.
     """
     all_dropbacks = pbp[pbp["pass_attempt"] == 1].copy()
+    # 2-pt conversion pass attempts are not official box-score attempts.
+    if "two_point_attempt" in all_dropbacks.columns:
+        all_dropbacks = all_dropbacks[all_dropbacks["two_point_attempt"].fillna(0) != 1]
     if all_dropbacks.empty:
         return pd.DataFrame()
 
@@ -532,11 +563,18 @@ def compute_qb_raw_stats(pbp: pd.DataFrame) -> pd.DataFrame:
         )
 
     rows = []
+    has_pass_td = "pass_touchdown" in official.columns
     for name, grp in official.groupby("passer_player_name"):
         att  = len(grp)
         comp = int(grp["complete_pass"].sum())
         yds  = int(grp["yards_gained"].sum())
-        td   = int(grp["touchdown"].sum())
+        # Passing TDs: use pass_touchdown when available (exact); otherwise
+        # fall back to (complete_pass==1 AND touchdown==1) which catches
+        # most pick-6 cases but misses fumble-after-catch returns.
+        if has_pass_td:
+            td = int(grp["pass_touchdown"].fillna(0).sum())
+        else:
+            td = int(grp[grp["complete_pass"] == 1]["touchdown"].sum())
         ints = int(grp["interception"].sum()) if has_int else 0
 
         db_grp = all_dropbacks[all_dropbacks["passer_player_name"] == name]
@@ -544,7 +582,19 @@ def compute_qb_raw_stats(pbp: pd.DataFrame) -> pd.DataFrame:
         gp     = int(db_grp["game_id"].nunique())
 
         air_yds = round(float(grp["air_yards"].dropna().sum()), 1)
-        rz_att  = int((grp["yardline_100"].dropna() <= 20).sum()) if has_yardline else None
+        # RZ attempts: exclude 2-point conversions (yardline_100 ≤ 20 catches
+        # the 2-yd line where 2-pt attempts are spotted) and qb_kneel plays.
+        rz_filter = grp["yardline_100"].dropna() <= 20
+        if has_yardline:
+            mask = pd.Series(False, index=grp.index)
+            mask.loc[rz_filter.index] = rz_filter
+            if "two_point_attempt" in grp.columns:
+                mask &= grp["two_point_attempt"].fillna(0) != 1
+            if "qb_kneel" in grp.columns:
+                mask &= grp["qb_kneel"].fillna(0) != 1
+            rz_att = int(mask.sum())
+        else:
+            rz_att = None
 
         comp_yds = completions.loc[
             completions["passer_player_name"] == name, "yards_gained"
@@ -596,6 +646,11 @@ def compute_rushing_raw_stats(pbp: pd.DataFrame) -> pd.DataFrame:
     Receiving stats for the same player are joined in the dataset builder.
     """
     rush = pbp[pbp["rush_attempt"] == 1].copy()
+    # 2-pt conversion rushes and kneel-downs are not official box-score carries.
+    if "two_point_attempt" in rush.columns:
+        rush = rush[rush["two_point_attempt"].fillna(0) != 1]
+    if "qb_kneel" in rush.columns:
+        rush = rush[rush["qb_kneel"].fillna(0) != 1]
     if rush.empty:
         return pd.DataFrame()
 
@@ -604,10 +659,17 @@ def compute_rushing_raw_stats(pbp: pd.DataFrame) -> pd.DataFrame:
     rows = []
     # Group by (name, team) so players who share an abbreviated name but play
     # for different teams (e.g. B.Robinson on ATL vs SF) get separate rows.
+    has_rush_td = "rush_touchdown" in rush.columns
     for (name, team_pbp), grp in rush.groupby(["rusher_player_name", "posteam"]):
         carries = len(grp)
         yds     = int(grp["yards_gained"].sum())
-        td      = int(grp["touchdown"].sum())
+        # Rushing TDs: rush_touchdown == 1 when available (exact); otherwise
+        # the generic `touchdown` flag (would incorrectly include defensive
+        # fumble-return TDs).
+        if has_rush_td:
+            td = int(grp["rush_touchdown"].fillna(0).sum())
+        else:
+            td = int(grp["touchdown"].sum())
         gp      = int(grp["game_id"].nunique())
         long_r  = int(grp["yards_gained"].max())
         expl    = int((grp["yards_gained"] >= 15).sum())
@@ -637,6 +699,9 @@ def compute_receiving_raw_stats(pbp: pd.DataFrame) -> pd.DataFrame:
     pass_plays = pbp[pbp["pass_attempt"] == 1].copy()
     if "sack" in pass_plays.columns:
         pass_plays = pass_plays[pass_plays["sack"] != 1]
+    # 2-pt conversion attempts are not official "targets" in NFL box scores.
+    if "two_point_attempt" in pass_plays.columns:
+        pass_plays = pass_plays[pass_plays["two_point_attempt"].fillna(0) != 1]
 
     if pass_plays.empty:
         return pd.DataFrame()
@@ -647,19 +712,35 @@ def compute_receiving_raw_stats(pbp: pd.DataFrame) -> pd.DataFrame:
     rows = []
     # Group by (name, team) so players who share an abbreviated name but play
     # for different teams get separate rows.
+    has_pass_td = "pass_touchdown" in pass_plays.columns
     for (name, team_pbp), grp in pass_plays.groupby(["receiver_player_name", "posteam"]):
         tgt     = len(grp)
         rec     = int(grp["complete_pass"].sum())
         rec_yds = int(grp["yards_gained"].sum())
-        td      = int(grp["touchdown"].sum())
+        # Receiving TDs: pass_touchdown == 1 (exact).  Without that column we
+        # proxy with (complete_pass==1 AND touchdown==1) which excludes pick-6.
+        if has_pass_td:
+            td = int(grp["pass_touchdown"].fillna(0).sum())
+        else:
+            td = int(grp[grp["complete_pass"] == 1]["touchdown"].sum())
         gp      = int(grp["game_id"].nunique())
         air_yds = round(float(grp["air_yards"].dropna().sum()), 1)
         long_r  = int(grp.loc[grp["complete_pass"] == 1, "yards_gained"].max()
                       if rec > 0 else 0)
         expl    = int((grp.loc[grp["complete_pass"] == 1, "yards_gained"] >= 20).sum())
-        rz_tgt  = int((grp["yardline_100"] <= 20).sum()) if has_yardline else None
-        rz_rec  = int((grp.loc[grp["complete_pass"] == 1, "yardline_100"] <= 20).sum()) if has_yardline else None
         yac     = round(float(grp["yards_after_catch"].dropna().sum()), 1) if has_yac else None
+
+        # RZ target / RZ reception — exclude 2-pt conversions which would
+        # otherwise be counted as red-zone targets (yardline_100 = 2).
+        if has_yardline:
+            rz_mask = grp["yardline_100"].fillna(99) <= 20
+            if "two_point_attempt" in grp.columns:
+                rz_mask &= grp["two_point_attempt"].fillna(0) != 1
+            rz_tgt = int(rz_mask.sum())
+            rz_rec = int((rz_mask & (grp["complete_pass"] == 1)).sum())
+        else:
+            rz_tgt = None
+            rz_rec = None
 
         rows.append({
             "player_name":  name,
@@ -878,12 +959,17 @@ def build_stat_explorer_dataset(
         if position == "QB":
             row = _sanitize_qb(raw.to_dict(), full_name, team, pfr_stats)
         elif position == "RB":
-            rec_row = (
-                rec_df[rec_df["player_name"] == pbp_name]
-                .iloc[0].to_dict()
-                if not rec_df.empty and (rec_df["player_name"] == pbp_name).any()
-                else None
-            )
+            # Join receiving stats to this RB by (name, team) — joining by name
+            # alone caused "K.Williams" on LA (Kyren) to inherit a different
+            # K.Williams's receiving line (e.g. Kyle Williams WR/NE with 1 tgt).
+            rec_match = rec_df[
+                (rec_df["player_name"] == pbp_name)
+                & (rec_df["team_pbp"]  == raw.get("team_pbp", ""))
+            ] if not rec_df.empty else rec_df
+            if len(rec_match) == 0 and not rec_df.empty:
+                # Fall back to name-only match when no team match exists
+                rec_match = rec_df[rec_df["player_name"] == pbp_name]
+            rec_row = rec_match.iloc[0].to_dict() if len(rec_match) > 0 else None
             row = _sanitize_rb(raw.to_dict(), rec_row, full_name, team, pfr_stats)
         else:
             row = _sanitize_receiver(raw.to_dict(), full_name, team, position, pfr_stats)

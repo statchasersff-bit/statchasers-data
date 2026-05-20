@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
   "position": "QB",
-  "generatedAt": "2026-05-20T17:00:40Z",
+  "generatedAt": "2026-05-20T19:37:34Z",
   "tabs": {
     "overview": [
       "2023",
@@ -138,7 +138,7 @@
       "filename": "stat_explorer_2023.json",
       "path": "positions/qb/stat_explorer_2023.json",
       "rowCount": 71,
-      "bytes": 52577
+      "bytes": 52574
     },
     {
       "tab": "stat_explorer",
@@ -146,7 +146,7 @@
       "filename": "stat_explorer_2024.json",
       "path": "positions/qb/stat_explorer_2024.json",
       "rowCount": 67,
-      "bytes": 49705
+      "bytes": 49696
     },
     {
       "tab": "stat_explorer",
@@ -154,7 +154,7 @@
       "filename": "stat_explorer_2025.json",
       "path": "positions/qb/stat_explorer_2025.json",
       "rowCount": 70,
-      "bytes": 51820
+      "bytes": 51815
     },
     {
       "tab": "stat_explorer",
@@ -162,7 +162,7 @@
       "filename": "stat_explorer_all.json",
       "path": "positions/qb/stat_explorer_all.json",
       "rowCount": 101,
-      "bytes": 74427
+      "bytes": 74420
     }
   ]
 }

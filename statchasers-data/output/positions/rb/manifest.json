@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
   "position": "RB",
-  "generatedAt": "2026-05-20T17:00:40Z",
+  "generatedAt": "2026-05-20T19:37:34Z",
   "tabs": {
     "overview": [
       "2023",
@@ -137,16 +137,16 @@
       "season": "2023",
       "filename": "stat_explorer_2023.json",
       "path": "positions/rb/stat_explorer_2023.json",
-      "rowCount": 125,
-      "bytes": 95253
+      "rowCount": 119,
+      "bytes": 90618
     },
     {
       "tab": "stat_explorer",
       "season": "2024",
       "filename": "stat_explorer_2024.json",
       "path": "positions/rb/stat_explorer_2024.json",
-      "rowCount": 113,
-      "bytes": 85815
+      "rowCount": 112,
+      "bytes": 85037
     },
     {
       "tab": "stat_explorer",
@@ -154,15 +154,15 @@
       "filename": "stat_explorer_2025.json",
       "path": "positions/rb/stat_explorer_2025.json",
       "rowCount": 101,
-      "bytes": 76465
+      "bytes": 76469
     },
     {
       "tab": "stat_explorer",
       "season": "all",
       "filename": "stat_explorer_all.json",
       "path": "positions/rb/stat_explorer_all.json",
-      "rowCount": 184,
-      "bytes": 139428
+      "rowCount": 179,
+      "bytes": 135559
     }
   ]
 }

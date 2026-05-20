@@ -4,8 +4,8 @@
     "position": "TE",
     "tab": "stat_explorer",
     "season": "all",
-    "rowCount": 278,
-    "generatedAt": "2026-05-20T17:00:41Z",
+    "rowCount": 276,
+    "generatedAt": "2026-05-20T19:37:34Z",
     "sourceFiles": [
       "stat_explorer_2025.json",
       "stat_explorer_2024.json",
@@ -71,33 +71,6 @@
     },
     {
       "rank": 2,
-      "playerId": "7547",
-      "playerName": "A.St. Brown",
-      "position": "TE",
-      "team": "DET",
-      "age": null,
-      "season": "2025",
-      "games": 17,
-      "receptions": 117,
-      "receivingYards": 1412,
-      "yardsPerReception": 12.07,
-      "yardsBeforeCatch": null,
-      "yardsBeforeCatchPerReception": null,
-      "yardsAfterCatch": 570.0,
-      "yardsAfterCatchPerReception": 4.87,
-      "brokenTackles": null,
-      "targets": 172,
-      "targetSharePct": null,
-      "redZoneTargets": 35,
-      "receptions10Plus": null,
-      "receptions20Plus": null,
-      "receptions30Plus": null,
-      "receptions40Plus": null,
-      "receptions50Plus": null,
-      "longestReception": 52
-    },
-    {
-      "rank": 3,
       "playerId": "8130",
       "playerName": "Trey McBride",
       "position": "TE",
@@ -113,9 +86,9 @@
       "yardsAfterCatch": 583.0,
       "yardsAfterCatchPerReception": 4.63,
       "brokenTackles": 9,
-      "targets": 170,
+      "targets": 169,
       "targetSharePct": 0.2391,
-      "redZoneTargets": 34,
+      "redZoneTargets": 33,
       "receptions10Plus": 51,
       "receptions20Plus": 12,
       "receptions30Plus": 1,
@@ -124,7 +97,7 @@
       "longestReception": 31
     },
     {
-      "rank": 4,
+      "rank": 3,
       "playerId": "8148",
       "playerName": "J.Williams",
       "position": "TE",
@@ -151,7 +124,7 @@
       "longestReception": 64
     },
     {
-      "rank": 5,
+      "rank": 4,
       "playerId": "7525",
       "playerName": "D.Smith",
       "position": "TE",
@@ -167,9 +140,9 @@
       "yardsAfterCatch": 294.0,
       "yardsAfterCatchPerReception": 3.63,
       "brokenTackles": null,
-      "targets": 113,
+      "targets": 112,
       "targetSharePct": null,
-      "redZoneTargets": 7,
+      "redZoneTargets": 6,
       "receptions10Plus": null,
       "receptions20Plus": null,
       "receptions30Plus": null,
@@ -178,34 +151,7 @@
       "longestReception": 63
     },
     {
-      "rank": 6,
-      "playerId": "5859",
-      "playerName": "A.Brown",
-      "position": "TE",
-      "team": "PHI",
-      "age": null,
-      "season": "2025",
-      "games": 15,
-      "receptions": 78,
-      "receivingYards": 1003,
-      "yardsPerReception": 12.86,
-      "yardsBeforeCatch": null,
-      "yardsBeforeCatchPerReception": null,
-      "yardsAfterCatch": 268.0,
-      "yardsAfterCatchPerReception": 3.44,
-      "brokenTackles": null,
-      "targets": 121,
-      "targetSharePct": null,
-      "redZoneTargets": 13,
-      "receptions10Plus": null,
-      "receptions20Plus": null,
-      "receptions30Plus": null,
-      "receptions40Plus": null,
-      "receptions50Plus": null,
-      "longestReception": 45
-    },
-    {
-      "rank": 7,
+      "rank": 5,
       "playerId": "7553",
       "playerName": "Kyle Pitts",
       "position": "TE",
@@ -221,9 +167,9 @@
       "yardsAfterCatch": 400.0,
       "yardsAfterCatchPerReception": 4.55,
       "brokenTackles": 2,
-      "targets": 119,
+      "targets": 118,
       "targetSharePct": 0.2073,
-      "redZoneTargets": 13,
+      "redZoneTargets": 12,
       "receptions10Plus": 43,
       "receptions20Plus": 12,
       "receptions30Plus": 2,
@@ -232,7 +178,7 @@
       "longestReception": 36
     },
     {
-      "rank": 8,
+      "rank": 6,
       "playerId": "7002",
       "playerName": "Juwan Johnson",
       "position": "TE",
@@ -259,7 +205,7 @@
       "longestReception": 52
     },
     {
-      "rank": 9,
+      "rank": 7,
       "playerId": "1466",
       "playerName": "Travis Kelce",
       "position": "TE",
@@ -268,16 +214,16 @@
       "season": "2025",
       "games": 17,
       "receptions": 76,
-      "receivingYards": 853,
-      "yardsPerReception": 11.22,
+      "receivingYards": 851,
+      "yardsPerReception": 11.2,
       "yardsBeforeCatch": 427,
       "yardsBeforeCatchPerReception": 5.6,
       "yardsAfterCatch": 424.0,
       "yardsAfterCatchPerReception": 5.58,
       "brokenTackles": 1,
-      "targets": 109,
+      "targets": 108,
       "targetSharePct": 0.1719,
-      "redZoneTargets": 13,
+      "redZoneTargets": 12,
       "receptions10Plus": 40,
       "receptions20Plus": 9,
       "receptions30Plus": 4,
@@ -286,7 +232,7 @@
       "longestReception": 44
     },
     {
-      "rank": 10,
+      "rank": 8,
       "playerId": "5846",
       "playerName": "D.K. Metcalf",
       "position": "TE",
@@ -313,7 +259,7 @@
       "longestReception": 80
     },
     {
-      "rank": 11,
+      "rank": 9,
       "playerId": "12518",
       "playerName": "Tyler Warren",
       "position": "TE",
@@ -329,9 +275,9 @@
       "yardsAfterCatch": 474.0,
       "yardsAfterCatchPerReception": 6.24,
       "brokenTackles": 4,
-      "targets": 114,
+      "targets": 112,
       "targetSharePct": 0.1959,
-      "redZoneTargets": 23,
+      "redZoneTargets": 21,
       "receptions10Plus": 33,
       "receptions20Plus": 10,
       "receptions30Plus": 1,
@@ -340,7 +286,7 @@
       "longestReception": 41
     },
     {
-      "rank": 12,
+      "rank": 10,
       "playerId": "5001",
       "playerName": "Dalton Schultz",
       "position": "TE",
@@ -356,9 +302,9 @@
       "yardsAfterCatch": 358.0,
       "yardsAfterCatchPerReception": 4.37,
       "brokenTackles": 3,
-      "targets": 107,
+      "targets": 106,
       "targetSharePct": 0.1731,
-      "redZoneTargets": 12,
+      "redZoneTargets": 11,
       "receptions10Plus": 31,
       "receptions20Plus": 5,
       "receptions30Plus": 2,
@@ -367,7 +313,7 @@
       "longestReception": 47
     },
     {
-      "rank": 13,
+      "rank": 11,
       "playerId": "3214",
       "playerName": "Hunter Henry",
       "position": "TE",
@@ -394,7 +340,7 @@
       "longestReception": 36
     },
     {
-      "rank": 14,
+      "rank": 12,
       "playerId": "12506",
       "playerName": "Harold Fannin",
       "position": "TE",
@@ -410,9 +356,9 @@
       "yardsAfterCatch": 352.0,
       "yardsAfterCatchPerReception": 4.89,
       "brokenTackles": 7,
-      "targets": 108,
+      "targets": 107,
       "targetSharePct": 0.1768,
-      "redZoneTargets": 11,
+      "redZoneTargets": 10,
       "receptions10Plus": 30,
       "receptions20Plus": 8,
       "receptions30Plus": 2,
@@ -421,7 +367,7 @@
       "longestReception": 35
     },
     {
-      "rank": 15,
+      "rank": 13,
       "playerId": "12517",
       "playerName": "Colston Loveland",
       "position": "TE",
@@ -437,9 +383,9 @@
       "yardsAfterCatch": 250.0,
       "yardsAfterCatchPerReception": 4.31,
       "brokenTackles": 4,
-      "targets": 83,
+      "targets": 82,
       "targetSharePct": 0.1379,
-      "redZoneTargets": 15,
+      "redZoneTargets": 14,
       "receptions10Plus": 29,
       "receptions20Plus": 10,
       "receptions30Plus": 5,
@@ -448,7 +394,7 @@
       "longestReception": 58
     },
     {
-      "rank": 16,
+      "rank": 14,
       "playerId": "11604",
       "playerName": "Brock Bowers",
       "position": "TE",
@@ -457,16 +403,16 @@
       "season": "2025",
       "games": 12,
       "receptions": 64,
-      "receivingYards": 682,
-      "yardsPerReception": 10.66,
+      "receivingYards": 680,
+      "yardsPerReception": 10.62,
       "yardsBeforeCatch": 375,
       "yardsBeforeCatchPerReception": 5.9,
       "yardsAfterCatch": 305.0,
       "yardsAfterCatchPerReception": 4.77,
       "brokenTackles": 3,
-      "targets": 87,
+      "targets": 86,
       "targetSharePct": 0.1497,
-      "redZoneTargets": 18,
+      "redZoneTargets": 17,
       "receptions10Plus": 24,
       "receptions20Plus": 8,
       "receptions30Plus": 3,
@@ -475,7 +421,7 @@
       "longestReception": 38
     },
     {
-      "rank": 17,
+      "rank": 15,
       "playerId": "9502",
       "playerName": "Tank Dell",
       "position": "TE",
@@ -502,7 +448,7 @@
       "longestReception": 50
     },
     {
-      "rank": 18,
+      "rank": 16,
       "playerId": "12493",
       "playerName": "Oronde Gadsden",
       "position": "TE",
@@ -529,7 +475,7 @@
       "longestReception": 53
     },
     {
-      "rank": 19,
+      "rank": 17,
       "playerId": null,
       "playerName": "N.Dell",
       "position": "TE",
@@ -545,9 +491,9 @@
       "yardsAfterCatch": 146.0,
       "yardsAfterCatchPerReception": 3.48,
       "brokenTackles": null,
-      "targets": 68,
+      "targets": 67,
       "targetSharePct": null,
-      "redZoneTargets": 8,
+      "redZoneTargets": 7,
       "receptions10Plus": null,
       "receptions20Plus": null,
       "receptions30Plus": null,
@@ -556,7 +502,7 @@
       "longestReception": 68
     },
     {
-      "rank": 20,
+      "rank": 18,
       "playerId": "4217",
       "playerName": "George Kittle",
       "position": "TE",
@@ -583,7 +529,7 @@
       "longestReception": 33
     },
     {
-      "rank": 21,
+      "rank": 19,
       "playerId": "9501",
       "playerName": "Demario Douglas",
       "position": "TE",
@@ -610,7 +556,7 @@
       "longestReception": 36
     },
     {
-      "rank": 22,
+      "rank": 20,
       "playerId": "8110",
       "playerName": "Jake Ferguson",
       "position": "TE",
@@ -619,16 +565,16 @@
       "season": "2025",
       "games": 17,
       "receptions": 82,
-      "receivingYards": 602,
-      "yardsPerReception": 7.34,
+      "receivingYards": 600,
+      "yardsPerReception": 7.32,
       "yardsBeforeCatch": 293,
       "yardsBeforeCatchPerReception": 3.6,
       "yardsAfterCatch": 307.0,
       "yardsAfterCatchPerReception": 3.74,
       "brokenTackles": 6,
-      "targets": 103,
+      "targets": 102,
       "targetSharePct": 0.1565,
-      "redZoneTargets": 25,
+      "redZoneTargets": 24,
       "receptions10Plus": 23,
       "receptions20Plus": 2,
       "receptions30Plus": 0,
@@ -637,7 +583,7 @@
       "longestReception": 26
     },
     {
-      "rank": 23,
+      "rank": 21,
       "playerId": "5022",
       "playerName": "Dallas Goedert",
       "position": "TE",
@@ -664,7 +610,7 @@
       "longestReception": 36
     },
     {
-      "rank": 24,
+      "rank": 22,
       "playerId": "8155",
       "playerName": "Bre.Hall",
       "position": "TE",
@@ -691,7 +637,7 @@
       "longestReception": 50
     },
     {
-      "rank": 25,
+      "rank": 23,
       "playerId": "5848",
       "playerName": "Marquise Brown",
       "position": "TE",
@@ -718,7 +664,7 @@
       "longestReception": 51
     },
     {
-      "rank": 26,
+      "rank": 24,
       "playerId": null,
       "playerName": "Josh Palmer",
       "position": "TE",
@@ -727,16 +673,16 @@
       "season": "2024",
       "games": 15,
       "receptions": 39,
-      "receivingYards": 579,
-      "yardsPerReception": 14.85,
+      "receivingYards": 575,
+      "yardsPerReception": 14.74,
       "yardsBeforeCatch": null,
       "yardsBeforeCatchPerReception": null,
       "yardsAfterCatch": 92.0,
       "yardsAfterCatchPerReception": 2.36,
       "brokenTackles": null,
-      "targets": 67,
+      "targets": 65,
       "targetSharePct": null,
-      "redZoneTargets": 9,
+      "redZoneTargets": 7,
       "receptions10Plus": null,
       "receptions20Plus": null,
       "receptions30Plus": null,
@@ -745,7 +691,7 @@
       "longestReception": 45
     },
     {
-      "rank": 27,
+      "rank": 25,
       "playerId": "8111",
       "playerName": "Cade Otton",
       "position": "TE",
@@ -761,9 +707,9 @@
       "yardsAfterCatch": 309.0,
       "yardsAfterCatchPerReception": 5.24,
       "brokenTackles": 6,
-      "targets": 82,
+      "targets": 81,
       "targetSharePct": 0.1362,
-      "redZoneTargets": 7,
+      "redZoneTargets": 6,
       "receptions10Plus": 23,
       "receptions20Plus": 7,
       "receptions30Plus": 0,
@@ -772,7 +718,7 @@
       "longestReception": 27
     },
     {
-      "rank": 28,
+      "rank": 26,
       "playerId": "10236",
       "playerName": "Dalton Kincaid",
       "position": "TE",
@@ -788,9 +734,9 @@
       "yardsAfterCatch": 259.0,
       "yardsAfterCatchPerReception": 6.64,
       "brokenTackles": 1,
-      "targets": 50,
+      "targets": 49,
       "targetSharePct": 0.0919,
-      "redZoneTargets": 9,
+      "redZoneTargets": 8,
       "receptions10Plus": 26,
       "receptions20Plus": 13,
       "receptions30Plus": 1,
@@ -799,7 +745,7 @@
       "longestReception": 47
     },
     {
-      "rank": 29,
+      "rank": 27,
       "playerId": "8210",
       "playerName": "Chigoziem Okonkwo",
       "position": "TE",
@@ -826,7 +772,7 @@
       "longestReception": 43
     },
     {
-      "rank": 30,
+      "rank": 28,
       "playerId": "9480",
       "playerName": "Brenton Strange",
       "position": "TE",
@@ -853,7 +799,7 @@
       "longestReception": 30
     },
     {
-      "rank": 31,
+      "rank": 29,
       "playerId": "11597",
       "playerName": "T.Johnson",
       "position": "TE",
@@ -880,7 +826,7 @@
       "longestReception": 42
     },
     {
-      "rank": 32,
+      "rank": 30,
       "playerId": "11603",
       "playerName": "AJ Barner",
       "position": "TE",
@@ -907,7 +853,7 @@
       "longestReception": 61
     },
     {
-      "rank": 33,
+      "rank": 31,
       "playerId": "1339",
       "playerName": "Zach Ertz",
       "position": "TE",
@@ -916,16 +862,16 @@
       "season": "2025",
       "games": 13,
       "receptions": 50,
-      "receivingYards": 506,
-      "yardsPerReception": 10.12,
+      "receivingYards": 504,
+      "yardsPerReception": 10.08,
       "yardsBeforeCatch": 381,
       "yardsBeforeCatchPerReception": 7.6,
       "yardsAfterCatch": 123.0,
       "yardsAfterCatchPerReception": 2.46,
       "brokenTackles": 1,
-      "targets": 73,
+      "targets": 72,
       "targetSharePct": 0.1431,
-      "redZoneTargets": 9,
+      "redZoneTargets": 8,
       "receptions10Plus": 20,
       "receptions20Plus": 5,
       "receptions30Plus": 1,
@@ -934,7 +880,7 @@
       "longestReception": 30
     },
     {
-      "rank": 34,
+      "rank": 32,
       "playerId": "2251",
       "playerName": "Logan Thomas",
       "position": "TE",
@@ -943,16 +889,16 @@
       "season": "2023",
       "games": 16,
       "receptions": 55,
-      "receivingYards": 498,
-      "yardsPerReception": 9.05,
+      "receivingYards": 496,
+      "yardsPerReception": 9.02,
       "yardsBeforeCatch": 267,
       "yardsBeforeCatchPerReception": 4.9,
       "yardsAfterCatch": 229.0,
       "yardsAfterCatchPerReception": 4.16,
       "brokenTackles": 1,
-      "targets": 79,
+      "targets": 78,
       "targetSharePct": 0.1124,
-      "redZoneTargets": 10,
+      "redZoneTargets": 9,
       "receptions10Plus": 17,
       "receptions20Plus": 3,
       "receptions30Plus": 0,
@@ -961,7 +907,7 @@
       "longestReception": 29
     },
     {
-      "rank": 35,
+      "rank": 33,
       "playerId": "10859",
       "playerName": "Sam LaPorta",
       "position": "TE",
@@ -988,7 +934,7 @@
       "longestReception": 40
     },
     {
-      "rank": 36,
+      "rank": 34,
       "playerId": "9484",
       "playerName": "Tucker Kraft",
       "position": "TE",
@@ -1015,7 +961,7 @@
       "longestReception": 59
     },
     {
-      "rank": 37,
+      "rank": 35,
       "playerId": "7600",
       "playerName": "Pat Freiermuth",
       "position": "TE",
@@ -1042,7 +988,7 @@
       "longestReception": 68
     },
     {
-      "rank": 38,
+      "rank": 36,
       "playerId": "4066",
       "playerName": "Evan Engram",
       "position": "TE",
@@ -1058,9 +1004,9 @@
       "yardsAfterCatch": 302.0,
       "yardsAfterCatchPerReception": 6.04,
       "brokenTackles": 2,
-      "targets": 77,
+      "targets": 76,
       "targetSharePct": 0.1201,
-      "redZoneTargets": 11,
+      "redZoneTargets": 10,
       "receptions10Plus": 17,
       "receptions20Plus": 4,
       "receptions30Plus": 3,
@@ -1069,7 +1015,7 @@
       "longestReception": 41
     },
     {
-      "rank": 39,
+      "rank": 37,
       "playerId": "3199",
       "playerName": "Michael Thomas",
       "position": "TE",
@@ -1096,7 +1042,7 @@
       "longestReception": 31
     },
     {
-      "rank": 40,
+      "rank": 38,
       "playerId": "5844",
       "playerName": "T.J. Hockenson",
       "position": "TE",
@@ -1123,7 +1069,7 @@
       "longestReception": 29
     },
     {
-      "rank": 41,
+      "rank": 39,
       "playerId": "5012",
       "playerName": "Mark Andrews",
       "position": "TE",
@@ -1150,34 +1096,7 @@
       "longestReception": 27
     },
     {
-      "rank": 42,
-      "playerId": "5906",
-      "playerName": "Dawson Knox",
-      "position": "TE",
-      "team": "BUF",
-      "age": null,
-      "season": "2025",
-      "games": 16,
-      "receptions": 36,
-      "receivingYards": 419,
-      "yardsPerReception": 11.64,
-      "yardsBeforeCatch": 234,
-      "yardsBeforeCatchPerReception": 6.5,
-      "yardsAfterCatch": 183.0,
-      "yardsAfterCatchPerReception": 5.08,
-      "brokenTackles": 0,
-      "targets": 50,
-      "targetSharePct": 0.0919,
-      "redZoneTargets": 13,
-      "receptions10Plus": 18,
-      "receptions20Plus": 5,
-      "receptions30Plus": 3,
-      "receptions40Plus": 0,
-      "receptions50Plus": 0,
-      "longestReception": 32
-    },
-    {
-      "rank": 43,
+      "rank": 40,
       "playerId": "5038",
       "playerName": "Michael Gallup",
       "position": "TE",
@@ -1204,7 +1123,34 @@
       "longestReception": 41
     },
     {
-      "rank": 44,
+      "rank": 41,
+      "playerId": "5906",
+      "playerName": "Dawson Knox",
+      "position": "TE",
+      "team": "BUF",
+      "age": null,
+      "season": "2025",
+      "games": 16,
+      "receptions": 36,
+      "receivingYards": 417,
+      "yardsPerReception": 11.58,
+      "yardsBeforeCatch": 234,
+      "yardsBeforeCatchPerReception": 6.5,
+      "yardsAfterCatch": 183.0,
+      "yardsAfterCatchPerReception": 5.08,
+      "brokenTackles": 0,
+      "targets": 49,
+      "targetSharePct": 0.0919,
+      "redZoneTargets": 12,
+      "receptions10Plus": 18,
+      "receptions20Plus": 5,
+      "receptions30Plus": 3,
+      "receptions40Plus": 0,
+      "receptions50Plus": 0,
+      "longestReception": 32
+    },
+    {
+      "rank": 42,
       "playerId": "6865",
       "playerName": "Colby Parkinson",
       "position": "TE",
@@ -1231,7 +1177,7 @@
       "longestReception": 26
     },
     {
-      "rank": 45,
+      "rank": 43,
       "playerId": "2319",
       "playerName": "DeVante Parker",
       "position": "TE",
@@ -1258,7 +1204,7 @@
       "longestReception": 30
     },
     {
-      "rank": 46,
+      "rank": 44,
       "playerId": "5032",
       "playerName": "Jordan Akins",
       "position": "TE",
@@ -1285,7 +1231,7 @@
       "longestReception": 21
     },
     {
-      "rank": 47,
+      "rank": 45,
       "playerId": "3225",
       "playerName": "Tyler Boyd",
       "position": "TE",
@@ -1301,9 +1247,9 @@
       "yardsAfterCatch": 189.0,
       "yardsAfterCatchPerReception": 4.85,
       "brokenTackles": 2,
-      "targets": 58,
+      "targets": 57,
       "targetSharePct": null,
-      "redZoneTargets": 8,
+      "redZoneTargets": 7,
       "receptions10Plus": null,
       "receptions20Plus": null,
       "receptions30Plus": null,
@@ -1312,7 +1258,7 @@
       "longestReception": 40
     },
     {
-      "rank": 48,
+      "rank": 46,
       "playerId": "12498",
       "playerName": "Mason Taylor",
       "position": "TE",
@@ -1321,16 +1267,16 @@
       "season": "2025",
       "games": 13,
       "receptions": 44,
-      "receivingYards": 371,
-      "yardsPerReception": 8.43,
+      "receivingYards": 369,
+      "yardsPerReception": 8.39,
       "yardsBeforeCatch": 236,
       "yardsBeforeCatchPerReception": 5.4,
       "yardsAfterCatch": 133.0,
       "yardsAfterCatchPerReception": 3.02,
       "brokenTackles": 0,
-      "targets": 66,
+      "targets": 65,
       "targetSharePct": 0.1181,
-      "redZoneTargets": 9,
+      "redZoneTargets": 8,
       "receptions10Plus": 17,
       "receptions20Plus": 2,
       "receptions30Plus": 0,
@@ -1339,7 +1285,7 @@
       "longestReception": 27
     },
     {
-      "rank": 49,
+      "rank": 47,
       "playerId": "6803",
       "playerName": "Brandon Aiyuk",
       "position": "TE",
@@ -1366,7 +1312,7 @@
       "longestReception": 53
     },
     {
-      "rank": 50,
+      "rank": 48,
       "playerId": "12473",
       "playerName": "M.Evans",
       "position": "TE",
@@ -1393,34 +1339,7 @@
       "longestReception": 45
     },
     {
-      "rank": 51,
-      "playerId": "9479",
-      "playerName": "Darnell Washington",
-      "position": "TE",
-      "team": "PIT",
-      "age": null,
-      "season": "2025",
-      "games": 13,
-      "receptions": 31,
-      "receivingYards": 366,
-      "yardsPerReception": 11.81,
-      "yardsBeforeCatch": 135,
-      "yardsBeforeCatchPerReception": 4.4,
-      "yardsAfterCatch": 229.0,
-      "yardsAfterCatchPerReception": 7.39,
-      "brokenTackles": 4,
-      "targets": 44,
-      "targetSharePct": 0.0755,
-      "redZoneTargets": 9,
-      "receptions10Plus": 19,
-      "receptions20Plus": 3,
-      "receptions30Plus": 2,
-      "receptions40Plus": 0,
-      "receptions50Plus": 0,
-      "longestReception": 36
-    },
-    {
-      "rank": 52,
+      "rank": 49,
       "playerId": "4663",
       "playerName": "Austin Ekeler",
       "position": "TE",
@@ -1447,7 +1366,34 @@
       "longestReception": 34
     },
     {
-      "rank": 53,
+      "rank": 50,
+      "playerId": "9479",
+      "playerName": "Darnell Washington",
+      "position": "TE",
+      "team": "PIT",
+      "age": null,
+      "season": "2025",
+      "games": 13,
+      "receptions": 31,
+      "receivingYards": 364,
+      "yardsPerReception": 11.74,
+      "yardsBeforeCatch": 135,
+      "yardsBeforeCatchPerReception": 4.4,
+      "yardsAfterCatch": 229.0,
+      "yardsAfterCatchPerReception": 7.39,
+      "brokenTackles": 4,
+      "targets": 43,
+      "targetSharePct": 0.0755,
+      "redZoneTargets": 8,
+      "receptions10Plus": 19,
+      "receptions20Plus": 3,
+      "receptions30Plus": 2,
+      "receptions40Plus": 0,
+      "receptions50Plus": 0,
+      "longestReception": 36
+    },
+    {
+      "rank": 51,
       "playerId": "12502",
       "playerName": "Gunnar Helm",
       "position": "TE",
@@ -1474,7 +1420,7 @@
       "longestReception": 34
     },
     {
-      "rank": 54,
+      "rank": 52,
       "playerId": "7601",
       "playerName": "Rondale Moore",
       "position": "TE",
@@ -1490,9 +1436,9 @@
       "yardsAfterCatch": 216.0,
       "yardsAfterCatchPerReception": 5.4,
       "brokenTackles": 2,
-      "targets": 63,
+      "targets": 62,
       "targetSharePct": null,
-      "redZoneTargets": 6,
+      "redZoneTargets": 5,
       "receptions10Plus": null,
       "receptions20Plus": null,
       "receptions30Plus": null,
@@ -1501,7 +1447,7 @@
       "longestReception": 48
     },
     {
-      "rank": 55,
+      "rank": 53,
       "playerId": "4274",
       "playerName": "David Moore",
       "position": "TE",
@@ -1528,7 +1474,7 @@
       "longestReception": 21
     },
     {
-      "rank": 56,
+      "rank": 54,
       "playerId": "6826",
       "playerName": "Cole Kmet",
       "position": "TE",
@@ -1537,16 +1483,16 @@
       "season": "2025",
       "games": 16,
       "receptions": 30,
-      "receivingYards": 349,
-      "yardsPerReception": 11.63,
+      "receivingYards": 347,
+      "yardsPerReception": 11.57,
       "yardsBeforeCatch": 198,
       "yardsBeforeCatchPerReception": 6.6,
       "yardsAfterCatch": 149.0,
       "yardsAfterCatchPerReception": 4.97,
       "brokenTackles": 2,
-      "targets": 49,
+      "targets": 48,
       "targetSharePct": 0.0814,
-      "redZoneTargets": 7,
+      "redZoneTargets": 6,
       "receptions10Plus": 16,
       "receptions20Plus": 5,
       "receptions30Plus": 1,
@@ -1555,7 +1501,7 @@
       "longestReception": 31
     },
     {
-      "rank": 57,
+      "rank": 55,
       "playerId": "7670",
       "playerName": "Josh Palmer",
       "position": "TE",
@@ -1582,7 +1528,7 @@
       "longestReception": 45
     },
     {
-      "rank": 58,
+      "rank": 56,
       "playerId": "8172",
       "playerName": "Greg Dulcich",
       "position": "TE",
@@ -1598,9 +1544,9 @@
       "yardsAfterCatch": 199.0,
       "yardsAfterCatchPerReception": 7.65,
       "brokenTackles": 2,
-      "targets": 34,
+      "targets": 33,
       "targetSharePct": 0.0654,
-      "redZoneTargets": 7,
+      "redZoneTargets": 6,
       "receptions10Plus": 14,
       "receptions20Plus": 7,
       "receptions30Plus": 0,
@@ -1609,7 +1555,7 @@
       "longestReception": 29
     },
     {
-      "rank": 59,
+      "rank": 57,
       "playerId": "9482",
       "playerName": "Michael Mayer",
       "position": "TE",
@@ -1636,7 +1582,7 @@
       "longestReception": 23
     },
     {
-      "rank": 60,
+      "rank": 58,
       "playerId": "12509",
       "playerName": "Tre Harris",
       "position": "TE",
@@ -1663,7 +1609,7 @@
       "longestReception": 37
     },
     {
-      "rank": 61,
+      "rank": 59,
       "playerId": "12485",
       "playerName": "T.Johnson",
       "position": "TE",
@@ -1690,7 +1636,7 @@
       "longestReception": 45
     },
     {
-      "rank": 62,
+      "rank": 60,
       "playerId": "4018",
       "playerName": "Joe Mixon",
       "position": "TE",
@@ -1717,7 +1663,7 @@
       "longestReception": 37
     },
     {
-      "rank": 63,
+      "rank": 61,
       "playerId": "4993",
       "playerName": "Mike Gesicki",
       "position": "TE",
@@ -1733,9 +1679,9 @@
       "yardsAfterCatch": 63.0,
       "yardsAfterCatchPerReception": 2.25,
       "brokenTackles": 0,
-      "targets": 43,
+      "targets": 42,
       "targetSharePct": 0.0632,
-      "redZoneTargets": 8,
+      "redZoneTargets": 7,
       "receptions10Plus": 16,
       "receptions20Plus": 2,
       "receptions30Plus": 2,
@@ -1744,7 +1690,7 @@
       "longestReception": 37
     },
     {
-      "rank": 64,
+      "rank": 62,
       "playerId": "8131",
       "playerName": "Isaiah Likely",
       "position": "TE",
@@ -1771,7 +1717,7 @@
       "longestReception": 43
     },
     {
-      "rank": 65,
+      "rank": 63,
       "playerId": "2309",
       "playerName": "Amari Cooper",
       "position": "TE",
@@ -1798,7 +1744,7 @@
       "longestReception": 30
     },
     {
-      "rank": 66,
+      "rank": 64,
       "playerId": "10231",
       "playerName": "Elijah Higgins",
       "position": "TE",
@@ -1825,7 +1771,7 @@
       "longestReception": 27
     },
     {
-      "rank": 67,
+      "rank": 65,
       "playerId": "5113",
       "playerName": "Cedrick Wilson",
       "position": "TE",
@@ -1852,7 +1798,7 @@
       "longestReception": 31
     },
     {
-      "rank": 68,
+      "rank": 66,
       "playerId": "5987",
       "playerName": "Alexander Mattison",
       "position": "TE",
@@ -1879,7 +1825,7 @@
       "longestReception": 31
     },
     {
-      "rank": 69,
+      "rank": 67,
       "playerId": "4033",
       "playerName": "David Njoku",
       "position": "TE",
@@ -1906,7 +1852,7 @@
       "longestReception": 23
     },
     {
-      "rank": 70,
+      "rank": 68,
       "playerId": "8698",
       "playerName": "Jake Tonges",
       "position": "TE",
@@ -1933,7 +1879,7 @@
       "longestReception": 23
     },
     {
-      "rank": 71,
+      "rank": 69,
       "playerId": "5374",
       "playerName": "Ju.Watson",
       "position": "TE",
@@ -1960,7 +1906,7 @@
       "longestReception": 49
     },
     {
-      "rank": 72,
+      "rank": 70,
       "playerId": "5857",
       "playerName": "Noah Fant",
       "position": "TE",
@@ -1987,7 +1933,7 @@
       "longestReception": 25
     },
     {
-      "rank": 73,
+      "rank": 71,
       "playerId": "8225",
       "playerName": "Daniel Bellinger",
       "position": "TE",
@@ -2014,34 +1960,7 @@
       "longestReception": 44
     },
     {
-      "rank": 74,
-      "playerId": "3901",
-      "playerName": "Brandon Johnson",
-      "position": "TE",
-      "team": "DEN",
-      "age": null,
-      "season": "2023",
-      "games": 10,
-      "receptions": 19,
-      "receivingYards": 286,
-      "yardsPerReception": 15.05,
-      "yardsBeforeCatch": null,
-      "yardsBeforeCatchPerReception": null,
-      "yardsAfterCatch": 89.0,
-      "yardsAfterCatchPerReception": 4.68,
-      "brokenTackles": 2,
-      "targets": 31,
-      "targetSharePct": null,
-      "redZoneTargets": 7,
-      "receptions10Plus": null,
-      "receptions20Plus": null,
-      "receptions30Plus": null,
-      "receptions40Plus": null,
-      "receptions50Plus": null,
-      "longestReception": 50
-    },
-    {
-      "rank": 75,
+      "rank": 72,
       "playerId": "6074",
       "playerName": "Donald Parham",
       "position": "TE",
@@ -2068,7 +1987,34 @@
       "longestReception": 24
     },
     {
-      "rank": 76,
+      "rank": 73,
+      "playerId": "3901",
+      "playerName": "Brandon Johnson",
+      "position": "TE",
+      "team": "DEN",
+      "age": null,
+      "season": "2023",
+      "games": 10,
+      "receptions": 19,
+      "receivingYards": 284,
+      "yardsPerReception": 14.95,
+      "yardsBeforeCatch": null,
+      "yardsBeforeCatchPerReception": null,
+      "yardsAfterCatch": 89.0,
+      "yardsAfterCatchPerReception": 4.68,
+      "brokenTackles": 2,
+      "targets": 30,
+      "targetSharePct": null,
+      "redZoneTargets": 6,
+      "receptions10Plus": null,
+      "receptions20Plus": null,
+      "receptions30Plus": null,
+      "receptions40Plus": null,
+      "receptions50Plus": null,
+      "longestReception": 50
+    },
+    {
+      "rank": 74,
       "playerId": "2505",
       "playerName": "Darren Waller",
       "position": "TE",
@@ -2084,9 +2030,9 @@
       "yardsAfterCatch": 73.0,
       "yardsAfterCatchPerReception": 3.04,
       "brokenTackles": 0,
-      "targets": 35,
+      "targets": 34,
       "targetSharePct": 0.0673,
-      "redZoneTargets": 8,
+      "redZoneTargets": 7,
       "receptions10Plus": 11,
       "receptions20Plus": 5,
       "receptions30Plus": 2,
@@ -2095,7 +2041,7 @@
       "longestReception": 34
     },
     {
-      "rank": 77,
+      "rank": 75,
       "playerId": "3271",
       "playerName": "Tyler Higbee",
       "position": "TE",
@@ -2122,7 +2068,7 @@
       "longestReception": 24
     },
     {
-      "rank": 78,
+      "rank": 76,
       "playerId": "1992",
       "playerName": "Allen Robinson",
       "position": "TE",
@@ -2149,34 +2095,7 @@
       "longestReception": 31
     },
     {
-      "rank": 79,
-      "playerId": "4381",
-      "playerName": "T.Hill",
-      "position": "TE",
-      "team": "MIA",
-      "age": null,
-      "season": "2025",
-      "games": 4,
-      "receptions": 21,
-      "receivingYards": 265,
-      "yardsPerReception": 12.62,
-      "yardsBeforeCatch": null,
-      "yardsBeforeCatchPerReception": null,
-      "yardsAfterCatch": 57.0,
-      "yardsAfterCatchPerReception": 2.71,
-      "brokenTackles": null,
-      "targets": 29,
-      "targetSharePct": null,
-      "redZoneTargets": 2,
-      "receptions10Plus": null,
-      "receptions20Plus": null,
-      "receptions30Plus": null,
-      "receptions40Plus": null,
-      "receptions50Plus": null,
-      "longestReception": 47
-    },
-    {
-      "rank": 80,
+      "rank": 77,
       "playerId": "3202",
       "playerName": "Austin Hooper",
       "position": "TE",
@@ -2203,7 +2122,7 @@
       "longestReception": 31
     },
     {
-      "rank": 81,
+      "rank": 78,
       "playerId": "4082",
       "playerName": "Curtis Samuel",
       "position": "TE",
@@ -2230,7 +2149,7 @@
       "longestReception": 38
     },
     {
-      "rank": 82,
+      "rank": 79,
       "playerId": "9481",
       "playerName": "Luke Musgrave",
       "position": "TE",
@@ -2257,34 +2176,7 @@
       "longestReception": 26
     },
     {
-      "rank": 83,
-      "playerId": "10212",
-      "playerName": "Josh Whyle",
-      "position": "TE",
-      "team": "TEN",
-      "age": null,
-      "season": "2024",
-      "games": 14,
-      "receptions": 28,
-      "receivingYards": 250,
-      "yardsPerReception": 8.93,
-      "yardsBeforeCatch": 105,
-      "yardsBeforeCatchPerReception": 3.8,
-      "yardsAfterCatch": 143.0,
-      "yardsAfterCatchPerReception": 5.11,
-      "brokenTackles": 1,
-      "targets": 38,
-      "targetSharePct": 0.065,
-      "redZoneTargets": 5,
-      "receptions10Plus": 9,
-      "receptions20Plus": 3,
-      "receptions30Plus": 1,
-      "receptions40Plus": 0,
-      "receptions50Plus": 0,
-      "longestReception": 33
-    },
-    {
-      "rank": 84,
+      "rank": 80,
       "playerId": "7694",
       "playerName": "Tommy Tremble",
       "position": "TE",
@@ -2311,7 +2203,34 @@
       "longestReception": 54
     },
     {
-      "rank": 85,
+      "rank": 81,
+      "playerId": "10212",
+      "playerName": "Josh Whyle",
+      "position": "TE",
+      "team": "TEN",
+      "age": null,
+      "season": "2024",
+      "games": 14,
+      "receptions": 28,
+      "receivingYards": 248,
+      "yardsPerReception": 8.86,
+      "yardsBeforeCatch": 105,
+      "yardsBeforeCatchPerReception": 3.8,
+      "yardsAfterCatch": 143.0,
+      "yardsAfterCatchPerReception": 5.11,
+      "brokenTackles": 1,
+      "targets": 37,
+      "targetSharePct": 0.065,
+      "redZoneTargets": 4,
+      "receptions10Plus": 9,
+      "receptions20Plus": 3,
+      "receptions30Plus": 1,
+      "receptions40Plus": 0,
+      "receptions50Plus": 0,
+      "longestReception": 33
+    },
+    {
+      "rank": 82,
       "playerId": "10863",
       "playerName": "A.T. Perry",
       "position": "TE",
@@ -2338,7 +2257,7 @@
       "longestReception": 44
     },
     {
-      "rank": 86,
+      "rank": 83,
       "playerId": "8168",
       "playerName": "Skyy Moore",
       "position": "TE",
@@ -2365,7 +2284,7 @@
       "longestReception": 54
     },
     {
-      "rank": 87,
+      "rank": 84,
       "playerId": "362",
       "playerName": "Di.Johnson",
       "position": "TE",
@@ -2392,7 +2311,7 @@
       "longestReception": 39
     },
     {
-      "rank": 88,
+      "rank": 85,
       "playerId": "5121",
       "playerName": "Braxton Berrios",
       "position": "TE",
@@ -2419,7 +2338,7 @@
       "longestReception": 22
     },
     {
-      "rank": 89,
+      "rank": 86,
       "playerId": "12487",
       "playerName": "Terrance Ferguson",
       "position": "TE",
@@ -2446,7 +2365,7 @@
       "longestReception": 36
     },
     {
-      "rank": 90,
+      "rank": 87,
       "playerId": "2325",
       "playerName": "Nelson Agholor",
       "position": "TE",
@@ -2473,7 +2392,7 @@
       "longestReception": 56
     },
     {
-      "rank": 91,
+      "rank": 88,
       "playerId": "3433",
       "playerName": "Alex Erickson",
       "position": "TE",
@@ -2500,7 +2419,7 @@
       "longestReception": 27
     },
     {
-      "rank": 92,
+      "rank": 89,
       "playerId": "4198",
       "playerName": "Jamal Agnew",
       "position": "TE",
@@ -2527,7 +2446,7 @@
       "longestReception": 65
     },
     {
-      "rank": 93,
+      "rank": 90,
       "playerId": "6828",
       "playerName": "AJ Dillon",
       "position": "TE",
@@ -2554,7 +2473,7 @@
       "longestReception": 35
     },
     {
-      "rank": 94,
+      "rank": 91,
       "playerId": "4144",
       "playerName": "Jonnu Smith",
       "position": "TE",
@@ -2570,9 +2489,9 @@
       "yardsAfterCatch": 179.0,
       "yardsAfterCatchPerReception": 4.71,
       "brokenTackles": 3,
-      "targets": 55,
+      "targets": 54,
       "targetSharePct": 0.0943,
-      "redZoneTargets": 8,
+      "redZoneTargets": 7,
       "receptions10Plus": 6,
       "receptions20Plus": 1,
       "receptions30Plus": 0,
@@ -2581,7 +2500,7 @@
       "longestReception": 21
     },
     {
-      "rank": 95,
+      "rank": 92,
       "playerId": "7568",
       "playerName": "Brevin Jordan",
       "position": "TE",
@@ -2608,7 +2527,7 @@
       "longestReception": 27
     },
     {
-      "rank": 96,
+      "rank": 93,
       "playerId": null,
       "playerName": "Kyle Juszczyk",
       "position": "TE",
@@ -2635,7 +2554,7 @@
       "longestReception": 25
     },
     {
-      "rank": 97,
+      "rank": 94,
       "playerId": "5733",
       "playerName": "C.Wilson",
       "position": "TE",
@@ -2662,7 +2581,7 @@
       "longestReception": 25
     },
     {
-      "rank": 98,
+      "rank": 95,
       "playerId": "10214",
       "playerName": "Davis Allen",
       "position": "TE",
@@ -2689,7 +2608,7 @@
       "longestReception": 27
     },
     {
-      "rank": 99,
+      "rank": 96,
       "playerId": "8583",
       "playerName": "Stone Smartt",
       "position": "TE",
@@ -2716,7 +2635,7 @@
       "longestReception": 31
     },
     {
-      "rank": 100,
+      "rank": 97,
       "playerId": "10220",
       "playerName": "Will Mallory",
       "position": "TE",
@@ -2743,7 +2662,7 @@
       "longestReception": 43
     },
     {
-      "rank": 101,
+      "rank": 98,
       "playerId": "1352",
       "playerName": "Robert Woods",
       "position": "TE",
@@ -2770,7 +2689,7 @@
       "longestReception": 32
     },
     {
-      "rank": 102,
+      "rank": 99,
       "playerId": "6869",
       "playerName": "Adam Trautman",
       "position": "TE",
@@ -2797,7 +2716,7 @@
       "longestReception": 26
     },
     {
-      "rank": 103,
+      "rank": 100,
       "playerId": "7595",
       "playerName": "Tylan Wallace",
       "position": "TE",
@@ -2824,7 +2743,7 @@
       "longestReception": 84
     },
     {
-      "rank": 104,
+      "rank": 101,
       "playerId": "2161",
       "playerName": "Jerick McKinnon",
       "position": "TE",
@@ -2851,7 +2770,7 @@
       "longestReception": 27
     },
     {
-      "rank": 105,
+      "rank": 102,
       "playerId": "11600",
       "playerName": "Ja'Tavion Sanders",
       "position": "TE",
@@ -2878,7 +2797,7 @@
       "longestReception": 18
     },
     {
-      "rank": 106,
+      "rank": 103,
       "playerId": "6820",
       "playerName": "Clyde Edwards-Helaire",
       "position": "TE",
@@ -2905,7 +2824,7 @@
       "longestReception": 48
     },
     {
-      "rank": 107,
+      "rank": 104,
       "playerId": "12658",
       "playerName": "Jackson Hawes",
       "position": "TE",
@@ -2932,7 +2851,7 @@
       "longestReception": 29
     },
     {
-      "rank": 108,
+      "rank": 105,
       "playerId": "6845",
       "playerName": "Zack Moss",
       "position": "TE",
@@ -2959,7 +2878,7 @@
       "longestReception": 21
     },
     {
-      "rank": 109,
+      "rank": 106,
       "playerId": "7602",
       "playerName": "Kylen Granson",
       "position": "TE",
@@ -2986,7 +2905,7 @@
       "longestReception": 40
     },
     {
-      "rank": 110,
+      "rank": 107,
       "playerId": "8171",
       "playerName": "Kyle Philips",
       "position": "TE",
@@ -3013,7 +2932,7 @@
       "longestReception": 29
     },
     {
-      "rank": 111,
+      "rank": 108,
       "playerId": "5248",
       "playerName": "Gus Edwards",
       "position": "TE",
@@ -3040,7 +2959,7 @@
       "longestReception": 80
     },
     {
-      "rank": 112,
+      "rank": 109,
       "playerId": "12521",
       "playerName": "Elijah Arroyo",
       "position": "TE",
@@ -3067,7 +2986,7 @@
       "longestReception": 32
     },
     {
-      "rank": 113,
+      "rank": 110,
       "playerId": "7828",
       "playerName": "Noah Gray",
       "position": "TE",
@@ -3083,9 +3002,9 @@
       "yardsAfterCatch": 107.0,
       "yardsAfterCatchPerReception": 5.1,
       "brokenTackles": 0,
-      "targets": 38,
+      "targets": 37,
       "targetSharePct": 0.0599,
-      "redZoneTargets": 3,
+      "redZoneTargets": 2,
       "receptions10Plus": 9,
       "receptions20Plus": 1,
       "receptions30Plus": 0,
@@ -3094,7 +3013,7 @@
       "longestReception": 28
     },
     {
-      "rank": 114,
+      "rank": 111,
       "playerId": "12532",
       "playerName": "J.Brooks",
       "position": "TE",
@@ -3121,7 +3040,7 @@
       "longestReception": 41
     },
     {
-      "rank": 115,
+      "rank": 112,
       "playerId": "9492",
       "playerName": "Trey Palmer",
       "position": "TE",
@@ -3148,7 +3067,7 @@
       "longestReception": 27
     },
     {
-      "rank": 116,
+      "rank": 113,
       "playerId": "5995",
       "playerName": "J.Hill",
       "position": "TE",
@@ -3175,7 +3094,7 @@
       "longestReception": 37
     },
     {
-      "rank": 117,
+      "rank": 114,
       "playerId": "7606",
       "playerName": "Kadarius Toney",
       "position": "TE",
@@ -3202,7 +3121,7 @@
       "longestReception": 18
     },
     {
-      "rank": 118,
+      "rank": 115,
       "playerId": "8145",
       "playerName": "Jeremy Ruckert",
       "position": "TE",
@@ -3229,7 +3148,7 @@
       "longestReception": 24
     },
     {
-      "rank": 119,
+      "rank": 116,
       "playerId": "5409",
       "playerName": "Tanner Hudson",
       "position": "TE",
@@ -3256,7 +3175,7 @@
       "longestReception": 33
     },
     {
-      "rank": 120,
+      "rank": 117,
       "playerId": "9490",
       "playerName": "Tyler Scott",
       "position": "TE",
@@ -3283,7 +3202,7 @@
       "longestReception": 30
     },
     {
-      "rank": 121,
+      "rank": 118,
       "playerId": "8181",
       "playerName": "Connor Heyward",
       "position": "TE",
@@ -3310,7 +3229,7 @@
       "longestReception": 13
     },
     {
-      "rank": 122,
+      "rank": 119,
       "playerId": "8118",
       "playerName": "Dav.Bell",
       "position": "TE",
@@ -3337,14 +3256,14 @@
       "longestReception": 41
     },
     {
-      "rank": 123,
+      "rank": 120,
       "playerId": "4068",
       "playerName": "Mike Williams",
       "position": "TE",
       "team": "NYJ",
       "age": null,
       "season": "2024",
-      "games": 8,
+      "games": 7,
       "receptions": 12,
       "receivingYards": 166,
       "yardsPerReception": 13.83,
@@ -3353,9 +3272,9 @@
       "yardsAfterCatch": 24.0,
       "yardsAfterCatchPerReception": 2.0,
       "brokenTackles": null,
-      "targets": 22,
+      "targets": 21,
       "targetSharePct": null,
-      "redZoneTargets": 3,
+      "redZoneTargets": 2,
       "receptions10Plus": null,
       "receptions20Plus": null,
       "receptions30Plus": null,
@@ -3364,7 +3283,7 @@
       "longestReception": 22
     },
     {
-      "rank": 124,
+      "rank": 121,
       "playerId": "5199",
       "playerName": "Byron Pringle",
       "position": "TE",
@@ -3391,7 +3310,7 @@
       "longestReception": 26
     },
     {
-      "rank": 125,
+      "rank": 122,
       "playerId": "5973",
       "playerName": "Josh Oliver",
       "position": "TE",
@@ -3407,9 +3326,9 @@
       "yardsAfterCatch": 102.0,
       "yardsAfterCatchPerReception": 6.8,
       "brokenTackles": 0,
-      "targets": 20,
+      "targets": 19,
       "targetSharePct": 0.0365,
-      "redZoneTargets": 7,
+      "redZoneTargets": 6,
       "receptions10Plus": 6,
       "receptions20Plus": 2,
       "receptions30Plus": 1,
@@ -3418,7 +3337,7 @@
       "longestReception": 32
     },
     {
-      "rank": 126,
+      "rank": 123,
       "playerId": "7989",
       "playerName": "DJ Turner",
       "position": "TE",
@@ -3445,7 +3364,7 @@
       "longestReception": 30
     },
     {
-      "rank": 127,
+      "rank": 124,
       "playerId": "11592",
       "playerName": "Erick All",
       "position": "TE",
@@ -3472,7 +3391,7 @@
       "longestReception": 28
     },
     {
-      "rank": 128,
+      "rank": 125,
       "playerId": "8249",
       "playerName": "Lucas Krull",
       "position": "TE",
@@ -3499,7 +3418,7 @@
       "longestReception": 23
     },
     {
-      "rank": 129,
+      "rank": 126,
       "playerId": "11651",
       "playerName": "Isaac Guerendo",
       "position": "TE",
@@ -3526,7 +3445,7 @@
       "longestReception": 40
     },
     {
-      "rank": 130,
+      "rank": 127,
       "playerId": "6234",
       "playerName": "Deonte Harty",
       "position": "TE",
@@ -3553,7 +3472,7 @@
       "longestReception": 43
     },
     {
-      "rank": 131,
+      "rank": 128,
       "playerId": "6699",
       "playerName": "Gunner Olszewski",
       "position": "TE",
@@ -3580,34 +3499,7 @@
       "longestReception": 28
     },
     {
-      "rank": 132,
-      "playerId": "11371",
-      "playerName": "J.Hill",
-      "position": "TE",
-      "team": "MIA",
-      "age": null,
-      "season": "2025",
-      "games": 11,
-      "receptions": 15,
-      "receivingYards": 142,
-      "yardsPerReception": 9.47,
-      "yardsBeforeCatch": null,
-      "yardsBeforeCatchPerReception": null,
-      "yardsAfterCatch": 111.0,
-      "yardsAfterCatchPerReception": 7.4,
-      "brokenTackles": null,
-      "targets": 21,
-      "targetSharePct": null,
-      "redZoneTargets": 4,
-      "receptions10Plus": null,
-      "receptions20Plus": null,
-      "receptions30Plus": null,
-      "receptions40Plus": null,
-      "receptions50Plus": null,
-      "longestReception": 20
-    },
-    {
-      "rank": 133,
+      "rank": 129,
       "playerId": "8127",
       "playerName": "Charlie Kolar",
       "position": "TE",
@@ -3634,7 +3526,7 @@
       "longestReception": 23
     },
     {
-      "rank": 134,
+      "rank": 130,
       "playerId": "6927",
       "playerName": "Quez Watkins",
       "position": "TE",
@@ -3661,7 +3553,34 @@
       "longestReception": 19
     },
     {
-      "rank": 135,
+      "rank": 131,
+      "playerId": "11371",
+      "playerName": "J.Hill",
+      "position": "TE",
+      "team": "MIA",
+      "age": null,
+      "season": "2025",
+      "games": 10,
+      "receptions": 15,
+      "receivingYards": 140,
+      "yardsPerReception": 9.33,
+      "yardsBeforeCatch": null,
+      "yardsBeforeCatchPerReception": null,
+      "yardsAfterCatch": 111.0,
+      "yardsAfterCatchPerReception": 7.4,
+      "brokenTackles": null,
+      "targets": 20,
+      "targetSharePct": null,
+      "redZoneTargets": 3,
+      "receptions10Plus": null,
+      "receptions20Plus": null,
+      "receptions30Plus": null,
+      "receptions40Plus": null,
+      "receptions50Plus": null,
+      "longestReception": 20
+    },
+    {
+      "rank": 132,
       "playerId": "12860",
       "playerName": "Theo Wease",
       "position": "TE",
@@ -3688,7 +3607,7 @@
       "longestReception": 63
     },
     {
-      "rank": 136,
+      "rank": 133,
       "playerId": "7565",
       "playerName": "Terrace Marshall",
       "position": "TE",
@@ -3715,7 +3634,7 @@
       "longestReception": 14
     },
     {
-      "rank": 137,
+      "rank": 134,
       "playerId": "6813",
       "playerName": "J.Taylor",
       "position": "TE",
@@ -3742,7 +3661,7 @@
       "longestReception": 25
     },
     {
-      "rank": 138,
+      "rank": 135,
       "playerId": "3258",
       "playerName": "Nick Vannett",
       "position": "TE",
@@ -3769,7 +3688,7 @@
       "longestReception": 24
     },
     {
-      "rank": 139,
+      "rank": 136,
       "playerId": "10871",
       "playerName": "Luke Schoonmaker",
       "position": "TE",
@@ -3796,7 +3715,7 @@
       "longestReception": 29
     },
     {
-      "rank": 140,
+      "rank": 137,
       "playerId": "6943",
       "playerName": "Gabriel Davis",
       "position": "TE",
@@ -3823,7 +3742,7 @@
       "longestReception": 22
     },
     {
-      "rank": 141,
+      "rank": 138,
       "playerId": "11421",
       "playerName": "Ryan Miller",
       "position": "TE",
@@ -3850,7 +3769,7 @@
       "longestReception": 39
     },
     {
-      "rank": 142,
+      "rank": 139,
       "playerId": "4992",
       "playerName": "Dante Pettis",
       "position": "TE",
@@ -3877,7 +3796,7 @@
       "longestReception": 32
     },
     {
-      "rank": 143,
+      "rank": 140,
       "playerId": "6970",
       "playerName": "Stephen Sullivan",
       "position": "TE",
@@ -3904,7 +3823,7 @@
       "longestReception": 20
     },
     {
-      "rank": 144,
+      "rank": 141,
       "playerId": "9495",
       "playerName": "Rakim Jarrett",
       "position": "TE",
@@ -3931,7 +3850,7 @@
       "longestReception": 30
     },
     {
-      "rank": 145,
+      "rank": 142,
       "playerId": "10225",
       "playerName": "Jonathan Mingo",
       "position": "TE",
@@ -3958,7 +3877,7 @@
       "longestReception": 35
     },
     {
-      "rank": 146,
+      "rank": 143,
       "playerId": "4854",
       "playerName": "River Cracraft",
       "position": "TE",
@@ -3985,7 +3904,7 @@
       "longestReception": 24
     },
     {
-      "rank": 147,
+      "rank": 144,
       "playerId": "8214",
       "playerName": "Cole Turner",
       "position": "TE",
@@ -4012,7 +3931,7 @@
       "longestReception": 29
     },
     {
-      "rank": 148,
+      "rank": 145,
       "playerId": "1476",
       "playerName": "Latavius Murray",
       "position": "TE",
@@ -4039,7 +3958,7 @@
       "longestReception": 22
     },
     {
-      "rank": 149,
+      "rank": 146,
       "playerId": "11748",
       "playerName": "Bub Means",
       "position": "TE",
@@ -4066,7 +3985,7 @@
       "longestReception": 36
     },
     {
-      "rank": 150,
+      "rank": 147,
       "playerId": "4054",
       "playerName": "Mo Alie-Cox",
       "position": "TE",
@@ -4093,7 +4012,7 @@
       "longestReception": 20
     },
     {
-      "rank": 151,
+      "rank": 148,
       "playerId": "5892",
       "playerName": "D.Montgomery",
       "position": "TE",
@@ -4120,7 +4039,7 @@
       "longestReception": 19
     },
     {
-      "rank": 152,
+      "rank": 149,
       "playerId": "11068",
       "playerName": "Mitchell Tinsley",
       "position": "TE",
@@ -4147,7 +4066,7 @@
       "longestReception": 27
     },
     {
-      "rank": 153,
+      "rank": 150,
       "playerId": "10227",
       "playerName": "Payne Durham",
       "position": "TE",
@@ -4174,7 +4093,7 @@
       "longestReception": 31
     },
     {
-      "rank": 154,
+      "rank": 151,
       "playerId": "6126",
       "playerName": "I.Smith",
       "position": "TE",
@@ -4201,7 +4120,7 @@
       "longestReception": 14
     },
     {
-      "rank": 155,
+      "rank": 152,
       "playerId": "11596",
       "playerName": "Ben Sinnott",
       "position": "TE",
@@ -4228,7 +4147,7 @@
       "longestReception": 36
     },
     {
-      "rank": 156,
+      "rank": 153,
       "playerId": "4995",
       "playerName": "Ian Thomas",
       "position": "TE",
@@ -4255,7 +4174,7 @@
       "longestReception": 20
     },
     {
-      "rank": 157,
+      "rank": 154,
       "playerId": "5137",
       "playerName": "Richie James",
       "position": "TE",
@@ -4282,7 +4201,7 @@
       "longestReception": 45
     },
     {
-      "rank": 158,
+      "rank": 155,
       "playerId": "10234",
       "playerName": "Derius Davis",
       "position": "TE",
@@ -4309,7 +4228,7 @@
       "longestReception": 23
     },
     {
-      "rank": 159,
+      "rank": 156,
       "playerId": "4602",
       "playerName": "Robert Tonyan",
       "position": "TE",
@@ -4336,7 +4255,7 @@
       "longestReception": 24
     },
     {
-      "rank": 160,
+      "rank": 157,
       "playerId": "4314",
       "playerName": "Johnny Mundt",
       "position": "TE",
@@ -4363,7 +4282,7 @@
       "longestReception": 21
     },
     {
-      "rank": 161,
+      "rank": 158,
       "playerId": null,
       "playerName": "Andrew Ogletree",
       "position": "TE",
@@ -4390,7 +4309,7 @@
       "longestReception": 22
     },
     {
-      "rank": 162,
+      "rank": 159,
       "playerId": "7891",
       "playerName": "Brock Wright",
       "position": "TE",
@@ -4417,7 +4336,7 @@
       "longestReception": 20
     },
     {
-      "rank": 163,
+      "rank": 160,
       "playerId": "8204",
       "playerName": "Bo Melton",
       "position": "TE",
@@ -4444,7 +4363,7 @@
       "longestReception": 45
     },
     {
-      "rank": 164,
+      "rank": 161,
       "playerId": "10867",
       "playerName": "Jake Bobo",
       "position": "TE",
@@ -4460,9 +4379,9 @@
       "yardsAfterCatch": 27.0,
       "yardsAfterCatchPerReception": 2.08,
       "brokenTackles": null,
-      "targets": 18,
+      "targets": 17,
       "targetSharePct": null,
-      "redZoneTargets": 3,
+      "redZoneTargets": 2,
       "receptions10Plus": null,
       "receptions20Plus": null,
       "receptions30Plus": null,
@@ -4471,7 +4390,7 @@
       "longestReception": 15
     },
     {
-      "rank": 165,
+      "rank": 162,
       "playerId": "11640",
       "playerName": "Jermaine Burton",
       "position": "TE",
@@ -4498,7 +4417,7 @@
       "longestReception": 47
     },
     {
-      "rank": 166,
+      "rank": 163,
       "playerId": "6001",
       "playerName": "Drew Sample",
       "position": "TE",
@@ -4525,7 +4444,7 @@
       "longestReception": 27
     },
     {
-      "rank": 167,
+      "rank": 164,
       "playerId": "6427",
       "playerName": "Ashton Dulin",
       "position": "TE",
@@ -4552,7 +4471,7 @@
       "longestReception": 48
     },
     {
-      "rank": 168,
+      "rank": 165,
       "playerId": "7812",
       "playerName": "Simi Fehoko",
       "position": "TE",
@@ -4579,7 +4498,7 @@
       "longestReception": 30
     },
     {
-      "rank": 169,
+      "rank": 166,
       "playerId": "8116",
       "playerName": "Pierre Strong",
       "position": "TE",
@@ -4606,7 +4525,7 @@
       "longestReception": 21
     },
     {
-      "rank": 170,
+      "rank": 167,
       "playerId": "10235",
       "playerName": "Roschon Johnson",
       "position": "TE",
@@ -4633,7 +4552,7 @@
       "longestReception": 17
     },
     {
-      "rank": 171,
+      "rank": 168,
       "playerId": "5880",
       "playerName": "Parris Campbell",
       "position": "TE",
@@ -4660,7 +4579,7 @@
       "longestReception": 17
     },
     {
-      "rank": 172,
+      "rank": 169,
       "playerId": "7716",
       "playerName": "John Bates",
       "position": "TE",
@@ -4687,7 +4606,7 @@
       "longestReception": 22
     },
     {
-      "rank": 173,
+      "rank": 170,
       "playerId": "5916",
       "playerName": "Darrell Henderson",
       "position": "TE",
@@ -4714,7 +4633,7 @@
       "longestReception": 32
     },
     {
-      "rank": 174,
+      "rank": 171,
       "playerId": "5133",
       "playerName": "Tyler Conklin",
       "position": "TE",
@@ -4741,7 +4660,7 @@
       "longestReception": 33
     },
     {
-      "rank": 175,
+      "rank": 172,
       "playerId": "8129",
       "playerName": "Dameon Pierce",
       "position": "TE",
@@ -4768,7 +4687,7 @@
       "longestReception": 27
     },
     {
-      "rank": 176,
+      "rank": 173,
       "playerId": "11617",
       "playerName": "Malachi Corley",
       "position": "TE",
@@ -4795,7 +4714,7 @@
       "longestReception": 21
     },
     {
-      "rank": 177,
+      "rank": 174,
       "playerId": "6798",
       "playerName": "Jalen Reagor",
       "position": "TE",
@@ -4822,7 +4741,7 @@
       "longestReception": 41
     },
     {
-      "rank": 178,
+      "rank": 175,
       "playerId": "7593",
       "playerName": "Trey Sermon",
       "position": "TE",
@@ -4849,7 +4768,7 @@
       "longestReception": 14
     },
     {
-      "rank": 179,
+      "rank": 176,
       "playerId": "8139",
       "playerName": "Zamir White",
       "position": "TE",
@@ -4876,7 +4795,7 @@
       "longestReception": 15
     },
     {
-      "rank": 180,
+      "rank": 177,
       "playerId": "5010",
       "playerName": "Will Dissly",
       "position": "TE",
@@ -4903,7 +4822,7 @@
       "longestReception": 18
     },
     {
-      "rank": 181,
+      "rank": 178,
       "playerId": "11210",
       "playerName": "Malik Heath",
       "position": "TE",
@@ -4930,7 +4849,7 @@
       "longestReception": 41
     },
     {
-      "rank": 182,
+      "rank": 179,
       "playerId": "6824",
       "playerName": "Donovan Peoples-Jones",
       "position": "TE",
@@ -4957,7 +4876,7 @@
       "longestReception": 29
     },
     {
-      "rank": 183,
+      "rank": 180,
       "playerId": "2545",
       "playerName": "Geoff Swaim",
       "position": "TE",
@@ -4984,7 +4903,7 @@
       "longestReception": 26
     },
     {
-      "rank": 184,
+      "rank": 181,
       "playerId": "13150",
       "playerName": "Darius Cooper",
       "position": "TE",
@@ -5011,7 +4930,34 @@
       "longestReception": 19
     },
     {
-      "rank": 185,
+      "rank": 182,
+      "playerId": "4381",
+      "playerName": "Taysom Hill",
+      "position": "TE",
+      "team": "NO",
+      "age": null,
+      "season": "2025",
+      "games": 7,
+      "receptions": 11,
+      "receivingYards": 91,
+      "yardsPerReception": 8.27,
+      "yardsBeforeCatch": 213,
+      "yardsBeforeCatchPerReception": 6.7,
+      "yardsAfterCatch": 86.0,
+      "yardsAfterCatchPerReception": 7.82,
+      "brokenTackles": 0,
+      "targets": 16,
+      "targetSharePct": 0.0702,
+      "redZoneTargets": 2,
+      "receptions10Plus": 14,
+      "receptions20Plus": 4,
+      "receptions30Plus": 1,
+      "receptions40Plus": 1,
+      "receptions50Plus": 0,
+      "longestReception": 17
+    },
+    {
+      "rank": 183,
       "playerId": "8849",
       "playerName": "Tanner Conner",
       "position": "TE",
@@ -5038,7 +4984,7 @@
       "longestReception": 28
     },
     {
-      "rank": 186,
+      "rank": 184,
       "playerId": "11593",
       "playerName": "Brevyn Spann-Ford",
       "position": "TE",
@@ -5065,7 +5011,7 @@
       "longestReception": 31
     },
     {
-      "rank": 187,
+      "rank": 185,
       "playerId": "5917",
       "playerName": "Mecole Hardman",
       "position": "TE",
@@ -5092,7 +5038,7 @@
       "longestReception": 17
     },
     {
-      "rank": 188,
+      "rank": 186,
       "playerId": "6421",
       "playerName": "Jalen Guyton",
       "position": "TE",
@@ -5119,7 +5065,7 @@
       "longestReception": 18
     },
     {
-      "rank": 189,
+      "rank": 187,
       "playerId": "6918",
       "playerName": "Salvon Ahmed",
       "position": "TE",
@@ -5146,7 +5092,7 @@
       "longestReception": 20
     },
     {
-      "rank": 190,
+      "rank": 188,
       "playerId": "4455",
       "playerName": "Matt Breida",
       "position": "TE",
@@ -5173,7 +5119,7 @@
       "longestReception": 22
     },
     {
-      "rank": 191,
+      "rank": 189,
       "playerId": "13079",
       "playerName": "Jahdae Walker",
       "position": "TE",
@@ -5200,7 +5146,7 @@
       "longestReception": 25
     },
     {
-      "rank": 192,
+      "rank": 190,
       "playerId": "11619",
       "playerName": "Ja'Lynn Polk",
       "position": "TE",
@@ -5216,9 +5162,9 @@
       "yardsAfterCatch": 13.0,
       "yardsAfterCatchPerReception": 1.08,
       "brokenTackles": null,
-      "targets": 34,
+      "targets": 33,
       "targetSharePct": null,
-      "redZoneTargets": 5,
+      "redZoneTargets": 4,
       "receptions10Plus": null,
       "receptions20Plus": null,
       "receptions30Plus": null,
@@ -5227,7 +5173,7 @@
       "longestReception": 21
     },
     {
-      "rank": 193,
+      "rank": 191,
       "playerId": "6850",
       "playerName": "Harrison Bryant",
       "position": "TE",
@@ -5254,7 +5200,7 @@
       "longestReception": 18
     },
     {
-      "rank": 194,
+      "rank": 192,
       "playerId": "5154",
       "playerName": "Trent Sherfield",
       "position": "TE",
@@ -5281,7 +5227,7 @@
       "longestReception": 12
     },
     {
-      "rank": 195,
+      "rank": 193,
       "playerId": "7535",
       "playerName": "Hunter Long",
       "position": "TE",
@@ -5308,7 +5254,7 @@
       "longestReception": 11
     },
     {
-      "rank": 196,
+      "rank": 194,
       "playerId": "7842",
       "playerName": "Luke Farrell",
       "position": "TE",
@@ -5335,7 +5281,7 @@
       "longestReception": 11
     },
     {
-      "rank": 197,
+      "rank": 195,
       "playerId": "5284",
       "playerName": "Jeff Wilson",
       "position": "TE",
@@ -5362,7 +5308,7 @@
       "longestReception": 12
     },
     {
-      "rank": 198,
+      "rank": 196,
       "playerId": "4234",
       "playerName": "Noah Brown",
       "position": "TE",
@@ -5389,7 +5335,7 @@
       "longestReception": 28
     },
     {
-      "rank": 199,
+      "rank": 197,
       "playerId": "8253",
       "playerName": "Deven Thompkins",
       "position": "TE",
@@ -5416,7 +5362,7 @@
       "longestReception": 26
     },
     {
-      "rank": 200,
+      "rank": 198,
       "playerId": "8013",
       "playerName": "T.Jones",
       "position": "TE",
@@ -5432,9 +5378,9 @@
       "yardsAfterCatch": 31.0,
       "yardsAfterCatchPerReception": 2.82,
       "brokenTackles": null,
-      "targets": 19,
+      "targets": 18,
       "targetSharePct": null,
-      "redZoneTargets": 1,
+      "redZoneTargets": null,
       "receptions10Plus": null,
       "receptions20Plus": null,
       "receptions30Plus": null,
@@ -5443,7 +5389,7 @@
       "longestReception": 15
     },
     {
-      "rank": 201,
+      "rank": 199,
       "playerId": "6909",
       "playerName": "Lynn Bowden",
       "position": "TE",
@@ -5470,7 +5416,7 @@
       "longestReception": 17
     },
     {
-      "rank": 202,
+      "rank": 200,
       "playerId": "10223",
       "playerName": "Eric Gray",
       "position": "TE",
@@ -5497,7 +5443,7 @@
       "longestReception": 19
     },
     {
-      "rank": 203,
+      "rank": 201,
       "playerId": "4197",
       "playerName": "Isaiah McKenzie",
       "position": "TE",
@@ -5524,7 +5470,7 @@
       "longestReception": 30
     },
     {
-      "rank": 204,
+      "rank": 202,
       "playerId": "5000",
       "playerName": "Chase Edmonds",
       "position": "TE",
@@ -5551,14 +5497,14 @@
       "longestReception": 14
     },
     {
-      "rank": 205,
+      "rank": 203,
       "playerId": "1535",
       "playerName": "Cordarrelle Patterson",
       "position": "TE",
       "team": "PIT",
       "age": null,
       "season": "2024",
-      "games": 8,
+      "games": 7,
       "receptions": 12,
       "receivingYards": 80,
       "yardsPerReception": 6.67,
@@ -5567,9 +5513,9 @@
       "yardsAfterCatch": 56.0,
       "yardsAfterCatchPerReception": 4.67,
       "brokenTackles": 1,
-      "targets": 15,
+      "targets": 14,
       "targetSharePct": null,
-      "redZoneTargets": 3,
+      "redZoneTargets": 2,
       "receptions10Plus": null,
       "receptions20Plus": null,
       "receptions30Plus": null,
@@ -5578,7 +5524,7 @@
       "longestReception": 20
     },
     {
-      "rank": 206,
+      "rank": 204,
       "playerId": "4189",
       "playerName": "Eric Saubert",
       "position": "TE",
@@ -5605,34 +5551,7 @@
       "longestReception": 16
     },
     {
-      "rank": 207,
-      "playerId": "8235",
-      "playerName": "Samori Toure",
-      "position": "TE",
-      "team": "GB",
-      "age": null,
-      "season": "2023",
-      "games": 8,
-      "receptions": 8,
-      "receivingYards": 80,
-      "yardsPerReception": 10.0,
-      "yardsBeforeCatch": null,
-      "yardsBeforeCatchPerReception": null,
-      "yardsAfterCatch": 18.0,
-      "yardsAfterCatchPerReception": 2.25,
-      "brokenTackles": null,
-      "targets": 19,
-      "targetSharePct": null,
-      "redZoneTargets": 3,
-      "receptions10Plus": null,
-      "receptions20Plus": null,
-      "receptions30Plus": null,
-      "receptions40Plus": null,
-      "receptions50Plus": null,
-      "longestReception": 35
-    },
-    {
-      "rank": 208,
+      "rank": 205,
       "playerId": "6847",
       "playerName": "Devin Duvernay",
       "position": "TE",
@@ -5659,7 +5578,7 @@
       "longestReception": 28
     },
     {
-      "rank": 209,
+      "rank": 206,
       "playerId": "12482",
       "playerName": "Savion Williams",
       "position": "TE",
@@ -5686,7 +5605,7 @@
       "longestReception": 33
     },
     {
-      "rank": 210,
+      "rank": 207,
       "playerId": "4029",
       "playerName": "Dalvin Cook",
       "position": "TE",
@@ -5713,7 +5632,34 @@
       "longestReception": 15
     },
     {
-      "rank": 211,
+      "rank": 208,
+      "playerId": "8235",
+      "playerName": "Samori Toure",
+      "position": "TE",
+      "team": "GB",
+      "age": null,
+      "season": "2023",
+      "games": 8,
+      "receptions": 8,
+      "receivingYards": 78,
+      "yardsPerReception": 9.75,
+      "yardsBeforeCatch": null,
+      "yardsBeforeCatchPerReception": null,
+      "yardsAfterCatch": 18.0,
+      "yardsAfterCatchPerReception": 2.25,
+      "brokenTackles": null,
+      "targets": 18,
+      "targetSharePct": null,
+      "redZoneTargets": 2,
+      "receptions10Plus": null,
+      "receptions20Plus": null,
+      "receptions30Plus": null,
+      "receptions40Plus": null,
+      "receptions50Plus": null,
+      "longestReception": 35
+    },
+    {
+      "rank": 209,
       "playerId": "4111",
       "playerName": "D'Onta Foreman",
       "position": "TE",
@@ -5740,7 +5686,7 @@
       "longestReception": 17
     },
     {
-      "rank": 212,
+      "rank": 210,
       "playerId": "11599",
       "playerName": "Cade Stover",
       "position": "TE",
@@ -5767,7 +5713,7 @@
       "longestReception": 11
     },
     {
-      "rank": 213,
+      "rank": 211,
       "playerId": "4718",
       "playerName": "Dare Ogunbowale",
       "position": "TE",
@@ -5794,7 +5740,7 @@
       "longestReception": 18
     },
     {
-      "rank": 214,
+      "rank": 212,
       "playerId": "8177",
       "playerName": "Grant Calcaterra",
       "position": "TE",
@@ -5821,7 +5767,7 @@
       "longestReception": 16
     },
     {
-      "rank": 215,
+      "rank": 213,
       "playerId": "2381",
       "playerName": "Chris Conley",
       "position": "TE",
@@ -5848,7 +5794,7 @@
       "longestReception": 23
     },
     {
-      "rank": 216,
+      "rank": 214,
       "playerId": "947",
       "playerName": "Julio Jones",
       "position": "TE",
@@ -5875,7 +5821,7 @@
       "longestReception": 22
     },
     {
-      "rank": 217,
+      "rank": 215,
       "playerId": "4973",
       "playerName": "Hayden Hurst",
       "position": "TE",
@@ -5902,7 +5848,7 @@
       "longestReception": 27
     },
     {
-      "rank": 218,
+      "rank": 216,
       "playerId": "8500",
       "playerName": "John FitzPatrick",
       "position": "TE",
@@ -5929,7 +5875,7 @@
       "longestReception": 11
     },
     {
-      "rank": 219,
+      "rank": 217,
       "playerId": "2750",
       "playerName": "DeAndre Carter",
       "position": "TE",
@@ -5956,7 +5902,7 @@
       "longestReception": 14
     },
     {
-      "rank": 220,
+      "rank": 218,
       "playerId": "2410",
       "playerName": "Jamison Crowder",
       "position": "TE",
@@ -5983,7 +5929,7 @@
       "longestReception": 12
     },
     {
-      "rank": 221,
+      "rank": 219,
       "playerId": "11378",
       "playerName": "Jordan Mims",
       "position": "TE",
@@ -6010,7 +5956,7 @@
       "longestReception": 25
     },
     {
-      "rank": 222,
+      "rank": 220,
       "playerId": "5695",
       "playerName": "Brandon Powell",
       "position": "TE",
@@ -6037,7 +5983,7 @@
       "longestReception": 13
     },
     {
-      "rank": 223,
+      "rank": 221,
       "playerId": "3164",
       "playerName": "Ezekiel Elliott",
       "position": "TE",
@@ -6064,7 +6010,7 @@
       "longestReception": 15
     },
     {
-      "rank": 224,
+      "rank": 222,
       "playerId": "11570",
       "playerName": "Rasheen Ali",
       "position": "TE",
@@ -6091,7 +6037,7 @@
       "longestReception": 30
     },
     {
-      "rank": 225,
+      "rank": 223,
       "playerId": "7607",
       "playerName": "Mi.Carter",
       "position": "TE",
@@ -6118,7 +6064,7 @@
       "longestReception": 10
     },
     {
-      "rank": 226,
+      "rank": 224,
       "playerId": "10221",
       "playerName": "Ronnie Bell",
       "position": "TE",
@@ -6145,7 +6091,7 @@
       "longestReception": 20
     },
     {
-      "rank": 227,
+      "rank": 225,
       "playerId": "11921",
       "playerName": "Xavier Weaver",
       "position": "TE",
@@ -6172,7 +6118,7 @@
       "longestReception": 23
     },
     {
-      "rank": 228,
+      "rank": 226,
       "playerId": "1346",
       "playerName": "Marquise Goodwin",
       "position": "TE",
@@ -6199,7 +6145,7 @@
       "longestReception": 57
     },
     {
-      "rank": 229,
+      "rank": 227,
       "playerId": "7757",
       "playerName": "Ben Skowronek",
       "position": "TE",
@@ -6226,7 +6172,7 @@
       "longestReception": 20
     },
     {
-      "rank": 230,
+      "rank": 228,
       "playerId": "6957",
       "playerName": "James Proche",
       "position": "TE",
@@ -6253,7 +6199,7 @@
       "longestReception": 23
     },
     {
-      "rank": 231,
+      "rank": 229,
       "playerId": "8202",
       "playerName": "Michael Woods",
       "position": "TE",
@@ -6280,7 +6226,7 @@
       "longestReception": 16
     },
     {
-      "rank": 232,
+      "rank": 230,
       "playerId": "4443",
       "playerName": "Pharaoh Brown",
       "position": "TE",
@@ -6307,7 +6253,7 @@
       "longestReception": 17
     },
     {
-      "rank": 233,
+      "rank": 231,
       "playerId": null,
       "playerName": "Michael Burton",
       "position": "TE",
@@ -6334,7 +6280,7 @@
       "longestReception": 28
     },
     {
-      "rank": 234,
+      "rank": 232,
       "playerId": "5096",
       "playerName": "Ray-Ray McCloud",
       "position": "TE",
@@ -6361,7 +6307,7 @@
       "longestReception": 24
     },
     {
-      "rank": 235,
+      "rank": 233,
       "playerId": null,
       "playerName": "Scott Miller",
       "position": "TE",
@@ -6388,7 +6334,7 @@
       "longestReception": 15
     },
     {
-      "rank": 236,
+      "rank": 234,
       "playerId": "4149",
       "playerName": "Jamaal Williams",
       "position": "TE",
@@ -6415,7 +6361,7 @@
       "longestReception": 12
     },
     {
-      "rank": 237,
+      "rank": 235,
       "playerId": "8207",
       "playerName": "Tyler Goodson",
       "position": "TE",
@@ -6442,7 +6388,7 @@
       "longestReception": 24
     },
     {
-      "rank": 238,
+      "rank": 236,
       "playerId": "6814",
       "playerName": "Laviska Shenault",
       "position": "TE",
@@ -6469,7 +6415,7 @@
       "longestReception": 14
     },
     {
-      "rank": 239,
+      "rank": 237,
       "playerId": "5985",
       "playerName": "Foster Moreau",
       "position": "TE",
@@ -6496,7 +6442,7 @@
       "longestReception": 16
     },
     {
-      "rank": 240,
+      "rank": 238,
       "playerId": "6996",
       "playerName": "Jamycal Hasty",
       "position": "TE",
@@ -6523,7 +6469,7 @@
       "longestReception": 16
     },
     {
-      "rank": 241,
+      "rank": 239,
       "playerId": "2460",
       "playerName": "C.J. Uzomah",
       "position": "TE",
@@ -6550,7 +6496,7 @@
       "longestReception": 19
     },
     {
-      "rank": 242,
+      "rank": 240,
       "playerId": "7066",
       "playerName": "K.J. Osborn",
       "position": "TE",
@@ -6577,7 +6523,7 @@
       "longestReception": 22
     },
     {
-      "rank": 243,
+      "rank": 241,
       "playerId": "11577",
       "playerName": "Will Shipley",
       "position": "TE",
@@ -6604,7 +6550,7 @@
       "longestReception": 12
     },
     {
-      "rank": 244,
+      "rank": 242,
       "playerId": "6894",
       "playerName": "Mitchell Wilcox",
       "position": "TE",
@@ -6631,7 +6577,7 @@
       "longestReception": 12
     },
     {
-      "rank": 245,
+      "rank": 243,
       "playerId": "2078",
       "playerName": "Odell Beckham",
       "position": "TE",
@@ -6658,7 +6604,7 @@
       "longestReception": 11
     },
     {
-      "rank": 246,
+      "rank": 244,
       "playerId": "6323",
       "playerName": "Andrew Beck",
       "position": "TE",
@@ -6674,9 +6620,9 @@
       "yardsAfterCatch": 37.0,
       "yardsAfterCatchPerReception": 3.36,
       "brokenTackles": 1,
-      "targets": 14,
+      "targets": 13,
       "targetSharePct": null,
-      "redZoneTargets": 6,
+      "redZoneTargets": 5,
       "receptions10Plus": null,
       "receptions20Plus": null,
       "receptions30Plus": null,
@@ -6685,7 +6631,7 @@
       "longestReception": 26
     },
     {
-      "rank": 247,
+      "rank": 245,
       "playerId": "4435",
       "playerName": "Anthony Firkser",
       "position": "TE",
@@ -6712,7 +6658,7 @@
       "longestReception": 18
     },
     {
-      "rank": 248,
+      "rank": 246,
       "playerId": "5008",
       "playerName": "Durham Smythe",
       "position": "TE",
@@ -6739,7 +6685,7 @@
       "longestReception": 8
     },
     {
-      "rank": 249,
+      "rank": 247,
       "playerId": "8140",
       "playerName": "Justyn Ross",
       "position": "TE",
@@ -6766,7 +6712,7 @@
       "longestReception": 20
     },
     {
-      "rank": 250,
+      "rank": 248,
       "playerId": null,
       "playerName": "Alec Ingold",
       "position": "TE",
@@ -6793,7 +6739,7 @@
       "longestReception": 22
     },
     {
-      "rank": 251,
+      "rank": 249,
       "playerId": "6938",
       "playerName": "Cam Akers",
       "position": "TE",
@@ -6820,7 +6766,7 @@
       "longestReception": 9
     },
     {
-      "rank": 252,
+      "rank": 250,
       "playerId": "12670",
       "playerName": "KeAndre Lambert-Smith",
       "position": "TE",
@@ -6847,7 +6793,7 @@
       "longestReception": 18
     },
     {
-      "rank": 253,
+      "rank": 251,
       "playerId": "6886",
       "playerName": "Chase Claypool",
       "position": "TE",
@@ -6874,7 +6820,7 @@
       "longestReception": 20
     },
     {
-      "rank": 254,
+      "rank": 252,
       "playerId": "7559",
       "playerName": "Ihmir Smith-Marsette",
       "position": "TE",
@@ -6901,7 +6847,7 @@
       "longestReception": 18
     },
     {
-      "rank": 255,
+      "rank": 253,
       "playerId": "7064",
       "playerName": "Darrynton Evans",
       "position": "TE",
@@ -6928,7 +6874,7 @@
       "longestReception": 17
     },
     {
-      "rank": 256,
+      "rank": 254,
       "playerId": "11433",
       "playerName": "Nate Adkins",
       "position": "TE",
@@ -6955,7 +6901,7 @@
       "longestReception": 16
     },
     {
-      "rank": 257,
+      "rank": 255,
       "playerId": "13100",
       "playerName": "Em.Wilson",
       "position": "TE",
@@ -6982,7 +6928,7 @@
       "longestReception": 30
     },
     {
-      "rank": 258,
+      "rank": 256,
       "playerId": "7946",
       "playerName": "Jack Stoll",
       "position": "TE",
@@ -7009,7 +6955,7 @@
       "longestReception": 13
     },
     {
-      "rank": 259,
+      "rank": 257,
       "playerId": "7746",
       "playerName": "Austin Trammell",
       "position": "TE",
@@ -7036,7 +6982,7 @@
       "longestReception": 18
     },
     {
-      "rank": 260,
+      "rank": 258,
       "playerId": "7075",
       "playerName": "Charlie Woerner",
       "position": "TE",
@@ -7063,7 +7009,7 @@
       "longestReception": 13
     },
     {
-      "rank": 261,
+      "rank": 259,
       "playerId": "9227",
       "playerName": "Israel Abanikanda",
       "position": "TE",
@@ -7090,14 +7036,14 @@
       "longestReception": 13
     },
     {
-      "rank": 262,
+      "rank": 260,
       "playerId": "11474",
       "playerName": "Dylan Drummond",
       "position": "TE",
       "team": "ATL",
       "age": null,
       "season": "2025",
-      "games": 4,
+      "games": 3,
       "receptions": 7,
       "receivingYards": 42,
       "yardsPerReception": 6.0,
@@ -7106,9 +7052,9 @@
       "yardsAfterCatch": 14.0,
       "yardsAfterCatchPerReception": 2.0,
       "brokenTackles": null,
-      "targets": 12,
+      "targets": 11,
       "targetSharePct": null,
-      "redZoneTargets": 4,
+      "redZoneTargets": 3,
       "receptions10Plus": null,
       "receptions20Plus": null,
       "receptions30Plus": null,
@@ -7117,34 +7063,7 @@
       "longestReception": 15
     },
     {
-      "rank": 263,
-      "playerId": "928",
-      "playerName": "Randall Cobb",
-      "position": "TE",
-      "team": "NYJ",
-      "age": null,
-      "season": "2023",
-      "games": 9,
-      "receptions": 5,
-      "receivingYards": 41,
-      "yardsPerReception": 8.2,
-      "yardsBeforeCatch": null,
-      "yardsBeforeCatchPerReception": null,
-      "yardsAfterCatch": 23.0,
-      "yardsAfterCatchPerReception": 4.6,
-      "brokenTackles": null,
-      "targets": 18,
-      "targetSharePct": null,
-      "redZoneTargets": 5,
-      "receptions10Plus": null,
-      "receptions20Plus": null,
-      "receptions30Plus": null,
-      "receptions40Plus": null,
-      "receptions50Plus": null,
-      "longestReception": 15
-    },
-    {
-      "rank": 264,
+      "rank": 261,
       "playerId": "2446",
       "playerName": "MyCole Pruitt",
       "position": "TE",
@@ -7171,7 +7090,7 @@
       "longestReception": 18
     },
     {
-      "rank": 265,
+      "rank": 262,
       "playerId": "2399",
       "playerName": "Ty Montgomery",
       "position": "TE",
@@ -7198,14 +7117,14 @@
       "longestReception": 17
     },
     {
-      "rank": 266,
+      "rank": 263,
       "playerId": "11306",
       "playerName": "Xavier Gipson",
       "position": "TE",
       "team": "NYJ",
       "age": null,
       "season": "2024",
-      "games": 7,
+      "games": 6,
       "receptions": 6,
       "receivingYards": 39,
       "yardsPerReception": 6.5,
@@ -7214,9 +7133,9 @@
       "yardsAfterCatch": 22.0,
       "yardsAfterCatchPerReception": 3.67,
       "brokenTackles": null,
-      "targets": 11,
+      "targets": 10,
       "targetSharePct": null,
-      "redZoneTargets": 2,
+      "redZoneTargets": 1,
       "receptions10Plus": null,
       "receptions20Plus": null,
       "receptions30Plus": null,
@@ -7225,7 +7144,34 @@
       "longestReception": 17
     },
     {
-      "rank": 267,
+      "rank": 264,
+      "playerId": "928",
+      "playerName": "Randall Cobb",
+      "position": "TE",
+      "team": "NYJ",
+      "age": null,
+      "season": "2023",
+      "games": 9,
+      "receptions": 5,
+      "receivingYards": 39,
+      "yardsPerReception": 7.8,
+      "yardsBeforeCatch": null,
+      "yardsBeforeCatchPerReception": null,
+      "yardsAfterCatch": 23.0,
+      "yardsAfterCatchPerReception": 4.6,
+      "brokenTackles": null,
+      "targets": 17,
+      "targetSharePct": null,
+      "redZoneTargets": 4,
+      "receptions10Plus": null,
+      "receptions20Plus": null,
+      "receptions30Plus": null,
+      "receptions40Plus": null,
+      "receptions50Plus": null,
+      "longestReception": 15
+    },
+    {
+      "rank": 265,
       "playerId": "11636",
       "playerName": "J.Wilson",
       "position": "TE",
@@ -7252,7 +7198,7 @@
       "longestReception": 9
     },
     {
-      "rank": 268,
+      "rank": 266,
       "playerId": "4089",
       "playerName": "Gerald Everett",
       "position": "TE",
@@ -7279,7 +7225,7 @@
       "longestReception": 17
     },
     {
-      "rank": 269,
+      "rank": 267,
       "playerId": "9497",
       "playerName": "Jalin Hyatt",
       "position": "TE",
@@ -7306,7 +7252,7 @@
       "longestReception": 14
     },
     {
-      "rank": 270,
+      "rank": 268,
       "playerId": "1067",
       "playerName": "Marvin Jones",
       "position": "TE",
@@ -7333,7 +7279,7 @@
       "longestReception": 16
     },
     {
-      "rank": 271,
+      "rank": 269,
       "playerId": "6032",
       "playerName": "Keelan Doss",
       "position": "TE",
@@ -7360,7 +7306,7 @@
       "longestReception": 9
     },
     {
-      "rank": 272,
+      "rank": 270,
       "playerId": "7045",
       "playerName": "Joshua Kelley",
       "position": "TE",
@@ -7387,7 +7333,7 @@
       "longestReception": 6
     },
     {
-      "rank": 273,
+      "rank": 271,
       "playerId": "5773",
       "playerName": "KhaDarel Hodge",
       "position": "TE",
@@ -7414,7 +7360,7 @@
       "longestReception": 16
     },
     {
-      "rank": 274,
+      "rank": 272,
       "playerId": "4951",
       "playerName": "DJ Chark",
       "position": "TE",
@@ -7441,7 +7387,7 @@
       "longestReception": 12
     },
     {
-      "rank": 275,
+      "rank": 273,
       "playerId": "11582",
       "playerName": "Carson Steele",
       "position": "TE",
@@ -7468,7 +7414,7 @@
       "longestReception": 9
     },
     {
-      "rank": 276,
+      "rank": 274,
       "playerId": "6963",
       "playerName": "Patrick Taylor",
       "position": "TE",
@@ -7495,7 +7441,7 @@
       "longestReception": 12
     },
     {
-      "rank": 277,
+      "rank": 275,
       "playerId": "4319",
       "playerName": "Zach Pascal",
       "position": "TE",
@@ -7522,7 +7468,7 @@
       "longestReception": 9
     },
     {
-      "rank": 278,
+      "rank": 276,
       "playerId": "6598",
       "playerName": "Trenton Irwin",
       "position": "TE",

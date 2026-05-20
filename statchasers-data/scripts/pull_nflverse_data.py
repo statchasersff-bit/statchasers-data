@@ -45,7 +45,17 @@ PBP_COLUMNS = [
     "posteam", "defteam", "play_type",
     "yards_gained", "air_yards", "yards_after_catch",
     "epa", "success", "touchdown",
+    # Touchdown disambiguation — distinguish offensive credited TDs from
+    # defensive return TDs (pick-6 / fumble-six).  Without these the only TD
+    # column is the generic `touchdown` which inflates passer / receiver /
+    # rusher credited TDs when defenders score on the same play.
+    "pass_touchdown", "rush_touchdown",
+    "td_player_id", "td_player_name", "td_team",
     "pass_attempt", "rush_attempt", "complete_pass", "incomplete_pass", "sack", "interception",
+    # Filterable non-attempt plays: 2-pt conversions, kneeldowns, spikes —
+    # all of these would otherwise leak into RZ-attempts / pass-attempts
+    # counts and diverge from official NFL box-score numbers.
+    "two_point_attempt", "qb_kneel", "qb_spike",
     "passer_player_id", "passer_player_name",
     "rusher_player_id", "rusher_player_name",
     "receiver_player_id", "receiver_player_name",
