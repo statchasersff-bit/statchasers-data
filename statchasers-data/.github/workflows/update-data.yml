@@ -53,6 +53,9 @@ jobs:
       - name: Build QB trends output
         run: python scripts/build_qb_trends.py
 
+      - name: Build QB advanced stats output
+        run: python scripts/build_qb_advanced_stats.py
+
       - name: Build RB advanced stats output
         run: python scripts/build_rb_advanced_stats.py
 
@@ -87,6 +90,11 @@ jobs:
           git add output/performance_analytics_2025.json
           git add output/stat_explorer_*.json
           git add output/qb_trends.json
+          git add output/qb_advanced_stats.json
+          git add output/qb_advanced_stats_2023.json
+          git add output/qb_advanced_stats_2024.json
+          git add output/qb_advanced_stats_2025.json
+          git add output/qb_advanced_stats_all.json
           git add output/rb_advanced_stats.json
           git add output/rb_advanced_stats_2023.json
           git add output/rb_advanced_stats_2024.json

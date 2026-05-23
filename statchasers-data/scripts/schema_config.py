@@ -503,6 +503,8 @@ _NAME_ALIASES: dict[str, str] = {
     "Gabriel Davis":     "Gabe Davis",
     "Oronde Gadsden II": "Oronde Gadsden",
     "Kyle Juszczyk":     "Kyle Juszczyk",
+    "Michael Penix Jr.": "Michael Penix",
+    "Joe Milton III":    "Joe Milton",
 }
 
 

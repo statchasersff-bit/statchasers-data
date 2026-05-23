@@ -32,9 +32,12 @@ except ImportError:
 OUTPUT_DIR              = os.path.join(os.path.dirname(__file__), "..", "data", "raw")
 PBP_OUTPUT_PATH         = os.path.join(OUTPUT_DIR, "nflverse_play_by_play.parquet")
 STATS_OUTPUT_PATH       = os.path.join(OUTPUT_DIR, "nflverse_player_stats.parquet")
+STATS_SEASON_PATH       = os.path.join(OUTPUT_DIR, "nflverse_player_stats_season.parquet")
 PFR_PASS_PATH           = os.path.join(OUTPUT_DIR, "pfr_pass_advstats.parquet")
+PFR_PASS_SEASON_PATH    = os.path.join(OUTPUT_DIR, "pfr_pass_advstats_season.parquet")
 PFR_RUSH_PATH           = os.path.join(OUTPUT_DIR, "pfr_rush_advstats.parquet")
 PFR_REC_PATH            = os.path.join(OUTPUT_DIR, "pfr_rec_advstats.parquet")
+NGS_PASSING_PATH        = os.path.join(OUTPUT_DIR, "ngs_passing.parquet")
 PLAYERS_OUTPUT_PATH     = os.path.join(OUTPUT_DIR, "nflverse_players.parquet")
 PARTICIPATION_OUTPUT    = os.path.join(OUTPUT_DIR, "nflverse_participation.parquet")
 SNAP_COUNTS_OUTPUT      = os.path.join(OUTPUT_DIR, "nflverse_snap_counts.parquet")
@@ -73,6 +76,27 @@ STATS_COLUMNS = [
     "season", "week", "season_type",
     "receiving_routes_run",
     "offense_snaps", "snap_counts_offense",
+]
+
+# Season-level (summary_level="reg") player stats retained for the QB Advanced
+# Stats builder — raw counting stats, fantasy points, fumbles, sack data.
+STATS_SEASON_COLUMNS = [
+    "player_id", "player_name", "player_display_name",
+    "position", "recent_team", "season", "games",
+    "completions", "attempts", "passing_yards", "passing_tds",
+    "passing_interceptions", "passing_air_yards", "passing_cpoe",
+    "sacks_suffered", "sack_yards_lost", "sack_fumbles", "sack_fumbles_lost",
+    "carries", "rushing_yards", "rushing_tds",
+    "rushing_fumbles", "rushing_fumbles_lost",
+    "fantasy_points", "fantasy_points_ppr",
+]
+
+# NextGen Stats passing columns — source for avg_time_to_throw.
+NGS_PASSING_COLUMNS = [
+    "season", "season_type", "week",
+    "player_gsis_id", "player_display_name", "player_position", "team_abbr",
+    "avg_time_to_throw", "avg_completed_air_yards", "avg_intended_air_yards",
+    "aggressiveness", "attempts",
 ]
 
 SEASONS = [2023, 2024, 2025]
@@ -125,6 +149,77 @@ def fetch_player_stats(seasons: list[int]) -> pl.DataFrame | None:
 
     combined = pl.concat(all_frames, how="diagonal_relaxed")
     return combined
+
+
+def fetch_player_stats_season(seasons: list[int]) -> pl.DataFrame | None:
+    """Load regular-season season-total player stats (summary_level='reg').
+
+    Source for the QB Advanced Stats builder: raw counting stats, fantasy
+    points, fumbles and sack data already aggregated to one row per
+    (player, season).
+    """
+    all_frames = []
+    for season in seasons:
+        print(f"Loading season-total player stats for {season} season...")
+        try:
+            stats = nfl.load_player_stats(seasons=[season], summary_level="reg")
+            available_cols = [c for c in STATS_SEASON_COLUMNS if c in stats.columns]
+            stats = stats.select(available_cols)
+            all_frames.append(stats)
+            print(f"  Loaded {stats.height:,} season-total rows for {season} "
+                  f"({len(available_cols)} cols).")
+        except Exception as e:
+            print(f"  WARNING: Could not load {season} season-total stats: {e}",
+                  file=sys.stderr)
+
+    if not all_frames:
+        print("WARNING: No season-total player stats loaded.", file=sys.stderr)
+        return None
+    return pl.concat(all_frames, how="diagonal_relaxed")
+
+
+def fetch_pfr_pass_season(seasons: list[int]) -> pl.DataFrame | None:
+    """Load seasonal PFR advanced passing stats (summary_level='season').
+
+    The seasonal table carries pocket_time, pressure_pct, scrambles and the
+    blitz/hurry/hit/pressure counts that the weekly PFR advstats table omits.
+    """
+    print(f"Loading seasonal PFR pass advstats for {seasons}...")
+    try:
+        df = nfl.load_pfr_advstats(seasons, stat_type="pass", summary_level="season")
+        print(f"  Loaded {df.height:,} seasonal PFR passing rows.")
+        return df
+    except Exception as e:
+        print(f"  WARNING: Could not load seasonal PFR pass advstats: {e}",
+              file=sys.stderr)
+        return None
+
+
+def fetch_ngs_passing(seasons: list[int]) -> pl.DataFrame | None:
+    """Load NextGen Stats passing and keep only the season rows (week == 0).
+
+    Source for avg_time_to_throw in the QB Advanced Stats builder.
+    """
+    all_frames = []
+    for season in seasons:
+        print(f"Loading NextGen passing stats for {season} season...")
+        try:
+            ngs = nfl.load_nextgen_stats(seasons=[season], stat_type="passing")
+            if "week" in ngs.columns:
+                ngs = ngs.filter(pl.col("week") == 0)        # season aggregate row
+            if "season_type" in ngs.columns:
+                ngs = ngs.filter(pl.col("season_type") == "REG")
+            available = [c for c in NGS_PASSING_COLUMNS if c in ngs.columns]
+            ngs = ngs.select(available)
+            all_frames.append(ngs)
+            print(f"  Loaded {ngs.height:,} NGS passing season rows for {season}.")
+        except Exception as e:
+            print(f"  WARNING: Could not load {season} NGS passing: {e}", file=sys.stderr)
+
+    if not all_frames:
+        print("WARNING: No NGS passing data loaded.", file=sys.stderr)
+        return None
+    return pl.concat(all_frames, how="diagonal_relaxed")
 
 
 def save_parquet(df: pl.DataFrame, path: str, label: str) -> None:
@@ -222,9 +317,9 @@ def fetch_players() -> pl.DataFrame | None:
     print("Loading nflverse player registry...")
     try:
         players = nfl.load_players()
-        keep = ["gsis_id", "display_name", "short_name", "position",
-                "years_of_experience", "rookie_season", "last_season",
-                "latest_team", "status"]
+        keep = ["gsis_id", "pfr_id", "display_name", "short_name", "position",
+                "birth_date", "years_of_experience", "rookie_season",
+                "last_season", "latest_team", "status"]
         available = [c for c in keep if c in players.columns]
         players = players.select(available)
         skill = players.filter(
@@ -245,6 +340,10 @@ def main():
     if stats_df is not None:
         save_parquet(stats_df, STATS_OUTPUT_PATH, "player stats")
 
+    stats_season_df = fetch_player_stats_season(SEASONS)
+    if stats_season_df is not None:
+        save_parquet(stats_season_df, STATS_SEASON_PATH, "season-total player stats")
+
     pfr = fetch_pfr_advstats(SEASONS)
     pfr_paths = {
         "pass": PFR_PASS_PATH,
@@ -254,6 +353,14 @@ def main():
     for stat_type, df in pfr.items():
         if not df.is_empty():
             save_parquet(df, pfr_paths[stat_type], f"PFR {stat_type} advstats")
+
+    pfr_pass_season_df = fetch_pfr_pass_season(SEASONS)
+    if pfr_pass_season_df is not None and not pfr_pass_season_df.is_empty():
+        save_parquet(pfr_pass_season_df, PFR_PASS_SEASON_PATH, "seasonal PFR pass advstats")
+
+    ngs_passing_df = fetch_ngs_passing(SEASONS)
+    if ngs_passing_df is not None and not ngs_passing_df.is_empty():
+        save_parquet(ngs_passing_df, NGS_PASSING_PATH, "NGS passing")
 
     players_df = fetch_players()
     if players_df is not None:

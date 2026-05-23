@@ -140,9 +140,25 @@ exists on disk.
 - Used to compute: player age, identity matching
 
 ### nflverse / nflfastR (via `nflreadpy`)
-- Play-by-play data for 2024 and 2025 seasons
+- Play-by-play data for 2023, 2024 and 2025 seasons
 - Provides: EPA, success rate, yards, air yards, targets, rush attempts, touchdowns, snap data
 - Automatically downloaded via `nflreadpy.load_pbp()` and `nflreadpy.load_player_stats()`
+- **Season-total player stats** (`load_player_stats(summary_level="reg")`) → `nflverse_player_stats_season.parquet`: raw counting stats, fantasy points, fumbles, sack data (QB Advanced Stats)
+- **Seasonal PFR advanced passing** (`load_pfr_advstats(stat_type="pass", summary_level="season")`) → `pfr_pass_advstats_season.parquet`: pocket time, pressure %, blitzes, hurries, knockdowns, scrambles
+- **NextGen passing** (`load_nextgen_stats(stat_type="passing")`, season row) → `ngs_passing.parquet`: average time to throw
+
+### QB Advanced Stats dataset
+`build_qb_advanced_stats.py` produces `output/qb_advanced_stats_{2023,2024,2025,all}.json`
+(+ `qb_advanced_stats.json` alias for 2025) — a volume / pressure leaderboard
+covering every QB with ≥1 regular-season pass attempt. Columns include the
+shared identity fields (`playerId`, `playerName`, `position`, `team`, `age`,
+`season`, `games`), passing & rushing counting stats, distance buckets,
+deep-attempt %, fantasy points, efficiency metrics (`epaPerPlay`, `successRate`,
+`cpoe`), and PFR/NextGen pressure metrics (pocket time, time to throw,
+blitz/hurry/knockdown counts, pressure %). `epaPerPlay` and `successRate` use
+the same official-dropback (sacks-excluded) definition as the canonical
+efficiency tab, so a QB reports identical values across both datasets; `cpoe`
+is the season completion-percentage-over-expected from `passing_cpoe`.
 
 ---
 
