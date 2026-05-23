@@ -228,6 +228,8 @@ def build(pbp_path: Path, sleeper_path: Path) -> list[dict]:
     print("Loading play-by-play data...")
     pbp = pd.read_parquet(pbp_path)
     pbp25 = pbp[(pbp["season"] == SEASON) & (pbp["season_type"] == "REG")].copy()  # regular season only
+    if "two_point_attempt" in pbp25.columns:
+        pbp25 = pbp25[pbp25["two_point_attempt"].fillna(0) != 1].copy()
     print(f"  {len(pbp25):,} plays for {SEASON}.")
 
     print("Loading Sleeper players...")
@@ -372,7 +374,10 @@ def build(pbp_path: Path, sleeper_path: Path) -> list[dict]:
             continue
 
         grp = grp.sort_values("week").reset_index(drop=True)
-        games = int(len(grp))
+        # Count games with a rushing attempt — matches the other RB tabs
+        # (advanced_stats, overview, efficiency) for cross-tab GP consistency.
+        # Pass-only games still show up in per-game touches series below.
+        games = int((grp["rush_att"] > 0).sum())
 
         # Season totals
         season_rush_att    = int(grp["rush_att"].sum())

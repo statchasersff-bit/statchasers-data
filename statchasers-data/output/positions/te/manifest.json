@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
   "position": "TE",
-  "generatedAt": "2026-05-20T19:37:35Z",
+  "generatedAt": "2026-05-23T17:03:50Z",
   "tabs": {
     "overview": [
       "2023",
@@ -41,96 +41,96 @@
       "season": "2023",
       "filename": "overview_2023.json",
       "path": "positions/te/overview_2023.json",
-      "rowCount": 85,
-      "bytes": 69844
+      "rowCount": 82,
+      "bytes": 67394
     },
     {
       "tab": "overview",
       "season": "2024",
       "filename": "overview_2024.json",
       "path": "positions/te/overview_2024.json",
-      "rowCount": 87,
-      "bytes": 71477
+      "rowCount": 86,
+      "bytes": 70668
     },
     {
       "tab": "overview",
       "season": "2025",
       "filename": "overview_2025.json",
       "path": "positions/te/overview_2025.json",
-      "rowCount": 88,
-      "bytes": 72552
+      "rowCount": 86,
+      "bytes": 70925
     },
     {
       "tab": "overview",
       "season": "all",
       "filename": "overview_all.json",
       "path": "positions/te/overview_all.json",
-      "rowCount": 119,
-      "bytes": 97757
+      "rowCount": 115,
+      "bytes": 94520
     },
     {
       "tab": "efficiency",
       "season": "2023",
       "filename": "efficiency_2023.json",
       "path": "positions/te/efficiency_2023.json",
-      "rowCount": 85,
-      "bytes": 70175
+      "rowCount": 82,
+      "bytes": 67729
     },
     {
       "tab": "efficiency",
       "season": "2024",
       "filename": "efficiency_2024.json",
       "path": "positions/te/efficiency_2024.json",
-      "rowCount": 87,
-      "bytes": 71822
+      "rowCount": 86,
+      "bytes": 70993
     },
     {
       "tab": "efficiency",
       "season": "2025",
       "filename": "efficiency_2025.json",
       "path": "positions/te/efficiency_2025.json",
-      "rowCount": 88,
-      "bytes": 72819
+      "rowCount": 86,
+      "bytes": 71191
     },
     {
       "tab": "efficiency",
       "season": "all",
       "filename": "efficiency_all.json",
       "path": "positions/te/efficiency_all.json",
-      "rowCount": 119,
-      "bytes": 98099
+      "rowCount": 115,
+      "bytes": 94844
     },
     {
       "tab": "usage",
       "season": "2023",
       "filename": "usage_2023.json",
       "path": "positions/te/usage_2023.json",
-      "rowCount": 120,
-      "bytes": 75407
+      "rowCount": 112,
+      "bytes": 70440
     },
     {
       "tab": "usage",
       "season": "2024",
       "filename": "usage_2024.json",
       "path": "positions/te/usage_2024.json",
-      "rowCount": 121,
-      "bytes": 76109
+      "rowCount": 117,
+      "bytes": 73659
     },
     {
       "tab": "usage",
       "season": "2025",
       "filename": "usage_2025.json",
       "path": "positions/te/usage_2025.json",
-      "rowCount": 126,
-      "bytes": 79363
+      "rowCount": 123,
+      "bytes": 77511
     },
     {
       "tab": "usage",
       "season": "all",
       "filename": "usage_all.json",
       "path": "positions/te/usage_all.json",
-      "rowCount": 174,
-      "bytes": 109350
+      "rowCount": 164,
+      "bytes": 103154
     },
     {
       "tab": "stat_explorer",
@@ -138,7 +138,7 @@
       "filename": "stat_explorer_2023.json",
       "path": "positions/te/stat_explorer_2023.json",
       "rowCount": 193,
-      "bytes": 140828
+      "bytes": 140829
     },
     {
       "tab": "stat_explorer",
@@ -146,23 +146,23 @@
       "filename": "stat_explorer_2024.json",
       "path": "positions/te/stat_explorer_2024.json",
       "rowCount": 166,
-      "bytes": 120890
+      "bytes": 120888
     },
     {
       "tab": "stat_explorer",
       "season": "2025",
       "filename": "stat_explorer_2025.json",
       "path": "positions/te/stat_explorer_2025.json",
-      "rowCount": 118,
-      "bytes": 85846
+      "rowCount": 119,
+      "bytes": 86606
     },
     {
       "tab": "stat_explorer",
       "season": "all",
       "filename": "stat_explorer_all.json",
       "path": "positions/te/stat_explorer_all.json",
-      "rowCount": 276,
-      "bytes": 200989
+      "rowCount": 277,
+      "bytes": 201752
     }
   ]
 }

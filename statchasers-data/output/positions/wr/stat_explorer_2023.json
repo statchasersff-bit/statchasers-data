@@ -4,8 +4,8 @@
     "position": "WR",
     "tab": "stat_explorer",
     "season": "2023",
-    "rowCount": 251,
-    "generatedAt": "2026-05-20T19:37:34Z",
+    "rowCount": 252,
+    "generatedAt": "2026-05-23T17:03:50Z",
     "sourceFiles": [
       "stat_explorer_wr_2023.json",
       "wr_advanced_stats_2023.json"
@@ -84,7 +84,7 @@
       "yardsAfterCatchPerReception": 5.04,
       "brokenTackles": 11,
       "targets": 181,
-      "targetSharePct": 0.277,
+      "targetSharePct": 0.2768,
       "redZoneTargets": 32,
       "receptions10Plus": 73,
       "receptions20Plus": 29,
@@ -111,7 +111,7 @@
       "yardsAfterCatchPerReception": 5.61,
       "brokenTackles": 10,
       "targets": 164,
-      "targetSharePct": 0.257,
+      "targetSharePct": 0.2575,
       "redZoneTargets": 25,
       "receptions10Plus": 60,
       "receptions20Plus": 24,
@@ -138,7 +138,7 @@
       "yardsAfterCatchPerReception": 6.09,
       "brokenTackles": 7,
       "targets": 160,
-      "targetSharePct": 0.2572,
+      "targetSharePct": 0.2593,
       "redZoneTargets": 16,
       "receptions10Plus": 59,
       "receptions20Plus": 25,
@@ -165,7 +165,7 @@
       "yardsAfterCatchPerReception": 4.46,
       "brokenTackles": 9,
       "targets": 158,
-      "targetSharePct": 0.262,
+      "targetSharePct": 0.2625,
       "redZoneTargets": 18,
       "receptions10Plus": 62,
       "receptions20Plus": 21,
@@ -192,7 +192,7 @@
       "yardsAfterCatchPerReception": 5.61,
       "brokenTackles": 9,
       "targets": 136,
-      "targetSharePct": 0.2438,
+      "targetSharePct": 0.2416,
       "redZoneTargets": 12,
       "receptions10Plus": 53,
       "receptions20Plus": 25,
@@ -246,7 +246,7 @@
       "yardsAfterCatchPerReception": 6.86,
       "brokenTackles": 16,
       "targets": 109,
-      "targetSharePct": 0.1708,
+      "targetSharePct": 0.1706,
       "redZoneTargets": 16,
       "receptions10Plus": 48,
       "receptions20Plus": 25,
@@ -273,7 +273,7 @@
       "yardsAfterCatchPerReception": 3.67,
       "brokenTackles": 5,
       "targets": 150,
-      "targetSharePct": 0.2219,
+      "targetSharePct": 0.2222,
       "redZoneTargets": 14,
       "receptions10Plus": 48,
       "receptions20Plus": 19,
@@ -300,7 +300,7 @@
       "yardsAfterCatchPerReception": 4.08,
       "brokenTackles": 2,
       "targets": 136,
-      "targetSharePct": 0.2239,
+      "targetSharePct": 0.2237,
       "redZoneTargets": 16,
       "receptions10Plus": 46,
       "receptions20Plus": 20,
@@ -327,7 +327,7 @@
       "yardsAfterCatchPerReception": 3.76,
       "brokenTackles": 2,
       "targets": 128,
-      "targetSharePct": 0.1937,
+      "targetSharePct": 0.1913,
       "redZoneTargets": 14,
       "receptions10Plus": 47,
       "receptions20Plus": 21,
@@ -354,7 +354,7 @@
       "yardsAfterCatchPerReception": 5.41,
       "brokenTackles": 6,
       "targets": 145,
-      "targetSharePct": 0.2177,
+      "targetSharePct": 0.218,
       "redZoneTargets": 21,
       "receptions10Plus": 48,
       "receptions20Plus": 14,
@@ -381,7 +381,7 @@
       "yardsAfterCatchPerReception": 3.73,
       "brokenTackles": 10,
       "targets": 160,
-      "targetSharePct": 0.2652,
+      "targetSharePct": 0.2653,
       "redZoneTargets": 16,
       "receptions10Plus": 50,
       "receptions20Plus": 10,
@@ -408,7 +408,7 @@
       "yardsAfterCatchPerReception": 4.71,
       "brokenTackles": 3,
       "targets": 156,
-      "targetSharePct": 0.2548,
+      "targetSharePct": 0.2537,
       "redZoneTargets": 20,
       "receptions10Plus": 42,
       "receptions20Plus": 10,
@@ -435,7 +435,7 @@
       "yardsAfterCatchPerReception": 3.26,
       "brokenTackles": 2,
       "targets": 175,
-      "targetSharePct": 0.2922,
+      "targetSharePct": 0.2931,
       "redZoneTargets": 30,
       "receptions10Plus": 47,
       "receptions20Plus": 13,
@@ -462,7 +462,7 @@
       "yardsAfterCatchPerReception": 6.16,
       "brokenTackles": 5,
       "targets": 106,
-      "targetSharePct": 0.1949,
+      "targetSharePct": 0.1956,
       "redZoneTargets": 8,
       "receptions10Plus": 43,
       "receptions20Plus": 22,
@@ -489,7 +489,7 @@
       "yardsAfterCatchPerReception": 3.99,
       "brokenTackles": 3,
       "targets": 138,
-      "targetSharePct": 0.2162,
+      "targetSharePct": 0.2153,
       "redZoneTargets": 12,
       "receptions10Plus": 45,
       "receptions20Plus": 16,
@@ -543,7 +543,7 @@
       "yardsAfterCatchPerReception": 3.82,
       "brokenTackles": 2,
       "targets": 100,
-      "targetSharePct": 0.1473,
+      "targetSharePct": 0.1475,
       "redZoneTargets": 11,
       "receptions10Plus": 42,
       "receptions20Plus": 25,
@@ -597,7 +597,7 @@
       "yardsAfterCatchPerReception": 2.97,
       "brokenTackles": 4,
       "targets": 137,
-      "targetSharePct": 0.2451,
+      "targetSharePct": 0.2455,
       "redZoneTargets": 18,
       "receptions10Plus": 41,
       "receptions20Plus": 15,
@@ -624,7 +624,7 @@
       "yardsAfterCatchPerReception": 3.44,
       "brokenTackles": 8,
       "targets": 168,
-      "targetSharePct": 0.2519,
+      "targetSharePct": 0.2526,
       "redZoneTargets": 19,
       "receptions10Plus": 38,
       "receptions20Plus": 11,
@@ -651,7 +651,7 @@
       "yardsAfterCatchPerReception": 4.53,
       "brokenTackles": 2,
       "targets": 130,
-      "targetSharePct": 0.2141,
+      "targetSharePct": 0.2138,
       "redZoneTargets": 16,
       "receptions10Plus": 43,
       "receptions20Plus": 14,
@@ -678,7 +678,7 @@
       "yardsAfterCatchPerReception": 2.55,
       "brokenTackles": 1,
       "targets": 136,
-      "targetSharePct": 0.206,
+      "targetSharePct": 0.2057,
       "redZoneTargets": 27,
       "receptions10Plus": 43,
       "receptions20Plus": 17,
@@ -705,7 +705,7 @@
       "yardsAfterCatchPerReception": 3.3,
       "brokenTackles": 2,
       "targets": 137,
-      "targetSharePct": 0.2117,
+      "targetSharePct": 0.2104,
       "redZoneTargets": 15,
       "receptions10Plus": 40,
       "receptions20Plus": 9,
@@ -732,7 +732,7 @@
       "yardsAfterCatchPerReception": 5.85,
       "brokenTackles": 3,
       "targets": 104,
-      "targetSharePct": 0.1736,
+      "targetSharePct": 0.1742,
       "redZoneTargets": 9,
       "receptions10Plus": 49,
       "receptions20Plus": 12,
@@ -759,7 +759,7 @@
       "yardsAfterCatchPerReception": 4.43,
       "brokenTackles": 4,
       "targets": 132,
-      "targetSharePct": 0.1878,
+      "targetSharePct": 0.1883,
       "redZoneTargets": 10,
       "receptions10Plus": 41,
       "receptions20Plus": 15,
@@ -813,7 +813,7 @@
       "yardsAfterCatchPerReception": 3.74,
       "brokenTackles": 4,
       "targets": 108,
-      "targetSharePct": 0.1591,
+      "targetSharePct": 0.1593,
       "redZoneTargets": 17,
       "receptions10Plus": 36,
       "receptions20Plus": 15,
@@ -840,7 +840,7 @@
       "yardsAfterCatchPerReception": 2.72,
       "brokenTackles": 2,
       "targets": 110,
-      "targetSharePct": 0.1955,
+      "targetSharePct": 0.193,
       "redZoneTargets": 16,
       "receptions10Plus": 38,
       "receptions20Plus": 17,
@@ -867,7 +867,7 @@
       "yardsAfterCatchPerReception": 2.66,
       "brokenTackles": 1,
       "targets": 122,
-      "targetSharePct": 0.2013,
+      "targetSharePct": 0.199,
       "redZoneTargets": 13,
       "receptions10Plus": 39,
       "receptions20Plus": 9,
@@ -921,7 +921,7 @@
       "yardsAfterCatchPerReception": 5.03,
       "brokenTackles": 9,
       "targets": 108,
-      "targetSharePct": 0.2034,
+      "targetSharePct": 0.2019,
       "redZoneTargets": 15,
       "receptions10Plus": 31,
       "receptions20Plus": 12,
@@ -948,7 +948,7 @@
       "yardsAfterCatchPerReception": 3.41,
       "brokenTackles": 6,
       "targets": 106,
-      "targetSharePct": 0.177,
+      "targetSharePct": 0.1776,
       "redZoneTargets": 16,
       "receptions10Plus": 38,
       "receptions20Plus": 8,
@@ -975,7 +975,7 @@
       "yardsAfterCatchPerReception": 5.23,
       "brokenTackles": 3,
       "targets": 94,
-      "targetSharePct": 0.1547,
+      "targetSharePct": 0.1538,
       "redZoneTargets": 17,
       "receptions10Plus": 29,
       "receptions20Plus": 13,
@@ -1002,7 +1002,7 @@
       "yardsAfterCatchPerReception": 4.33,
       "brokenTackles": 3,
       "targets": 85,
-      "targetSharePct": 0.1278,
+      "targetSharePct": 0.1286,
       "redZoneTargets": 6,
       "receptions10Plus": 29,
       "receptions20Plus": 13,
@@ -1029,7 +1029,7 @@
       "yardsAfterCatchPerReception": 2.64,
       "brokenTackles": 0,
       "targets": 90,
-      "targetSharePct": 0.1602,
+      "targetSharePct": 0.1593,
       "redZoneTargets": 18,
       "receptions10Plus": 32,
       "receptions20Plus": 14,
@@ -1056,7 +1056,7 @@
       "yardsAfterCatchPerReception": 5.46,
       "brokenTackles": 2,
       "targets": 98,
-      "targetSharePct": 0.1581,
+      "targetSharePct": 0.1593,
       "redZoneTargets": 10,
       "receptions10Plus": 28,
       "receptions20Plus": 10,
@@ -1083,7 +1083,7 @@
       "yardsAfterCatchPerReception": 5.96,
       "brokenTackles": 5,
       "targets": 79,
-      "targetSharePct": 0.1304,
+      "targetSharePct": 0.131,
       "redZoneTargets": 4,
       "receptions10Plus": 26,
       "receptions20Plus": 11,
@@ -1110,7 +1110,7 @@
       "yardsAfterCatchPerReception": 5.98,
       "brokenTackles": 4,
       "targets": 87,
-      "targetSharePct": 0.1532,
+      "targetSharePct": 0.154,
       "redZoneTargets": 11,
       "receptions10Plus": 29,
       "receptions20Plus": 10,
@@ -1164,7 +1164,7 @@
       "yardsAfterCatchPerReception": 5.46,
       "brokenTackles": 5,
       "targets": 95,
-      "targetSharePct": 0.1559,
+      "targetSharePct": 0.154,
       "redZoneTargets": 19,
       "receptions10Plus": 24,
       "receptions20Plus": 10,
@@ -1191,7 +1191,7 @@
       "yardsAfterCatchPerReception": 3.28,
       "brokenTackles": 3,
       "targets": 75,
-      "targetSharePct": 0.1166,
+      "targetSharePct": 0.117,
       "redZoneTargets": 7,
       "receptions10Plus": 23,
       "receptions20Plus": 12,
@@ -1245,7 +1245,7 @@
       "yardsAfterCatchPerReception": 2.27,
       "brokenTackles": 1,
       "targets": 96,
-      "targetSharePct": 0.1564,
+      "targetSharePct": 0.1571,
       "redZoneTargets": 18,
       "receptions10Plus": 31,
       "receptions20Plus": 7,
@@ -1326,7 +1326,7 @@
       "yardsAfterCatchPerReception": 2.31,
       "brokenTackles": 0,
       "targets": 81,
-      "targetSharePct": 0.1248,
+      "targetSharePct": 0.1239,
       "redZoneTargets": 12,
       "receptions10Plus": 23,
       "receptions20Plus": 11,
@@ -1353,7 +1353,7 @@
       "yardsAfterCatchPerReception": 5.6,
       "brokenTackles": 0,
       "targets": 76,
-      "targetSharePct": 0.1141,
+      "targetSharePct": 0.1143,
       "redZoneTargets": 12,
       "receptions10Plus": 30,
       "receptions20Plus": 8,
@@ -1380,7 +1380,7 @@
       "yardsAfterCatchPerReception": 3.24,
       "brokenTackles": 4,
       "targets": 104,
-      "targetSharePct": 0.155,
+      "targetSharePct": 0.1555,
       "redZoneTargets": 14,
       "receptions10Plus": 27,
       "receptions20Plus": 9,
@@ -1407,7 +1407,7 @@
       "yardsAfterCatchPerReception": 5.81,
       "brokenTackles": 3,
       "targets": 93,
-      "targetSharePct": 0.151,
+      "targetSharePct": 0.1517,
       "redZoneTargets": 10,
       "receptions10Plus": 27,
       "receptions20Plus": 7,
@@ -1461,7 +1461,7 @@
       "yardsAfterCatchPerReception": 4.19,
       "brokenTackles": 4,
       "targets": 91,
-      "targetSharePct": 0.1294,
+      "targetSharePct": 0.1298,
       "redZoneTargets": 16,
       "receptions10Plus": 21,
       "receptions20Plus": 7,
@@ -1488,7 +1488,7 @@
       "yardsAfterCatchPerReception": 7.23,
       "brokenTackles": 0,
       "targets": 45,
-      "targetSharePct": 0.0758,
+      "targetSharePct": 0.0746,
       "redZoneTargets": 2,
       "receptions10Plus": 25,
       "receptions20Plus": 10,
@@ -1515,7 +1515,7 @@
       "yardsAfterCatchPerReception": 4.33,
       "brokenTackles": 2,
       "targets": 64,
-      "targetSharePct": 0.0997,
+      "targetSharePct": 0.1005,
       "redZoneTargets": 12,
       "receptions10Plus": 26,
       "receptions20Plus": 17,
@@ -1623,7 +1623,7 @@
       "yardsAfterCatchPerReception": 5.41,
       "brokenTackles": 5,
       "targets": 58,
-      "targetSharePct": 0.0945,
+      "targetSharePct": 0.0949,
       "redZoneTargets": 8,
       "receptions10Plus": 26,
       "receptions20Plus": 11,
@@ -1677,7 +1677,7 @@
       "yardsAfterCatchPerReception": 6.76,
       "brokenTackles": 1,
       "targets": 55,
-      "targetSharePct": 0.087,
+      "targetSharePct": 0.0861,
       "redZoneTargets": 7,
       "receptions10Plus": 19,
       "receptions20Plus": 14,
@@ -1704,7 +1704,7 @@
       "yardsAfterCatchPerReception": 4.43,
       "brokenTackles": 1,
       "targets": 64,
-      "targetSharePct": 0.1194,
+      "targetSharePct": 0.1196,
       "redZoneTargets": 11,
       "receptions10Plus": 22,
       "receptions20Plus": 10,
@@ -1785,7 +1785,7 @@
       "yardsAfterCatchPerReception": 3.85,
       "brokenTackles": 1,
       "targets": 75,
-      "targetSharePct": 0.1105,
+      "targetSharePct": 0.1106,
       "redZoneTargets": 11,
       "receptions10Plus": 24,
       "receptions20Plus": 7,
@@ -1839,7 +1839,7 @@
       "yardsAfterCatchPerReception": 4.78,
       "brokenTackles": 5,
       "targets": 78,
-      "targetSharePct": 0.1287,
+      "targetSharePct": 0.1294,
       "redZoneTargets": 3,
       "receptions10Plus": 20,
       "receptions20Plus": 7,
@@ -1866,7 +1866,7 @@
       "yardsAfterCatchPerReception": 2.4,
       "brokenTackles": 1,
       "targets": 66,
-      "targetSharePct": 0.1012,
+      "targetSharePct": 0.1014,
       "redZoneTargets": 6,
       "receptions10Plus": 23,
       "receptions20Plus": 9,
@@ -1893,7 +1893,7 @@
       "yardsAfterCatchPerReception": 2.35,
       "brokenTackles": 0,
       "targets": 83,
-      "targetSharePct": 0.1181,
+      "targetSharePct": 0.1184,
       "redZoneTargets": 12,
       "receptions10Plus": 24,
       "receptions20Plus": 5,
@@ -1920,7 +1920,7 @@
       "yardsAfterCatchPerReception": 3.03,
       "brokenTackles": 1,
       "targets": 65,
-      "targetSharePct": 0.1048,
+      "targetSharePct": 0.1057,
       "redZoneTargets": 6,
       "receptions10Plus": 19,
       "receptions20Plus": 8,
@@ -1974,7 +1974,7 @@
       "yardsAfterCatchPerReception": 6.11,
       "brokenTackles": 1,
       "targets": 44,
-      "targetSharePct": 0.0685,
+      "targetSharePct": 0.0691,
       "redZoneTargets": 4,
       "receptions10Plus": 23,
       "receptions20Plus": 9,
@@ -2001,7 +2001,7 @@
       "yardsAfterCatchPerReception": 2.67,
       "brokenTackles": 0,
       "targets": 67,
-      "targetSharePct": 0.1093,
+      "targetSharePct": 0.1086,
       "redZoneTargets": 5,
       "receptions10Plus": 20,
       "receptions20Plus": 8,
@@ -2055,7 +2055,7 @@
       "yardsAfterCatchPerReception": 2.56,
       "brokenTackles": 2,
       "targets": 64,
-      "targetSharePct": 0.0995,
+      "targetSharePct": 0.0998,
       "redZoneTargets": 9,
       "receptions10Plus": 18,
       "receptions20Plus": 4,
@@ -2082,7 +2082,7 @@
       "yardsAfterCatchPerReception": 4.0,
       "brokenTackles": 2,
       "targets": 67,
-      "targetSharePct": 0.0991,
+      "targetSharePct": 0.0993,
       "redZoneTargets": 8,
       "receptions10Plus": 17,
       "receptions20Plus": 5,
@@ -2109,7 +2109,7 @@
       "yardsAfterCatchPerReception": 3.15,
       "brokenTackles": 1,
       "targets": 75,
-      "targetSharePct": 0.1165,
+      "targetSharePct": 0.1174,
       "redZoneTargets": 11,
       "receptions10Plus": 20,
       "receptions20Plus": 2,
@@ -2163,7 +2163,7 @@
       "yardsAfterCatchPerReception": 2.59,
       "brokenTackles": 1,
       "targets": 35,
-      "targetSharePct": 0.0626,
+      "targetSharePct": 0.0627,
       "redZoneTargets": 1,
       "receptions10Plus": 15,
       "receptions20Plus": 9,
@@ -2190,7 +2190,7 @@
       "yardsAfterCatchPerReception": 3.75,
       "brokenTackles": 0,
       "targets": 53,
-      "targetSharePct": 0.0863,
+      "targetSharePct": 0.0867,
       "redZoneTargets": 13,
       "receptions10Plus": 14,
       "receptions20Plus": 5,
@@ -2217,7 +2217,7 @@
       "yardsAfterCatchPerReception": 3.6,
       "brokenTackles": 1,
       "targets": 85,
-      "targetSharePct": 0.1304,
+      "targetSharePct": 0.1306,
       "redZoneTargets": 3,
       "receptions10Plus": 16,
       "receptions20Plus": 6,
@@ -2244,7 +2244,7 @@
       "yardsAfterCatchPerReception": 3.06,
       "brokenTackles": 3,
       "targets": 57,
-      "targetSharePct": 0.0868,
+      "targetSharePct": 0.0872,
       "redZoneTargets": 6,
       "receptions10Plus": 15,
       "receptions20Plus": 6,
@@ -2271,7 +2271,7 @@
       "yardsAfterCatchPerReception": 5.84,
       "brokenTackles": 1,
       "targets": 61,
-      "targetSharePct": 0.1078,
+      "targetSharePct": 0.1083,
       "redZoneTargets": 8,
       "receptions10Plus": 17,
       "receptions20Plus": 7,
@@ -2325,7 +2325,7 @@
       "yardsAfterCatchPerReception": 5.49,
       "brokenTackles": 2,
       "targets": 55,
-      "targetSharePct": 0.0908,
+      "targetSharePct": 0.0909,
       "redZoneTargets": 6,
       "receptions10Plus": 14,
       "receptions20Plus": 5,
@@ -2352,7 +2352,7 @@
       "yardsAfterCatchPerReception": 3.82,
       "brokenTackles": 2,
       "targets": 55,
-      "targetSharePct": 0.0908,
+      "targetSharePct": 0.0909,
       "redZoneTargets": 0,
       "receptions10Plus": 18,
       "receptions20Plus": 6,
@@ -2406,7 +2406,7 @@
       "yardsAfterCatchPerReception": 4.03,
       "brokenTackles": 2,
       "targets": 45,
-      "targetSharePct": 0.084,
+      "targetSharePct": 0.0841,
       "redZoneTargets": 7,
       "receptions10Plus": 18,
       "receptions20Plus": 4,
@@ -2433,7 +2433,7 @@
       "yardsAfterCatchPerReception": 7.0,
       "brokenTackles": 1,
       "targets": 33,
-      "targetSharePct": 0.0581,
+      "targetSharePct": 0.0584,
       "redZoneTargets": 1,
       "receptions10Plus": 8,
       "receptions20Plus": 6,
@@ -2487,7 +2487,7 @@
       "yardsAfterCatchPerReception": 2.09,
       "brokenTackles": 1,
       "targets": 40,
-      "targetSharePct": 0.066,
+      "targetSharePct": 0.0663,
       "redZoneTargets": 0,
       "receptions10Plus": 11,
       "receptions20Plus": 7,
@@ -2514,7 +2514,7 @@
       "yardsAfterCatchPerReception": 3.42,
       "brokenTackles": 0,
       "targets": 39,
-      "targetSharePct": 0.0627,
+      "targetSharePct": 0.0632,
       "redZoneTargets": 9,
       "receptions10Plus": 15,
       "receptions20Plus": 7,
@@ -2541,7 +2541,7 @@
       "yardsAfterCatchPerReception": 3.82,
       "brokenTackles": 1,
       "targets": 45,
-      "targetSharePct": 0.0823,
+      "targetSharePct": 0.0806,
       "redZoneTargets": 6,
       "receptions10Plus": 13,
       "receptions20Plus": 8,
@@ -2622,7 +2622,7 @@
       "yardsAfterCatchPerReception": 1.84,
       "brokenTackles": 1,
       "targets": 56,
-      "targetSharePct": 0.1045,
+      "targetSharePct": 0.1047,
       "redZoneTargets": 3,
       "receptions10Plus": 17,
       "receptions20Plus": 2,
@@ -2703,7 +2703,7 @@
       "yardsAfterCatchPerReception": 5.4,
       "brokenTackles": 2,
       "targets": 62,
-      "targetSharePct": 0.1043,
+      "targetSharePct": 0.1039,
       "redZoneTargets": 5,
       "receptions10Plus": 13,
       "receptions20Plus": 4,
@@ -2730,7 +2730,7 @@
       "yardsAfterCatchPerReception": 1.47,
       "brokenTackles": 0,
       "targets": 34,
-      "targetSharePct": 0.0568,
+      "targetSharePct": 0.057,
       "redZoneTargets": 4,
       "receptions10Plus": 12,
       "receptions20Plus": 6,
@@ -2784,7 +2784,7 @@
       "yardsAfterCatchPerReception": 1.5,
       "brokenTackles": 0,
       "targets": 64,
-      "targetSharePct": 0.0962,
+      "targetSharePct": 0.0968,
       "redZoneTargets": 11,
       "receptions10Plus": 12,
       "receptions20Plus": 3,
@@ -2811,7 +2811,7 @@
       "yardsAfterCatchPerReception": 4.4,
       "brokenTackles": 0,
       "targets": 32,
-      "targetSharePct": 0.048,
+      "targetSharePct": 0.0481,
       "redZoneTargets": 7,
       "receptions10Plus": 13,
       "receptions20Plus": 7,
@@ -2892,7 +2892,7 @@
       "yardsAfterCatchPerReception": 2.43,
       "brokenTackles": 1,
       "targets": 49,
-      "targetSharePct": 0.0735,
+      "targetSharePct": 0.0737,
       "redZoneTargets": 4,
       "receptions10Plus": 16,
       "receptions20Plus": 5,
@@ -2919,7 +2919,7 @@
       "yardsAfterCatchPerReception": 2.59,
       "brokenTackles": 0,
       "targets": 38,
-      "targetSharePct": 0.0634,
+      "targetSharePct": 0.0637,
       "redZoneTargets": 5,
       "receptions10Plus": 13,
       "receptions20Plus": 5,
@@ -3054,7 +3054,7 @@
       "yardsAfterCatchPerReception": 6.33,
       "brokenTackles": 1,
       "targets": 41,
-      "targetSharePct": 0.0679,
+      "targetSharePct": 0.0687,
       "redZoneTargets": 3,
       "receptions10Plus": 11,
       "receptions20Plus": 3,
@@ -3081,7 +3081,7 @@
       "yardsAfterCatchPerReception": 1.55,
       "brokenTackles": 1,
       "targets": 36,
-      "targetSharePct": 0.0548,
+      "targetSharePct": 0.055,
       "redZoneTargets": 4,
       "receptions10Plus": 9,
       "receptions20Plus": 3,
@@ -3135,7 +3135,7 @@
       "yardsAfterCatchPerReception": 3.24,
       "brokenTackles": 0,
       "targets": 47,
-      "targetSharePct": 0.0776,
+      "targetSharePct": 0.0777,
       "redZoneTargets": 3,
       "receptions10Plus": 10,
       "receptions20Plus": 3,
@@ -3162,7 +3162,7 @@
       "yardsAfterCatchPerReception": 6.08,
       "brokenTackles": 2,
       "targets": 37,
-      "targetSharePct": 0.0618,
+      "targetSharePct": 0.062,
       "redZoneTargets": 5,
       "receptions10Plus": 9,
       "receptions20Plus": 3,
@@ -3189,7 +3189,7 @@
       "yardsAfterCatchPerReception": 3.06,
       "brokenTackles": 0,
       "targets": 30,
-      "targetSharePct": 0.0524,
+      "targetSharePct": 0.0526,
       "redZoneTargets": 2,
       "receptions10Plus": 10,
       "receptions20Plus": 3,
@@ -3243,7 +3243,7 @@
       "yardsAfterCatchPerReception": 1.67,
       "brokenTackles": 0,
       "targets": 18,
-      "targetSharePct": 0.028,
+      "targetSharePct": 0.0281,
       "redZoneTargets": 4,
       "receptions10Plus": 9,
       "receptions20Plus": 5,
@@ -3297,7 +3297,7 @@
       "yardsAfterCatchPerReception": 3.15,
       "brokenTackles": 1,
       "targets": 33,
-      "targetSharePct": 0.0551,
+      "targetSharePct": 0.0553,
       "redZoneTargets": 2,
       "receptions10Plus": 13,
       "receptions20Plus": 1,
@@ -3324,7 +3324,7 @@
       "yardsAfterCatchPerReception": 5.93,
       "brokenTackles": 1,
       "targets": 23,
-      "targetSharePct": 0.0401,
+      "targetSharePct": 0.0404,
       "redZoneTargets": 0,
       "receptions10Plus": 10,
       "receptions20Plus": 3,
@@ -3351,7 +3351,7 @@
       "yardsAfterCatchPerReception": 3.57,
       "brokenTackles": 1,
       "targets": 33,
-      "targetSharePct": 0.0545,
+      "targetSharePct": 0.0547,
       "redZoneTargets": 5,
       "receptions10Plus": 12,
       "receptions20Plus": 1,
@@ -3378,7 +3378,7 @@
       "yardsAfterCatchPerReception": 5.19,
       "brokenTackles": 3,
       "targets": 38,
-      "targetSharePct": 0.057,
+      "targetSharePct": 0.0571,
       "redZoneTargets": 6,
       "receptions10Plus": 8,
       "receptions20Plus": 4,
@@ -3405,7 +3405,7 @@
       "yardsAfterCatchPerReception": 3.31,
       "brokenTackles": 0,
       "targets": 29,
-      "targetSharePct": 0.0429,
+      "targetSharePct": 0.043,
       "redZoneTargets": 2,
       "receptions10Plus": 11,
       "receptions20Plus": 4,
@@ -3432,7 +3432,7 @@
       "yardsAfterCatchPerReception": 5.43,
       "brokenTackles": 0,
       "targets": 21,
-      "targetSharePct": 0.0316,
+      "targetSharePct": 0.0318,
       "redZoneTargets": 2,
       "receptions10Plus": 8,
       "receptions20Plus": 2,
@@ -3459,7 +3459,7 @@
       "yardsAfterCatchPerReception": 4.19,
       "brokenTackles": 2,
       "targets": 44,
-      "targetSharePct": 0.0656,
+      "targetSharePct": 0.0658,
       "redZoneTargets": 7,
       "receptions10Plus": 10,
       "receptions20Plus": 1,
@@ -3513,7 +3513,7 @@
       "yardsAfterCatchPerReception": 4.44,
       "brokenTackles": 1,
       "targets": 30,
-      "targetSharePct": 0.0537,
+      "targetSharePct": 0.0538,
       "redZoneTargets": 1,
       "receptions10Plus": 7,
       "receptions20Plus": 4,
@@ -3567,7 +3567,7 @@
       "yardsAfterCatchPerReception": 2.31,
       "brokenTackles": 0,
       "targets": 24,
-      "targetSharePct": 0.0391,
+      "targetSharePct": 0.0393,
       "redZoneTargets": 4,
       "receptions10Plus": 10,
       "receptions20Plus": 3,
@@ -3702,7 +3702,7 @@
       "yardsAfterCatchPerReception": 4.58,
       "brokenTackles": 1,
       "targets": 25,
-      "targetSharePct": 0.0406,
+      "targetSharePct": 0.0408,
       "redZoneTargets": 4,
       "receptions10Plus": 6,
       "receptions20Plus": 3,
@@ -3918,7 +3918,7 @@
       "yardsAfterCatchPerReception": 4.29,
       "brokenTackles": 0,
       "targets": 30,
-      "targetSharePct": 0.0551,
+      "targetSharePct": 0.0554,
       "redZoneTargets": 0,
       "receptions10Plus": 6,
       "receptions20Plus": 1,
@@ -4107,7 +4107,7 @@
       "yardsAfterCatchPerReception": 7.62,
       "brokenTackles": 0,
       "targets": 19,
-      "targetSharePct": 0.0335,
+      "targetSharePct": 0.0336,
       "redZoneTargets": 4,
       "receptions10Plus": 7,
       "receptions20Plus": 1,
@@ -4134,7 +4134,7 @@
       "yardsAfterCatchPerReception": 2.21,
       "brokenTackles": 0,
       "targets": 22,
-      "targetSharePct": 0.0313,
+      "targetSharePct": 0.0314,
       "redZoneTargets": 0,
       "receptions10Plus": 10,
       "receptions20Plus": 1,
@@ -4188,7 +4188,7 @@
       "yardsAfterCatchPerReception": 5.0,
       "brokenTackles": 2,
       "targets": 20,
-      "targetSharePct": 0.0284,
+      "targetSharePct": 0.0285,
       "redZoneTargets": 1,
       "receptions10Plus": 6,
       "receptions20Plus": 1,
@@ -4215,7 +4215,7 @@
       "yardsAfterCatchPerReception": 5.25,
       "brokenTackles": 1,
       "targets": 30,
-      "targetSharePct": 0.0466,
+      "targetSharePct": 0.0469,
       "redZoneTargets": 4,
       "receptions10Plus": 7,
       "receptions20Plus": 1,
@@ -4253,6 +4253,33 @@
     },
     {
       "rank": 157,
+      "playerId": "7842",
+      "playerName": "Luke Farrell",
+      "position": "WR",
+      "team": "JAX",
+      "age": null,
+      "season": "2023",
+      "games": 9,
+      "receptions": 13,
+      "receivingYards": 155,
+      "yardsPerReception": 11.92,
+      "yardsBeforeCatch": null,
+      "yardsBeforeCatchPerReception": null,
+      "yardsAfterCatch": 96.0,
+      "yardsAfterCatchPerReception": 7.38,
+      "brokenTackles": 1,
+      "targets": 15,
+      "targetSharePct": null,
+      "redZoneTargets": 1,
+      "receptions10Plus": null,
+      "receptions20Plus": null,
+      "receptions30Plus": null,
+      "receptions40Plus": null,
+      "receptions50Plus": null,
+      "longestReception": 42
+    },
+    {
+      "rank": 158,
       "playerId": "6234",
       "playerName": "Deonte Harty",
       "position": "WR",
@@ -4269,7 +4296,7 @@
       "yardsAfterCatchPerReception": 5.27,
       "brokenTackles": 0,
       "targets": 21,
-      "targetSharePct": 0.0346,
+      "targetSharePct": 0.0348,
       "redZoneTargets": 3,
       "receptions10Plus": 5,
       "receptions20Plus": 2,
@@ -4279,7 +4306,7 @@
       "longestReception": 43
     },
     {
-      "rank": 158,
+      "rank": 159,
       "playerId": null,
       "playerName": "Andrew Ogletree",
       "position": "WR",
@@ -4306,7 +4333,7 @@
       "longestReception": 33
     },
     {
-      "rank": 159,
+      "rank": 160,
       "playerId": "6927",
       "playerName": "Quez Watkins",
       "position": "WR",
@@ -4323,7 +4350,7 @@
       "yardsAfterCatchPerReception": 3.07,
       "brokenTackles": 0,
       "targets": 21,
-      "targetSharePct": 0.0348,
+      "targetSharePct": 0.0349,
       "redZoneTargets": 3,
       "receptions10Plus": 6,
       "receptions20Plus": 0,
@@ -4333,7 +4360,7 @@
       "longestReception": 19
     },
     {
-      "rank": 160,
+      "rank": 161,
       "playerId": "5937",
       "playerName": "D.Johnson",
       "position": "WR",
@@ -4360,7 +4387,7 @@
       "longestReception": 42
     },
     {
-      "rank": 161,
+      "rank": 162,
       "playerId": "7565",
       "playerName": "Terrace Marshall",
       "position": "WR",
@@ -4377,7 +4404,7 @@
       "yardsAfterCatchPerReception": 2.53,
       "brokenTackles": 0,
       "targets": 33,
-      "targetSharePct": 0.0506,
+      "targetSharePct": 0.0507,
       "redZoneTargets": 3,
       "receptions10Plus": 6,
       "receptions20Plus": 0,
@@ -4387,7 +4414,7 @@
       "longestReception": 14
     },
     {
-      "rank": 162,
+      "rank": 163,
       "playerId": "6798",
       "playerName": "Jalen Reagor",
       "position": "WR",
@@ -4414,7 +4441,7 @@
       "longestReception": 39
     },
     {
-      "rank": 163,
+      "rank": 164,
       "playerId": "5096",
       "playerName": "Ray-Ray McCloud",
       "position": "WR",
@@ -4441,7 +4468,7 @@
       "longestReception": 41
     },
     {
-      "rank": 164,
+      "rank": 165,
       "playerId": "5032",
       "playerName": "Jordan Akins",
       "position": "WR",
@@ -4468,7 +4495,7 @@
       "longestReception": 28
     },
     {
-      "rank": 165,
+      "rank": 166,
       "playerId": "9487",
       "playerName": "Parker Washington",
       "position": "WR",
@@ -4485,7 +4512,7 @@
       "yardsAfterCatchPerReception": 2.12,
       "brokenTackles": 1,
       "targets": 21,
-      "targetSharePct": 0.0316,
+      "targetSharePct": 0.0318,
       "redZoneTargets": 3,
       "receptions10Plus": 5,
       "receptions20Plus": 0,
@@ -4495,7 +4522,7 @@
       "longestReception": 19
     },
     {
-      "rank": 166,
+      "rank": 167,
       "playerId": "8917",
       "playerName": "KaVontae Turpin",
       "position": "WR",
@@ -4512,7 +4539,7 @@
       "yardsAfterCatchPerReception": 3.25,
       "brokenTackles": 1,
       "targets": 18,
-      "targetSharePct": 0.0274,
+      "targetSharePct": 0.0275,
       "redZoneTargets": 6,
       "receptions10Plus": 5,
       "receptions20Plus": 2,
@@ -4522,7 +4549,7 @@
       "longestReception": 34
     },
     {
-      "rank": 167,
+      "rank": 168,
       "playerId": "11210",
       "playerName": "Malik Heath",
       "position": "WR",
@@ -4539,7 +4566,7 @@
       "yardsAfterCatchPerReception": 2.33,
       "brokenTackles": 1,
       "targets": 24,
-      "targetSharePct": 0.0391,
+      "targetSharePct": 0.0393,
       "redZoneTargets": 5,
       "receptions10Plus": 6,
       "receptions20Plus": 0,
@@ -4549,7 +4576,7 @@
       "longestReception": 16
     },
     {
-      "rank": 168,
+      "rank": 169,
       "playerId": "6970",
       "playerName": "Stephen Sullivan",
       "position": "WR",
@@ -4576,7 +4603,7 @@
       "longestReception": 20
     },
     {
-      "rank": 169,
+      "rank": 170,
       "playerId": "4854",
       "playerName": "River Cracraft",
       "position": "WR",
@@ -4593,7 +4620,7 @@
       "yardsAfterCatchPerReception": 5.44,
       "brokenTackles": 0,
       "targets": 12,
-      "targetSharePct": 0.02,
+      "targetSharePct": 0.0201,
       "redZoneTargets": 4,
       "receptions10Plus": 7,
       "receptions20Plus": 2,
@@ -4603,7 +4630,7 @@
       "longestReception": 24
     },
     {
-      "rank": 170,
+      "rank": 171,
       "playerId": "8214",
       "playerName": "Cole Turner",
       "position": "WR",
@@ -4630,7 +4657,7 @@
       "longestReception": 29
     },
     {
-      "rank": 171,
+      "rank": 172,
       "playerId": "1476",
       "playerName": "Latavius Murray",
       "position": "WR",
@@ -4657,7 +4684,7 @@
       "longestReception": 22
     },
     {
-      "rank": 172,
+      "rank": 173,
       "playerId": null,
       "playerName": "Kyle Juszczyk",
       "position": "WR",
@@ -4684,7 +4711,7 @@
       "longestReception": 22
     },
     {
-      "rank": 173,
+      "rank": 174,
       "playerId": null,
       "playerName": "Alec Ingold",
       "position": "WR",
@@ -4711,7 +4738,7 @@
       "longestReception": 23
     },
     {
-      "rank": 174,
+      "rank": 175,
       "playerId": "5917",
       "playerName": "Mecole Hardman",
       "position": "WR",
@@ -4738,7 +4765,7 @@
       "longestReception": 37
     },
     {
-      "rank": 175,
+      "rank": 176,
       "playerId": "6453",
       "playerName": "D.Montgomery",
       "position": "WR",
@@ -4765,7 +4792,7 @@
       "longestReception": 19
     },
     {
-      "rank": 176,
+      "rank": 177,
       "playerId": "10226",
       "playerName": "Andrei Iosivas",
       "position": "WR",
@@ -4782,7 +4809,7 @@
       "yardsAfterCatchPerReception": 2.33,
       "brokenTackles": 0,
       "targets": 25,
-      "targetSharePct": 0.0375,
+      "targetSharePct": 0.0376,
       "redZoneTargets": 5,
       "receptions10Plus": 4,
       "receptions20Plus": 0,
@@ -4792,7 +4819,7 @@
       "longestReception": 16
     },
     {
-      "rank": 177,
+      "rank": 178,
       "playerId": "5004",
       "playerName": "I.Smith",
       "position": "WR",
@@ -4819,7 +4846,7 @@
       "longestReception": 14
     },
     {
-      "rank": 178,
+      "rank": 179,
       "playerId": "5137",
       "playerName": "Richie James",
       "position": "WR",
@@ -4846,7 +4873,7 @@
       "longestReception": 45
     },
     {
-      "rank": 179,
+      "rank": 180,
       "playerId": "4602",
       "playerName": "Robert Tonyan",
       "position": "WR",
@@ -4873,7 +4900,7 @@
       "longestReception": 24
     },
     {
-      "rank": 180,
+      "rank": 181,
       "playerId": "6853",
       "playerName": "Van Jefferson",
       "position": "WR",
@@ -4890,7 +4917,7 @@
       "yardsAfterCatchPerReception": 1.0,
       "brokenTackles": 1,
       "targets": 15,
-      "targetSharePct": 0.075,
+      "targetSharePct": 0.0754,
       "redZoneTargets": 1,
       "receptions10Plus": 8,
       "receptions20Plus": 1,
@@ -4900,7 +4927,7 @@
       "longestReception": 46
     },
     {
-      "rank": 181,
+      "rank": 182,
       "playerId": "2446",
       "playerName": "MyCole Pruitt",
       "position": "WR",
@@ -4927,7 +4954,7 @@
       "longestReception": 22
     },
     {
-      "rank": 182,
+      "rank": 183,
       "playerId": "5880",
       "playerName": "Parris Campbell",
       "position": "WR",
@@ -4944,7 +4971,7 @@
       "yardsAfterCatchPerReception": 3.25,
       "brokenTackles": 1,
       "targets": 27,
-      "targetSharePct": 0.0446,
+      "targetSharePct": 0.0448,
       "redZoneTargets": 4,
       "receptions10Plus": 2,
       "receptions20Plus": 0,
@@ -4954,7 +4981,7 @@
       "longestReception": 17
     },
     {
-      "rank": 183,
+      "rank": 184,
       "playerId": "5916",
       "playerName": "Darrell Henderson",
       "position": "WR",
@@ -4981,7 +5008,7 @@
       "longestReception": 32
     },
     {
-      "rank": 184,
+      "rank": 185,
       "playerId": "6853",
       "playerName": "Van Jefferson",
       "position": "WR",
@@ -4998,7 +5025,7 @@
       "yardsAfterCatchPerReception": 1.42,
       "brokenTackles": 1,
       "targets": 28,
-      "targetSharePct": 0.075,
+      "targetSharePct": 0.0754,
       "redZoneTargets": 1,
       "receptions10Plus": 8,
       "receptions20Plus": 1,
@@ -5008,7 +5035,7 @@
       "longestReception": 14
     },
     {
-      "rank": 185,
+      "rank": 186,
       "playerId": "8129",
       "playerName": "Dameon Pierce",
       "position": "WR",
@@ -5035,7 +5062,7 @@
       "longestReception": 27
     },
     {
-      "rank": 186,
+      "rank": 187,
       "playerId": "8139",
       "playerName": "Zamir White",
       "position": "WR",
@@ -5062,7 +5089,7 @@
       "longestReception": 15
     },
     {
-      "rank": 187,
+      "rank": 188,
       "playerId": "6824",
       "playerName": "Donovan Peoples-Jones",
       "position": "WR",
@@ -5079,7 +5106,7 @@
       "yardsAfterCatchPerReception": 2.75,
       "brokenTackles": 0,
       "targets": 18,
-      "targetSharePct": 0.0389,
+      "targetSharePct": 0.0392,
       "redZoneTargets": 1,
       "receptions10Plus": 7,
       "receptions20Plus": 2,
@@ -5089,7 +5116,7 @@
       "longestReception": 29
     },
     {
-      "rank": 188,
+      "rank": 189,
       "playerId": "8249",
       "playerName": "Lucas Krull",
       "position": "WR",
@@ -5116,7 +5143,7 @@
       "longestReception": 35
     },
     {
-      "rank": 189,
+      "rank": 190,
       "playerId": "10212",
       "playerName": "Josh Whyle",
       "position": "WR",
@@ -5143,7 +5170,7 @@
       "longestReception": 24
     },
     {
-      "rank": 190,
+      "rank": 191,
       "playerId": "2545",
       "playerName": "Geoff Swaim",
       "position": "WR",
@@ -5170,7 +5197,7 @@
       "longestReception": 26
     },
     {
-      "rank": 191,
+      "rank": 192,
       "playerId": "8188",
       "playerName": "Tyquan Thornton",
       "position": "WR",
@@ -5197,7 +5224,7 @@
       "longestReception": 15
     },
     {
-      "rank": 192,
+      "rank": 193,
       "playerId": "10218",
       "playerName": "Xavier Hutchinson",
       "position": "WR",
@@ -5214,7 +5241,7 @@
       "yardsAfterCatchPerReception": 2.5,
       "brokenTackles": 0,
       "targets": 19,
-      "targetSharePct": 0.0295,
+      "targetSharePct": 0.0297,
       "redZoneTargets": 1,
       "receptions10Plus": 2,
       "receptions20Plus": 1,
@@ -5224,7 +5251,7 @@
       "longestReception": 34
     },
     {
-      "rank": 193,
+      "rank": 194,
       "playerId": "6421",
       "playerName": "Jalen Guyton",
       "position": "WR",
@@ -5251,7 +5278,7 @@
       "longestReception": 18
     },
     {
-      "rank": 194,
+      "rank": 195,
       "playerId": "6918",
       "playerName": "Salvon Ahmed",
       "position": "WR",
@@ -5278,7 +5305,7 @@
       "longestReception": 20
     },
     {
-      "rank": 195,
+      "rank": 196,
       "playerId": "4455",
       "playerName": "Matt Breida",
       "position": "WR",
@@ -5305,7 +5332,7 @@
       "longestReception": 22
     },
     {
-      "rank": 196,
+      "rank": 197,
       "playerId": "5154",
       "playerName": "Trent Sherfield",
       "position": "WR",
@@ -5322,7 +5349,7 @@
       "yardsAfterCatchPerReception": 4.45,
       "brokenTackles": 2,
       "targets": 22,
-      "targetSharePct": 0.0362,
+      "targetSharePct": 0.0365,
       "redZoneTargets": 3,
       "receptions10Plus": 1,
       "receptions20Plus": 0,
@@ -5332,7 +5359,7 @@
       "longestReception": 12
     },
     {
-      "rank": 197,
+      "rank": 198,
       "playerId": "5284",
       "playerName": "Jeff Wilson",
       "position": "WR",
@@ -5359,7 +5386,7 @@
       "longestReception": 12
     },
     {
-      "rank": 198,
+      "rank": 199,
       "playerId": "8253",
       "playerName": "Deven Thompkins",
       "position": "WR",
@@ -5376,7 +5403,7 @@
       "yardsAfterCatchPerReception": 4.35,
       "brokenTackles": 1,
       "targets": 25,
-      "targetSharePct": 0.0408,
+      "targetSharePct": 0.0411,
       "redZoneTargets": 4,
       "receptions10Plus": 1,
       "receptions20Plus": 1,
@@ -5386,7 +5413,7 @@
       "longestReception": 26
     },
     {
-      "rank": 199,
+      "rank": 200,
       "playerId": "8013",
       "playerName": "T.Jones",
       "position": "WR",
@@ -5413,7 +5440,7 @@
       "longestReception": 15
     },
     {
-      "rank": 200,
+      "rank": 201,
       "playerId": "6909",
       "playerName": "Lynn Bowden",
       "position": "WR",
@@ -5430,7 +5457,7 @@
       "yardsAfterCatchPerReception": 5.18,
       "brokenTackles": 0,
       "targets": 16,
-      "targetSharePct": 0.0249,
+      "targetSharePct": 0.025,
       "redZoneTargets": 0,
       "receptions10Plus": 4,
       "receptions20Plus": 0,
@@ -5440,7 +5467,7 @@
       "longestReception": 17
     },
     {
-      "rank": 201,
+      "rank": 202,
       "playerId": "4197",
       "playerName": "Isaiah McKenzie",
       "position": "WR",
@@ -5457,7 +5484,7 @@
       "yardsAfterCatchPerReception": 6.55,
       "brokenTackles": 0,
       "targets": 14,
-      "targetSharePct": 0.0226,
+      "targetSharePct": 0.0228,
       "redZoneTargets": 0,
       "receptions10Plus": 4,
       "receptions20Plus": 1,
@@ -5467,7 +5494,7 @@
       "longestReception": 30
     },
     {
-      "rank": 202,
+      "rank": 203,
       "playerId": "6850",
       "playerName": "Harrison Bryant",
       "position": "WR",
@@ -5494,7 +5521,7 @@
       "longestReception": 23
     },
     {
-      "rank": 203,
+      "rank": 204,
       "playerId": "5000",
       "playerName": "Chase Edmonds",
       "position": "WR",
@@ -5521,7 +5548,7 @@
       "longestReception": 14
     },
     {
-      "rank": 204,
+      "rank": 205,
       "playerId": "4029",
       "playerName": "Dalvin Cook",
       "position": "WR",
@@ -5548,7 +5575,7 @@
       "longestReception": 15
     },
     {
-      "rank": 205,
+      "rank": 206,
       "playerId": "8235",
       "playerName": "Samori Toure",
       "position": "WR",
@@ -5565,7 +5592,7 @@
       "yardsAfterCatchPerReception": 2.25,
       "brokenTackles": 0,
       "targets": 18,
-      "targetSharePct": 0.0309,
+      "targetSharePct": 0.0295,
       "redZoneTargets": 2,
       "receptions10Plus": 3,
       "receptions20Plus": 1,
@@ -5575,7 +5602,7 @@
       "longestReception": 35
     },
     {
-      "rank": 206,
+      "rank": 207,
       "playerId": "4111",
       "playerName": "D'Onta Foreman",
       "position": "WR",
@@ -5602,7 +5629,7 @@
       "longestReception": 17
     },
     {
-      "rank": 207,
+      "rank": 208,
       "playerId": "947",
       "playerName": "Julio Jones",
       "position": "WR",
@@ -5629,7 +5656,7 @@
       "longestReception": 22
     },
     {
-      "rank": 208,
+      "rank": 209,
       "playerId": "6938",
       "playerName": "Cam Akers",
       "position": "WR",
@@ -5656,7 +5683,7 @@
       "longestReception": 30
     },
     {
-      "rank": 209,
+      "rank": 210,
       "playerId": "11526",
       "playerName": "Mi.Carter",
       "position": "WR",
@@ -5683,7 +5710,7 @@
       "longestReception": 10
     },
     {
-      "rank": 210,
+      "rank": 211,
       "playerId": "10221",
       "playerName": "Ronnie Bell",
       "position": "WR",
@@ -5710,7 +5737,7 @@
       "longestReception": 20
     },
     {
-      "rank": 211,
+      "rank": 212,
       "playerId": "1346",
       "playerName": "Marquise Goodwin",
       "position": "WR",
@@ -5737,7 +5764,7 @@
       "longestReception": 57
     },
     {
-      "rank": 212,
+      "rank": 213,
       "playerId": "10234",
       "playerName": "Derius Davis",
       "position": "WR",
@@ -5754,7 +5781,7 @@
       "yardsAfterCatchPerReception": 7.67,
       "brokenTackles": 0,
       "targets": 17,
-      "targetSharePct": 0.0251,
+      "targetSharePct": 0.0252,
       "redZoneTargets": 1,
       "receptions10Plus": 3,
       "receptions20Plus": 0,
@@ -5764,7 +5791,7 @@
       "longestReception": 18
     },
     {
-      "rank": 213,
+      "rank": 214,
       "playerId": "7757",
       "playerName": "Ben Skowronek",
       "position": "WR",
@@ -5781,7 +5808,7 @@
       "yardsAfterCatchPerReception": 3.75,
       "brokenTackles": 0,
       "targets": 12,
-      "targetSharePct": 0.0193,
+      "targetSharePct": 0.0194,
       "redZoneTargets": 3,
       "receptions10Plus": 3,
       "receptions20Plus": 1,
@@ -5791,7 +5818,7 @@
       "longestReception": 20
     },
     {
-      "rank": 214,
+      "rank": 215,
       "playerId": "7050",
       "playerName": "Josiah Deguara",
       "position": "WR",
@@ -5818,7 +5845,7 @@
       "longestReception": 19
     },
     {
-      "rank": 215,
+      "rank": 216,
       "playerId": "10228",
       "playerName": "Charlie Jones",
       "position": "WR",
@@ -5845,7 +5872,7 @@
       "longestReception": 35
     },
     {
-      "rank": 216,
+      "rank": 217,
       "playerId": "4149",
       "playerName": "Jamaal Williams",
       "position": "WR",
@@ -5872,7 +5899,7 @@
       "longestReception": 12
     },
     {
-      "rank": 217,
+      "rank": 218,
       "playerId": "6814",
       "playerName": "Laviska Shenault",
       "position": "WR",
@@ -5889,7 +5916,7 @@
       "yardsAfterCatchPerReception": 8.5,
       "brokenTackles": 1,
       "targets": 10,
-      "targetSharePct": 0.0153,
+      "targetSharePct": 0.0154,
       "redZoneTargets": 0,
       "receptions10Plus": 2,
       "receptions20Plus": 0,
@@ -5899,7 +5926,7 @@
       "longestReception": 14
     },
     {
-      "rank": 218,
+      "rank": 219,
       "playerId": "9495",
       "playerName": "Rakim Jarrett",
       "position": "WR",
@@ -5916,7 +5943,7 @@
       "yardsAfterCatchPerReception": 6.75,
       "brokenTackles": 0,
       "targets": 9,
-      "targetSharePct": 0.0147,
+      "targetSharePct": 0.0148,
       "redZoneTargets": 0,
       "receptions10Plus": 1,
       "receptions20Plus": 1,
@@ -5926,7 +5953,7 @@
       "longestReception": 41
     },
     {
-      "rank": 219,
+      "rank": 220,
       "playerId": "2460",
       "playerName": "C.J. Uzomah",
       "position": "WR",
@@ -5953,7 +5980,7 @@
       "longestReception": 19
     },
     {
-      "rank": 220,
+      "rank": 221,
       "playerId": "3200",
       "playerName": "Sterling Shepard",
       "position": "WR",
@@ -5970,7 +5997,7 @@
       "yardsAfterCatchPerReception": 3.3,
       "brokenTackles": 0,
       "targets": 22,
-      "targetSharePct": 0.0363,
+      "targetSharePct": 0.0365,
       "redZoneTargets": 7,
       "receptions10Plus": 2,
       "receptions20Plus": 0,
@@ -5980,7 +6007,7 @@
       "longestReception": 13
     },
     {
-      "rank": 221,
+      "rank": 222,
       "playerId": "6894",
       "playerName": "Mitchell Wilcox",
       "position": "WR",
@@ -6007,7 +6034,7 @@
       "longestReception": 12
     },
     {
-      "rank": 222,
+      "rank": 223,
       "playerId": "4995",
       "playerName": "Ian Thomas",
       "position": "WR",
@@ -6034,7 +6061,7 @@
       "longestReception": 28
     },
     {
-      "rank": 223,
+      "rank": 224,
       "playerId": "6453",
       "playerName": "D.Montgomery",
       "position": "WR",
@@ -6061,7 +6088,7 @@
       "longestReception": 34
     },
     {
-      "rank": 224,
+      "rank": 225,
       "playerId": "11311",
       "playerName": "Jason Brownlee",
       "position": "WR",
@@ -6088,7 +6115,7 @@
       "longestReception": 24
     },
     {
-      "rank": 225,
+      "rank": 226,
       "playerId": "6323",
       "playerName": "Andrew Beck",
       "position": "WR",
@@ -6115,7 +6142,7 @@
       "longestReception": 26
     },
     {
-      "rank": 226,
+      "rank": 227,
       "playerId": "8140",
       "playerName": "Justyn Ross",
       "position": "WR",
@@ -6142,7 +6169,7 @@
       "longestReception": 20
     },
     {
-      "rank": 227,
+      "rank": 228,
       "playerId": "6886",
       "playerName": "Chase Claypool",
       "position": "WR",
@@ -6159,7 +6186,7 @@
       "yardsAfterCatchPerReception": 1.5,
       "brokenTackles": 1,
       "targets": 14,
-      "targetSharePct": 0.0351,
+      "targetSharePct": 0.0352,
       "redZoneTargets": 2,
       "receptions10Plus": 3,
       "receptions20Plus": 1,
@@ -6169,7 +6196,7 @@
       "longestReception": 20
     },
     {
-      "rank": 228,
+      "rank": 229,
       "playerId": "7559",
       "playerName": "Ihmir Smith-Marsette",
       "position": "WR",
@@ -6186,7 +6213,7 @@
       "yardsAfterCatchPerReception": 6.0,
       "brokenTackles": 1,
       "targets": 10,
-      "targetSharePct": 0.0153,
+      "targetSharePct": 0.0154,
       "redZoneTargets": 0,
       "receptions10Plus": 2,
       "receptions20Plus": 0,
@@ -6196,7 +6223,7 @@
       "longestReception": 18
     },
     {
-      "rank": 229,
+      "rank": 230,
       "playerId": "9502",
       "playerName": "Tank Dell",
       "position": "WR",
@@ -6213,7 +6240,7 @@
       "yardsAfterCatchPerReception": 1.2,
       "brokenTackles": 0,
       "targets": 8,
-      "targetSharePct": 0.0124,
+      "targetSharePct": 0.0125,
       "redZoneTargets": 1,
       "receptions10Plus": 2,
       "receptions20Plus": 0,
@@ -6223,7 +6250,7 @@
       "longestReception": 17
     },
     {
-      "rank": 230,
+      "rank": 231,
       "playerId": "6963",
       "playerName": "Patrick Taylor",
       "position": "WR",
@@ -6250,7 +6277,7 @@
       "longestReception": 16
     },
     {
-      "rank": 231,
+      "rank": 232,
       "playerId": "7064",
       "playerName": "Darrynton Evans",
       "position": "WR",
@@ -6277,7 +6304,7 @@
       "longestReception": 17
     },
     {
-      "rank": 232,
+      "rank": 233,
       "playerId": "5995",
       "playerName": "J.Hill",
       "position": "WR",
@@ -6304,7 +6331,7 @@
       "longestReception": 18
     },
     {
-      "rank": 233,
+      "rank": 234,
       "playerId": "8116",
       "playerName": "Pierre Strong",
       "position": "WR",
@@ -6331,7 +6358,7 @@
       "longestReception": 41
     },
     {
-      "rank": 234,
+      "rank": 235,
       "playerId": "9227",
       "playerName": "Israel Abanikanda",
       "position": "WR",
@@ -6358,7 +6385,7 @@
       "longestReception": 13
     },
     {
-      "rank": 235,
+      "rank": 236,
       "playerId": "2399",
       "playerName": "Ty Montgomery",
       "position": "WR",
@@ -6385,7 +6412,7 @@
       "longestReception": 17
     },
     {
-      "rank": 236,
+      "rank": 237,
       "playerId": "5209",
       "playerName": "Mike Boone",
       "position": "WR",
@@ -6412,7 +6439,7 @@
       "longestReception": 12
     },
     {
-      "rank": 237,
+      "rank": 238,
       "playerId": "928",
       "playerName": "Randall Cobb",
       "position": "WR",
@@ -6429,7 +6456,7 @@
       "yardsAfterCatchPerReception": 4.6,
       "brokenTackles": 0,
       "targets": 17,
-      "targetSharePct": 0.027,
+      "targetSharePct": 0.0256,
       "redZoneTargets": 4,
       "receptions10Plus": 2,
       "receptions20Plus": 0,
@@ -6439,7 +6466,7 @@
       "longestReception": 15
     },
     {
-      "rank": 238,
+      "rank": 239,
       "playerId": "1535",
       "playerName": "Cordarrelle Patterson",
       "position": "WR",
@@ -6466,7 +6493,7 @@
       "longestReception": 11
     },
     {
-      "rank": 239,
+      "rank": 240,
       "playerId": "7946",
       "playerName": "Jack Stoll",
       "position": "WR",
@@ -6493,7 +6520,7 @@
       "longestReception": 14
     },
     {
-      "rank": 240,
+      "rank": 241,
       "playerId": "5134",
       "playerName": "Keith Kirkwood",
       "position": "WR",
@@ -6520,7 +6547,7 @@
       "longestReception": 13
     },
     {
-      "rank": 241,
+      "rank": 242,
       "playerId": "1067",
       "playerName": "Marvin Jones",
       "position": "WR",
@@ -6537,7 +6564,7 @@
       "yardsAfterCatchPerReception": 1.8,
       "brokenTackles": 0,
       "targets": 10,
-      "targetSharePct": 0.0156,
+      "targetSharePct": 0.0157,
       "redZoneTargets": 2,
       "receptions10Plus": 1,
       "receptions20Plus": 0,
@@ -6547,7 +6574,7 @@
       "longestReception": 16
     },
     {
-      "rank": 242,
+      "rank": 243,
       "playerId": "8207",
       "playerName": "Tyler Goodson",
       "position": "WR",
@@ -6574,7 +6601,7 @@
       "longestReception": 15
     },
     {
-      "rank": 243,
+      "rank": 244,
       "playerId": "6032",
       "playerName": "Keelan Doss",
       "position": "WR",
@@ -6591,7 +6618,7 @@
       "yardsAfterCatchPerReception": 2.33,
       "brokenTackles": 0,
       "targets": 13,
-      "targetSharePct": 0.0192,
+      "targetSharePct": 0.0193,
       "redZoneTargets": 2,
       "receptions10Plus": 0,
       "receptions20Plus": 0,
@@ -6601,7 +6628,7 @@
       "longestReception": 9
     },
     {
-      "rank": 244,
+      "rank": 245,
       "playerId": "7045",
       "playerName": "Joshua Kelley",
       "position": "WR",
@@ -6628,7 +6655,7 @@
       "longestReception": 6
     },
     {
-      "rank": 245,
+      "rank": 246,
       "playerId": "2422",
       "playerName": "Blake Bell",
       "position": "WR",
@@ -6655,7 +6682,7 @@
       "longestReception": 8
     },
     {
-      "rank": 246,
+      "rank": 247,
       "playerId": "6931",
       "playerName": "DeeJay Dallas",
       "position": "WR",
@@ -6682,7 +6709,7 @@
       "longestReception": 14
     },
     {
-      "rank": 247,
+      "rank": 248,
       "playerId": null,
       "playerName": "C.J. Ham",
       "position": "WR",
@@ -6709,7 +6736,7 @@
       "longestReception": 7
     },
     {
-      "rank": 248,
+      "rank": 249,
       "playerId": "4319",
       "playerName": "Zach Pascal",
       "position": "WR",
@@ -6726,7 +6753,7 @@
       "yardsAfterCatchPerReception": 3.0,
       "brokenTackles": 1,
       "targets": 15,
-      "targetSharePct": 0.0248,
+      "targetSharePct": 0.0251,
       "redZoneTargets": 3,
       "receptions10Plus": 0,
       "receptions20Plus": 0,
@@ -6736,7 +6763,7 @@
       "longestReception": 9
     },
     {
-      "rank": 249,
+      "rank": 250,
       "playerId": "6847",
       "playerName": "Devin Duvernay",
       "position": "WR",
@@ -6763,7 +6790,7 @@
       "longestReception": 10
     },
     {
-      "rank": 250,
+      "rank": 251,
       "playerId": "7561",
       "playerName": "Elijah Mitchell",
       "position": "WR",
@@ -6790,7 +6817,7 @@
       "longestReception": 9
     },
     {
-      "rank": 251,
+      "rank": 252,
       "playerId": "6144",
       "playerName": "Trayveon Williams",
       "position": "WR",

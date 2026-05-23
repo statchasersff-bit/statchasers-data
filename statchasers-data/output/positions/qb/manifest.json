@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
   "position": "QB",
-  "generatedAt": "2026-05-20T19:37:34Z",
+  "generatedAt": "2026-05-23T17:03:50Z",
   "tabs": {
     "overview": [
       "2023",
@@ -42,15 +42,15 @@
       "filename": "overview_2023.json",
       "path": "positions/qb/overview_2023.json",
       "rowCount": 63,
-      "bytes": 34938
+      "bytes": 34869
     },
     {
       "tab": "overview",
       "season": "2024",
       "filename": "overview_2024.json",
       "path": "positions/qb/overview_2024.json",
-      "rowCount": 57,
-      "bytes": 31606
+      "rowCount": 58,
+      "bytes": 32097
     },
     {
       "tab": "overview",
@@ -58,7 +58,7 @@
       "filename": "overview_2025.json",
       "path": "positions/qb/overview_2025.json",
       "rowCount": 60,
-      "bytes": 33222
+      "bytes": 33195
     },
     {
       "tab": "overview",
@@ -66,7 +66,7 @@
       "filename": "overview_all.json",
       "path": "positions/qb/overview_all.json",
       "rowCount": 93,
-      "bytes": 51366
+      "bytes": 51299
     },
     {
       "tab": "efficiency",
@@ -74,15 +74,15 @@
       "filename": "efficiency_2023.json",
       "path": "positions/qb/efficiency_2023.json",
       "rowCount": 63,
-      "bytes": 32130
+      "bytes": 32145
     },
     {
       "tab": "efficiency",
       "season": "2024",
       "filename": "efficiency_2024.json",
       "path": "positions/qb/efficiency_2024.json",
-      "rowCount": 57,
-      "bytes": 29119
+      "rowCount": 58,
+      "bytes": 29630
     },
     {
       "tab": "efficiency",
@@ -90,7 +90,7 @@
       "filename": "efficiency_2025.json",
       "path": "positions/qb/efficiency_2025.json",
       "rowCount": 60,
-      "bytes": 30596
+      "bytes": 30600
     },
     {
       "tab": "efficiency",
@@ -98,7 +98,7 @@
       "filename": "efficiency_all.json",
       "path": "positions/qb/efficiency_all.json",
       "rowCount": 93,
-      "bytes": 47163
+      "bytes": 47170
     },
     {
       "tab": "usage",
@@ -114,7 +114,7 @@
       "filename": "usage_2024.json",
       "path": "positions/qb/usage_2024.json",
       "rowCount": 66,
-      "bytes": 27862
+      "bytes": 27864
     },
     {
       "tab": "usage",
@@ -122,7 +122,7 @@
       "filename": "usage_2025.json",
       "path": "positions/qb/usage_2025.json",
       "rowCount": 70,
-      "bytes": 29511
+      "bytes": 29506
     },
     {
       "tab": "usage",
@@ -130,7 +130,7 @@
       "filename": "usage_all.json",
       "path": "positions/qb/usage_all.json",
       "rowCount": 101,
-      "bytes": 42317
+      "bytes": 42312
     },
     {
       "tab": "stat_explorer",
@@ -138,7 +138,7 @@
       "filename": "stat_explorer_2023.json",
       "path": "positions/qb/stat_explorer_2023.json",
       "rowCount": 71,
-      "bytes": 52574
+      "bytes": 52546
     },
     {
       "tab": "stat_explorer",
@@ -146,7 +146,7 @@
       "filename": "stat_explorer_2024.json",
       "path": "positions/qb/stat_explorer_2024.json",
       "rowCount": 67,
-      "bytes": 49696
+      "bytes": 49674
     },
     {
       "tab": "stat_explorer",
@@ -154,7 +154,7 @@
       "filename": "stat_explorer_2025.json",
       "path": "positions/qb/stat_explorer_2025.json",
       "rowCount": 70,
-      "bytes": 51815
+      "bytes": 51791
     },
     {
       "tab": "stat_explorer",
@@ -162,7 +162,7 @@
       "filename": "stat_explorer_all.json",
       "path": "positions/qb/stat_explorer_all.json",
       "rowCount": 101,
-      "bytes": 74420
+      "bytes": 74383
     }
   ]
 }

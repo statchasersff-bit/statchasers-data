@@ -39,6 +39,10 @@ import numpy as np
 import pandas as pd
 
 ROOT               = Path(__file__).resolve().parent.parent
+SCRIPTS_DIR        = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPTS_DIR))
+from _id_resolution import build_canonical_id_lookup, filter_canonical_id  # noqa: E402
+
 PBP_PATH           = ROOT / "data" / "raw"       / "nflverse_play_by_play.parquet"
 PARTICIPATION_PATH = ROOT / "data" / "raw"       / "nflverse_participation.parquet"
 METRICS_PATH       = ROOT / "data" / "processed" / "player_metrics.json"
@@ -195,11 +199,14 @@ def _build_routes_lookup(season: int) -> dict[str, int]:
         offense_positions (semicolon-delimited positions),
         offense_names    (semicolon-delimited names)
     Week is parsed from game_id (e.g. '2025_03_BUF_NE' → week 3).
-    A WR appearance on any pass play counts as one route run.
+    A WR appearance on a pass play counts as one route run. Participation
+    rows are joined to pbp on (game_id, play_id) and filtered to
+    play_type == 'pass' (which nflverse uses for designed pass plays
+    including those that ended in a sack or scramble).
     """
     part = pd.read_parquet(
         PARTICIPATION_PATH,
-        columns=["nflverse_game_id", "season",
+        columns=["nflverse_game_id", "play_id", "season",
                  "offense_players", "offense_positions"],
     )
     part = part[
@@ -213,6 +220,23 @@ def _build_routes_lookup(season: int) -> dict[str, int]:
         part["nflverse_game_id"].str.split("_").str[1].astype(int)
     )
     part = part[part["week_num"] <= 18]
+
+    # Inner-join to pbp to keep only pass plays
+    pbp_pass = pd.read_parquet(
+        PBP_PATH,
+        columns=["game_id", "play_id", "season", "season_type", "play_type"],
+    )
+    pbp_pass = pbp_pass[
+        (pbp_pass["season"] == season) &
+        (pbp_pass["season_type"] == "REG") &
+        (pbp_pass["play_type"] == "pass")
+    ][["game_id", "play_id"]]
+    part = part.merge(
+        pbp_pass,
+        left_on=["nflverse_game_id", "play_id"],
+        right_on=["game_id", "play_id"],
+        how="inner",
+    )
 
     # Explode semicolon-separated player/position lists
     part["pid_list"] = part["offense_players"].str.split(";")
@@ -350,14 +374,15 @@ def build_season(season: int) -> list[dict[str, Any]]:
     pbp_cols = [
         "season", "season_type", "week", "game_id", "posteam",
         "receiver_player_name", "receiver_player_id",
-        "complete_pass", "pass_attempt",
+        "complete_pass", "pass_attempt", "two_point_attempt",
         "yards_gained", "air_yards", "yards_after_catch", "epa",
     ]
     pbp = pd.read_parquet(PBP_PATH, columns=pbp_cols)
     pbp = pbp[
         (pbp["season"] == season) &
         (pbp["season_type"] == "REG") &
-        (pbp["week"] <= 18)
+        (pbp["week"] <= 18) &
+        (pbp["two_point_attempt"].fillna(0) != 1)
     ].copy()
 
     # Only target plays (pass_attempt with a receiver)
@@ -390,11 +415,12 @@ def build_season(season: int) -> list[dict[str, Any]]:
     team_air_yards              = _build_team_air_yards(tgts)
 
     # nflverse player registry: gsis_id → full_name
-    nfl = pd.read_parquet(NFL_PATH, columns=["gsis_id", "display_name"])
+    nfl = pd.read_parquet(NFL_PATH, columns=["gsis_id", "display_name", "position"])
     nfl = nfl.dropna(subset=["gsis_id", "display_name"])
     gsis_to_nfl_name: dict[str, str] = dict(
         zip(nfl["gsis_id"], nfl["display_name"])
     )
+    canonical_id_lookup = build_canonical_id_lookup(nfl, position="WR")
 
     # Resolve abbrev → canonical for each unique (abbrev, team) pair in PBP.
     # Key is (abbrev, team) so ambiguous names are handled per-team.
@@ -428,6 +454,10 @@ def build_season(season: int) -> list[dict[str, Any]]:
         return False  # Unknown → exclude conservatively
 
     tgts = tgts[tgts["canonical"].apply(_is_wr)].copy()
+
+    # Drop name-collision plays so a different player_id with the same resolved
+    # name doesn't inflate this player's games / targets / yards.
+    tgts = filter_canonical_id(tgts, "canonical", "receiver_player_id", canonical_id_lookup)
 
     # Deduplicate receiver_player_id → use most common canonical per gsis_id
     # (ensures routes join works correctly)

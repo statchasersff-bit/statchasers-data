@@ -31,7 +31,12 @@ import re
 import pandas as pd
 
 ROOT         = Path(__file__).resolve().parent.parent
+SCRIPTS_DIR  = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPTS_DIR))
+from _id_resolution import build_canonical_id_lookup, filter_canonical_id  # noqa: E402
+
 PBP_PATH     = ROOT / "data" / "raw"       / "nflverse_play_by_play.parquet"
+NFL_PATH     = ROOT / "data" / "raw"       / "nflverse_players.parquet"
 PFR_PATH     = ROOT / "data" / "raw"       / "pfr_rush_advstats.parquet"
 SLEEPER_PATH = ROOT / "data" / "raw"       / "sleeper_players.json"
 METRICS_PATH = ROOT / "data" / "processed" / "player_metrics.json"
@@ -253,6 +258,7 @@ def build_season(
     team_disambig: dict[str, dict[str, str]],
     metrics_by_player: dict[str, dict],
     sleeper_pos: dict[str, str],
+    canonical_id_lookup: dict[str, str] | None = None,
 ) -> list[dict]:
     """Build one season's worth of RB advanced stats rows (no rank assigned yet)."""
 
@@ -281,6 +287,9 @@ def build_season(
         return name_team_cache[key]
 
     rush["_full_name"] = rush.apply(_tag, axis=1)
+
+    if canonical_id_lookup:
+        rush = filter_canonical_id(rush, "_full_name", "rusher_player_id", canonical_id_lookup)
 
     # Identify RB full names
     rb_full_names: set[str] = set()
@@ -321,6 +330,10 @@ def build_season(
             return rec_name_cache[key]
 
         pass_plays["_full_name"] = pass_plays.apply(_tag_rec, axis=1)
+        if canonical_id_lookup:
+            pass_plays = filter_canonical_id(
+                pass_plays, "_full_name", "receiver_player_id", canonical_id_lookup,
+            )
         pass_plays = pass_plays[pass_plays["_full_name"].isin(rb_full_names)]
 
         for full, grp in pass_plays.groupby("_full_name"):
@@ -528,6 +541,8 @@ def main() -> None:
     print("Loading play-by-play data (all seasons)...")
     pbp_full = pd.read_parquet(PBP_PATH)
     pbp_full = pbp_full[pbp_full["season_type"] == "REG"].copy()  # regular season only
+    if "two_point_attempt" in pbp_full.columns:
+        pbp_full = pbp_full[pbp_full["two_point_attempt"].fillna(0) != 1].copy()
 
     print("Loading PFR rush advanced stats...")
     pfr = pd.read_parquet(PFR_PATH)
@@ -550,6 +565,11 @@ def main() -> None:
     sleeper_pos       = {p.get("full_name", ""): p.get("position", "") for p in sleeper_players}
     metrics_by_player = {p["player"]: p for p in player_metrics}
 
+    canonical_id_lookup: dict[str, str] = {}
+    if NFL_PATH.exists():
+        _nfl_df = pd.read_parquet(NFL_PATH, columns=["gsis_id", "display_name", "position"])
+        canonical_id_lookup = build_canonical_id_lookup(_nfl_df, position="RB")
+
     updated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -567,16 +587,17 @@ def main() -> None:
             latest_week_2025 = week
 
         rows = build_season(
-            pbp_season       = pbp_s,
-            pfr              = pfr,
-            season           = season,
-            sleeper_players  = sleeper_players,
-            player_metrics   = player_metrics,
-            full_name_set    = full_name_set,
-            unambig_with_pfr = unambig_with_pfr,
-            team_disambig    = team_disambig,
-            metrics_by_player= metrics_by_player,
-            sleeper_pos      = sleeper_pos,
+            pbp_season          = pbp_s,
+            pfr                 = pfr,
+            season              = season,
+            sleeper_players     = sleeper_players,
+            player_metrics      = player_metrics,
+            full_name_set       = full_name_set,
+            unambig_with_pfr    = unambig_with_pfr,
+            team_disambig       = team_disambig,
+            metrics_by_player   = metrics_by_player,
+            sleeper_pos         = sleeper_pos,
+            canonical_id_lookup = canonical_id_lookup,
         )
         print(f"  {len(rows)} RBs qualified for {season}.")
 

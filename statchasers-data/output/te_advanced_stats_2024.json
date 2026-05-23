@@ -3,7 +3,7 @@
     "position": "TE",
     "table": "te_advanced_stats",
     "season": "2024",
-    "generated_at": "2026-05-20T17:00:11Z",
+    "generated_at": "2026-05-23T17:03:33Z",
     "columns": [
       {
         "key": "rank",
@@ -148,7 +148,7 @@
       "yac_per_rec": 5.3,
       "brktkl": 6,
       "tgt": 153,
-      "target_share": 0.2224,
+      "target_share": 0.2234,
       "rz_tgt": 16,
       "rec_10_plus": 49,
       "rec_20_plus": 15,
@@ -193,9 +193,9 @@
       "yac": 429,
       "yac_per_rec": 4.1,
       "brktkl": 2,
-      "tgt": 154,
-      "target_share": 0.241,
-      "rz_tgt": 22,
+      "tgt": 153,
+      "target_share": 0.2413,
+      "rz_tgt": 21,
       "rec_10_plus": 50,
       "rec_20_plus": 15,
       "rec_30_plus": 4,
@@ -217,7 +217,7 @@
       "yac_per_rec": 6.7,
       "brktkl": 4,
       "tgt": 94,
-      "target_share": 0.1649,
+      "target_share": 0.1652,
       "rz_tgt": 21,
       "rec_10_plus": 45,
       "rec_20_plus": 21,
@@ -228,29 +228,6 @@
     },
     {
       "rank": 5,
-      "player": "Mitchell Evans",
-      "team": "TB",
-      "g": 14,
-      "rec": 74,
-      "yds": 1004,
-      "ypr": 13.6,
-      "ybc": 778,
-      "ybc_per_rec": 10.5,
-      "yac": 226,
-      "yac_per_rec": 3.1,
-      "brktkl": null,
-      "tgt": 110,
-      "target_share": 0.1792,
-      "rz_tgt": 15,
-      "rec_10_plus": 46,
-      "rec_20_plus": 15,
-      "rec_30_plus": 4,
-      "rec_40_plus": 1,
-      "rec_50_plus": 1,
-      "lng": 57
-    },
-    {
-      "rank": 6,
       "player": "Jonnu Smith",
       "team": "MIA",
       "g": 17,
@@ -263,7 +240,7 @@
       "yac_per_rec": 5.8,
       "brktkl": 8,
       "tgt": 111,
-      "target_share": 0.1737,
+      "target_share": 0.1751,
       "rz_tgt": 18,
       "rec_10_plus": 45,
       "rec_20_plus": 4,
@@ -273,7 +250,7 @@
       "lng": 57
     },
     {
-      "rank": 7,
+      "rank": 6,
       "player": "Travis Kelce",
       "team": "KC",
       "g": 16,
@@ -285,9 +262,9 @@
       "yac": 341,
       "yac_per_rec": 3.5,
       "brktkl": 3,
-      "tgt": 134,
-      "target_share": 0.2084,
-      "rz_tgt": 27,
+      "tgt": 133,
+      "target_share": 0.2075,
+      "rz_tgt": 26,
       "rec_10_plus": 30,
       "rec_20_plus": 10,
       "rec_30_plus": 1,
@@ -296,7 +273,7 @@
       "lng": 38
     },
     {
-      "rank": 8,
+      "rank": 7,
       "player": "Sam LaPorta",
       "team": "DET",
       "g": 16,
@@ -309,7 +286,7 @@
       "yac_per_rec": 5.7,
       "brktkl": 3,
       "tgt": 83,
-      "target_share": 0.1419,
+      "target_share": 0.1421,
       "rz_tgt": 20,
       "rec_10_plus": 30,
       "rec_20_plus": 11,
@@ -319,7 +296,7 @@
       "lng": 52
     },
     {
-      "rank": 9,
+      "rank": 8,
       "player": "Tucker Kraft",
       "team": "GB",
       "g": 17,
@@ -331,9 +308,9 @@
       "yac": 456,
       "yac_per_rec": 9.1,
       "brktkl": 8,
-      "tgt": 71,
-      "target_share": 0.1406,
-      "rz_tgt": 16,
+      "tgt": 70,
+      "target_share": 0.1397,
+      "rz_tgt": 15,
       "rec_10_plus": 27,
       "rec_20_plus": 11,
       "rec_30_plus": 4,
@@ -342,7 +319,7 @@
       "lng": 67
     },
     {
-      "rank": 10,
+      "rank": 9,
       "player": "Hunter Henry",
       "team": "NE",
       "g": 16,
@@ -355,7 +332,7 @@
       "yac_per_rec": 4.1,
       "brktkl": 2,
       "tgt": 97,
-      "target_share": 0.1658,
+      "target_share": 0.167,
       "rz_tgt": 18,
       "rec_10_plus": 31,
       "rec_20_plus": 4,
@@ -365,7 +342,7 @@
       "lng": 35
     },
     {
-      "rank": 11,
+      "rank": 10,
       "player": "Mark Andrews",
       "team": "BAL",
       "g": 17,
@@ -378,7 +355,7 @@
       "yac_per_rec": 3.4,
       "brktkl": 1,
       "tgt": 69,
-      "target_share": 0.1372,
+      "target_share": 0.1377,
       "rz_tgt": 16,
       "rec_10_plus": 31,
       "rec_20_plus": 6,
@@ -388,7 +365,7 @@
       "lng": 67
     },
     {
-      "rank": 12,
+      "rank": 11,
       "player": "Mike Gesicki",
       "team": "CIN",
       "g": 16,
@@ -401,7 +378,7 @@
       "yac_per_rec": 3.8,
       "brktkl": 0,
       "tgt": 83,
-      "target_share": 0.1182,
+      "target_share": 0.1186,
       "rz_tgt": 10,
       "rec_10_plus": 29,
       "rec_20_plus": 5,
@@ -411,7 +388,7 @@
       "lng": 47
     },
     {
-      "rank": 13,
+      "rank": 12,
       "player": "Pat Freiermuth",
       "team": "PIT",
       "g": 17,
@@ -424,7 +401,7 @@
       "yac_per_rec": 4.3,
       "brktkl": 4,
       "tgt": 78,
-      "target_share": 0.1418,
+      "target_share": 0.1423,
       "rz_tgt": 14,
       "rec_10_plus": 24,
       "rec_20_plus": 7,
@@ -434,7 +411,7 @@
       "lng": 30
     },
     {
-      "rank": 14,
+      "rank": 13,
       "player": "Zach Ertz",
       "team": "WAS",
       "g": 17,
@@ -446,9 +423,9 @@
       "yac": 187,
       "yac_per_rec": 2.8,
       "brktkl": 0,
-      "tgt": 93,
-      "target_share": 0.1606,
-      "rz_tgt": 23,
+      "tgt": 91,
+      "target_share": 0.1583,
+      "rz_tgt": 21,
       "rec_10_plus": 28,
       "rec_20_plus": 7,
       "rec_30_plus": 1,
@@ -457,30 +434,7 @@
       "lng": 37
     },
     {
-      "rank": 15,
-      "player": "Theo Johnson",
-      "team": "LA",
-      "g": 21,
-      "rec": 55,
-      "yds": 622,
-      "ypr": 11.3,
-      "ybc": 290,
-      "ybc_per_rec": 5.3,
-      "yac": 332,
-      "yac_per_rec": 6.0,
-      "brktkl": 0,
-      "tgt": 84,
-      "target_share": 0.1417,
-      "rz_tgt": 11,
-      "rec_10_plus": 23,
-      "rec_20_plus": 8,
-      "rec_30_plus": 3,
-      "rec_40_plus": 1,
-      "rec_50_plus": 1,
-      "lng": 63
-    },
-    {
-      "rank": 16,
+      "rank": 14,
       "player": "Kyle Pitts",
       "team": "ATL",
       "g": 17,
@@ -493,7 +447,7 @@
       "yac_per_rec": 5.8,
       "brktkl": 4,
       "tgt": 74,
-      "target_share": 0.1248,
+      "target_share": 0.1252,
       "rz_tgt": 13,
       "rec_10_plus": 21,
       "rec_20_plus": 7,
@@ -503,7 +457,7 @@
       "lng": 52
     },
     {
-      "rank": 17,
+      "rank": 15,
       "player": "Cade Otton",
       "team": "TB",
       "g": 14,
@@ -516,7 +470,7 @@
       "yac_per_rec": 5.3,
       "brktkl": 6,
       "tgt": 87,
-      "target_share": 0.1417,
+      "target_share": 0.1424,
       "rz_tgt": 16,
       "rec_10_plus": 22,
       "rec_20_plus": 7,
@@ -526,7 +480,7 @@
       "lng": 44
     },
     {
-      "rank": 18,
+      "rank": 16,
       "player": "Juwan Johnson",
       "team": "NO",
       "g": 15,
@@ -538,9 +492,9 @@
       "yac": 212,
       "yac_per_rec": 4.2,
       "brktkl": 3,
-      "tgt": 68,
-      "target_share": 0.1149,
-      "rz_tgt": 8,
+      "tgt": 66,
+      "target_share": 0.1122,
+      "rz_tgt": 6,
       "rec_10_plus": 26,
       "rec_20_plus": 8,
       "rec_30_plus": 1,
@@ -549,7 +503,7 @@
       "lng": 30
     },
     {
-      "rank": 19,
+      "rank": 17,
       "player": "Dalton Schultz",
       "team": "HOU",
       "g": 17,
@@ -572,7 +526,7 @@
       "lng": 32
     },
     {
-      "rank": 20,
+      "rank": 18,
       "player": "David Njoku",
       "team": "CLE",
       "g": 11,
@@ -584,9 +538,9 @@
       "yac": 251,
       "yac_per_rec": 3.9,
       "brktkl": 4,
-      "tgt": 99,
-      "target_share": 0.1347,
-      "rz_tgt": 16,
+      "tgt": 97,
+      "target_share": 0.1334,
+      "rz_tgt": 14,
       "rec_10_plus": 17,
       "rec_20_plus": 4,
       "rec_30_plus": 0,
@@ -595,7 +549,7 @@
       "lng": 29
     },
     {
-      "rank": 21,
+      "rank": 19,
       "player": "Noah Fant",
       "team": "SEA",
       "g": 14,
@@ -608,7 +562,7 @@
       "yac_per_rec": 5.8,
       "brktkl": 2,
       "tgt": 64,
-      "target_share": 0.0985,
+      "target_share": 0.0989,
       "rz_tgt": 5,
       "rec_10_plus": 25,
       "rec_20_plus": 3,
@@ -618,7 +572,7 @@
       "lng": 32
     },
     {
-      "rank": 22,
+      "rank": 20,
       "player": "Dallas Goedert",
       "team": "PHI",
       "g": 10,
@@ -631,7 +585,7 @@
       "yac_per_rec": 6.1,
       "brktkl": 2,
       "tgt": 52,
-      "target_share": 0.1053,
+      "target_share": 0.1055,
       "rz_tgt": 9,
       "rec_10_plus": 17,
       "rec_20_plus": 6,
@@ -641,7 +595,7 @@
       "lng": 61
     },
     {
-      "rank": 23,
+      "rank": 21,
       "player": "Jake Ferguson",
       "team": "DAL",
       "g": 14,
@@ -654,7 +608,7 @@
       "yac_per_rec": 5.2,
       "brktkl": 6,
       "tgt": 86,
-      "target_share": 0.1268,
+      "target_share": 0.1274,
       "rz_tgt": 6,
       "rec_10_plus": 18,
       "rec_20_plus": 6,
@@ -664,7 +618,7 @@
       "lng": 27
     },
     {
-      "rank": 24,
+      "rank": 22,
       "player": "Chig Okonkwo",
       "team": "TEN",
       "g": 16,
@@ -676,9 +630,9 @@
       "yac": 253,
       "yac_per_rec": 4.9,
       "brktkl": null,
-      "tgt": 71,
-      "target_share": 0.1214,
-      "rz_tgt": 6,
+      "tgt": 70,
+      "target_share": 0.1203,
+      "rz_tgt": 5,
       "rec_10_plus": 15,
       "rec_20_plus": 4,
       "rec_30_plus": 1,
@@ -687,7 +641,7 @@
       "lng": 70
     },
     {
-      "rank": 25,
+      "rank": 23,
       "player": "Will Dissly",
       "team": "LAC",
       "g": 15,
@@ -700,7 +654,7 @@
       "yac_per_rec": 6.1,
       "brktkl": 4,
       "tgt": 64,
-      "target_share": 0.1149,
+      "target_share": 0.1155,
       "rz_tgt": 8,
       "rec_10_plus": 20,
       "rec_20_plus": 5,
@@ -710,7 +664,7 @@
       "lng": 29
     },
     {
-      "rank": 26,
+      "rank": 24,
       "player": "Isaiah Likely",
       "team": "BAL",
       "g": 15,
@@ -723,7 +677,7 @@
       "yac_per_rec": 6.1,
       "brktkl": 3,
       "tgt": 58,
-      "target_share": 0.1153,
+      "target_share": 0.1158,
       "rz_tgt": 13,
       "rec_10_plus": 18,
       "rec_20_plus": 4,
@@ -733,7 +687,7 @@
       "lng": 49
     },
     {
-      "rank": 27,
+      "rank": 25,
       "player": "Austin Hooper",
       "team": "NE",
       "g": 17,
@@ -746,7 +700,7 @@
       "yac_per_rec": 5.0,
       "brktkl": 3,
       "tgt": 59,
-      "target_share": 0.1009,
+      "target_share": 0.1015,
       "rz_tgt": 9,
       "rec_10_plus": 17,
       "rec_20_plus": 5,
@@ -756,10 +710,10 @@
       "lng": 38
     },
     {
-      "rank": 28,
+      "rank": 26,
       "player": "Cole Kmet",
       "team": "CHI",
-      "g": 15,
+      "g": 14,
       "rec": 47,
       "yds": 474,
       "ypr": 10.1,
@@ -768,9 +722,9 @@
       "yac": 181,
       "yac_per_rec": 3.9,
       "brktkl": 1,
-      "tgt": 59,
-      "target_share": 0.0916,
-      "rz_tgt": 12,
+      "tgt": 55,
+      "target_share": 0.0868,
+      "rz_tgt": 8,
       "rec_10_plus": 19,
       "rec_20_plus": 7,
       "rec_30_plus": 1,
@@ -779,7 +733,7 @@
       "lng": 31
     },
     {
-      "rank": 29,
+      "rank": 27,
       "player": "T.J. Hockenson",
       "team": "MIN",
       "g": 10,
@@ -792,7 +746,7 @@
       "yac_per_rec": 3.5,
       "brktkl": 1,
       "tgt": 62,
-      "target_share": 0.1037,
+      "target_share": 0.1039,
       "rz_tgt": 9,
       "rec_10_plus": 19,
       "rec_20_plus": 5,
@@ -802,7 +756,7 @@
       "lng": 34
     },
     {
-      "rank": 30,
+      "rank": 28,
       "player": "Tyler Conklin",
       "team": "NYJ",
       "g": 16,
@@ -814,9 +768,9 @@
       "yac": 262,
       "yac_per_rec": 5.1,
       "brktkl": 0,
-      "tgt": 73,
-      "target_share": 0.1118,
-      "rz_tgt": 10,
+      "tgt": 72,
+      "target_share": 0.1113,
+      "rz_tgt": 9,
       "rec_10_plus": 21,
       "rec_20_plus": 7,
       "rec_30_plus": 0,
@@ -825,7 +779,7 @@
       "lng": 27
     },
     {
-      "rank": 31,
+      "rank": 29,
       "player": "Dalton Kincaid",
       "team": "BUF",
       "g": 13,
@@ -838,7 +792,7 @@
       "yac_per_rec": 6.2,
       "brktkl": 4,
       "tgt": 75,
-      "target_share": 0.1402,
+      "target_share": 0.1404,
       "rz_tgt": 10,
       "rec_10_plus": 18,
       "rec_20_plus": 5,
@@ -848,7 +802,7 @@
       "lng": 29
     },
     {
-      "rank": 32,
+      "rank": 30,
       "player": "Noah Gray",
       "team": "KC",
       "g": 16,
@@ -861,7 +815,7 @@
       "yac_per_rec": 5.2,
       "brktkl": 0,
       "tgt": 49,
-      "target_share": 0.0762,
+      "target_share": 0.0764,
       "rz_tgt": 10,
       "rec_10_plus": 21,
       "rec_20_plus": 6,
@@ -871,7 +825,7 @@
       "lng": 35
     },
     {
-      "rank": 33,
+      "rank": 31,
       "player": "Foster Moreau",
       "team": "NO",
       "g": 15,
@@ -884,7 +838,7 @@
       "yac_per_rec": 4.9,
       "brktkl": 2,
       "tgt": 43,
-      "target_share": 0.0726,
+      "target_share": 0.0731,
       "rz_tgt": 9,
       "rec_10_plus": 15,
       "rec_20_plus": 7,
@@ -894,7 +848,7 @@
       "lng": 41
     },
     {
-      "rank": 34,
+      "rank": 32,
       "player": "Brenton Strange",
       "team": "JAX",
       "g": 14,
@@ -907,7 +861,7 @@
       "yac_per_rec": 4.6,
       "brktkl": 3,
       "tgt": 53,
-      "target_share": 0.0906,
+      "target_share": 0.0917,
       "rz_tgt": 6,
       "rec_10_plus": 15,
       "rec_20_plus": 7,
@@ -917,7 +871,7 @@
       "lng": 30
     },
     {
-      "rank": 35,
+      "rank": 33,
       "player": "Jordan Akins",
       "team": "CLE",
       "g": 16,
@@ -930,7 +884,7 @@
       "yac_per_rec": 4.7,
       "brktkl": 1,
       "tgt": 58,
-      "target_share": 0.0789,
+      "target_share": 0.0798,
       "rz_tgt": 7,
       "rec_10_plus": 18,
       "rec_20_plus": 3,
@@ -940,7 +894,7 @@
       "lng": 21
     },
     {
-      "rank": 36,
+      "rank": 34,
       "player": "Evan Engram",
       "team": "JAX",
       "g": 9,
@@ -952,9 +906,9 @@
       "yac": 150,
       "yac_per_rec": 3.2,
       "brktkl": 0,
-      "tgt": 67,
-      "target_share": 0.1145,
-      "rz_tgt": 7,
+      "tgt": 64,
+      "target_share": 0.1107,
+      "rz_tgt": 4,
       "rec_10_plus": 15,
       "rec_20_plus": 2,
       "rec_30_plus": 0,
@@ -963,7 +917,7 @@
       "lng": 24
     },
     {
-      "rank": 37,
+      "rank": 35,
       "player": "Ja'Tavion Sanders",
       "team": "CAR",
       "g": 15,
@@ -976,7 +930,7 @@
       "yac_per_rec": 5.8,
       "brktkl": 1,
       "tgt": 43,
-      "target_share": 0.0735,
+      "target_share": 0.0738,
       "rz_tgt": 6,
       "rec_10_plus": 13,
       "rec_20_plus": 6,
@@ -986,7 +940,30 @@
       "lng": 46
     },
     {
-      "rank": 38,
+      "rank": 36,
+      "player": "Theo Johnson",
+      "team": "NYG",
+      "g": 10,
+      "rec": 29,
+      "yds": 331,
+      "ypr": 11.4,
+      "ybc": 182,
+      "ybc_per_rec": 6.3,
+      "yac": 149,
+      "yac_per_rec": 5.1,
+      "brktkl": 0,
+      "tgt": 43,
+      "target_share": 0.0673,
+      "rz_tgt": 1,
+      "rec_10_plus": 15,
+      "rec_20_plus": 4,
+      "rec_30_plus": 1,
+      "rec_40_plus": 0,
+      "rec_50_plus": 0,
+      "lng": 35
+    },
+    {
+      "rank": 37,
       "player": "Dawson Knox",
       "team": "BUF",
       "g": 14,
@@ -999,7 +976,7 @@
       "yac_per_rec": 4.3,
       "brktkl": 0,
       "tgt": 33,
-      "target_share": 0.0617,
+      "target_share": 0.0618,
       "rz_tgt": 5,
       "rec_10_plus": 11,
       "rec_20_plus": 7,
@@ -1009,7 +986,7 @@
       "lng": 39
     },
     {
-      "rank": 40,
+      "rank": 39,
       "player": "Grant Calcaterra",
       "team": "PHI",
       "g": 13,
@@ -1022,7 +999,7 @@
       "yac_per_rec": 5.2,
       "brktkl": 0,
       "tgt": 30,
-      "target_share": 0.0607,
+      "target_share": 0.0609,
       "rz_tgt": 2,
       "rec_10_plus": 11,
       "rec_20_plus": 6,
@@ -1032,7 +1009,7 @@
       "lng": 34
     },
     {
-      "rank": 41,
+      "rank": 40,
       "player": "Colby Parkinson",
       "team": "LA",
       "g": 15,
@@ -1045,7 +1022,7 @@
       "yac_per_rec": 5.3,
       "brktkl": 1,
       "tgt": 49,
-      "target_share": 0.0826,
+      "target_share": 0.0831,
       "rz_tgt": 9,
       "rec_10_plus": 11,
       "rec_20_plus": 2,
@@ -1055,7 +1032,7 @@
       "lng": 23
     },
     {
-      "rank": 42,
+      "rank": 41,
       "player": "Josh Oliver",
       "team": "MIN",
       "g": 11,
@@ -1068,7 +1045,7 @@
       "yac_per_rec": 5.9,
       "brktkl": 0,
       "tgt": 28,
-      "target_share": 0.0468,
+      "target_share": 0.0469,
       "rz_tgt": 3,
       "rec_10_plus": 11,
       "rec_20_plus": 5,
@@ -1078,7 +1055,7 @@
       "lng": 28
     },
     {
-      "rank": 43,
+      "rank": 42,
       "player": "Josh Whyle",
       "team": "TEN",
       "g": 14,
@@ -1090,9 +1067,9 @@
       "yac": 143,
       "yac_per_rec": 5.1,
       "brktkl": 1,
-      "tgt": 38,
-      "target_share": 0.065,
-      "rz_tgt": 5,
+      "tgt": 37,
+      "target_share": 0.0636,
+      "rz_tgt": 4,
       "rec_10_plus": 9,
       "rec_20_plus": 3,
       "rec_30_plus": 1,
@@ -1101,7 +1078,7 @@
       "lng": 33
     },
     {
-      "rank": 44,
+      "rank": 43,
       "player": "AJ Barner",
       "team": "SEA",
       "g": 14,
@@ -1114,7 +1091,7 @@
       "yac_per_rec": 5.5,
       "brktkl": 1,
       "tgt": 38,
-      "target_share": 0.0585,
+      "target_share": 0.0587,
       "rz_tgt": 7,
       "rec_10_plus": 11,
       "rec_20_plus": 1,
@@ -1124,7 +1101,7 @@
       "lng": 20
     },
     {
-      "rank": 45,
+      "rank": 44,
       "player": "Luke Schoonmaker",
       "team": "DAL",
       "g": 10,
@@ -1137,7 +1114,7 @@
       "yac_per_rec": 3.6,
       "brktkl": 0,
       "tgt": 36,
-      "target_share": 0.0531,
+      "target_share": 0.0533,
       "rz_tgt": 1,
       "rec_10_plus": 9,
       "rec_20_plus": 3,
@@ -1147,7 +1124,7 @@
       "lng": 24
     },
     {
-      "rank": 46,
+      "rank": 45,
       "player": "Tommy Tremble",
       "team": "CAR",
       "g": 10,
@@ -1160,7 +1137,7 @@
       "yac_per_rec": 5.4,
       "brktkl": 1,
       "tgt": 32,
-      "target_share": 0.0547,
+      "target_share": 0.0549,
       "rz_tgt": 4,
       "rec_10_plus": 9,
       "rec_20_plus": 2,
@@ -1170,7 +1147,7 @@
       "lng": 38
     },
     {
-      "rank": 47,
+      "rank": 46,
       "player": "Stone Smartt",
       "team": "LAC",
       "g": 7,
@@ -1183,7 +1160,7 @@
       "yac_per_rec": 4.1,
       "brktkl": 0,
       "tgt": 19,
-      "target_share": 0.0341,
+      "target_share": 0.0343,
       "rz_tgt": 1,
       "rec_10_plus": 8,
       "rec_20_plus": 4,
@@ -1193,7 +1170,7 @@
       "lng": 31
     },
     {
-      "rank": 48,
+      "rank": 47,
       "player": "Darnell Washington",
       "team": "PIT",
       "g": 13,
@@ -1206,7 +1183,7 @@
       "yac_per_rec": 6.6,
       "brktkl": 2,
       "tgt": 25,
-      "target_share": 0.0455,
+      "target_share": 0.0456,
       "rz_tgt": 2,
       "rec_10_plus": 8,
       "rec_20_plus": 3,
@@ -1216,7 +1193,7 @@
       "lng": 29
     },
     {
-      "rank": 49,
+      "rank": 48,
       "player": "Adam Trautman",
       "team": "DEN",
       "g": 13,
@@ -1239,7 +1216,7 @@
       "lng": 37
     },
     {
-      "rank": 50,
+      "rank": 49,
       "player": "Kylen Granson",
       "team": "IND",
       "g": 14,
@@ -1252,7 +1229,7 @@
       "yac_per_rec": 7.8,
       "brktkl": 0,
       "tgt": 31,
-      "target_share": 0.0567,
+      "target_share": 0.0569,
       "rz_tgt": 6,
       "rec_10_plus": 7,
       "rec_20_plus": 3,
@@ -1262,7 +1239,7 @@
       "lng": 40
     },
     {
-      "rank": 51,
+      "rank": 50,
       "player": "Elijah Higgins",
       "team": "ARI",
       "g": 14,
@@ -1285,7 +1262,7 @@
       "lng": 23
     },
     {
-      "rank": 52,
+      "rank": 51,
       "player": "Erick All",
       "team": "CIN",
       "g": 8,
@@ -1298,7 +1275,7 @@
       "yac_per_rec": 4.3,
       "brktkl": 1,
       "tgt": 22,
-      "target_share": 0.0313,
+      "target_share": 0.0314,
       "rz_tgt": 2,
       "rec_10_plus": 5,
       "rec_20_plus": 1,
@@ -1308,7 +1285,7 @@
       "lng": 28
     },
     {
-      "rank": 53,
+      "rank": 52,
       "player": "Michael Mayer",
       "team": "LV",
       "g": 11,
@@ -1321,7 +1298,7 @@
       "yac_per_rec": 2.9,
       "brktkl": 2,
       "tgt": 32,
-      "target_share": 0.0465,
+      "target_share": 0.0467,
       "rz_tgt": 6,
       "rec_10_plus": 5,
       "rec_20_plus": 1,
@@ -1331,7 +1308,7 @@
       "lng": 29
     },
     {
-      "rank": 54,
+      "rank": 53,
       "player": "Tanner Hudson",
       "team": "CIN",
       "g": 9,
@@ -1343,9 +1320,9 @@
       "yac": 97,
       "yac_per_rec": 5.1,
       "brktkl": 0,
-      "tgt": 24,
-      "target_share": 0.0342,
-      "rz_tgt": 5,
+      "tgt": 23,
+      "target_share": 0.0329,
+      "rz_tgt": 4,
       "rec_10_plus": 6,
       "rec_20_plus": 0,
       "rec_30_plus": 0,
@@ -1354,7 +1331,7 @@
       "lng": 19
     },
     {
-      "rank": 55,
+      "rank": 54,
       "player": "Lucas Krull",
       "team": "DEN",
       "g": 10,
@@ -1377,7 +1354,7 @@
       "lng": 23
     },
     {
-      "rank": 56,
+      "rank": 55,
       "player": "Mo Alie-Cox",
       "team": "IND",
       "g": 12,
@@ -1389,9 +1366,9 @@
       "yac": 49,
       "yac_per_rec": 4.1,
       "brktkl": 0,
-      "tgt": 23,
-      "target_share": 0.042,
-      "rz_tgt": 7,
+      "tgt": 22,
+      "target_share": 0.0404,
+      "rz_tgt": 6,
       "rec_10_plus": 7,
       "rec_20_plus": 2,
       "rec_30_plus": 0,
@@ -1400,7 +1377,7 @@
       "lng": 22
     },
     {
-      "rank": 57,
+      "rank": 56,
       "player": "Johnny Mundt",
       "team": "MIN",
       "g": 13,
@@ -1423,7 +1400,7 @@
       "lng": 20
     },
     {
-      "rank": 58,
+      "rank": 57,
       "player": "Nick Vannett",
       "team": "TEN",
       "g": 12,
@@ -1436,7 +1413,7 @@
       "yac_per_rec": 6.5,
       "brktkl": 0,
       "tgt": 20,
-      "target_share": 0.0342,
+      "target_share": 0.0344,
       "rz_tgt": 5,
       "rec_10_plus": 3,
       "rec_20_plus": 1,
@@ -1446,7 +1423,7 @@
       "lng": 24
     },
     {
-      "rank": 59,
+      "rank": 58,
       "player": "Cade Stover",
       "team": "HOU",
       "g": 13,
@@ -1469,7 +1446,7 @@
       "lng": 27
     },
     {
-      "rank": 60,
+      "rank": 59,
       "player": "Charlie Kolar",
       "team": "BAL",
       "g": 7,
@@ -1482,7 +1459,7 @@
       "yac_per_rec": 8.4,
       "brktkl": 0,
       "tgt": 11,
-      "target_share": 0.0219,
+      "target_share": 0.022,
       "rz_tgt": 1,
       "rec_10_plus": 3,
       "rec_20_plus": 2,
@@ -1492,7 +1469,7 @@
       "lng": 55
     },
     {
-      "rank": 61,
+      "rank": 60,
       "player": "Daniel Bellinger",
       "team": "NYG",
       "g": 7,
@@ -1505,7 +1482,7 @@
       "yac_per_rec": 3.8,
       "brktkl": 0,
       "tgt": 17,
-      "target_share": 0.0264,
+      "target_share": 0.0266,
       "rz_tgt": 1,
       "rec_10_plus": 6,
       "rec_20_plus": 0,
@@ -1515,7 +1492,7 @@
       "lng": 17
     },
     {
-      "rank": 62,
+      "rank": 61,
       "player": "Nate Adkins",
       "team": "DEN",
       "g": 12,
@@ -1528,7 +1505,7 @@
       "yac_per_rec": 5.4,
       "brktkl": 1,
       "tgt": 15,
-      "target_share": 0.0252,
+      "target_share": 0.0253,
       "rz_tgt": 4,
       "rec_10_plus": 5,
       "rec_20_plus": 0,
@@ -1538,7 +1515,7 @@
       "lng": 16
     },
     {
-      "rank": 63,
+      "rank": 62,
       "player": "Payne Durham",
       "team": "TB",
       "g": 5,
@@ -1551,7 +1528,7 @@
       "yac_per_rec": 2.2,
       "brktkl": 0,
       "tgt": 14,
-      "target_share": 0.0228,
+      "target_share": 0.0229,
       "rz_tgt": 2,
       "rec_10_plus": 3,
       "rec_20_plus": 2,
@@ -1561,7 +1538,7 @@
       "lng": 31
     },
     {
-      "rank": 64,
+      "rank": 63,
       "player": "David Johnson",
       "team": "JAX",
       "g": 13,
@@ -1574,7 +1551,7 @@
       "yac_per_rec": 7.1,
       "brktkl": null,
       "tgt": 28,
-      "target_share": 0.0479,
+      "target_share": 0.0484,
       "rz_tgt": 4,
       "rec_10_plus": 4,
       "rec_20_plus": 2,
@@ -1584,7 +1561,7 @@
       "lng": 26
     },
     {
-      "rank": 65,
+      "rank": 64,
       "player": "Drew Sample",
       "team": "CIN",
       "g": 11,
@@ -1597,7 +1574,7 @@
       "yac_per_rec": 4.0,
       "brktkl": 1,
       "tgt": 22,
-      "target_share": 0.0313,
+      "target_share": 0.0314,
       "rz_tgt": 2,
       "rec_10_plus": 3,
       "rec_20_plus": 0,
@@ -1607,7 +1584,7 @@
       "lng": 12
     },
     {
-      "rank": 66,
+      "rank": 65,
       "player": "Jeremy Ruckert",
       "team": "NYJ",
       "g": 13,
@@ -1620,7 +1597,7 @@
       "yac_per_rec": 4.7,
       "brktkl": 0,
       "tgt": 28,
-      "target_share": 0.0429,
+      "target_share": 0.0433,
       "rz_tgt": 3,
       "rec_10_plus": 4,
       "rec_20_plus": 0,
@@ -1630,7 +1607,7 @@
       "lng": 12
     },
     {
-      "rank": 67,
+      "rank": 66,
       "player": "Brock Wright",
       "team": "DET",
       "g": 10,
@@ -1653,10 +1630,10 @@
       "lng": 16
     },
     {
-      "rank": 68,
+      "rank": 67,
       "player": "Julian Hill",
       "team": "MIA",
-      "g": 12,
+      "g": 11,
       "rec": 12,
       "yds": 100,
       "ypr": 8.3,
@@ -1665,9 +1642,9 @@
       "yac": 58,
       "yac_per_rec": 4.8,
       "brktkl": 3,
-      "tgt": 20,
-      "target_share": 0.0313,
-      "rz_tgt": 6,
+      "tgt": 19,
+      "target_share": 0.03,
+      "rz_tgt": 5,
       "rec_10_plus": 5,
       "rec_20_plus": 0,
       "rec_30_plus": 0,
@@ -1676,7 +1653,7 @@
       "lng": 17
     },
     {
-      "rank": 69,
+      "rank": 68,
       "player": "Brevyn Spann-Ford",
       "team": "DAL",
       "g": 6,
@@ -1689,7 +1666,7 @@
       "yac_per_rec": 5.9,
       "brktkl": 0,
       "tgt": 14,
-      "target_share": 0.0206,
+      "target_share": 0.0207,
       "rz_tgt": 2,
       "rec_10_plus": 4,
       "rec_20_plus": 0,
@@ -1699,7 +1676,7 @@
       "lng": 18
     },
     {
-      "rank": 70,
+      "rank": 69,
       "player": "Harrison Bryant",
       "team": "LV",
       "g": 5,
@@ -1712,7 +1689,7 @@
       "yac_per_rec": 7.9,
       "brktkl": 2,
       "tgt": 12,
-      "target_share": 0.0174,
+      "target_share": 0.0175,
       "rz_tgt": 0,
       "rec_10_plus": 4,
       "rec_20_plus": 0,
@@ -1722,7 +1699,7 @@
       "lng": 18
     },
     {
-      "rank": 71,
+      "rank": 70,
       "player": "John Bates",
       "team": "WAS",
       "g": 10,
@@ -1735,7 +1712,7 @@
       "yac_per_rec": 6.1,
       "brktkl": 1,
       "tgt": 13,
-      "target_share": 0.0225,
+      "target_share": 0.0226,
       "rz_tgt": 1,
       "rec_10_plus": 3,
       "rec_20_plus": 1,
@@ -1745,7 +1722,7 @@
       "lng": 20
     },
     {
-      "rank": 72,
+      "rank": 71,
       "player": "Eric Saubert",
       "team": "SF",
       "g": 8,
@@ -1768,7 +1745,7 @@
       "lng": 16
     },
     {
-      "rank": 73,
+      "rank": 72,
       "player": "Hayden Hurst",
       "team": "LAC",
       "g": 7,
@@ -1781,7 +1758,7 @@
       "yac_per_rec": 2.5,
       "brktkl": 0,
       "tgt": 13,
-      "target_share": 0.0233,
+      "target_share": 0.0235,
       "rz_tgt": 3,
       "rec_10_plus": 1,
       "rec_20_plus": 1,
@@ -1791,7 +1768,7 @@
       "lng": 27
     },
     {
-      "rank": 74,
+      "rank": 73,
       "player": "Luke Farrell",
       "team": "JAX",
       "g": 10,
@@ -1804,7 +1781,7 @@
       "yac_per_rec": 2.5,
       "brktkl": 1,
       "tgt": 17,
-      "target_share": 0.0291,
+      "target_share": 0.0294,
       "rz_tgt": 1,
       "rec_10_plus": 1,
       "rec_20_plus": 0,
@@ -1814,7 +1791,7 @@
       "lng": 11
     },
     {
-      "rank": 75,
+      "rank": 74,
       "player": "Tyler Higbee",
       "team": "LA",
       "g": 3,
@@ -1827,7 +1804,7 @@
       "yac_per_rec": 6.0,
       "brktkl": 0,
       "tgt": 12,
-      "target_share": 0.0202,
+      "target_share": 0.0203,
       "rz_tgt": 6,
       "rec_10_plus": 3,
       "rec_20_plus": 0,
@@ -1837,7 +1814,7 @@
       "lng": 17
     },
     {
-      "rank": 76,
+      "rank": 75,
       "player": "Pharaoh Brown",
       "team": "SEA",
       "g": 8,
@@ -1860,7 +1837,7 @@
       "lng": 17
     },
     {
-      "rank": 77,
+      "rank": 76,
       "player": "Hunter Long",
       "team": "LA",
       "g": 7,
@@ -1873,7 +1850,7 @@
       "yac_per_rec": 4.3,
       "brktkl": 0,
       "tgt": 9,
-      "target_share": 0.0152,
+      "target_share": 0.0153,
       "rz_tgt": 0,
       "rec_10_plus": 1,
       "rec_20_plus": 0,
@@ -1883,7 +1860,7 @@
       "lng": 18
     },
     {
-      "rank": 78,
+      "rank": 77,
       "player": "Durham Smythe",
       "team": "MIA",
       "g": 13,
@@ -1896,7 +1873,7 @@
       "yac_per_rec": 1.8,
       "brktkl": 0,
       "tgt": 17,
-      "target_share": 0.0266,
+      "target_share": 0.0268,
       "rz_tgt": 3,
       "rec_10_plus": 0,
       "rec_20_plus": 0,
@@ -1906,7 +1883,7 @@
       "lng": 8
     },
     {
-      "rank": 79,
+      "rank": 78,
       "player": "Blake Whiteheart",
       "team": "CLE",
       "g": 7,
@@ -1919,7 +1896,7 @@
       "yac_per_rec": 1.7,
       "brktkl": 0,
       "tgt": 9,
-      "target_share": 0.0122,
+      "target_share": 0.0124,
       "rz_tgt": 2,
       "rec_10_plus": 1,
       "rec_20_plus": 1,
@@ -1929,7 +1906,7 @@
       "lng": 29
     },
     {
-      "rank": 80,
+      "rank": 79,
       "player": "Kenny Yeboah",
       "team": "NYJ",
       "g": 6,
@@ -1942,7 +1919,7 @@
       "yac_per_rec": 6.8,
       "brktkl": 0,
       "tgt": 8,
-      "target_share": 0.0123,
+      "target_share": 0.0124,
       "rz_tgt": 1,
       "rec_10_plus": 3,
       "rec_20_plus": 0,
@@ -1952,7 +1929,7 @@
       "lng": 13
     },
     {
-      "rank": 81,
+      "rank": 80,
       "player": "Charlie Woerner",
       "team": "ATL",
       "g": 8,
@@ -1965,7 +1942,7 @@
       "yac_per_rec": 3.0,
       "brktkl": 0,
       "tgt": 12,
-      "target_share": 0.0202,
+      "target_share": 0.0203,
       "rz_tgt": 0,
       "rec_10_plus": 2,
       "rec_20_plus": 0,
@@ -1975,7 +1952,7 @@
       "lng": 13
     },
     {
-      "rank": 82,
+      "rank": 81,
       "player": "Luke Musgrave",
       "team": "GB",
       "g": 7,
@@ -1988,7 +1965,7 @@
       "yac_per_rec": 2.6,
       "brktkl": 0,
       "tgt": 10,
-      "target_share": 0.0198,
+      "target_share": 0.02,
       "rz_tgt": 1,
       "rec_10_plus": 1,
       "rec_20_plus": 0,
@@ -1998,7 +1975,7 @@
       "lng": 19
     },
     {
-      "rank": 83,
+      "rank": 82,
       "player": "MyCole Pruitt",
       "team": "PIT",
       "g": 6,
@@ -2021,7 +1998,7 @@
       "lng": 18
     },
     {
-      "rank": 84,
+      "rank": 83,
       "player": "Tucker Fisk",
       "team": "LAC",
       "g": 7,
@@ -2044,7 +2021,7 @@
       "lng": 10
     },
     {
-      "rank": 85,
+      "rank": 84,
       "player": "Davis Allen",
       "team": "LA",
       "g": 6,
@@ -2057,7 +2034,7 @@
       "yac_per_rec": 3.5,
       "brktkl": 0,
       "tgt": 13,
-      "target_share": 0.0219,
+      "target_share": 0.022,
       "rz_tgt": 5,
       "rec_10_plus": 2,
       "rec_20_plus": 0,
@@ -2067,7 +2044,7 @@
       "lng": 13
     },
     {
-      "rank": 86,
+      "rank": 85,
       "player": "Gerald Everett",
       "team": "CHI",
       "g": 9,
@@ -2080,7 +2057,7 @@
       "yac_per_rec": 5.1,
       "brktkl": 2,
       "tgt": 13,
-      "target_share": 0.0202,
+      "target_share": 0.0205,
       "rz_tgt": 2,
       "rec_10_plus": 1,
       "rec_20_plus": 0,
@@ -2090,7 +2067,7 @@
       "lng": 17
     },
     {
-      "rank": 87,
+      "rank": 86,
       "player": "Quintin Morris",
       "team": "BUF",
       "g": 5,
@@ -2113,7 +2090,7 @@
       "lng": 14
     },
     {
-      "rank": 88,
+      "rank": 87,
       "player": "Will Mallory",
       "team": "IND",
       "g": 7,
@@ -2126,7 +2103,7 @@
       "yac_per_rec": 1.0,
       "brktkl": 1,
       "tgt": 8,
-      "target_share": 0.0146,
+      "target_share": 0.0147,
       "rz_tgt": 0,
       "rec_10_plus": 1,
       "rec_20_plus": 0,
@@ -2136,7 +2113,7 @@
       "lng": 10
     },
     {
-      "rank": 89,
+      "rank": 88,
       "player": "Greg Dulcich",
       "team": "DEN",
       "g": 3,

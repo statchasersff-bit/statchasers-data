@@ -108,10 +108,15 @@ _MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
     "D.Njoku":   {"CLE": "David Njoku"},
     # M.Andrews: Mark Andrews vs other M. Andrews
     "M.Andrews": {"BAL": "Mark Andrews"},
-    # M.Evans: Mitchell Evans (TE, CAR) vs Mike Evans (WR, TB)
-    "M.Evans":   {"CAR": "Mitchell Evans"},
-    # T.Johnson: Theo Johnson (TE, NYG) vs Ty Johnson (RB)
-    "T.Johnson": {"NYG": "Theo Johnson"},
+    # M.Evans: Mitchell Evans (TE, CAR) vs Mike Evans (WR, TB).
+    # Sleeper lists Mike Evans as team=SF (stale); without the TB entry the
+    # TB plays fall through to the TE positional fallback → Mitchell Evans.
+    "M.Evans":   {"CAR": "Mitchell Evans", "TB": "Mike Evans"},
+    # T.Johnson: Theo Johnson (TE, NYG) vs Tyler Johnson (WR, NYJ),
+    # Tez Johnson (WR, TB) and Ty Johnson (RB, BUF).
+    # Only NYG was defined before; other-team plays fell through to Theo Johnson.
+    "T.Johnson": {"NYG": "Theo Johnson", "NYJ": "Tyler Johnson",
+                  "TB": "Tez Johnson",   "BUF": "Ty Johnson"},
     # B.Likely: Likely is unique enough; belt-and-suspenders
     "I.Thomas":  {"NYG": "Isaiah Thomas"},
 }
@@ -129,6 +134,11 @@ def _resolve(
         hit = _MANUAL_TEAM_OVERRIDES[pbp_name].get(pbp_team)
         if hit:
             return hit
+        # When a manual override is defined for this abbrev, treat it as the
+        # source of truth: plays from teams not in the override map are NOT
+        # eligible for the positional fallback. Otherwise an ambiguous abbrev
+        # like M.Evans+TB would be silently attributed to Mitchell Evans (CAR).
+        return pbp_name
     if pbp_name in full_name_set:
         return pbp_name
     if pbp_name in unambig:
@@ -391,6 +401,8 @@ def main() -> None:
         (pbp_full["season"] == SEASON) &
         (pbp_full["season_type"] == "REG")
     ].copy()
+    if "two_point_attempt" in pbp_full.columns:
+        pbp_full = pbp_full[pbp_full["two_point_attempt"].fillna(0) != 1].copy()
 
     print("Loading PFR receiving advanced stats...")
     pfr = pd.read_parquet(PFR_PATH)

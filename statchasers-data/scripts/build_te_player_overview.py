@@ -38,6 +38,10 @@ import numpy as np
 import pandas as pd
 
 ROOT               = Path(__file__).resolve().parent.parent
+SCRIPTS_DIR        = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPTS_DIR))
+from _id_resolution import build_canonical_id_lookup, filter_canonical_id  # noqa: E402
+
 PBP_PATH           = ROOT / "data" / "raw"       / "nflverse_play_by_play.parquet"
 PARTICIPATION_PATH = ROOT / "data" / "raw"       / "nflverse_participation.parquet"
 SNAP_COUNTS_PATH   = ROOT / "data" / "raw"       / "nflverse_snap_counts.parquet"
@@ -230,7 +234,12 @@ def _build_routes_lookup(
     pbp: pd.DataFrame,
     part: pd.DataFrame,
 ) -> dict[str, dict[str, int]]:
-    """Return {player_abbrev → {game_id → route_count}}."""
+    """Return {player_abbrev → {game_id → route_count}}.
+
+    Counts TE appearances on pass plays only. Participation rows are
+    inner-joined to pbp on (game_id, play_id) and filtered to
+    play_type == 'pass'.
+    """
     gsis_to_abbrev: dict[str, str] = (
         pbp[pbp["pass_attempt"] == 1][["receiver_player_id", "receiver_player_name"]]
         .dropna(subset=["receiver_player_id", "receiver_player_name"])
@@ -246,6 +255,14 @@ def _build_routes_lookup(
         & part["offense_players"].notna()
         & part["offense_positions"].notna()
     ].copy()
+
+    pbp_pass = pbp[pbp["play_type"] == "pass"][["game_id", "play_id"]]
+    part_reg = part_reg.merge(
+        pbp_pass,
+        left_on=["nflverse_game_id", "play_id"],
+        right_on=["game_id", "play_id"],
+        how="inner",
+    )
 
     part_reg["pid_list"] = part_reg["offense_players"].str.split(";")
     part_reg["pos_list"] = part_reg["offense_positions"].str.split(";")
@@ -332,6 +349,7 @@ def build_season(
     sleeper_age: dict[str, Any],
     routes_map: dict[str, dict[str, int]],
     snap_by_norm: dict[str, float],
+    canonical_id_lookup: dict[str, str] | None = None,
 ) -> list[dict]:
     full_name_set: set[str] = {p["full_name"] for p in sleeper_players if p.get("full_name")}
     sleeper_pos: dict[str, str] = {
@@ -368,6 +386,11 @@ def build_season(
     targeted = pass_plays[pass_plays["receiver_player_name"].notna()].copy()
     targeted["_fn"] = targeted.apply(_tag, axis=1)
     targeted = targeted[targeted["_fn"] != ""]
+
+    if canonical_id_lookup:
+        targeted = filter_canonical_id(
+            targeted, "_fn", "receiver_player_id", canonical_id_lookup,
+        )
 
     def _is_te(fn: str) -> bool:
         s_pos = sleeper_pos.get(fn, "")
@@ -588,11 +611,13 @@ def main() -> None:
         (pbp_full["season"] == SEASON) &
         (pbp_full["season_type"] == "REG")
     ].copy()
+    if "two_point_attempt" in pbp_full.columns:
+        pbp_full = pbp_full[pbp_full["two_point_attempt"].fillna(0) != 1].copy()
 
     print("Loading participation data...")
     part = pd.read_parquet(
         PARTICIPATION_PATH,
-        columns=["nflverse_game_id", "season", "offense_players", "offense_positions"],
+        columns=["nflverse_game_id", "play_id", "season", "offense_players", "offense_positions"],
     )
     part = part[part["season"] == SEASON].copy()
 
@@ -638,10 +663,13 @@ def main() -> None:
     print("Building snap % lookup...")
     snap_by_norm = _build_snap_pct_lookup(snap_df, sleeper_te_set)
 
+    canonical_id_lookup = build_canonical_id_lookup(nfl_df, position="TE")
+
     print(f"Building {SEASON} TE overview...")
     rows = build_season(
         pbp_full, sleeper_players, metrics_map, yoe_lookup,
         sleeper_age, routes_map, snap_by_norm,
+        canonical_id_lookup=canonical_id_lookup,
     )
 
     rows = _add_composite_scores(rows)

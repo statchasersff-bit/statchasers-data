@@ -39,6 +39,10 @@ import numpy as np
 import pandas as pd
 
 ROOT              = Path(__file__).resolve().parent.parent
+SCRIPTS_DIR       = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPTS_DIR))
+from _id_resolution import build_canonical_id_lookup, filter_canonical_id  # noqa: E402
+
 PBP_PATH          = ROOT / "data" / "raw"       / "nflverse_play_by_play.parquet"
 METRICS_PATH      = ROOT / "data" / "processed" / "player_metrics.json"
 NFL_PATH          = ROOT / "data" / "raw"       / "nflverse_players.parquet"
@@ -281,6 +285,8 @@ def build(
     rb_metric_names: set[str] = {p["player"] for p in player_metrics if p.get("pos") == "RB"}
     print(f"  {len(rb_metric_names)} RBs in player_metrics.")
 
+    canonical_id_lookup = build_canonical_id_lookup(nfl_players, position="RB")
+
     # ── nflverse years_of_experience lookup ─────────────────────────────────
     yoe_lookup: dict[str, int] = {}
     if not nfl_players.empty and "display_name" in nfl_players.columns:
@@ -329,6 +335,12 @@ def build(
     passes["_fn"] = passes.apply(
         lambda r: _tag(str(r.get("receiver_player_name") or ""), str(r.get("posteam", ""))), axis=1
     )
+
+    # Drop name-collision plays via canonical gsis_id (e.g. B.Allen on SF =
+    # Brandon Allen QB, not Braelon Allen RB).
+    if canonical_id_lookup:
+        rush   = filter_canonical_id(rush,   "_fn", "rusher_player_id",   canonical_id_lookup)
+        passes = filter_canonical_id(passes, "_fn", "receiver_player_id", canonical_id_lookup)
 
     # ── Collect qualifying RB names ──────────────────────────────────────────
     # Primary: player_metrics RBs
@@ -639,9 +651,10 @@ def _build_rb_routes_per_game(
 ) -> dict[str, float]:
     """Return {sleeper_full_name → avg_routes_per_game} for RBs.
 
-    Uses the nflverse participation parquet (pass plays, offense_players gsis_ids).
-    Bridges gsis_id → display_name via nflverse_players, then strip Jr./III
-    suffixes to match Sleeper full_names.
+    Counts RB appearances on pass plays only — participation rows are
+    inner-joined to pbp on (game_id, play_id) and filtered to
+    play_type == 'pass'. Bridges gsis_id → display_name via nflverse_players,
+    then strip Jr./III suffixes to match Sleeper full_names.
     """
     if not part_path.exists():
         print(f"  WARN: {part_path} not found — routes_per_gm will be null.", file=sys.stderr)
@@ -649,7 +662,7 @@ def _build_rb_routes_per_game(
 
     part = pd.read_parquet(
         part_path,
-        columns=["nflverse_game_id", "season", "offense_players", "offense_positions"],
+        columns=["nflverse_game_id", "play_id", "season", "offense_players", "offense_positions"],
     )
     part = part[
         (part["season"] == season) &
@@ -661,7 +674,23 @@ def _build_rb_routes_per_game(
     part["week_num"] = part["nflverse_game_id"].str.split("_").str[1].astype(int, errors="ignore")
     part = part[part["week_num"] <= 18]
 
-    # Parse game number (unique per game_id)
+    # Inner-join to pbp to keep only pass plays (sacks/scrambles still count as routes)
+    pbp_pass = pd.read_parquet(
+        PBP_PATH,
+        columns=["game_id", "play_id", "season", "season_type", "play_type"],
+    )
+    pbp_pass = pbp_pass[
+        (pbp_pass["season"] == season) &
+        (pbp_pass["season_type"] == "REG") &
+        (pbp_pass["play_type"] == "pass")
+    ][["game_id", "play_id"]]
+    part = part.merge(
+        pbp_pass,
+        left_on=["nflverse_game_id", "play_id"],
+        right_on=["game_id", "play_id"],
+        how="inner",
+    )
+
     # Explode semicolon-separated gsis_id / position lists
     part["pid_list"] = part["offense_players"].str.split(";")
     part["pos_list"] = part["offense_positions"].str.split(";")
@@ -734,6 +763,8 @@ def main() -> None:
     print("Loading play-by-play data...")
     pbp_full = pd.read_parquet(PBP_PATH)
     pbp = pbp_full[(pbp_full["season"] == SEASON) & (pbp_full["season_type"] == "REG")].copy()  # regular season only
+    if "two_point_attempt" in pbp.columns:
+        pbp = pbp[pbp["two_point_attempt"].fillna(0) != 1].copy()
     print(f"  {len(pbp):,} plays for {SEASON}.")
 
     with open(METRICS_PATH) as f:

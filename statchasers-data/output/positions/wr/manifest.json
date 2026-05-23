@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
   "position": "WR",
-  "generatedAt": "2026-05-20T19:37:34Z",
+  "generatedAt": "2026-05-23T17:03:50Z",
   "tabs": {
     "overview": [
       "2023",
@@ -41,128 +41,128 @@
       "season": "2023",
       "filename": "overview_2023.json",
       "path": "positions/wr/overview_2023.json",
-      "rowCount": 166,
-      "bytes": 135235
+      "rowCount": 156,
+      "bytes": 127098
     },
     {
       "tab": "overview",
       "season": "2024",
       "filename": "overview_2024.json",
       "path": "positions/wr/overview_2024.json",
-      "rowCount": 160,
-      "bytes": 130285
+      "rowCount": 154,
+      "bytes": 125506
     },
     {
       "tab": "overview",
       "season": "2025",
       "filename": "overview_2025.json",
       "path": "positions/wr/overview_2025.json",
-      "rowCount": 170,
-      "bytes": 138732
+      "rowCount": 165,
+      "bytes": 134801
     },
     {
       "tab": "overview",
       "season": "all",
       "filename": "overview_all.json",
       "path": "positions/wr/overview_all.json",
-      "rowCount": 249,
-      "bytes": 202665
+      "rowCount": 236,
+      "bytes": 192264
     },
     {
       "tab": "efficiency",
       "season": "2023",
       "filename": "efficiency_2023.json",
       "path": "positions/wr/efficiency_2023.json",
-      "rowCount": 166,
-      "bytes": 136560
+      "rowCount": 156,
+      "bytes": 128410
     },
     {
       "tab": "efficiency",
       "season": "2024",
       "filename": "efficiency_2024.json",
       "path": "positions/wr/efficiency_2024.json",
-      "rowCount": 159,
-      "bytes": 130888
+      "rowCount": 155,
+      "bytes": 127614
     },
     {
       "tab": "efficiency",
       "season": "2025",
       "filename": "efficiency_2025.json",
       "path": "positions/wr/efficiency_2025.json",
-      "rowCount": 171,
-      "bytes": 140669
+      "rowCount": 166,
+      "bytes": 136589
     },
     {
       "tab": "efficiency",
       "season": "all",
       "filename": "efficiency_all.json",
       "path": "positions/wr/efficiency_all.json",
-      "rowCount": 248,
-      "bytes": 203420
+      "rowCount": 236,
+      "bytes": 193627
     },
     {
       "tab": "usage",
       "season": "2023",
       "filename": "usage_2023.json",
       "path": "positions/wr/usage_2023.json",
-      "rowCount": 206,
-      "bytes": 129339
+      "rowCount": 190,
+      "bytes": 119355
     },
     {
       "tab": "usage",
       "season": "2024",
       "filename": "usage_2024.json",
       "path": "positions/wr/usage_2024.json",
-      "rowCount": 213,
-      "bytes": 133710
+      "rowCount": 200,
+      "bytes": 125568
     },
     {
       "tab": "usage",
       "season": "2025",
       "filename": "usage_2025.json",
       "path": "positions/wr/usage_2025.json",
-      "rowCount": 221,
-      "bytes": 138829
+      "rowCount": 213,
+      "bytes": 133839
     },
     {
       "tab": "usage",
       "season": "all",
       "filename": "usage_all.json",
       "path": "positions/wr/usage_all.json",
-      "rowCount": 317,
-      "bytes": 198763
+      "rowCount": 295,
+      "bytes": 185081
     },
     {
       "tab": "stat_explorer",
       "season": "2023",
       "filename": "stat_explorer_2023.json",
       "path": "positions/wr/stat_explorer_2023.json",
-      "rowCount": 251,
-      "bytes": 182249
+      "rowCount": 252,
+      "bytes": 182985
     },
     {
       "tab": "stat_explorer",
       "season": "2024",
       "filename": "stat_explorer_2024.json",
       "path": "positions/wr/stat_explorer_2024.json",
-      "rowCount": 236,
-      "bytes": 171276
+      "rowCount": 237,
+      "bytes": 171997
     },
     {
       "tab": "stat_explorer",
       "season": "2025",
       "filename": "stat_explorer_2025.json",
       "path": "positions/wr/stat_explorer_2025.json",
-      "rowCount": 211,
-      "bytes": 152759
+      "rowCount": 212,
+      "bytes": 153483
     },
     {
       "tab": "stat_explorer",
       "season": "all",
       "filename": "stat_explorer_all.json",
       "path": "positions/wr/stat_explorer_all.json",
-      "rowCount": 364,
-      "bytes": 263587
+      "rowCount": 365,
+      "bytes": 264306
     }
   ]
 }

@@ -50,7 +50,12 @@ import numpy as np
 import pandas as pd
 
 ROOT         = Path(__file__).resolve().parent.parent
+SCRIPTS_DIR  = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPTS_DIR))
+from _id_resolution import build_canonical_id_lookup, filter_canonical_id  # noqa: E402
+
 PBP_PATH     = ROOT / "data" / "raw"       / "nflverse_play_by_play.parquet"
+NFL_PATH     = ROOT / "data" / "raw"       / "nflverse_players.parquet"
 PFR_PATH     = ROOT / "data" / "raw"       / "pfr_rush_advstats.parquet"
 SLEEPER_PATH = ROOT / "data" / "raw"       / "sleeper_players.json"
 METRICS_PATH = ROOT / "data" / "processed" / "player_metrics.json"
@@ -299,6 +304,14 @@ def build(
 
     rush["_fn"] = rush.apply(_tag_rush, axis=1)
 
+    # Drop name-collision plays (e.g. Brandon Allen QB on SF being merged into Braelon Allen RB).
+    if NFL_PATH.exists():
+        _nfl = pd.read_parquet(NFL_PATH, columns=["gsis_id", "display_name", "position"])
+        _canonical_id_lookup = build_canonical_id_lookup(_nfl, position="RB")
+        rush = filter_canonical_id(rush, "_fn", "rusher_player_id", _canonical_id_lookup)
+    else:
+        _canonical_id_lookup = {}
+
     # ── Identify RB full names ───────────────────────────────────────────────
     rb_names: set[str] = set()
     for fn in rush["_fn"].unique():
@@ -330,6 +343,8 @@ def build(
     rec_stats: dict[str, dict] = {}
     if not rb_pass.empty:
         rb_pass["_fn"] = rb_pass.apply(_tag_rec, axis=1)
+        if _canonical_id_lookup:
+            rb_pass = filter_canonical_id(rb_pass, "_fn", "receiver_player_id", _canonical_id_lookup)
         rb_pass = rb_pass[rb_pass["_fn"].isin(rb_names)]
         for fn, grp in rb_pass.groupby("_fn"):
             comps = grp[grp["complete_pass"] == 1]
@@ -474,6 +489,8 @@ def main() -> None:
     print("Loading play-by-play data...")
     pbp_full = pd.read_parquet(PBP_PATH)
     pbp = pbp_full[(pbp_full["season"] == SEASON) & (pbp_full["season_type"] == "REG")].copy()  # regular season only
+    if "two_point_attempt" in pbp.columns:
+        pbp = pbp[pbp["two_point_attempt"].fillna(0) != 1].copy()
     print(f"  {len(pbp):,} plays for {SEASON}.")
 
     print("Loading PFR rush advanced stats...")

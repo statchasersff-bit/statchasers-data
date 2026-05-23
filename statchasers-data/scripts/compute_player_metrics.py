@@ -135,12 +135,37 @@ def load_data() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, list[dict], p
     pbp_all = pd.read_parquet(PBP_PATH)
     print(f"  {len(pbp_all):,} total plays loaded ({pbp_all['season'].nunique() if 'season' in pbp_all.columns else '?'} seasons).")
 
+    # Regular season only across the board — playoffs would otherwise inflate
+    # both career-context labels (pbp_all) and current-season metrics
+    # (pbp_2025) and diverge from NFL.com / ESPN's default REG-only views.
+    if "season_type" in pbp_all.columns:
+        before = len(pbp_all)
+        pbp_all = pbp_all[pbp_all["season_type"] == "REG"].copy()
+        print(f"  Filtered to REG: {len(pbp_all):,} plays ({before - len(pbp_all):,} playoff plays excluded).")
+
+    # Drop 2-point conversion plays — NFL official stats track them separately
+    # and never roll them into receiving/rushing/passing totals.  Without this
+    # filter top WRs/TEs/QBs end up with off-by-one targets / attempts / RZ
+    # counts versus public sources.
+    if "two_point_attempt" in pbp_all.columns:
+        before = len(pbp_all)
+        pbp_all = pbp_all[pbp_all["two_point_attempt"].fillna(0) != 1].copy()
+        print(f"  Dropped 2-pt conversions: {len(pbp_all):,} plays ({before - len(pbp_all):,} 2-pt plays excluded).")
+
     if "season" in pbp_all.columns:
         pbp_2025 = pbp_all[pbp_all["season"] == CURRENT_SEASON].copy()
         print(f"  {len(pbp_2025):,} plays in {CURRENT_SEASON} season.")
     else:
         print(f"WARNING: No 'season' column found; treating all data as {CURRENT_SEASON}.", file=sys.stderr)
         pbp_2025 = pbp_all.copy()
+
+    # Regular season only — playoff plays would otherwise inflate counting
+    # stats (rz_att, attempts, targets) and diverge from NFL.com / ESPN
+    # which report REG-only on default season dashboards.
+    if "season_type" in pbp_2025.columns:
+        before = len(pbp_2025)
+        pbp_2025 = pbp_2025[pbp_2025["season_type"] == "REG"].copy()
+        print(f"  Filtered to REG: {len(pbp_2025):,} plays ({before - len(pbp_2025):,} playoff plays excluded).")
 
     stats = pd.DataFrame()
     if os.path.exists(STATS_PATH):
@@ -821,7 +846,7 @@ def compute_route_participation(
     if "season" in filtered.columns:
         filtered = filtered[filtered["season"] == season]
     if "season_type" in filtered.columns:
-        filtered = filtered[filtered["season_type"].isin(["REG", "POST"])]
+        filtered = filtered[filtered["season_type"] == "REG"]
 
     filtered = filtered.dropna(subset=[name_col])
 

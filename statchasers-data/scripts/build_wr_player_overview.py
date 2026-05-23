@@ -45,6 +45,10 @@ import numpy as np
 import pandas as pd
 
 ROOT                = Path(__file__).resolve().parent.parent
+SCRIPTS_DIR         = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPTS_DIR))
+from _id_resolution import build_canonical_id_lookup, filter_canonical_id  # noqa: E402
+
 PBP_PATH            = ROOT / "data" / "raw"       / "nflverse_play_by_play.parquet"
 PARTICIPATION_PATH  = ROOT / "data" / "raw"       / "nflverse_participation.parquet"
 SNAP_COUNTS_PATH    = ROOT / "data" / "raw"       / "nflverse_snap_counts.parquet"
@@ -357,8 +361,9 @@ def _build_routes_lookup(
     of the pipeline can use the same canonical name resolution already in place.
 
     A 'route' is defined as a play where the player appears in offense_players with
-    position == 'WR'.  The participation dataset is already filtered to passing plays
-    (nearly all rows have a route value), so every WR on the field = 1 route run.
+    position == 'WR' AND the play is a pass play. Participation rows are inner-joined
+    to pbp on (game_id, play_id) and filtered to play_type == 'pass' so we exclude
+    runs, kneels, spikes, no-plays, and special teams.
 
     Only regular-season weeks (week ≤ 18) are counted.
     """
@@ -379,6 +384,17 @@ def _build_routes_lookup(
         & part["offense_players"].notna()
         & part["offense_positions"].notna()
     ].copy()
+
+    # Step 2b: restrict to pass plays via pbp join (game_id, play_id)
+    pbp_pass = pbp[
+        (pbp["season_type"] == "REG") & (pbp["play_type"] == "pass")
+    ][["game_id", "play_id"]]
+    part_reg = part_reg.merge(
+        pbp_pass,
+        left_on=["nflverse_game_id", "play_id"],
+        right_on=["game_id", "play_id"],
+        how="inner",
+    )
 
     # Step 3: vectorised explode of semicolon-separated player/position lists
     part_reg["pid_list"] = part_reg["offense_players"].str.split(";")
@@ -428,6 +444,7 @@ def build_season(
     snap_by_norm: dict[int, dict[str, float]] | None = None,
     snap_by_gsis: dict[int, dict[str, float]] | None = None,
     gsis_to_age: dict[str, Any] | None = None,
+    canonical_id_lookup: dict[str, str] | None = None,
 ) -> list[dict]:
     """Return one row per qualifying WR for this season (no composite scores yet)."""
     routes_map: dict[str, dict[str, int]] = (
@@ -459,6 +476,14 @@ def build_season(
     targeted = pass_plays[pass_plays["receiver_player_name"].notna()].copy()
     targeted["_fn"] = targeted.apply(_tag, axis=1)
     targeted = targeted[targeted["_fn"] != ""]
+
+    # Drop name-collision plays — keep only plays whose receiver_player_id
+    # matches the canonical gsis_id for the resolved name.  Prevents e.g.
+    # Jermar Jefferson (DET RB) plays being merged into Justin Jefferson.
+    if canonical_id_lookup:
+        targeted = filter_canonical_id(
+            targeted, "_fn", "receiver_player_id", canonical_id_lookup,
+        )
 
     # ── WR filter ─────────────────────────────────────────────────────────────
     # If Sleeper explicitly knows this player's position, use it as the truth.
@@ -883,6 +908,8 @@ def main() -> None:
     print("Loading play-by-play data (all seasons)...")
     pbp_raw  = pd.read_parquet(PBP_PATH)
     pbp_full = pbp_raw[pbp_raw["season_type"] == "REG"].copy()
+    if "two_point_attempt" in pbp_full.columns:
+        pbp_full = pbp_full[pbp_full["two_point_attempt"].fillna(0) != 1].copy()
 
     with open(SLEEPER_PATH) as f:
         raw = json.load(f)
@@ -941,6 +968,10 @@ def main() -> None:
     gsis_to_age: dict[str, Any] = _build_gsis_age_lookup(nfl_df, sleeper_age)
     print(f"  gsis_to_age bridge built: {len(gsis_to_age)} entries.")
 
+    # ── Canonical gsis_id lookup (prevents name-collision merging) ───────────
+    canonical_id_lookup: dict[str, str] = build_canonical_id_lookup(nfl_df, position="WR")
+    print(f"  canonical_id_lookup built: {len(canonical_id_lookup)} entries.")
+
     updated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -956,19 +987,20 @@ def main() -> None:
             latest_week_2025 = week
 
         raw_rows = build_season(
-            pbp_season       = pbp_s,
-            season           = season,
-            full_name_set    = full_name_set,
-            unambig          = unambig,
-            team_disambig    = team_disambig,
-            sleeper_pos      = sleeper_pos,
-            sleeper_age      = sleeper_age,
-            metrics_map      = metrics_map,
-            yoe_lookup       = yoe_lookup,
-            routes_by_season = routes_by_season,
-            snap_by_norm     = snap_by_norm,
-            snap_by_gsis     = snap_by_gsis,
-            gsis_to_age      = gsis_to_age,
+            pbp_season          = pbp_s,
+            season              = season,
+            full_name_set       = full_name_set,
+            unambig             = unambig,
+            team_disambig       = team_disambig,
+            sleeper_pos         = sleeper_pos,
+            sleeper_age         = sleeper_age,
+            metrics_map         = metrics_map,
+            yoe_lookup          = yoe_lookup,
+            routes_by_season    = routes_by_season,
+            snap_by_norm        = snap_by_norm,
+            snap_by_gsis        = snap_by_gsis,
+            gsis_to_age         = gsis_to_age,
+            canonical_id_lookup = canonical_id_lookup,
         )
 
         # Composite scores within-season pool

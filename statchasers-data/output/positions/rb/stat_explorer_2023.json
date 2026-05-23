@@ -5,7 +5,7 @@
     "tab": "stat_explorer",
     "season": "2023",
     "rowCount": 119,
-    "generatedAt": "2026-05-20T19:37:34Z",
+    "generatedAt": "2026-05-23T17:03:50Z",
     "sourceFiles": [
       "stat_explorer_rb_2023.json",
       "rb_advanced_stats_2023.json"
@@ -300,7 +300,7 @@
       "targets": 24,
       "receptions": 16,
       "redZoneTargets": 1,
-      "receivingYardsAfterCatch": 177
+      "receivingYardsAfterCatch": 149
     },
     {
       "rank": 10,
@@ -2707,7 +2707,7 @@
       "targets": 7,
       "receptions": 7,
       "redZoneTargets": 2,
-      "receivingYardsAfterCatch": 61
+      "receivingYardsAfterCatch": 60
     },
     {
       "rank": 93,

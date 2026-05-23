@@ -116,8 +116,8 @@ QB_FIELDS: list[FieldDef] = [
     FieldDef("ypa",               "Y/A",      "decimal", "passing",  True,  "Yards per attempt"),
     FieldDef("td",                "TD",       "number",  "passing",  True,  "Passing touchdowns"),
     FieldDef("int",               "INT",      "number",  "passing",  True,  "Interceptions"),
-    FieldDef("air_yards",         "AIR YDS",  "number",  "passing",  False, "Total air yards on all attempts"),
-    FieldDef("air_yards_per_att", "AIR/A",    "decimal", "passing",  False, "Air yards per attempt"),
+    FieldDef("air_yards",         "AIR YDS",  "number",  "passing",  False, "Total air yards on completed passes"),
+    FieldDef("air_yards_per_att", "AIR/A",    "decimal", "passing",  False, "Completed air yards per attempt"),
     # deep ball
     FieldDef("pass_10_plus",      "10+",      "number",  "deep",     False, "Completions of 10+ yards"),
     FieldDef("pass_20_plus",      "20+",      "number",  "deep",     False, "Completions of 20+ yards"),
@@ -187,6 +187,7 @@ WR_FIELDS: list[FieldDef] = [
     FieldDef("explosive_recs",    "20+",     "number",  "explosive", False, "Receptions of 20+ yards"),
     FieldDef("rz_tgt",            "RZ TGT",  "number",  "redZone",   False, "Targets inside the 20"),
     FieldDef("rz_rec",            "RZ REC",  "number",  "redZone",   False, "Receptions inside the 20"),
+    FieldDef("catchable",         "CTCH",    "number",  "contact",   False, "Catchable targets — receptions plus drops (PFR)"),
     FieldDef("drops",             "DROP",    "number",  "contact",   False, "Dropped targets (PFR)"),
     FieldDef("broken_tackles",    "BRK TKL", "number",  "contact",   False, "Broken tackles after catch (PFR)"),
 ]
@@ -210,6 +211,7 @@ TE_FIELDS: list[FieldDef] = [
     FieldDef("explosive_recs",    "20+",     "number",  "explosive", False, "Receptions of 20+ yards"),
     FieldDef("rz_tgt",            "RZ TGT",  "number",  "redZone",   False, "Targets inside the 20"),
     FieldDef("rz_rec",            "RZ REC",  "number",  "redZone",   False, "Receptions inside the 20"),
+    FieldDef("catchable",         "CTCH",    "number",  "contact",   False, "Catchable targets — receptions plus drops (PFR)"),
     FieldDef("drops",             "DROP",    "number",  "contact",   False, "Dropped targets (PFR)"),
     FieldDef("broken_tackles",    "BRK TKL", "number",  "contact",   False, "Broken tackles after catch (PFR)"),
 ]
@@ -581,7 +583,9 @@ def compute_qb_raw_stats(pbp: pd.DataFrame) -> pd.DataFrame:
         sacks  = int(db_grp["sack"].sum()) if has_sack else 0
         gp     = int(db_grp["game_id"].nunique())
 
-        air_yds = round(float(grp["air_yards"].dropna().sum()), 1)
+        # Air yards: sum over completed passes only (CAY — matches NFL.com).
+        # Summing across all attempts conflates with Intended Air Yards (IAY).
+        air_yds = round(float(grp.loc[grp["complete_pass"] == 1, "air_yards"].dropna().sum()), 1)
         # RZ attempts: exclude 2-point conversions (yardline_100 ≤ 20 catches
         # the 2-yd line where 2-pt attempts are spotted) and qb_kneel plays.
         rz_filter = grp["yardline_100"].dropna() <= 20
@@ -838,13 +842,18 @@ def _sanitize_rb(raw_rush: dict, raw_rec: dict | None,
 
 def _sanitize_receiver(raw: dict, full_name: str, team: str,
                          position: str, pfr_stats: dict) -> dict[str, Any]:
+    rec   = raw.get("rec")
+    drops = pfr_stats.get("drops")
+    # Catchable = receptions + drops (PFR drops are catchable balls not caught).
+    # Null if drops are unavailable so the column doesn't silently equal rec.
+    catchable = (rec + drops) if (rec is not None and drops is not None) else None
     return {
         "player":          full_name,
         "team":            team,
         "position":        position,
         "gp":              raw.get("gp"),
         "tgt":             raw.get("tgt"),
-        "rec":             raw.get("rec"),
+        "rec":             rec,
         "rec_yds":         raw.get("rec_yds"),
         "ypr":             raw.get("ypr"),
         "td":              raw.get("td"),
@@ -856,7 +865,8 @@ def _sanitize_receiver(raw: dict, full_name: str, team: str,
         "explosive_recs":  raw.get("explosive_recs"),
         "rz_tgt":          raw.get("rz_tgt"),
         "rz_rec":          raw.get("rz_rec"),
-        "drops":           pfr_stats.get("drops"),
+        "catchable":       catchable,
+        "drops":           drops,
         "broken_tackles":  pfr_stats.get("broken_tackles"),
     }
 
@@ -1021,11 +1031,11 @@ def _aggregate_rolling_rows(rows: list[dict], pos: str) -> list[dict]:
         ],
         "WR": [
             "gp", "tgt", "rec", "rec_yds", "td", "air_yards", "yac",
-            "explosive_recs", "rz_tgt", "rz_rec", "drops", "broken_tackles",
+            "explosive_recs", "rz_tgt", "rz_rec", "catchable", "drops", "broken_tackles",
         ],
         "TE": [
             "gp", "tgt", "rec", "rec_yds", "td", "air_yards", "yac",
-            "explosive_recs", "rz_tgt", "rz_rec", "drops", "broken_tackles",
+            "explosive_recs", "rz_tgt", "rz_rec", "catchable", "drops", "broken_tackles",
         ],
     }
     MAX_FIELDS: dict[str, list[str]] = {

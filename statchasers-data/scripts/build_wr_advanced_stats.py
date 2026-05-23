@@ -580,6 +580,8 @@ def main() -> None:
     print("Loading play-by-play data (all seasons)...")
     pbp_full = pd.read_parquet(PBP_PATH)
     pbp_full = pbp_full[pbp_full["season_type"] == "REG"].copy()  # regular season only
+    if "two_point_attempt" in pbp_full.columns:
+        pbp_full = pbp_full[pbp_full["two_point_attempt"].fillna(0) != 1].copy()
 
     print("Loading PFR receiving advanced stats...")
     pfr = pd.read_parquet(PFR_PATH)
