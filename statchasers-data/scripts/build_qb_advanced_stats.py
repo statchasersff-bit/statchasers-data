@@ -65,7 +65,7 @@ COLUMNS: list[dict] = [
     {"key": "completions",        "label": "CMP",         "type": "number",  "defaultVisible": True},
     {"key": "completionPct",      "label": "CMP%",        "type": "decimal", "defaultVisible": True},
     {"key": "passingYards",       "label": "YDS",         "type": "number",  "defaultVisible": True},
-    {"key": "yardsPerAttempt",    "label": "Y/A",         "type": "decimal", "defaultVisible": True},
+    {"key": "yardsPerCatch",      "label": "Y/C",         "type": "decimal", "defaultVisible": True},
     {"key": "passingTouchdowns",  "label": "Passing TDs", "type": "number",  "defaultVisible": True},
     {"key": "interceptions",      "label": "INT",         "type": "number",  "defaultVisible": True},
     {"key": "fantasyPoints",      "label": "FPTS",        "type": "decimal", "defaultVisible": True},
@@ -253,7 +253,8 @@ def build_season(
             "completions":        cmp,
             "completionPct":      _round(cmp / att * 100, 1) if cmp is not None and att else None,
             "passingYards":       yds,
-            "yardsPerAttempt":    _round(yds / att, 2) if yds is not None and att else None,
+            # NOTE: yardsPerCatch retains the yards-per-attempt calculation (yards/attempts) by request.
+            "yardsPerCatch":      _round(yds / att, 2) if yds is not None and att else None,
             "passingTouchdowns":  _int(s.get("passing_tds")),
             "interceptions":      _int(s.get("passing_interceptions")),
             "fantasyPoints":      _round(s.get("fantasy_points"), 1),
@@ -343,7 +344,7 @@ def _aggregate_combined(rows_with_season: list[dict]) -> list[dict]:
         cmp = c.get("completions") or 0
         yds = c.get("passingYards") or 0
         c["completionPct"]      = round(cmp / att * 100, 1) if att else None
-        c["yardsPerAttempt"]    = round(yds / att, 2) if att else None
+        c["yardsPerCatch"]      = round(yds / att, 2) if att else None
         deep = c.get("_deepAttempts")
         pbp_att = c.get("_pbpAttempts")
         c["deepAttemptPct"] = round(deep / pbp_att * 100, 1) if deep is not None and pbp_att else None
