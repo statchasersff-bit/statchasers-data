@@ -19,7 +19,10 @@ Data sources (pre-pulled by pull_nflverse_data.py):
   data/raw/nflverse_player_stats_season.parquet  — season-total counting stats,
                                                     fantasy points, fumbles, sacks
   data/raw/pfr_pass_advstats_season.parquet      — pocket time / pressure / scrambles
-  data/raw/ngs_passing.parquet                   — avg_time_to_throw (season row)
+  data/raw/ngs_passing.parquet                   — avg_time_to_throw (season row);
+                                                    avg_completed_air_yards as the
+                                                    air-yards fallback for seasons PFR
+                                                    omits (e.g. 2023)
   data/raw/nflverse_play_by_play.parquet         — distance buckets, LNG, RZ, deep att%
   data/raw/nflverse_players.parquet              — birth_date (age), pfr_id↔gsis map
   data/raw/sleeper_players.json                  — Sleeper playerId resolution
@@ -273,6 +276,23 @@ def build_season(
         scramble_ypa     = pfr.get("scramble_yards_per_attempt")
         scramble_yds     = (scramble_ypa * scrambles) if (scramble_ypa is not None and scrambles) else None
         completed_air    = _int(pfr.get("completed_air_yards"))
+        comp_ay_per_cmp  = _round(pfr.get("completed_air_yards_per_completion"), 2)
+
+        # Fallback for seasons where PFR omits the air-yards columns (e.g. 2023,
+        # which is fully null in pfr_pass_advstats_season). NextGen Stats'
+        # avg_completed_air_yards aligns with PFR's completed_air_yards_per_completion
+        # (validated within ~0.1-0.3 yds on overlapping seasons), so we substitute it
+        # for AY/Cmp and reconstruct the Comp Air YDS total as per-completion x CMP.
+        # NGS only covers qualified passers (~45/season), so non-qualified QBs stay
+        # null. Scramble metrics have no comparable fallback and remain null.
+        air_yards_source = "pfr" if comp_ay_per_cmp is not None else None
+        if comp_ay_per_cmp is None:
+            ngs_comp_ay = _round(ngs.get("avg_completed_air_yards"), 2)
+            if ngs_comp_ay is not None:
+                comp_ay_per_cmp  = ngs_comp_ay
+                air_yards_source = "ngs"
+                if completed_air is None and cmp:
+                    completed_air = _int(ngs_comp_ay * cmp)
 
         rows.append({
             "playerId":           resolver.resolve(name, team, "QB"),
@@ -293,7 +313,7 @@ def build_season(
             "fantasyPoints":      _round(s.get("fantasy_points"), 1),
             "airYards":           air_yards,
             "completedAirYards":  completed_air,
-            "completedAirYardsPerCompletion": _round(pfr.get("completed_air_yards_per_completion"), 2),
+            "completedAirYardsPerCompletion": comp_ay_per_cmp,
             "deepAttemptPct":     deep_pct,
             "epaPerPlay":         epa_per_play,
             "successRate":        success_rate,
@@ -328,6 +348,7 @@ def build_season(
             "knockdowns":         _int(pfr.get("times_hit")),
             "pressurePct":        _round(pfr.get("pressure_pct"), 1),
             # internal-only carry-overs for the combined *_all aggregation
+            "_airYardsSource":    air_yards_source,
             "_deepAttempts":      deep_att,
             "_pbpAttempts":       pbp_att,
             "_scrambles":         scrambles,
@@ -391,13 +412,37 @@ def _aggregate_combined(rows_with_season: list[dict]) -> list[dict]:
         deep = c.get("_deepAttempts")
         pbp_att = c.get("_pbpAttempts")
         c["deepAttemptPct"] = round(deep / pbp_att * 100, 1) if deep is not None and pbp_att else None
+        # Consistency gate: a combined metric is reported only when every season
+        # the player appeared in has the underlying datum. Otherwise the value
+        # would silently reflect a subset of the player's seasons (e.g. 2 of 3),
+        # which isn't comparable to players with full coverage — so it is nulled.
+        # 2023 lacks scramble data entirely and (for non-qualified passers)
+        # air-yards, so this nulls those players' affected multi-season stats.
+        air_complete = all(r.get("completedAirYards") is not None for r in prows)
+        scr_complete = all(r.get("_scrambles") is not None for r in prows)
+        # Yards/Scramble needs scramble-yardage for every season the player
+        # actually scrambled. A season with 0 scrambles has no per-scramble value
+        # but contributes nothing to the average, so it does not disqualify; only
+        # a missing scramble count (e.g. 2023) or a >0-scramble season lacking
+        # yardage data breaks coverage.
+        def _scr_yds_ok(r: dict) -> bool:
+            s = r.get("_scrambles")
+            if s is None:
+                return False
+            return s == 0 or r.get("_scrambleYds") is not None
+        yps_complete = all(_scr_yds_ok(r) for r in prows)
+
         scr = c.get("_scrambles")
         dropbacks = att + (c.get("sacks") or 0) + (scr or 0)
-        c["scrambleRate"] = round(scr / dropbacks * 100, 1) if scr and dropbacks else None
+        c["scrambleRate"] = round(scr / dropbacks * 100, 1) if (scr_complete and scr and dropbacks) else None
         scr_yds = c.get("_scrambleYds")
-        c["yardsPerScramble"] = round(scr_yds / scr, 2) if scr_yds is not None and scr else None
-        comp_air = c.get("completedAirYards")
-        c["completedAirYardsPerCompletion"] = round(comp_air / cmp, 2) if comp_air is not None and cmp else None
+        c["yardsPerScramble"] = round(scr_yds / scr, 2) if (yps_complete and scr_yds is not None and scr) else None
+        if air_complete:
+            comp_air = c.get("completedAirYards")
+            c["completedAirYardsPerCompletion"] = round(comp_air / cmp, 2) if comp_air is not None and cmp else None
+        else:
+            c["completedAirYards"] = None
+            c["completedAirYardsPerCompletion"] = None
         c["fantasyPoints"] = round(c["fantasyPoints"], 1) if c.get("fantasyPoints") is not None else None
 
         # EPA/play and success rate recomputed from summed all-QB-play totals.
@@ -444,6 +489,11 @@ def _validate(rows: list[dict], label: str) -> None:
     if no_id:
         print(f"  NOTE: {len(no_id)} QB(s) without a Sleeper playerId in {label}: "
               f"{', '.join(no_id[:8])}{'…' if len(no_id) > 8 else ''}", file=sys.stderr)
+    ngs_air = sum(1 for r in rows if r.get("_airYardsSource") == "ngs")
+    no_air  = sum(1 for r in rows if r.get("completedAirYardsPerCompletion") is None)
+    if ngs_air or no_air:
+        print(f"  NOTE: air-yards in {label} — {ngs_air} QB(s) backfilled from NGS, "
+              f"{no_air} QB(s) without air-yards data.", file=sys.stderr)
     print(f"  Validation OK for {label}: {len(rows)} QBs.")
 
 
