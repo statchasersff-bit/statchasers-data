@@ -41,44 +41,14 @@ jobs:
       - name: Pull nflverse play-by-play data
         run: python scripts/pull_nflverse_data.py
 
-      - name: Compute player metrics
-        run: python scripts/compute_player_metrics.py
-
-      - name: Build performance analytics output
-        run: python scripts/build_performance_analytics.py
-
-      - name: Build Stat Explorer output
-        run: python scripts/build_stat_explorer.py
-
-      - name: Build QB trends output
-        run: python scripts/build_qb_trends.py
-
       - name: Build QB advanced stats output
         run: python scripts/build_qb_advanced_stats.py
 
       - name: Build RB advanced stats output
         run: python scripts/build_rb_advanced_stats.py
 
-      - name: Build RB player overview output
-        run: python scripts/build_rb_player_overview.py
-
-      - name: Build RB efficiency analytics output
-        run: python scripts/build_rb_efficiency_analytics.py
-
-      - name: Build RB usage and role output
-        run: python scripts/build_rb_usage_role.py
-
       - name: Build WR advanced stats output
         run: python scripts/build_wr_advanced_stats.py
-
-      - name: Build WR player overview output
-        run: python scripts/build_wr_player_overview.py
-
-      - name: Build WR efficiency analytics output
-        run: python scripts/build_wr_efficiency_analytics.py
-
-      - name: Build WR role and usage trends output
-        run: python scripts/build_wr_trends.py
 
       - name: Build TE advanced stats output
         run: python scripts/build_te_advanced_stats.py
@@ -88,53 +58,19 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          # Stage generated output files only
-          git add output/performance_analytics_latest.json
-          git add output/performance_analytics_2025.json
-          git add output/stat_explorer_*.json
-          git add output/qb_trends.json
-          git add output/qb_advanced_stats.json
-          git add output/qb_advanced_stats_2023.json
-          git add output/qb_advanced_stats_2024.json
-          git add output/qb_advanced_stats_2025.json
-          git add output/qb_advanced_stats_all.json
-          git add output/rb_advanced_stats.json
-          git add output/rb_advanced_stats_2023.json
-          git add output/rb_advanced_stats_2024.json
-          git add output/rb_advanced_stats_2025.json
-          git add output/rb_advanced_stats_all.json
-          git add output/rb_player_overview.json
-          git add output/rb_efficiency_analytics.json
-          git add output/rb_usage_role.json
-          git add output/wr_advanced_stats.json
-          git add output/wr_advanced_stats_2023.json
-          git add output/wr_advanced_stats_2024.json
-          git add output/wr_advanced_stats_2025.json
-          git add output/wr_advanced_stats_all.json
-          git add output/wr_player_overview.json
-          git add output/wr_player_overview_2023.json
-          git add output/wr_player_overview_2024.json
-          git add output/wr_player_overview_2025.json
-          git add output/wr_player_overview_all.json
-          git add output/wr_efficiency_analytics.json
-          git add output/wr_efficiency_analytics_2025.json
-          git add output/wr_trends_2025.json
-          git add output/te_advanced_stats.json
-          git add output/te_advanced_stats_2023.json
-          git add output/te_advanced_stats_2024.json
-          git add output/te_advanced_stats_2025.json
-          git add output/te_advanced_stats_all.json
+          # Stage the advanced-stats output files only
+          git add output/qb_advanced_stats*.json
+          git add output/rb_advanced_stats*.json
+          git add output/wr_advanced_stats*.json
+          git add output/te_advanced_stats*.json
           git add data/raw/sleeper_players.json
-          git add data/raw/nflverse_participation.parquet
-          git add data/raw/nflverse_snap_counts.parquet
-          git add data/raw/nflverse_players.parquet
 
           # Only commit if there are actual changes
           if git diff --staged --quiet; then
             echo "No changes to commit. Data is already up to date."
           else
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
-            git commit -m "chore: update performance analytics data [${TIMESTAMP}]"
+            git commit -m "chore: update advanced stats data [${TIMESTAMP}]"
             git push
             echo "Data updated and pushed successfully."
           fi
