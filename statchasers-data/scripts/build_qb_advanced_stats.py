@@ -70,10 +70,18 @@ COLUMNS: list[dict] = [
     {"key": "interceptions",      "label": "INT",         "type": "number",  "defaultVisible": True},
     {"key": "fantasyPoints",      "label": "FPTS",        "type": "decimal", "defaultVisible": True},
     {"key": "airYards",           "label": "Air YDS",     "type": "number",  "defaultVisible": False},
+    {"key": "completedAirYards",  "label": "Comp Air YDS","type": "number",  "defaultVisible": False},
+    {"key": "completedAirYardsPerCompletion", "label": "Comp AY/Cmp", "type": "decimal", "defaultVisible": True},
     {"key": "deepAttemptPct",     "label": "Deep ATT%",   "type": "decimal", "defaultVisible": True},
     {"key": "epaPerPlay",         "label": "EPA/Play",    "type": "decimal", "defaultVisible": True},
     {"key": "successRate",        "label": "Success%",    "type": "decimal", "defaultVisible": True},
     {"key": "cpoe",               "label": "CPOE",        "type": "decimal", "defaultVisible": True},
+    {"key": "throwaways",         "label": "Thrown Away", "type": "number",  "defaultVisible": True},
+    {"key": "battedPasses",       "label": "Batted",      "type": "number",  "defaultVisible": True},
+    {"key": "poorThrows",         "label": "Poor Throws", "type": "number",  "defaultVisible": True},
+    {"key": "badThrowPct",        "label": "Bad Throw%",  "type": "decimal", "defaultVisible": True},
+    {"key": "onTargetPct",        "label": "On Target%",  "type": "decimal", "defaultVisible": True},
+    {"key": "passesDropped",      "label": "Drops",       "type": "number",  "defaultVisible": True},
     {"key": "passes10Plus",       "label": "10+ YDS",     "type": "number",  "defaultVisible": False},
     {"key": "passes20Plus",       "label": "20+ YDS",     "type": "number",  "defaultVisible": True},
     {"key": "passes30Plus",       "label": "30+ YDS",     "type": "number",  "defaultVisible": False},
@@ -85,6 +93,7 @@ COLUMNS: list[dict] = [
     {"key": "rushTouchdowns",     "label": "Rush TDs",    "type": "number",  "defaultVisible": True},
     {"key": "redZoneAttempts",    "label": "RZ ATT",      "type": "number",  "defaultVisible": True},
     {"key": "scrambleRate",       "label": "SCRM%",       "type": "decimal", "defaultVisible": False},
+    {"key": "yardsPerScramble",   "label": "Yds/Scramble","type": "decimal", "defaultVisible": True},
     {"key": "fumbles",            "label": "FUM",         "type": "number",  "defaultVisible": True},
     {"key": "sacks",              "label": "SACK",        "type": "number",  "defaultVisible": True},
     {"key": "sackYardsLost",      "label": "Sack YDS",    "type": "number",  "defaultVisible": False},
@@ -104,14 +113,16 @@ _SUM_FIELDS = [
     "rushAttempts", "rushYards", "rushTouchdowns", "redZoneAttempts",
     "fumbles", "sacks", "sackYardsLost",
     "blitzes", "hurries", "knockdowns",
-    "_deepAttempts", "_scrambles", "_pbpAttempts",
+    "throwaways", "battedPasses", "poorThrows", "passesDropped", "completedAirYards",
+    "_deepAttempts", "_scrambles", "_scrambleYds", "_pbpAttempts",
     "_officialAtt", "_epaSum", "_successPlays",
 ]
 # Rate fields averaged across seasons weighted by pass attempts (cannot be
 # reconstructed from summed totals without the underlying weighting).
-_WEIGHTED_RATE_FIELDS = ["pocketTime", "timeToThrow", "pressurePct", "cpoe"]
+_WEIGHTED_RATE_FIELDS = ["pocketTime", "timeToThrow", "pressurePct", "cpoe",
+                         "badThrowPct", "onTargetPct"]
 # Weighted-rate fields rounded to 1 decimal (others default to 2).
-_ONE_DP_RATE_FIELDS = {"pressurePct", "cpoe"}
+_ONE_DP_RATE_FIELDS = {"pressurePct", "cpoe", "badThrowPct", "onTargetPct"}
 
 
 def _round(v: Any, n: int) -> Any:
@@ -241,6 +252,11 @@ def build_season(
         rush_fumbles = s.get("rushing_fumbles") or 0
         fumbles = _int(sack_fumbles + rush_fumbles)
 
+        # PFR seasonal passing accuracy / air-yards / scramble metrics
+        scramble_ypa     = pfr.get("scramble_yards_per_attempt")
+        scramble_yds     = (scramble_ypa * scrambles) if (scramble_ypa is not None and scrambles) else None
+        completed_air    = _int(pfr.get("completed_air_yards"))
+
         rows.append({
             "playerId":           resolver.resolve(name, team, "QB"),
             "playerName":         name,
@@ -259,10 +275,18 @@ def build_season(
             "interceptions":      _int(s.get("passing_interceptions")),
             "fantasyPoints":      _round(s.get("fantasy_points"), 1),
             "airYards":           air_yards,
+            "completedAirYards":  completed_air,
+            "completedAirYardsPerCompletion": _round(pfr.get("completed_air_yards_per_completion"), 2),
             "deepAttemptPct":     deep_pct,
             "epaPerPlay":         epa_per_play,
             "successRate":        success_rate,
             "cpoe":               _round(s.get("passing_cpoe"), 1),
+            "throwaways":         _int(pfr.get("throwaways")),
+            "battedPasses":       _int(pfr.get("batted_balls")),
+            "poorThrows":         _int(pfr.get("bad_throws")),
+            "badThrowPct":        _round(pfr.get("bad_throw_pct"), 1),
+            "onTargetPct":        _round(pfr.get("on_tgt_pct"), 1),
+            "passesDropped":      _int(pfr.get("drops")),
             "passes10Plus":       pbp.get("passes10Plus"),
             "passes20Plus":       pbp.get("passes20Plus"),
             "passes30Plus":       pbp.get("passes30Plus"),
@@ -274,6 +298,7 @@ def build_season(
             "rushTouchdowns":     _int(s.get("rushing_tds")),
             "redZoneAttempts":    pbp.get("redZoneAttempts"),
             "scrambleRate":       scramble_rate,
+            "yardsPerScramble":   _round(scramble_ypa, 2),
             "fumbles":            fumbles,
             "sacks":              sacks,
             # nflverse stores sack_yards_lost as a negative value; report the
@@ -289,6 +314,7 @@ def build_season(
             "_deepAttempts":      deep_att,
             "_pbpAttempts":       pbp_att,
             "_scrambles":         scrambles,
+            "_scrambleYds":       scramble_yds,
             "_officialAtt":       official_att,
             "_epaSum":            epa_sum,
             "_successPlays":      success_plays,
@@ -351,6 +377,10 @@ def _aggregate_combined(rows_with_season: list[dict]) -> list[dict]:
         scr = c.get("_scrambles")
         dropbacks = att + (c.get("sacks") or 0) + (scr or 0)
         c["scrambleRate"] = round(scr / dropbacks * 100, 1) if scr and dropbacks else None
+        scr_yds = c.get("_scrambleYds")
+        c["yardsPerScramble"] = round(scr_yds / scr, 2) if scr_yds is not None and scr else None
+        comp_air = c.get("completedAirYards")
+        c["completedAirYardsPerCompletion"] = round(comp_air / cmp, 2) if comp_air is not None and cmp else None
         c["fantasyPoints"] = round(c["fantasyPoints"], 1) if c.get("fantasyPoints") is not None else None
 
         # EPA/play and success rate recomputed from summed official-dropback totals.
