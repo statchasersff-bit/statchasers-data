@@ -79,6 +79,7 @@ COLUMNS: list[dict] = [
     {"key": "goalLineCarries",              "label": "GL ATT",        "type": "number",  "defaultVisible": True},
     {"key": "targets",                      "label": "TGT",           "type": "number",  "defaultVisible": True},
     {"key": "receptions",                   "label": "REC",           "type": "number",  "defaultVisible": True},
+    {"key": "redZoneTargets",               "label": "RZ TGT",        "type": "number",  "defaultVisible": True},
     {"key": "endZoneTargets",               "label": "EZ TGT",        "type": "number",  "defaultVisible": True},
     {"key": "rushYards",                    "label": "Rush YDS",      "type": "number",  "defaultVisible": True},
     {"key": "yardsPerCarry",                "label": "Y/C",           "type": "decimal", "defaultVisible": True},
@@ -98,9 +99,9 @@ COLUMNS: list[dict] = [
     {"key": "explosiveRunPct",              "label": "Explosive %",   "type": "decimal", "defaultVisible": True},
     {"key": "breakawayRunPct",              "label": "Breakaway %",   "type": "decimal", "defaultVisible": True},
     {"key": "longestRush",                  "label": "LNG",           "type": "number",  "defaultVisible": True},
-    {"key": "longestRushTouchdown",         "label": "LNG TD",        "type": "flag",    "defaultVisible": False},
+    {"key": "longestRushTouchdown",         "label": "LNG TD",        "type": "number",  "defaultVisible": True},
     {"key": "brokenTackles",                "label": "BRKTKL",        "type": "number",  "defaultVisible": True},
-    {"key": "brokenTacklesPerAttempt",      "label": "BRKTKL/Att",    "type": "decimal", "defaultVisible": True},
+    {"key": "rushAttemptsPerBrokenTackle",  "label": "Att/BRKTKL",    "type": "decimal", "defaultVisible": True},
     {"key": "yardsAfterContactPerAttempt",  "label": "YAC/Att",       "type": "decimal", "defaultVisible": True},
     {"key": "yardsBeforeContactPerAttempt", "label": "YBC/Att",       "type": "decimal", "defaultVisible": True},
     {"key": "receivingYardsAfterCatch",     "label": "Rec YAC",       "type": "number",  "defaultVisible": True},
@@ -108,7 +109,6 @@ COLUMNS: list[dict] = [
     {"key": "fumbles",                      "label": "FUM",           "type": "number",  "defaultVisible": True},
     {"key": "tacklesForLoss",               "label": "TFL",           "type": "number",  "defaultVisible": True},
     {"key": "tacklesForLossYards",          "label": "TFL YDS",       "type": "number",  "defaultVisible": True},
-    {"key": "negativeYards",                "label": "Neg YDS",       "type": "number",  "defaultVisible": False},
     {"key": "rushAttForNegativeYards",      "label": "Neg Rush ATT",  "type": "number",  "defaultVisible": False},
 ]
 
@@ -119,7 +119,8 @@ _SUM_FIELDS = [
     "receivingYards", "receivingTouchdowns", "receivingYardsAfterCatch",
     "fantasyPoints", "brokenTackles", "fumbles",
     "rushes10Plus", "rushes20Plus", "rushes30Plus", "rushes40Plus", "rushes50Plus",
-    "tacklesForLoss", "tacklesForLossYards", "negativeYards", "rushAttForNegativeYards",
+    "redZoneTargets",
+    "tacklesForLoss", "tacklesForLossYards", "rushAttForNegativeYards",
     "_carriesPbp", "_explosive10", "_breakaway15",
     "_epaSum", "_epaPlays", "_ybcTotal", "_yacTotal", "_pfrCarries",
     "_snapPctXgames",
@@ -180,10 +181,12 @@ def _aggregate_pbp(pbp_season: pd.DataFrame) -> tuple[dict[str, dict], dict[str,
         yds = grp["yards_gained"]
         neg = grp[yds < 0]
         longest = int(yds.max()) if len(yds) else None
+        # Longest rushing TD = the yardage of this player's longest rush that
+        # scored a touchdown (null if he had no rushing TDs).
         longest_td = None
-        if longest is not None and has_td:
-            td_val = grp.loc[yds.idxmax(), "touchdown"]
-            longest_td = bool(td_val == 1 or td_val is True)
+        if has_td:
+            td_rushes = grp[grp["touchdown"] == 1]["yards_gained"]
+            longest_td = int(td_rushes.max()) if len(td_rushes) else None
         rush_by_gsis[str(pid)] = {
             "_carriesPbp":  int(len(grp)),
             "rushYardsPbp": int(yds.sum()),
@@ -343,7 +346,7 @@ def build_season(
         bt        = _int(pfr.get("broken_tackles"))
         ybc_att = _round(float(ybc_total) / pfr_carr, 2) if ybc_total is not None and pfr_carr else None
         yac_att = _round(float(yac_total) / pfr_carr, 2) if yac_total is not None and pfr_carr else None
-        bt_per_att = _round(bt / carries, 2) if bt is not None and carries else None
+        att_per_bt = _round(carries / bt, 2) if bt and carries else None
         touches = carries + (receptions or 0)
         tkl_eluded = _round(bt / touches * 100, 1) if bt is not None and touches else None
 
@@ -371,6 +374,7 @@ def build_season(
             "goalLineCarries":              pbp_r.get("goalLine"),
             "targets":                      targets,
             "receptions":                   receptions,
+            "redZoneTargets":               pbp_t.get("rzTargets"),
             "endZoneTargets":               pbp_t.get("endZoneTgts"),
             "rushYards":                    rush_yds,
             "yardsPerCarry":                ypc,
@@ -392,7 +396,7 @@ def build_season(
             "longestRush":                  pbp_r.get("longestRush"),
             "longestRushTouchdown":         pbp_r.get("longestRushTd"),
             "brokenTackles":                bt,
-            "brokenTacklesPerAttempt":      bt_per_att,
+            "rushAttemptsPerBrokenTackle":  att_per_bt,
             "yardsAfterContactPerAttempt":  yac_att,
             "yardsBeforeContactPerAttempt": ybc_att,
             "receivingYardsAfterCatch":     _int(s.get("receiving_yards_after_catch")),
@@ -400,7 +404,6 @@ def build_season(
             "fumbles":                      fum,
             "tacklesForLoss":               neg_count,
             "tacklesForLossYards":          neg_yards,
-            "negativeYards":                neg_yards,
             "rushAttForNegativeYards":      neg_count,
             # internal carry-overs for combined *_all aggregation
             "_carriesPbp":   carries_pbp,
@@ -468,7 +471,7 @@ def _aggregate_combined(rows_with_season: list[dict]) -> list[dict]:
         c["epaPerPlay"]         = round((c.get("_epaSum") or 0) / epa_plays, 3) if epa_plays else None
         c["yardsPerReception"]  = round(rec_yds / receptions, 2) if receptions else None
         c["yardsPerRouteRun"]   = round(rec_yds / routes, 2) if routes else None
-        c["brokenTacklesPerAttempt"] = round(bt / carries, 2) if bt is not None and carries else None
+        c["rushAttemptsPerBrokenTackle"] = round(carries / bt, 2) if bt and carries else None
         touches = carries + receptions
         c["tackleEludedRate"]   = round(bt / touches * 100, 1) if bt is not None and touches else None
         c["yardsBeforeContactPerAttempt"] = round((c.get("_ybcTotal") or 0) / pfr_carr, 2) if pfr_carr else None
@@ -476,14 +479,10 @@ def _aggregate_combined(rows_with_season: list[dict]) -> list[dict]:
         c["fantasyPoints"]      = round(c["fantasyPoints"], 1) if c.get("fantasyPoints") is not None else None
         c["snapPct"]            = round((c.get("_snapPctXgames") or 0) / games, 1) if games else None
         c["targetSharePct"]     = None  # not meaningful across seasons
-        lng_rows = [r for r in prows if r.get("longestRush") is not None]
-        if lng_rows:
-            best = max(lng_rows, key=lambda r: r["longestRush"])
-            c["longestRush"] = best["longestRush"]
-            c["longestRushTouchdown"] = best.get("longestRushTouchdown")
-        else:
-            c["longestRush"] = None
-            c["longestRushTouchdown"] = None
+        lng = [r["longestRush"] for r in prows if r.get("longestRush") is not None]
+        c["longestRush"] = max(lng) if lng else None
+        lng_td = [r["longestRushTouchdown"] for r in prows if r.get("longestRushTouchdown") is not None]
+        c["longestRushTouchdown"] = max(lng_td) if lng_td else None
 
         result.append(c)
 

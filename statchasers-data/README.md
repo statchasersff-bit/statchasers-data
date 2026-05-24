@@ -105,19 +105,20 @@ from `passing_cpoe`.
 `build_rb_advanced_stats.py` → `output/rb_advanced_stats_{2023,2024,2025,all}.json`
 (+ alias) — a volume / efficiency / elusiveness leaderboard covering every RB
 with ≥1 regular-season touch. Columns include rushing & receiving counting stats,
-usage (`snapPct`, `routes`, `redZoneOpportunities`, `goalLineCarries`,
-`endZoneTargets`, `targetSharePct`), efficiency (`epaPerPlay`, `explosiveRunPct`,
-`breakawayRunPct`, `yardsPerRouteRun`), distance buckets, and PFR
-contact/elusiveness metrics (`yardsBeforeContactPerAttempt`,
-`yardsAfterContactPerAttempt`, `brokenTackles`, `brokenTacklesPerAttempt`,
+usage (`snapPct`, `routes`, `redZoneOpportunities`, `redZoneTargets`,
+`goalLineCarries`, `endZoneTargets`, `targetSharePct`), efficiency (`epaPerPlay`,
+`explosiveRunPct`, `breakawayRunPct`, `yardsPerRouteRun`), distance buckets, and
+PFR contact/elusiveness metrics (`yardsBeforeContactPerAttempt`,
+`yardsAfterContactPerAttempt`, `brokenTackles`, `rushAttemptsPerBrokenTackle`,
 `tackleEludedRate`). Notes:
 
 - `explosiveRunPct` (rush ≥10 yds), `breakawayRunPct` (rush ≥15 yds), broken
   tackles and YBC/YAC per attempt match the established PFR-based definitions.
 - `epaPerPlay` is EPA over all plays the RB was involved in (carries + targets).
+- `longestRushTouchdown` is the yardage of the player's longest rushing TD.
 - PFR provides no tackles-for-loss field for rushers, so `tacklesForLoss` /
   `tacklesForLossYards` are derived from negative-yardage rushes and carry the
-  same values as `rushAttForNegativeYards` / `negativeYards`.
+  same values as `rushAttForNegativeYards`.
 
 ### WR Advanced Stats
 `build_wr_advanced_stats.py` → `output/wr_advanced_stats_{2023,2024,2025,all}.json`
