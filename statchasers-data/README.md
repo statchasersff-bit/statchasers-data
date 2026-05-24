@@ -127,8 +127,9 @@ reception buckets, and PFR contact metrics (`brokenTackles`, `drops`, `dropPct`,
 `interceptionsWhenTargeted`). Notes:
 
 - `epaPerPlay` is EPA per target; `successRate` is the % of targets with positive EPA.
-- `routes` is participation-based; per-route/per-rec rates use official receiving yards.
-- `contestedCatchRate` has **no source** in nflverse / PFR (it is a charting metric) and is emitted as `null`.
+- `routes` is participation-based; `routePct` = routes / team pass plays; per-route/per-rec rates use official receiving yards.
+- `catchableTargets` = receptions + drops; `totalYards` = receiving + rushing yards; `fumbles` = receiving + rushing + sack fumbles; `airYardsPerReception` = air yards / receptions.
+- `contestedCatchRate` and `yardsAfterContactPerReception` have **no source** in nflverse / PFR (charting / receiver-contact metrics) and are emitted as `null`.
 
 ### TE Advanced Stats
 `build_te_advanced_stats.py` → `output/te_advanced_stats_{2023,2024,2025,all}.json`

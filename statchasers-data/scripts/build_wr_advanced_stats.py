@@ -73,10 +73,12 @@ COLUMNS: list[dict] = [
     {"key": "games",                         "label": "G",             "type": "number",  "defaultVisible": True},
     {"key": "snapPct",                       "label": "Snap %",        "type": "decimal", "defaultVisible": True},
     {"key": "routes",                        "label": "Routes",        "type": "number",  "defaultVisible": True},
+    {"key": "routePct",                      "label": "Route %",       "type": "decimal", "defaultVisible": True},
     {"key": "targets",                       "label": "TGT",           "type": "number",  "defaultVisible": True},
     {"key": "targetsPerRouteRun",            "label": "TPRR",          "type": "decimal", "defaultVisible": True},
     {"key": "targetSharePct",                "label": "TGT Share %",   "type": "decimal", "defaultVisible": True},
     {"key": "airYardsPerTarget",             "label": "AY/TGT",        "type": "decimal", "defaultVisible": True},
+    {"key": "airYardsPerReception",          "label": "AY/Rec",        "type": "decimal", "defaultVisible": True},
     {"key": "airYardsSharePct",              "label": "AY Share %",    "type": "decimal", "defaultVisible": True},
     {"key": "wopr",                          "label": "WOPR",          "type": "decimal", "defaultVisible": True},
     {"key": "receptions",                    "label": "REC",           "type": "number",  "defaultVisible": True},
@@ -84,9 +86,11 @@ COLUMNS: list[dict] = [
     {"key": "endZoneTargets",                "label": "EZ TGT",        "type": "number",  "defaultVisible": True},
     {"key": "catchPct",                      "label": "Catch %",       "type": "decimal", "defaultVisible": True},
     {"key": "receivingYards",                "label": "Rec YDS",       "type": "number",  "defaultVisible": True},
+    {"key": "totalYards",                    "label": "Total YDS",     "type": "number",  "defaultVisible": True},
     {"key": "yardsPerReception",             "label": "Y/R",           "type": "decimal", "defaultVisible": True},
     {"key": "yardsBeforeCatchPerReception",  "label": "YBC/R",         "type": "decimal", "defaultVisible": True},
     {"key": "yardsAfterCatchPerReception",   "label": "YAC/R",         "type": "decimal", "defaultVisible": True},
+    {"key": "yardsAfterContactPerReception", "label": "YACON/R",       "type": "decimal", "defaultVisible": False},
     {"key": "yardsPerRouteRun",              "label": "YPRR",          "type": "decimal", "defaultVisible": True},
     {"key": "receivingTouchdowns",           "label": "Rec TDs",       "type": "number",  "defaultVisible": True},
     {"key": "epaPerPlay",                    "label": "EPA/Play",      "type": "decimal", "defaultVisible": True},
@@ -97,8 +101,10 @@ COLUMNS: list[dict] = [
     {"key": "brokenTackles",                 "label": "BRKTKL",        "type": "number",  "defaultVisible": True},
     {"key": "receptionsPerBrokenTackle",     "label": "REC/BRKTKL",    "type": "decimal", "defaultVisible": False},
     {"key": "drops",                         "label": "Drops",         "type": "number",  "defaultVisible": True},
+    {"key": "catchableTargets",              "label": "Catchable",     "type": "number",  "defaultVisible": True},
     {"key": "dropPct",                       "label": "Drop %",        "type": "decimal", "defaultVisible": True},
     {"key": "interceptionsWhenTargeted",     "label": "INT (tgt)",     "type": "number",  "defaultVisible": True},
+    {"key": "fumbles",                       "label": "FUM",           "type": "number",  "defaultVisible": True},
     {"key": "receptions10Plus",              "label": "10+ YDS",       "type": "number",  "defaultVisible": False},
     {"key": "receptions20Plus",              "label": "20+ YDS",       "type": "number",  "defaultVisible": True},
     {"key": "receptions30Plus",              "label": "30+ YDS",       "type": "number",  "defaultVisible": False},
@@ -110,11 +116,11 @@ COLUMNS: list[dict] = [
 # Counting fields summed when collapsing across seasons for the *_all file.
 _SUM_FIELDS = [
     "games", "routes", "targets", "receptions", "redZoneTargets", "endZoneTargets",
-    "receivingYards", "receivingTouchdowns", "fantasyPoints",
-    "brokenTackles", "drops", "interceptionsWhenTargeted",
+    "receivingYards", "totalYards", "receivingTouchdowns", "fantasyPoints",
+    "brokenTackles", "drops", "catchableTargets", "interceptionsWhenTargeted", "fumbles",
     "receptions10Plus", "receptions20Plus", "receptions30Plus",
     "receptions40Plus", "receptions50Plus",
-    "_recYds", "_recYac", "_recAirYards",
+    "_recYds", "_recYac", "_recAirYards", "_teamPassPlays",
     "_epaSum", "_epaCount", "_successCount",
     "_snapPctXgames",
 ]
@@ -246,6 +252,7 @@ def build_season(
     pfr_by_gsis: dict[str, dict],
     routes_by_gsis: dict[str, int],
     snap_by_gsis: dict[str, float],
+    team_pass_plays: dict[str, int],
     birth_by_gsis: dict[str, str],
     resolver: PlayerIdResolver,
 ) -> list[dict]:
@@ -272,11 +279,17 @@ def build_season(
 
         # Usage / volume
         tprr = _round(targets / routes, 3) if routes else None
+        team_pp = team_pass_plays.get(team, 0)
+        route_pct = _round(routes / team_pp * 100, 1) if routes and team_pp else None
         ts   = s.get("target_share")
         ays  = s.get("air_yards_share")
         target_share_pct = _round(float(ts) * 100, 1) if ts is not None and not (isinstance(ts, float) and ts != ts) else None
         air_yards_share_pct = _round(float(ays) * 100, 1) if ays is not None and not (isinstance(ays, float) and ays != ays) else None
         air_per_tgt = _round(rec_air / targets, 2) if rec_air is not None and targets else None
+        air_per_rec = _round(rec_air / receptions, 2) if rec_air is not None and receptions else None
+        rush_yds  = _int(s.get("rushing_yards")) or 0
+        total_yds = (rec_yds or 0) + rush_yds
+        fumbles   = sum(int(s.get(f) or 0) for f in ("receiving_fumbles", "rushing_fumbles", "sack_fumbles"))
 
         # Production / efficiency
         catch_pct = _round(receptions / targets * 100, 1) if targets else None
@@ -296,6 +309,8 @@ def build_season(
         avoided_rate = _round(bt / receptions * 100, 1) if bt is not None and receptions else None
         rec_per_bt   = _round(receptions / bt, 1) if bt else None
         drop_pct     = _round(drops / targets * 100, 1) if drops is not None and targets else None
+        # Catchable targets = receptions + drops (PFR drops are catchable balls not caught).
+        catchable    = receptions + drops if drops is not None else None
 
         rows.append({
             "playerId":                     resolver.resolve(name, team, "WR"),
@@ -307,10 +322,12 @@ def build_season(
             "games":                        _int(s.get("games")),
             "snapPct":                      snap_by_gsis.get(gsis),
             "routes":                       routes,
+            "routePct":                     route_pct,
             "targets":                      targets,
             "targetsPerRouteRun":           tprr,
             "targetSharePct":               target_share_pct,
             "airYardsPerTarget":            air_per_tgt,
+            "airYardsPerReception":         air_per_rec,
             "airYardsSharePct":             air_yards_share_pct,
             "wopr":                         _round(s.get("wopr"), 3),
             "receptions":                   receptions,
@@ -318,9 +335,11 @@ def build_season(
             "endZoneTargets":               pbp.get("endZoneTargets"),
             "catchPct":                     catch_pct,
             "receivingYards":               rec_yds,
+            "totalYards":                   total_yds,
             "yardsPerReception":            ypr,
             "yardsBeforeCatchPerReception": ybc_per_rec,
             "yardsAfterCatchPerReception":  yac_per_rec,
+            "yardsAfterContactPerReception": None,  # no receiver source in nflverse / PFR
             "yardsPerRouteRun":             yprr,
             "receivingTouchdowns":          _int(s.get("receiving_tds")),
             "epaPerPlay":                   epa_play,
@@ -331,8 +350,10 @@ def build_season(
             "brokenTackles":                bt,
             "receptionsPerBrokenTackle":    rec_per_bt,
             "drops":                        drops,
+            "catchableTargets":             catchable,
             "dropPct":                      drop_pct,
             "interceptionsWhenTargeted":    ints,
+            "fumbles":                      fumbles,
             "receptions10Plus":             pbp.get("receptions10Plus"),
             "receptions20Plus":             pbp.get("receptions20Plus"),
             "receptions30Plus":             pbp.get("receptions30Plus"),
@@ -346,6 +367,7 @@ def build_season(
             "_epaSum":       pbp.get("_epaSum", 0.0),
             "_epaCount":     epa_count,
             "_successCount": pbp.get("_successCount", 0),
+            "_teamPassPlays": team_pp,
             "_snapPctXgames": (snap_by_gsis.get(gsis) or 0) * (_int(s.get("games")) or 0),
         })
 
@@ -400,6 +422,10 @@ def _aggregate_combined(rows_with_season: list[dict]) -> list[dict]:
         c["receivingYards"]   = rec_yds
         c["targetsPerRouteRun"] = round(targets / routes, 3) if routes else None
         c["airYardsPerTarget"]  = round(rec_air / targets, 2) if targets else None
+        c["airYardsPerReception"] = round(rec_air / receptions, 2) if receptions else None
+        team_pp = c.get("_teamPassPlays") or 0
+        c["routePct"]         = round(routes / team_pp * 100, 1) if routes and team_pp else None
+        c["yardsAfterContactPerReception"] = None
         c["catchPct"]         = round(receptions / targets * 100, 1) if targets else None
         c["yardsPerReception"] = round(rec_yds / receptions, 2) if receptions else None
         c["yardsAfterCatchPerReception"] = round(rec_yac / receptions, 2) if receptions else None
@@ -523,11 +549,12 @@ def main() -> None:
             if have_part else {}
         )
         snap_by_gsis = _build_snap_pct(snaps[snaps["season"] == season], pfr_to_gsis) if have_snaps else {}
+        team_pass_plays = pbp_s[pbp_s["play_type"] == "pass"].groupby("posteam")["play_id"].count().to_dict()
         week = int(pbp_s["week"].max()) if not pbp_s.empty else None
 
         rows = build_season(
             season, stats, pbp_by_gsis, pfr_by_gsis, routes_by_gsis,
-            snap_by_gsis, birth_by_gsis, resolver,
+            snap_by_gsis, team_pass_plays, birth_by_gsis, resolver,
         )
         _validate(rows, str(season))
 
