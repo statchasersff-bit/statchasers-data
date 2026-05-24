@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
   "position": "RB",
-  "generatedAt": "2026-05-23T17:03:50Z",
+  "generatedAt": "2026-05-24T00:48:04Z",
   "tabs": {
     "overview": [
       "2023",
@@ -138,7 +138,7 @@
       "filename": "stat_explorer_2023.json",
       "path": "positions/rb/stat_explorer_2023.json",
       "rowCount": 119,
-      "bytes": 90618
+      "bytes": 90683
     },
     {
       "tab": "stat_explorer",
@@ -146,7 +146,7 @@
       "filename": "stat_explorer_2024.json",
       "path": "positions/rb/stat_explorer_2024.json",
       "rowCount": 112,
-      "bytes": 85037
+      "bytes": 85236
     },
     {
       "tab": "stat_explorer",
@@ -154,7 +154,7 @@
       "filename": "stat_explorer_2025.json",
       "path": "positions/rb/stat_explorer_2025.json",
       "rowCount": 101,
-      "bytes": 76469
+      "bytes": 76789
     },
     {
       "tab": "stat_explorer",
@@ -162,7 +162,7 @@
       "filename": "stat_explorer_all.json",
       "path": "positions/rb/stat_explorer_all.json",
       "rowCount": 179,
-      "bytes": 135559
+      "bytes": 135842
     }
   ]
 }
