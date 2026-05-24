@@ -70,7 +70,6 @@ COLUMNS: list[dict] = [
     {"key": "interceptions",      "label": "INT",         "type": "number",  "defaultVisible": True},
     {"key": "fantasyPoints",      "label": "FPTS",        "type": "decimal", "defaultVisible": True},
     {"key": "airYards",           "label": "Air YDS",     "type": "number",  "defaultVisible": False},
-    {"key": "airYardsPerAttempt", "label": "AY/A",        "type": "decimal", "defaultVisible": True},
     {"key": "deepAttemptPct",     "label": "Deep ATT%",   "type": "decimal", "defaultVisible": True},
     {"key": "epaPerPlay",         "label": "EPA/Play",    "type": "decimal", "defaultVisible": True},
     {"key": "successRate",        "label": "Success%",    "type": "decimal", "defaultVisible": True},
@@ -259,7 +258,6 @@ def build_season(
             "interceptions":      _int(s.get("passing_interceptions")),
             "fantasyPoints":      _round(s.get("fantasy_points"), 1),
             "airYards":           air_yards,
-            "airYardsPerAttempt": _round(air_yards / att, 2) if air_yards is not None and att else None,
             "deepAttemptPct":     deep_pct,
             "epaPerPlay":         epa_per_play,
             "successRate":        success_rate,
@@ -344,10 +342,8 @@ def _aggregate_combined(rows_with_season: list[dict]) -> list[dict]:
         att = c.get("attempts") or 0
         cmp = c.get("completions") or 0
         yds = c.get("passingYards") or 0
-        air = c.get("airYards")
         c["completionPct"]      = round(cmp / att * 100, 1) if att else None
         c["yardsPerAttempt"]    = round(yds / att, 2) if att else None
-        c["airYardsPerAttempt"] = round(air / att, 2) if att and air is not None else None
         deep = c.get("_deepAttempts")
         pbp_att = c.get("_pbpAttempts")
         c["deepAttemptPct"] = round(deep / pbp_att * 100, 1) if deep is not None and pbp_att else None
