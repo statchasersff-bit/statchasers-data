@@ -101,7 +101,6 @@ COLUMNS: list[dict] = [
     {"key": "fantasyPoints",                 "label": "FPTS",          "type": "decimal", "defaultVisible": True},
     {"key": "avoidedTackleRate",             "label": "Avoid Tkl %",   "type": "decimal", "defaultVisible": True},
     {"key": "brokenTackles",                 "label": "BRKTKL",        "type": "number",  "defaultVisible": True},
-    {"key": "receptionsPerBrokenTackle",     "label": "REC/BRKTKL",    "type": "decimal", "defaultVisible": False},
     {"key": "drops",                         "label": "Drops",         "type": "number",  "defaultVisible": True},
     {"key": "catchableTargets",              "label": "Catchable",     "type": "number",  "defaultVisible": True},
     {"key": "dropPct",                       "label": "Drop %",        "type": "decimal", "defaultVisible": True},
@@ -309,7 +308,6 @@ def build_season(
         drops = _int(pfr.get("drops"))
         ints  = _int(pfr.get("ints"))
         avoided_rate = _round(bt / receptions * 100, 1) if bt is not None and receptions else None
-        rec_per_bt   = _round(receptions / bt, 1) if bt else None
         drop_pct     = _round(drops / targets * 100, 1) if drops is not None and targets else None
         # Catchable targets = receptions + drops (PFR drops are catchable balls not caught).
         catchable    = receptions + drops if drops is not None else None
@@ -350,7 +348,6 @@ def build_season(
             "fantasyPoints":                _round(s.get("fantasy_points"), 1),
             "avoidedTackleRate":            avoided_rate,
             "brokenTackles":                bt,
-            "receptionsPerBrokenTackle":    rec_per_bt,
             "drops":                        drops,
             "catchableTargets":             catchable,
             "dropPct":                      drop_pct,
@@ -436,7 +433,6 @@ def _aggregate_combined(rows_with_season: list[dict]) -> list[dict]:
         c["epaPerPlay"]       = round((c.get("_epaSum") or 0) / epa_count, 3) if epa_count else None
         c["successRate"]      = round((c.get("_successCount") or 0) / epa_count * 100, 1) if epa_count else None
         c["avoidedTackleRate"] = round(bt / receptions * 100, 1) if bt is not None and receptions else None
-        c["receptionsPerBrokenTackle"] = round(receptions / bt, 1) if bt else None
         c["dropPct"]          = round(drops / targets * 100, 1) if drops is not None and targets else None
         c["fantasyPoints"]    = round(c["fantasyPoints"], 1) if c.get("fantasyPoints") is not None else None
         c["snapPct"]          = round((c.get("_snapPctXgames") or 0) / games, 1) if games else None
