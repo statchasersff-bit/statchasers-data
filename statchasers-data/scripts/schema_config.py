@@ -37,6 +37,7 @@ from __future__ import annotations
 
 import json
 import re
+import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -505,12 +506,37 @@ _NAME_ALIASES: dict[str, str] = {
     "Kyle Juszczyk":     "Kyle Juszczyk",
     "Michael Penix Jr.": "Michael Penix",
     "Joe Milton III":    "Joe Milton",
+    "Josh Palmer":       "Joshua Palmer",
+    "Scott Miller":      "Scotty Miller",
+    "Mike Strachan":     "Michael Strachan",
+    "Mike Woods":        "Michael Woods",
 }
 
 
+_GEN_SUFFIXES = frozenset(["jr", "sr", "ii", "iii", "iv", "v"])
+
+
+def _strip_accents(s: str) -> str:
+    """Remove diacritics so 'Estimé' matches Sleeper's 'Estime'."""
+    return "".join(
+        c for c in unicodedata.normalize("NFKD", s) if not unicodedata.combining(c)
+    )
+
+
 def _norm_name(name: str) -> str:
-    """Lowercase, strip punctuation/whitespace for fuzzy name matching."""
+    """Lowercase, strip accents/punctuation/whitespace for fuzzy name matching."""
+    name = _strip_accents(name)
     return name.lower().replace(".", "").replace("-", "").replace(" ", "").replace("'", "")
+
+
+def _norm_name_base(name: str) -> str:
+    """Like _norm_name but also drops a trailing generational suffix
+    (Jr./Sr./II–V) so nflverse 'Kenneth Walker III' matches Sleeper
+    'Kenneth Walker'."""
+    parts = _strip_accents(name).split()
+    if parts and parts[-1].lower().rstrip(".") in _GEN_SUFFIXES:
+        parts.pop()
+    return _norm_name(" ".join(parts))
 
 
 class PlayerIdResolver:
@@ -535,6 +561,8 @@ class PlayerIdResolver:
 
         self._by_name: dict[str, list[dict]] = {}
         self._by_norm: dict[str, list[dict]] = {}
+        # suffix-stripped + accent-stripped normalized name → records
+        self._by_norm_base: dict[str, list[dict]] = {}
         # ((first_initial_lower, last_name_lower, team) → player_id)
         self._by_initial_last_team: dict[tuple[str, str, str], str] = {}
         # ((first_initial_lower, last_name_lower) → list of (player_id, team, full_name))
@@ -551,6 +579,7 @@ class PlayerIdResolver:
                 continue
             self._by_name.setdefault(name, []).append(p)
             self._by_norm.setdefault(_norm_name(name), []).append(p)
+            self._by_norm_base.setdefault(_norm_name_base(name), []).append(p)
 
             parts = name.split()
             if pid and parts:
@@ -602,6 +631,18 @@ class PlayerIdResolver:
                     if p.get("team") == team:
                         return p.get("player_id")
             return nhits[0].get("player_id")
+
+        # 3b. suffix-stripped normalized match (e.g. nflverse "Kenneth Walker III"
+        #     → Sleeper "Kenneth Walker"; also covers accent differences).
+        base = _norm_name_base(name)
+        bhits = _filter_pos((self._by_norm_base.get(base) or []) + (self._by_norm.get(base) or []))
+        if bhits:
+            if team:
+                for p in bhits:
+                    if p.get("team") == team:
+                        return p.get("player_id")
+            # position filter already applied; prefer a single position match
+            return bhits[0].get("player_id")
 
         # 4. PBP-style abbreviation "M.Evans" / "Mi.Wilson"
         m = self._ABBREV_RE.match(name)

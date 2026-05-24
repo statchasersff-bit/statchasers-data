@@ -3,18 +3,35 @@ build_wr_advanced_stats.py
 ──────────────────────────
 Builds the WR Advanced Stats datasets for the StatChasers frontend.
 
-Produces five output files:
+Produces five output files (mirrors the QB/RB advanced builders):
   output/wr_advanced_stats_2023.json   — 2023 season only
   output/wr_advanced_stats_2024.json   — 2024 season only
   output/wr_advanced_stats_2025.json   — 2025 season only
   output/wr_advanced_stats_all.json    — 2023 + 2024 + 2025 combined (one row per player)
   output/wr_advanced_stats.json        — alias for 2025 (backward compat)
 
-Data sources (pre-pulled by pull_nflverse_data.py / pull_sleeper_players.py):
-  data/raw/nflverse_play_by_play.parquet  — play-level receiving / target data
-  data/raw/pfr_rec_advstats.parquet       — receiving broken tackles (PFR)
-  data/raw/sleeper_players.json           — canonical name lookup
-  data/processed/player_metrics.json      — position / team context
+A target-volume / efficiency / separation leaderboard covering every WR with at
+least one regular-season target.  Columns include the shared identity fields,
+target/route usage (snap %, routes, TPRR, target share, air-yards share, WOPR),
+receiving production, efficiency (EPA/play, success rate, YPRR, YBC/YAC per rec),
+and PFR contact metrics (broken tackles, drops, INTs when targeted).
+
+Definitions match the canonical WR efficiency tab so a WR reports consistent
+values across the platform (EPA/target, success rate, YPRR, TPRR, YBC/rec,
+broken tackles from PFR).
+
+Data sources (pre-pulled by pull_nflverse_data.py):
+  data/raw/nflverse_player_stats_season.parquet  — receiving counting stats,
+                                                    target/air-yards share, WOPR, fantasy pts
+  data/raw/pfr_rec_advstats.parquet              — broken tackles, drops, INTs when targeted
+  data/raw/nflverse_play_by_play.parquet         — EPA, success, buckets, longest, RZ/EZ
+  data/raw/nflverse_participation.parquet        — routes (pass-play participation)
+  data/raw/nflverse_snap_counts.parquet          — true snap share
+  data/raw/nflverse_players.parquet              — birth_date (age), pfr_id↔gsis map
+  data/raw/sleeper_players.json                  — Sleeper playerId resolution
+
+NOTE: contestedCatchRate has no source in nflverse / PFR (it is a charting metric)
+and is emitted as null.
 """
 
 from __future__ import annotations
@@ -22,284 +39,200 @@ from __future__ import annotations
 import json
 import shutil
 import sys
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
-import re
-
 import pandas as pd
 
-ROOT         = Path(__file__).resolve().parent.parent
-PBP_PATH     = ROOT / "data" / "raw"       / "nflverse_play_by_play.parquet"
-PFR_PATH     = ROOT / "data" / "raw"       / "pfr_rec_advstats.parquet"
-SLEEPER_PATH = ROOT / "data" / "raw"       / "sleeper_players.json"
-METRICS_PATH = ROOT / "data" / "processed" / "player_metrics.json"
-OUTPUT_DIR   = ROOT / "output"
+from schema_config import PlayerIdResolver
 
-SEASONS     = [2023, 2024, 2025]
-MIN_TARGETS = 8
+ROOT             = Path(__file__).resolve().parent.parent
+STATS_SEASON     = ROOT / "data" / "raw" / "nflverse_player_stats_season.parquet"
+PFR_REC          = ROOT / "data" / "raw" / "pfr_rec_advstats.parquet"
+PBP_PATH         = ROOT / "data" / "raw" / "nflverse_play_by_play.parquet"
+SNAP_COUNTS      = ROOT / "data" / "raw" / "nflverse_snap_counts.parquet"
+PARTICIPATION    = ROOT / "data" / "raw" / "nflverse_participation.parquet"
+PLAYERS_PATH     = ROOT / "data" / "raw" / "nflverse_players.parquet"
+OUTPUT_DIR       = ROOT / "output"
+
+SEASONS = [2023, 2024, 2025]
 
 # ---------------------------------------------------------------------------
-# Column definitions (match the spec exactly)
+# Column definitions (order + labels for the frontend table)
 # ---------------------------------------------------------------------------
 
 COLUMNS: list[dict] = [
-    {"key": "rank",         "label": "Rank",        "type": "number",  "defaultVisible": True},
-    {"key": "player",       "label": "Player",      "type": "string",  "defaultVisible": True},
-    {"key": "team",         "label": "Team",        "type": "string",  "defaultVisible": True},
-    {"key": "g",            "label": "G",           "type": "number",  "defaultVisible": True},
-    {"key": "rec",          "label": "REC",         "type": "number",  "defaultVisible": True},
-    {"key": "yds",          "label": "YDS",         "type": "number",  "defaultVisible": True},
-    {"key": "ypr",          "label": "Y/R",         "type": "decimal", "defaultVisible": True},
-    {"key": "ybc",          "label": "YBC",         "type": "number",  "defaultVisible": True},
-    {"key": "ybc_per_rec",  "label": "YBC/R",       "type": "decimal", "defaultVisible": True},
-    {"key": "yac",          "label": "YAC",         "type": "number",  "defaultVisible": True},
-    {"key": "yac_per_rec",  "label": "YAC/R",       "type": "decimal", "defaultVisible": True},
-    {"key": "brktkl",       "label": "BRKTKL",      "type": "number",  "defaultVisible": True},
-    {"key": "tgt",          "label": "TGT",         "type": "number",  "defaultVisible": True},
-    {"key": "target_share", "label": "TGT Share",   "type": "decimal", "defaultVisible": True},
-    {"key": "rz_tgt",       "label": "RZ TGT",      "type": "number",  "defaultVisible": True},
-    {"key": "rec_10_plus",  "label": "10+ YDS",     "type": "number",  "defaultVisible": True},
-    {"key": "rec_20_plus",  "label": "20+ YDS",     "type": "number",  "defaultVisible": True},
-    {"key": "rec_30_plus",  "label": "30+ YDS",     "type": "number",  "defaultVisible": False},
-    {"key": "rec_40_plus",  "label": "40+ YDS",     "type": "number",  "defaultVisible": False},
-    {"key": "rec_50_plus",  "label": "50+ YDS",     "type": "number",  "defaultVisible": False},
-    {"key": "lng",          "label": "LNG",         "type": "number",  "defaultVisible": True},
+    {"key": "rank",                          "label": "Rank",          "type": "number",  "defaultVisible": True},
+    {"key": "playerId",                      "label": "Player ID",     "type": "string",  "defaultVisible": False},
+    {"key": "playerName",                    "label": "Player",        "type": "string",  "defaultVisible": True},
+    {"key": "position",                      "label": "Pos",           "type": "string",  "defaultVisible": False},
+    {"key": "team",                          "label": "Team",          "type": "string",  "defaultVisible": True},
+    {"key": "age",                           "label": "Age",           "type": "number",  "defaultVisible": False},
+    {"key": "season",                        "label": "Season",        "type": "number",  "defaultVisible": False},
+    {"key": "games",                         "label": "G",             "type": "number",  "defaultVisible": True},
+    {"key": "snapPct",                       "label": "Snap %",        "type": "decimal", "defaultVisible": True},
+    {"key": "routes",                        "label": "Routes",        "type": "number",  "defaultVisible": True},
+    {"key": "targets",                       "label": "TGT",           "type": "number",  "defaultVisible": True},
+    {"key": "targetsPerRouteRun",            "label": "TPRR",          "type": "decimal", "defaultVisible": True},
+    {"key": "targetSharePct",                "label": "TGT Share %",   "type": "decimal", "defaultVisible": True},
+    {"key": "airYardsPerTarget",             "label": "AY/TGT",        "type": "decimal", "defaultVisible": True},
+    {"key": "airYardsSharePct",              "label": "AY Share %",    "type": "decimal", "defaultVisible": True},
+    {"key": "wopr",                          "label": "WOPR",          "type": "decimal", "defaultVisible": True},
+    {"key": "receptions",                    "label": "REC",           "type": "number",  "defaultVisible": True},
+    {"key": "redZoneTargets",                "label": "RZ TGT",        "type": "number",  "defaultVisible": True},
+    {"key": "endZoneTargets",                "label": "EZ TGT",        "type": "number",  "defaultVisible": True},
+    {"key": "catchPct",                      "label": "Catch %",       "type": "decimal", "defaultVisible": True},
+    {"key": "receivingYards",                "label": "Rec YDS",       "type": "number",  "defaultVisible": True},
+    {"key": "yardsPerReception",             "label": "Y/R",           "type": "decimal", "defaultVisible": True},
+    {"key": "yardsBeforeCatchPerReception",  "label": "YBC/R",         "type": "decimal", "defaultVisible": True},
+    {"key": "yardsAfterCatchPerReception",   "label": "YAC/R",         "type": "decimal", "defaultVisible": True},
+    {"key": "yardsPerRouteRun",              "label": "YPRR",          "type": "decimal", "defaultVisible": True},
+    {"key": "receivingTouchdowns",           "label": "Rec TDs",       "type": "number",  "defaultVisible": True},
+    {"key": "epaPerPlay",                    "label": "EPA/Play",      "type": "decimal", "defaultVisible": True},
+    {"key": "successRate",                   "label": "Success %",     "type": "decimal", "defaultVisible": True},
+    {"key": "contestedCatchRate",            "label": "Contested %",   "type": "decimal", "defaultVisible": False},
+    {"key": "fantasyPoints",                 "label": "FPTS",          "type": "decimal", "defaultVisible": True},
+    {"key": "avoidedTackleRate",             "label": "Avoid Tkl %",   "type": "decimal", "defaultVisible": True},
+    {"key": "brokenTackles",                 "label": "BRKTKL",        "type": "number",  "defaultVisible": True},
+    {"key": "receptionsPerBrokenTackle",     "label": "REC/BRKTKL",    "type": "decimal", "defaultVisible": False},
+    {"key": "drops",                         "label": "Drops",         "type": "number",  "defaultVisible": True},
+    {"key": "dropPct",                       "label": "Drop %",        "type": "decimal", "defaultVisible": True},
+    {"key": "interceptionsWhenTargeted",     "label": "INT (tgt)",     "type": "number",  "defaultVisible": True},
+    {"key": "receptions10Plus",              "label": "10+ YDS",       "type": "number",  "defaultVisible": False},
+    {"key": "receptions20Plus",              "label": "20+ YDS",       "type": "number",  "defaultVisible": True},
+    {"key": "receptions30Plus",              "label": "30+ YDS",       "type": "number",  "defaultVisible": False},
+    {"key": "receptions40Plus",              "label": "40+ YDS",       "type": "number",  "defaultVisible": False},
+    {"key": "receptions50Plus",              "label": "50+ YDS",       "type": "number",  "defaultVisible": False},
+    {"key": "longestReception",              "label": "LNG",           "type": "number",  "defaultVisible": True},
+]
+
+# Counting fields summed when collapsing across seasons for the *_all file.
+_SUM_FIELDS = [
+    "games", "routes", "targets", "receptions", "redZoneTargets", "endZoneTargets",
+    "receivingYards", "receivingTouchdowns", "fantasyPoints",
+    "brokenTackles", "drops", "interceptionsWhenTargeted",
+    "receptions10Plus", "receptions20Plus", "receptions30Plus",
+    "receptions40Plus", "receptions50Plus",
+    "_recYds", "_recYac", "_recAirYards",
+    "_epaSum", "_epaCount", "_successCount",
+    "_snapPctXgames",
 ]
 
 
-# ---------------------------------------------------------------------------
-# Name resolution (same pattern as build_rb_advanced_stats.py)
-# ---------------------------------------------------------------------------
-
-def _abbrev(full_name: str) -> str:
-    parts = full_name.strip().split()
-    if len(parts) < 2:
-        return full_name
-    return f"{parts[0][0].upper()}.{parts[-1]}"
-
-
-def _build_sleeper_abbrev_lookup(sleeper_players: list[dict]) -> dict[str, str]:
-    counts: dict[str, int]  = {}
-    mapping: dict[str, str] = {}
-    for p in sleeper_players:
-        full = p.get("full_name", "").strip()
-        if not full:
-            continue
-        ab = _abbrev(full)
-        counts[ab]  = counts.get(ab, 0) + 1
-        mapping[ab] = full
-    return {ab: fn for ab, fn in mapping.items() if counts[ab] == 1}
+def _round(v: Any, n: int) -> Any:
+    if v is None:
+        return None
+    try:
+        f = float(v)
+    except (TypeError, ValueError):
+        return None
+    if f != f:
+        return None
+    return round(f, n)
 
 
-def _build_team_disambig(sleeper_players: list[dict]) -> dict[str, dict[str, str]]:
-    counts: dict[str, int] = {}
-    by_team: dict[str, dict] = {}
-    for p in sleeper_players:
-        full = p.get("full_name", "").strip()
-        if not full:
-            continue
-        ab = _abbrev(full)
-        counts[ab] = counts.get(ab, 0) + 1
-        by_team.setdefault(ab, {})[p.get("team")] = full
-    return {ab: teams for ab, teams in by_team.items() if counts[ab] > 1}
+def _int(v: Any) -> Any:
+    if v is None:
+        return None
+    try:
+        f = float(v)
+    except (TypeError, ValueError):
+        return None
+    if f != f:
+        return None
+    return int(round(f))
 
 
-def _build_pfr_abbrev_lookup(pfr_df: pd.DataFrame) -> dict[str, str]:
-    counts: dict[str, int]  = {}
-    mapping: dict[str, str] = {}
-    for name in pfr_df["pfr_player_name"].dropna().unique():
-        name = str(name)
-        ab = _abbrev(name)
-        counts[ab]  = counts.get(ab, 0) + 1
-        mapping[ab] = name
-    return {ab: fn for ab, fn in mapping.items() if counts[ab] == 1}
-
-
-# WR-specific manual overrides for players whose abbreviation is ambiguous
-# and whose team in the PBP is the clearest disambiguator.
-#
-# Root cause: when multiple Sleeper players share team=None the dict collapses
-# to one entry and tiebreak logic picks the wrong player.  Overrides here are
-# authoritative — PBP posteam is the source of truth.
-_MANUAL_TEAM_OVERRIDES: dict[str, dict[str, str]] = {
-    # ── Cross-position guards (RB abbreviations that appear in pass plays) ───
-    "T.Etienne": {"JAX": "Travis Etienne", "CAR": "Trevor Etienne"},
-    "B.Robinson": {"ATL": "Bijan Robinson", "SF": "Brian Robinson", "WAS": "Brian Robinson"},
-    "J.Williams": {"DEN": "Javonte Williams", "DAL": "Javonte Williams", "NO": "Jamaal Williams"},
-    # ── WR / name-collision fixes ────────────────────────────────────────────
-    # D.Moore: CHI/BUF = DJ Moore; CAR/TB = David Moore; Denarius Moore retired
-    "D.Moore": {
-        "CHI": "DJ Moore",
-        "BUF": "DJ Moore",
-        "CAR": "David Moore",
-        "TB":  "David Moore",
-    },
-    # K.Allen: Keenan Allen (LAC 2023, CHI 2024, LAC 2025) wins over
-    # Kazmeir Allen (team=None) and Kaytron Allen (RB, team=None)
-    "K.Allen": {
-        "LAC": "Keenan Allen",
-        "CHI": "Keenan Allen",
-    },
-    # D.Montgomery: DET/HOU = David Montgomery (RB → excluded by pos filter);
-    # IND = D.J. Montgomery (WR, ~8 tgt — below threshold anyway)
-    "D.Montgomery": {
-        "DET": "David Montgomery",
-        "HOU": "David Montgomery",
-        "IND": "D.J. Montgomery",
-    },
-    # K.Williams: LA = Kyren Williams (RB → excluded by pos filter);
-    # NE = Kyle Williams (WR); CIN = Ke'Shawn Williams (WR)
-    "K.Williams": {
-        "LA":  "Kyren Williams",
-        "NE":  "Kyle Williams",
-        "CIN": "Ke'Shawn Williams",
-    },
-    # R.White: TB/WAS = Rachaad White (RB → excluded by pos filter);
-    # SEA = Ricky White (WR). Reggie White + Roddy White are retired,
-    # both team=None — they would win the tiebreak over the active RB.
-    "R.White": {
-        "TB":  "Rachaad White",
-        "WAS": "Rachaad White",
-        "SEA": "Ricky White",
-    },
-    # J.Smith: all 8 Sleeper J.Smith players have team=None — only one
-    # survives the dict and Jeret Smith (WR) was winning the tiebreak.
-    # ATL/MIA/PIT are all Jonnu Smith (TE → excluded by pos filter).
-    "J.Smith": {
-        "ATL": "Jonnu Smith",
-        "MIA": "Jonnu Smith",
-        "PIT": "Jonnu Smith",
-    },
-    # Mi.Wilson: nflverse 2-char prefix for Michael Wilson Jr. (ARI)
-    "Mi.Wilson": {"ARI": "Michael Wilson"},
-    # K.Juszczyk: maps to Kyle Juszczyk (FB) so WR pos filter correctly excludes him
-    "K.Juszczyk": {"SF": "Kyle Juszczyk"},
-    # A.St. Brown: nflverse uses "A.St. Brown"; Sleeper canonical is "Amon-Ra St. Brown".
-    # Without this override the unambiguous lookup misses it and the player appears
-    # in output with the abbreviated name instead of resolving to Amon-Ra.
-    "A.St. Brown": {"DET": "Amon-Ra St. Brown"},
-    # Ji.Horn: nflverse 2-char prefix "Ji" for Jimmy Horn (CAR). The 1-char lookup
-    # "J.Horn" is ambiguous (Joe Horn, Jimmy Horn), so "Ji.Horn" stays unresolved
-    # without this explicit override.
-    "Ji.Horn": {"CAR": "Jimmy Horn"},
-    # Correct-name overrides: team_disambig WR-preference fallback wrongly picks
-    # the inactive WR over the active non-WR without explicit mapping.
-    # D.Allen+LA/LAR = Davis Allen (TE/LAR) — Devon Allen did not play in 2025.
-    "D.Allen":  {"LA": "Davis Allen", "LAR": "Davis Allen"},
-    # J.Ford+CLE = Jerome Ford (RB/CLE) — Jacoby Ford did not play in 2025.
-    "J.Ford":   {"CLE": "Jerome Ford"},
-    # M.Carter+ARI = Michael Carter (RB/ARI) — Malachi Carter did not play in 2025.
-    "M.Carter": {"ARI": "Michael Carter"},
-}
-
-
-def _resolve_with_team(
-    pbp_name: str,
-    pbp_team: str,
-    full_name_set: set[str],
-    unambiguous_lookup: dict[str, str],
-    team_disambig: dict[str, dict[str, str]],
-    metrics_by_player: dict[str, dict],
-    sleeper_pos: dict[str, str],
-    pos_hint: str = "WR",
-) -> str:
-    if pbp_name in _MANUAL_TEAM_OVERRIDES and pbp_team:
-        hit = _MANUAL_TEAM_OVERRIDES[pbp_name].get(pbp_team)
-        if hit:
-            return hit
-    if pbp_name in full_name_set:
-        return pbp_name
-    if pbp_name in unambiguous_lookup:
-        return unambiguous_lookup[pbp_name]
-    if pbp_name in team_disambig:
-        teams = team_disambig[pbp_name]
-
-        if pbp_team and pbp_team in teams:
-            return teams[pbp_team]
-
-        pos_matches = [
-            (t, n) for t, n in teams.items()
-            if sleeper_pos.get(n, "") == pos_hint
-        ]
-        if not pos_matches:
-            pos_matches = [
-                (t, n) for t, n in teams.items()
-                if metrics_by_player.get(n, {}).get("pos", "") == pos_hint
-            ]
-        if not pos_matches:
-            pos_matches = list(teams.items())
-
-        if len(pos_matches) == 1:
-            return pos_matches[0][1]
-
-        conflicting     = [(t, n) for t, n in pos_matches if t is not None and t != pbp_team]
-        non_conflicting = [(t, n) for t, n in pos_matches if t is None or t == pbp_team]
-
-        if non_conflicting and conflicting:
-            no_team = [(t, n) for t, n in non_conflicting if t is None]
-            if no_team:
-                return no_team[0][1]
-            return non_conflicting[0][1]
-
-        with_team = [(t, n) for t, n in pos_matches if t is not None]
-        if with_team:
-            return with_team[0][1]
-        return pos_matches[0][1]
-
-    return pbp_name
+def _age_at_season(birth_date: Any, season: int) -> int | None:
+    if not birth_date or (isinstance(birth_date, float) and birth_date != birth_date):
+        return None
+    try:
+        b = datetime.strptime(str(birth_date)[:10], "%Y-%m-%d").date()
+    except (ValueError, TypeError):
+        return None
+    ref = date(season, 9, 1)
+    return ref.year - b.year - ((ref.month, ref.day) < (b.month, b.day))
 
 
 # ---------------------------------------------------------------------------
-# PFR name normalisation helper
+# Play-by-play aggregation (per receiver gsis): EPA, success, buckets, RZ/EZ
 # ---------------------------------------------------------------------------
 
-_PFR_NAME_SUFFIXES = frozenset(["jr", "jr.", "sr", "sr.", "ii", "iii", "iv", "v"])
+def _aggregate_pbp(pbp_season: pd.DataFrame) -> dict[str, dict]:
+    targeted = pbp_season[(pbp_season["pass_attempt"] == 1)
+                          & pbp_season["receiver_player_id"].notna()]
+    has_yl = "yardline_100" in pbp_season.columns
 
-# Sleeper canonical → PFR normalised name when a player's common name in PFR
-# differs from the legal name stored in Sleeper (e.g. Josh vs Joshua).
-_CANONICAL_TO_PFR_NORM: dict[str, str] = {
-    "joshuapalmer": "joshpalmer",
-}
+    out: dict[str, dict] = {}
+    for pid, grp in targeted.groupby("receiver_player_id"):
+        epa = grp["epa"].dropna()
+        comps = grp[grp["complete_pass"] == 1]
+        cy = comps["yards_gained"]
+        out[str(pid)] = {
+            "targetsPbp":   int(len(grp)),
+            "_epaSum":      float(epa.sum()) if len(epa) else 0.0,
+            "_epaCount":    int(len(epa)),
+            "_successCount": int((epa > 0).sum()) if len(epa) else 0,
+            "receptions10Plus": int((cy >= 10).sum()),
+            "receptions20Plus": int((cy >= 20).sum()),
+            "receptions30Plus": int((cy >= 30).sum()),
+            "receptions40Plus": int((cy >= 40).sum()),
+            "receptions50Plus": int((cy >= 50).sum()),
+            "longestReception": int(cy.max()) if len(cy) else None,
+            "redZoneTargets":   int((grp["yardline_100"] <= 20).sum()) if has_yl else 0,
+            "endZoneTargets":   int((grp["yardline_100"] <= 10).sum()) if has_yl else 0,
+        }
+    return out
 
 
-def _norm_pfr(name: str) -> str:
-    """Strip punctuation, lower-case, and remove trailing generational suffixes.
-
-    Allows cross-matching between PFR's raw name ('Marvin Harrison Jr.')
-    and Sleeper's canonical name ('Marvin Harrison') or vice versa.
-    """
-    parts = re.sub(r"[.\-']", " ", name).lower().split()
-    if parts and parts[-1] in _PFR_NAME_SUFFIXES:
-        parts.pop()
-    return "".join(parts)
-
-
-# ---------------------------------------------------------------------------
-# PFR broken-tackle aggregation (receiving)
-# ---------------------------------------------------------------------------
-
-def _aggregate_pfr_rec(
-    pfr: pd.DataFrame, season: int
-) -> tuple[dict[str, dict], dict[str, dict]]:
-    """Return (pfr_agg, pfr_agg_norm) for the given season.
-
-    *pfr_agg*      keyed by the raw PFR player name  (e.g. 'Marvin Harrison Jr.')
-    *pfr_agg_norm* keyed by _norm_pfr(raw_name)      (e.g. 'marvinharrison')
-    The normalised dict is used as a fallback when the canonical Sleeper name
-    (which lacks the suffix) misses in the primary dict.
-    """
-    s = pfr[pfr["season"] == season].copy()
-    if s.empty:
-        return {}, {}
+def _aggregate_pfr(pfr_season: pd.DataFrame, pfr_to_gsis: dict[str, str]) -> dict[str, dict]:
     agg = (
-        s.groupby("pfr_player_name")
-        .agg(brktkl=("receiving_broken_tackles", "sum"))
+        pfr_season.groupby("pfr_player_id")
+        .agg(
+            broken_tackles=("receiving_broken_tackles", "sum"),
+            drops=("receiving_drop", "sum"),
+            ints=("receiving_int", "sum"),
+        )
         .to_dict("index")
     )
-    agg_norm = {_norm_pfr(k): v for k, v in agg.items()}
-    return agg, agg_norm
+    out: dict[str, dict] = {}
+    for pfr_id, vals in agg.items():
+        g = pfr_to_gsis.get(str(pfr_id))
+        if g:
+            out[g] = vals
+    return out
+
+
+def _build_routes(part: pd.DataFrame, pbp_pass_keys: pd.DataFrame, season: int) -> dict[str, int]:
+    p = part[(part["season"] == season)
+             & part["offense_players"].notna()
+             & part["offense_positions"].notna()].copy()
+    if p.empty:
+        return {}
+    p = p.merge(pbp_pass_keys, left_on=["nflverse_game_id", "play_id"],
+                right_on=["game_id", "play_id"], how="inner")
+    if p.empty:
+        return {}
+    p["pid_list"] = p["offense_players"].str.split(";")
+    p["pos_list"] = p["offense_positions"].str.split(";")
+    exp = p[["pid_list", "pos_list"]].explode(["pid_list", "pos_list"])
+    exp["gsis_id"] = exp["pid_list"].str.strip()
+    exp["position"] = exp["pos_list"].str.strip()
+    skill = exp[exp["position"].isin(["WR", "RB", "TE"])]
+    return skill.groupby("gsis_id").size().astype(int).to_dict()
+
+
+def _build_snap_pct(sc_season: pd.DataFrame, pfr_to_gsis: dict[str, str]) -> dict[str, float]:
+    if sc_season.empty:
+        return {}
+    means = sc_season.groupby("pfr_player_id")["offense_pct"].mean().to_dict()
+    out: dict[str, float] = {}
+    for pfr_id, pct in means.items():
+        g = pfr_to_gsis.get(str(pfr_id))
+        if g and pct is not None and pct == pct:
+            out[g] = round(float(pct) * 100, 1)
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -307,264 +240,220 @@ def _aggregate_pfr_rec(
 # ---------------------------------------------------------------------------
 
 def build_season(
-    pbp_season: pd.DataFrame,
-    pfr: pd.DataFrame,
     season: int,
-    sleeper_players: list[dict],
-    player_metrics: list[dict],
-    full_name_set: set[str],
-    unambig_with_pfr: dict[str, str],
-    team_disambig: dict[str, dict[str, str]],
-    metrics_by_player: dict[str, dict],
-    sleeper_pos: dict[str, str],
+    stats: pd.DataFrame,
+    pbp_by_gsis: dict[str, dict],
+    pfr_by_gsis: dict[str, dict],
+    routes_by_gsis: dict[str, int],
+    snap_by_gsis: dict[str, float],
+    birth_by_gsis: dict[str, str],
+    resolver: PlayerIdResolver,
 ) -> list[dict]:
-    """Build one season's WR advanced stats rows (no rank assigned yet)."""
+    wr = stats[(stats["position"] == "WR") & (stats["season"] == season)].copy()
 
-    pfr_agg, pfr_agg_norm = _aggregate_pfr_rec(pfr, season)
-
-    pass_plays = pbp_season[pbp_season["pass_attempt"] == 1].copy()
-    if pass_plays.empty:
-        return []
-
-    has_yardline = "yardline_100" in pass_plays.columns
-    has_yac_col  = "yards_after_catch" in pass_plays.columns
-    has_air      = "air_yards" in pass_plays.columns
-
-    # ── Resolve receiver full names ───────────────────────────────────────────
-    name_team_cache: dict[tuple[str, str], str] = {}
-
-    def _tag(row: pd.Series) -> str:
-        pbp_name = str(row.get("receiver_player_name") or "")
-        if not pbp_name or pbp_name == "nan":
-            return ""
-        key = (pbp_name, str(row.get("posteam", "")))
-        if key not in name_team_cache:
-            name_team_cache[key] = _resolve_with_team(
-                key[0], key[1],
-                full_name_set, unambig_with_pfr, team_disambig,
-                metrics_by_player, sleeper_pos,
-            )
-        return name_team_cache[key]
-
-    targeted = pass_plays[pass_plays["receiver_player_name"].notna()].copy()
-    targeted["_full_name"] = targeted.apply(_tag, axis=1)
-    targeted = targeted[targeted["_full_name"] != ""]
-
-    # ── Identify WR full names ────────────────────────────────────────────────
-    wr_full_names: set[str] = set()
-    for full in targeted["_full_name"].unique():
-        full = str(full)
-        pos_metrics = metrics_by_player.get(full, {}).get("pos", "")
-        pos_sleeper = sleeper_pos.get(full, "")
-        if pos_metrics == "WR" or pos_sleeper == "WR":
-            wr_full_names.add(full)
-
-    wr_plays = targeted[targeted["_full_name"].isin(wr_full_names)].copy()
-    if wr_plays.empty:
-        return []
-
-    # ── Team total pass attempts per team (for target_share denominator) ──────
-    team_pass_totals: dict[str, int] = (
-        pass_plays.groupby("posteam")["pass_attempt"].count().to_dict()
-    )
-
-    # ── Aggregate per player ──────────────────────────────────────────────────
     rows: list[dict] = []
-
-    for full_name, grp in wr_plays.groupby("_full_name"):
-        full_name = str(full_name)
-        tgt = len(grp)
-        if tgt < MIN_TARGETS:
+    for _, s in wr.iterrows():
+        gsis = str(s["player_id"])
+        targets = _int(s.get("targets")) or 0
+        if targets == 0:
             continue
 
-        comps = grp[grp["complete_pass"] == 1]
-        rec   = len(comps)
-        yds   = int(comps["yards_gained"].sum())
-        g     = int(grp["game_id"].nunique())
+        name = s.get("player_display_name") or s.get("player_name")
+        team = s.get("recent_team")
 
-        # Team: use PBP posteam (ground truth — do NOT override with player_metrics)
-        team = str(grp.sort_values(["season", "week"])["posteam"].iloc[-1]) \
-               if "season" in grp.columns and "week" in grp.columns \
-               else str(grp["posteam"].iloc[-1]) if "posteam" in grp.columns else ""
+        receptions = _int(s.get("receptions")) or 0
+        rec_yds    = _int(s.get("receiving_yards"))
+        rec_yac    = _int(s.get("receiving_yards_after_catch"))
+        rec_air    = _int(s.get("receiving_air_yards"))
 
-        # Rates
-        ypr = round(yds / rec, 1) if rec > 0 else None
+        pbp = pbp_by_gsis.get(gsis, {})
+        pfr = pfr_by_gsis.get(gsis, {})
+        routes = routes_by_gsis.get(gsis)
 
-        # YBC = air yards on completed passes (depth of target at catch point)
-        if has_air and rec > 0:
-            ybc_total = int(comps["air_yards"].dropna().sum())
-            ybc_per_rec = round(ybc_total / rec, 1)
-        else:
-            ybc_total   = None
-            ybc_per_rec = None
+        # Usage / volume
+        tprr = _round(targets / routes, 3) if routes else None
+        ts   = s.get("target_share")
+        ays  = s.get("air_yards_share")
+        target_share_pct = _round(float(ts) * 100, 1) if ts is not None and not (isinstance(ts, float) and ts != ts) else None
+        air_yards_share_pct = _round(float(ays) * 100, 1) if ays is not None and not (isinstance(ays, float) and ays != ays) else None
+        air_per_tgt = _round(rec_air / targets, 2) if rec_air is not None and targets else None
 
-        # YAC = yards after catch on completed passes
-        if has_yac_col and rec > 0:
-            yac_total = int(comps["yards_after_catch"].dropna().sum())
-            yac_per_rec = round(yac_total / rec, 1)
-        else:
-            yac_total   = None
-            yac_per_rec = None
+        # Production / efficiency
+        catch_pct = _round(receptions / targets * 100, 1) if targets else None
+        ypr  = _round(rec_yds / receptions, 2) if rec_yds is not None and receptions else None
+        yac_per_rec = _round(rec_yac / receptions, 2) if rec_yac is not None and receptions else None
+        ybc_per_rec = _round((rec_yds - rec_yac) / receptions, 2) if rec_yds is not None and rec_yac is not None and receptions else None
+        yprr = _round(rec_yds / routes, 2) if rec_yds is not None and routes else None
 
-        # Red-zone targets
-        rz_tgt = int((grp["yardline_100"] <= 20).sum()) if has_yardline else None
+        epa_count = pbp.get("_epaCount") or 0
+        epa_play  = _round(pbp.get("_epaSum", 0.0) / epa_count, 3) if epa_count else None
+        success_rate = _round(pbp.get("_successCount", 0) / epa_count * 100, 1) if epa_count else None
 
-        # Target share (decimal, 4 places)
-        team_tgt_total = team_pass_totals.get(team, 0)
-        target_share = round(tgt / team_tgt_total, 4) if team_tgt_total > 0 else None
-
-        # Explosive receptions (on completions only)
-        comp_yds = comps["yards_gained"]
-        rec_10   = int((comp_yds >= 10).sum())
-        rec_20   = int((comp_yds >= 20).sum())
-        rec_30   = int((comp_yds >= 30).sum())
-        rec_40   = int((comp_yds >= 40).sum())
-        rec_50   = int((comp_yds >= 50).sum())
-        lng      = int(comp_yds.max()) if rec > 0 else None
-
-        # Broken tackles from PFR — primary key is raw PFR name; fall back to
-        # normalised key so suffix variants ('Marvin Harrison Jr.' → 'marvinharrison')
-        # match the Sleeper canonical name ('Marvin Harrison').  A secondary
-        # alias table handles nickname mismatches (Joshua vs Josh Palmer).
-        _pfr_key = _norm_pfr(full_name)
-        _pfr_key = _CANONICAL_TO_PFR_NORM.get(_pfr_key, _pfr_key)
-        pfr_stats = pfr_agg.get(full_name) \
-                    or pfr_agg_norm.get(_pfr_key) \
-                    or {}
-        bt = pfr_stats.get("brktkl")
-        brktkl = int(bt) if bt is not None and not pd.isna(bt) else None
+        # PFR contact / drops / INTs
+        bt    = _int(pfr.get("broken_tackles"))
+        drops = _int(pfr.get("drops"))
+        ints  = _int(pfr.get("ints"))
+        avoided_rate = _round(bt / receptions * 100, 1) if bt is not None and receptions else None
+        rec_per_bt   = _round(receptions / bt, 1) if bt else None
+        drop_pct     = _round(drops / targets * 100, 1) if drops is not None and targets else None
 
         rows.append({
-            "player":       full_name,
-            "team":         team,
-            "g":            g,
-            "rec":          rec,
-            "yds":          yds,
-            "ypr":          ypr,
-            "ybc":          ybc_total,
-            "ybc_per_rec":  ybc_per_rec,
-            "yac":          yac_total,
-            "yac_per_rec":  yac_per_rec,
-            "brktkl":       brktkl,
-            "tgt":          tgt,
-            "target_share": target_share,
-            "rz_tgt":       rz_tgt,
-            "rec_10_plus":  rec_10,
-            "rec_20_plus":  rec_20,
-            "rec_30_plus":  rec_30,
-            "rec_40_plus":  rec_40,
-            "rec_50_plus":  rec_50,
-            "lng":          lng,
+            "playerId":                     resolver.resolve(name, team, "WR"),
+            "playerName":                   name,
+            "position":                     "WR",
+            "team":                         team,
+            "age":                          _age_at_season(birth_by_gsis.get(gsis), season),
+            "season":                       season,
+            "games":                        _int(s.get("games")),
+            "snapPct":                      snap_by_gsis.get(gsis),
+            "routes":                       routes,
+            "targets":                      targets,
+            "targetsPerRouteRun":           tprr,
+            "targetSharePct":               target_share_pct,
+            "airYardsPerTarget":            air_per_tgt,
+            "airYardsSharePct":             air_yards_share_pct,
+            "wopr":                         _round(s.get("wopr"), 3),
+            "receptions":                   receptions,
+            "redZoneTargets":               pbp.get("redZoneTargets"),
+            "endZoneTargets":               pbp.get("endZoneTargets"),
+            "catchPct":                     catch_pct,
+            "receivingYards":               rec_yds,
+            "yardsPerReception":            ypr,
+            "yardsBeforeCatchPerReception": ybc_per_rec,
+            "yardsAfterCatchPerReception":  yac_per_rec,
+            "yardsPerRouteRun":             yprr,
+            "receivingTouchdowns":          _int(s.get("receiving_tds")),
+            "epaPerPlay":                   epa_play,
+            "successRate":                  success_rate,
+            "contestedCatchRate":           None,   # no source in nflverse / PFR
+            "fantasyPoints":                _round(s.get("fantasy_points"), 1),
+            "avoidedTackleRate":            avoided_rate,
+            "brokenTackles":                bt,
+            "receptionsPerBrokenTackle":    rec_per_bt,
+            "drops":                        drops,
+            "dropPct":                      drop_pct,
+            "interceptionsWhenTargeted":    ints,
+            "receptions10Plus":             pbp.get("receptions10Plus"),
+            "receptions20Plus":             pbp.get("receptions20Plus"),
+            "receptions30Plus":             pbp.get("receptions30Plus"),
+            "receptions40Plus":             pbp.get("receptions40Plus"),
+            "receptions50Plus":             pbp.get("receptions50Plus"),
+            "longestReception":             pbp.get("longestReception"),
+            # internal carry-overs for combined *_all aggregation
+            "_recYds":       rec_yds,
+            "_recYac":       rec_yac,
+            "_recAirYards":  rec_air,
+            "_epaSum":       pbp.get("_epaSum", 0.0),
+            "_epaCount":     epa_count,
+            "_successCount": pbp.get("_successCount", 0),
+            "_snapPctXgames": (snap_by_gsis.get(gsis) or 0) * (_int(s.get("games")) or 0),
         })
 
-    # Default sort: yds desc → rec desc → tgt desc
-    rows.sort(key=lambda r: (r.get("yds") or 0, r.get("rec") or 0, r.get("tgt") or 0), reverse=True)
-    for i, r in enumerate(rows, start=1):
-        r["rank"] = i
-
+    _rank_and_sort(rows)
     return rows
 
 
-# ---------------------------------------------------------------------------
-# Payload builder
-# ---------------------------------------------------------------------------
-
-def _make_payload(
-    rows: list[dict],
-    season: int | str,
-    week: int | None,
-    updated_at: str,
-) -> dict[str, Any]:
-    ordered_keys = [c["key"] for c in COLUMNS]
-    ordered_rows = [{k: r.get(k) for k in ordered_keys} for r in rows]
-    return {
-        "updated_at": updated_at,
-        "season":     season,
-        "week":       week,
-        "table":      "wr_advanced_stats",
-        "columns":    COLUMNS,
-        "rows":       ordered_rows,
-    }
+def _rank_and_sort(rows: list[dict]) -> None:
+    rows.sort(key=lambda r: r.get("receivingYards") or 0, reverse=True)
+    for i, r in enumerate(rows, start=1):
+        r["rank"] = i
 
 
 # ---------------------------------------------------------------------------
 # Multi-season aggregation (one combined row per player)
 # ---------------------------------------------------------------------------
 
-def _aggregate_combined_wr(rows: list[dict]) -> list[dict]:
-    """
-    Collapse per-season WR rows (each tagged with '_season') into one
-    combined row per player: counting stats summed, rates recalculated from totals.
-    team taken from most recent season. target_share set to null (not meaningful
-    across seasons).
-    """
+def _aggregate_combined(rows_with_season: list[dict]) -> list[dict]:
     from collections import defaultdict
 
-    SUM_FIELDS = [
-        "g", "rec", "yds", "ybc", "yac", "brktkl",
-        "tgt", "rz_tgt",
-        "rec_10_plus", "rec_20_plus", "rec_30_plus",
-        "rec_40_plus", "rec_50_plus",
-    ]
-
     by_player: dict[str, list[dict]] = defaultdict(list)
-    for r in rows:
-        by_player[r["player"]].append(r)
+    for r in rows_with_season:
+        key = r.get("playerId") or r.get("playerName")
+        by_player[key].append(r)
 
     result: list[dict] = []
-    for player, player_rows in by_player.items():
-        latest = max(player_rows, key=lambda r: r.get("_season", 0))
-
-        combined: dict = {
-            "player":       player,
-            "team":         latest.get("team"),
-            "target_share": None,   # not meaningful across seasons
+    for _, prows in by_player.items():
+        latest = max(prows, key=lambda r: r.get("season", 0))
+        c: dict[str, Any] = {
+            "playerId":   latest.get("playerId"),
+            "playerName": latest.get("playerName"),
+            "position":   "WR",
+            "team":       latest.get("team"),
+            "age":        latest.get("age"),
+            "season":     "all",
         }
+        for f in _SUM_FIELDS:
+            vals = [r[f] for r in prows if r.get(f) is not None]
+            c[f] = sum(vals) if vals else None
 
-        for f in SUM_FIELDS:
-            vals = [r[f] for r in player_rows if r.get(f) is not None]
-            combined[f] = sum(vals) if vals else None
+        games      = c.get("games") or 0
+        targets    = c.get("targets") or 0
+        receptions = c.get("receptions") or 0
+        rec_yds    = c.get("_recYds") or 0
+        rec_yac    = c.get("_recYac") or 0
+        rec_air    = c.get("_recAirYards") or 0
+        routes     = c.get("routes") or 0
+        bt         = c.get("brokenTackles")
+        drops      = c.get("drops")
+        epa_count  = c.get("_epaCount") or 0
 
-        rec = combined.get("rec") or 0
-        yds = combined.get("yds") or 0
-        ybc = combined.get("ybc")
-        yac = combined.get("yac")
+        c["receivingYards"]   = rec_yds
+        c["targetsPerRouteRun"] = round(targets / routes, 3) if routes else None
+        c["airYardsPerTarget"]  = round(rec_air / targets, 2) if targets else None
+        c["catchPct"]         = round(receptions / targets * 100, 1) if targets else None
+        c["yardsPerReception"] = round(rec_yds / receptions, 2) if receptions else None
+        c["yardsAfterCatchPerReception"] = round(rec_yac / receptions, 2) if receptions else None
+        c["yardsBeforeCatchPerReception"] = round((rec_yds - rec_yac) / receptions, 2) if receptions else None
+        c["yardsPerRouteRun"] = round(rec_yds / routes, 2) if routes else None
+        c["epaPerPlay"]       = round((c.get("_epaSum") or 0) / epa_count, 3) if epa_count else None
+        c["successRate"]      = round((c.get("_successCount") or 0) / epa_count * 100, 1) if epa_count else None
+        c["avoidedTackleRate"] = round(bt / receptions * 100, 1) if bt is not None and receptions else None
+        c["receptionsPerBrokenTackle"] = round(receptions / bt, 1) if bt else None
+        c["dropPct"]          = round(drops / targets * 100, 1) if drops is not None and targets else None
+        c["fantasyPoints"]    = round(c["fantasyPoints"], 1) if c.get("fantasyPoints") is not None else None
+        c["snapPct"]          = round((c.get("_snapPctXgames") or 0) / games, 1) if games else None
+        c["contestedCatchRate"] = None
+        c["targetSharePct"]   = None   # not meaningful across seasons
+        c["airYardsSharePct"] = None
+        c["wopr"]             = None
+        lng = [r["longestReception"] for r in prows if r.get("longestReception") is not None]
+        c["longestReception"] = max(lng) if lng else None
 
-        combined["ypr"]         = round(yds / rec, 1) if rec > 0 else None
-        combined["ybc_per_rec"] = round(ybc / rec, 1) if rec > 0 and ybc is not None else None
-        combined["yac_per_rec"] = round(yac / rec, 1) if rec > 0 and yac is not None else None
+        result.append(c)
 
-        lng_vals = [r["lng"] for r in player_rows if r.get("lng") is not None]
-        combined["lng"] = max(lng_vals) if lng_vals else None
-
-        result.append(combined)
-
-    result.sort(key=lambda r: (r.get("yds") or 0, r.get("rec") or 0, r.get("tgt") or 0), reverse=True)
-    for i, r in enumerate(result, 1):
-        r["rank"] = i
-
+    _rank_and_sort(result)
     return result
 
 
 # ---------------------------------------------------------------------------
-# Validation
+# Payload + validation
 # ---------------------------------------------------------------------------
 
-def _validate(rows: list[dict], season_label: str) -> None:
-    required_keys = {c["key"] for c in COLUMNS}
-    seen_players: set[str] = set()
+def _make_payload(rows: list[dict], season: int | str, week: int | None, updated_at: str) -> dict:
+    keys = [c["key"] for c in COLUMNS]
+    ordered = [{k: r.get(k) for k in keys} for r in rows]
+    return {
+        "updated_at": updated_at,
+        "season":     season,
+        "week":       week,
+        "table":      "wr_advanced_stats",
+        "columns":    COLUMNS,
+        "rows":       ordered,
+    }
 
+
+def _validate(rows: list[dict], label: str) -> None:
+    seen: set[str] = set()
     for r in rows:
-        player = r.get("player", "")
-        if player in seen_players:
-            print(f"  WARNING: duplicate player '{player}' in {season_label}", file=sys.stderr)
-        seen_players.add(player)
-
-        missing = required_keys - set(r.keys())
-        if missing:
-            print(f"  WARNING: {player} missing keys {missing}", file=sys.stderr)
-
-    print(f"  Validation OK for {season_label}: {len(rows)} players, no duplicate IDs")
+        pid = r.get("playerId") or r.get("playerName")
+        if pid in seen:
+            print(f"  WARNING: duplicate player '{r.get('playerName')}' in {label}", file=sys.stderr)
+        seen.add(pid)
+    no_id = [r["playerName"] for r in rows if not r.get("playerId")]
+    if no_id:
+        print(f"  NOTE: {len(no_id)} WR(s) without a Sleeper playerId in {label}: "
+              f"{', '.join(no_id[:8])}{'…' if len(no_id) > 8 else ''}", file=sys.stderr)
+    print(f"  Validation OK for {label}: {len(rows)} WRs.")
 
 
 # ---------------------------------------------------------------------------
@@ -572,96 +461,95 @@ def _validate(rows: list[dict], season_label: str) -> None:
 # ---------------------------------------------------------------------------
 
 def main() -> None:
-    for path in (PBP_PATH, PFR_PATH, SLEEPER_PATH, METRICS_PATH):
+    for path in (STATS_SEASON, PFR_REC, PBP_PATH, PLAYERS_PATH):
         if not path.exists():
-            print(f"ERROR: {path} not found.", file=sys.stderr)
+            print(f"ERROR: {path} not found. Run pull_nflverse_data.py first.", file=sys.stderr)
             sys.exit(1)
 
-    print("Loading play-by-play data (all seasons)...")
-    pbp_full = pd.read_parquet(PBP_PATH)
-    pbp_full = pbp_full[pbp_full["season_type"] == "REG"].copy()  # regular season only
-    if "two_point_attempt" in pbp_full.columns:
-        pbp_full = pbp_full[pbp_full["two_point_attempt"].fillna(0) != 1].copy()
+    print("Loading season-total player stats...")
+    stats = pd.read_parquet(STATS_SEASON)
 
-    print("Loading PFR receiving advanced stats...")
-    pfr = pd.read_parquet(PFR_PATH)
+    print("Loading PFR rec advstats...")
+    pfr = pd.read_parquet(PFR_REC)
 
-    with open(SLEEPER_PATH) as f:
-        raw = json.load(f)
-    sleeper_players: list[dict] = list(raw.values()) if isinstance(raw, dict) else raw
-    print(f"  {len(sleeper_players):,} Sleeper players.")
+    print("Loading player registry (birth_date, pfr_id↔gsis)...")
+    players = pd.read_parquet(PLAYERS_PATH)
+    pfr_to_gsis = {
+        str(r["pfr_id"]): str(r["gsis_id"])
+        for _, r in players.iterrows()
+        if pd.notna(r.get("pfr_id")) and pd.notna(r.get("gsis_id"))
+    }
+    birth_by_gsis = {
+        str(r["gsis_id"]): r["birth_date"]
+        for _, r in players.iterrows()
+        if pd.notna(r.get("gsis_id"))
+    }
 
-    with open(METRICS_PATH) as f:
-        player_metrics: list[dict] = json.load(f)
-    print(f"  {len(player_metrics):,} player metric records.")
+    print("Loading play-by-play (regular season)...")
+    pbp = pd.read_parquet(PBP_PATH)
+    pbp = pbp[pbp["season_type"] == "REG"].copy()
+    if "two_point_attempt" in pbp.columns:
+        pbp = pbp[pbp["two_point_attempt"].fillna(0) != 1].copy()
 
-    # Pre-build shared lookup tables
-    full_name_set     = {(p.get("full_name") or "").strip() for p in sleeper_players}
-    unambig_lookup    = _build_sleeper_abbrev_lookup(sleeper_players)
-    team_disambig     = _build_team_disambig(sleeper_players)
-    pfr_lookup        = _build_pfr_abbrev_lookup(pfr)
-    pfr_safe          = {ab: fn for ab, fn in pfr_lookup.items() if ab not in team_disambig}
-    unambig_with_pfr  = {**pfr_safe, **unambig_lookup}
-    sleeper_pos       = {(p.get("full_name") or "").strip(): p.get("position", "") for p in sleeper_players}
-    metrics_by_player = {p["player"]: p for p in player_metrics}
+    have_snaps = SNAP_COUNTS.exists()
+    snaps = pd.read_parquet(SNAP_COUNTS) if have_snaps else None
+    if not have_snaps:
+        print("  WARN: snap counts parquet missing — snapPct will be null.", file=sys.stderr)
 
+    have_part = PARTICIPATION.exists()
+    if have_part:
+        print("Loading participation (routes)...")
+        part = pd.read_parquet(
+            PARTICIPATION,
+            columns=["nflverse_game_id", "play_id", "season", "offense_players", "offense_positions"],
+        )
+        pass_keys = pbp[pbp["play_type"] == "pass"][["game_id", "play_id", "season"]]
+    else:
+        print("  WARN: participation parquet missing — routes / YPRR / TPRR will be null.", file=sys.stderr)
+        part, pass_keys = None, None
+
+    resolver = PlayerIdResolver()
     updated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    all_rows_with_season: list[dict] = []
-    latest_week_2025: int | None = None
-
+    all_rows: list[dict] = []
     for season in SEASONS:
         print(f"\nBuilding {season} season...")
-        pbp_s = pbp_full[pbp_full["season"] == season].copy()
-        week  = int(pbp_s["week"].max()) if "week" in pbp_s.columns and not pbp_s.empty else None
-
-        if season == 2025:
-            latest_week_2025 = week
+        pbp_s = pbp[pbp["season"] == season]
+        pbp_by_gsis = _aggregate_pbp(pbp_s)
+        pfr_by_gsis = _aggregate_pfr(pfr[pfr["season"] == season], pfr_to_gsis)
+        routes_by_gsis = (
+            _build_routes(part, pass_keys[pass_keys["season"] == season][["game_id", "play_id"]], season)
+            if have_part else {}
+        )
+        snap_by_gsis = _build_snap_pct(snaps[snaps["season"] == season], pfr_to_gsis) if have_snaps else {}
+        week = int(pbp_s["week"].max()) if not pbp_s.empty else None
 
         rows = build_season(
-            pbp_season        = pbp_s,
-            pfr               = pfr,
-            season            = season,
-            sleeper_players   = sleeper_players,
-            player_metrics    = player_metrics,
-            full_name_set     = full_name_set,
-            unambig_with_pfr  = unambig_with_pfr,
-            team_disambig     = team_disambig,
-            metrics_by_player = metrics_by_player,
-            sleeper_pos       = sleeper_pos,
+            season, stats, pbp_by_gsis, pfr_by_gsis, routes_by_gsis,
+            snap_by_gsis, birth_by_gsis, resolver,
         )
-        print(f"  {len(rows)} WRs qualified for {season}.")
         _validate(rows, str(season))
 
         out_path = OUTPUT_DIR / f"wr_advanced_stats_{season}.json"
-        payload  = _make_payload(rows, season, week, updated_at)
         with open(out_path, "w") as f:
-            json.dump(payload, f, indent=2)
+            json.dump(_make_payload(rows, season, week, updated_at), f, indent=2)
         print(f"  Wrote {out_path} ({out_path.stat().st_size / 1024:.1f} KB)")
 
-        for r in rows:
-            all_rows_with_season.append({**r, "_season": season})
+        all_rows.extend(rows)
 
-    # Multi-season combined file
-    combined_rows = _aggregate_combined_wr(all_rows_with_season)
-    _validate(combined_rows, "all-seasons")
-    multi_path    = OUTPUT_DIR / "wr_advanced_stats_all.json"
-    multi_payload = _make_payload(combined_rows, "all", None, updated_at)
+    combined = _aggregate_combined(all_rows)
+    _validate(combined, "all-seasons")
+    multi_path = OUTPUT_DIR / "wr_advanced_stats_all.json"
     with open(multi_path, "w") as f:
-        json.dump(multi_payload, f, indent=2)
-    print(f"\nWrote {multi_path} ({multi_path.stat().st_size / 1024:.1f} KB, {len(combined_rows)} players combined)")
+        json.dump(_make_payload(combined, "all", None, updated_at), f, indent=2)
+    print(f"\nWrote {multi_path} ({multi_path.stat().st_size / 1024:.1f} KB, {len(combined)} players combined)")
 
-    # Alias: wr_advanced_stats.json → 2025
     alias_path = OUTPUT_DIR / "wr_advanced_stats.json"
     shutil.copy2(OUTPUT_DIR / "wr_advanced_stats_2025.json", alias_path)
     print(f"Wrote {alias_path} (alias for 2025)")
 
     print("\nWR advanced stats build complete.")
-    print(f"\nEndpoints:")
-    for s in [*SEASONS, "all"]:
-        slug = f"wr_advanced_stats_{s}.json"
-        print(f"  output/{slug}")
 
 
 if __name__ == "__main__":

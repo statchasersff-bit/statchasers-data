@@ -48,7 +48,13 @@ from schema_config import (
     write_global_manifest,
     write_json,
     write_position_manifest,
+    _norm_name_base,
 )
+
+
+def _norm_player(name: str | None) -> str:
+    """Suffix/accent-insensitive name key for matching advanced-stats rows."""
+    return _norm_name_base(name) if name else ""
 
 
 # ---------------------------------------------------------------------------
@@ -332,35 +338,41 @@ def _project_rb_stat_explorer(resolver, season, lf):
     if not se:
         return None, []
     adv = _load(lf.get("advanced", "")) or {}
-    adv_idx = {r["player"]: r for r in _rows(adv)}
+    # rb_advanced_stats now uses camelCase keys + playerId/playerName identity.
+    # Match primarily on the resolved Sleeper playerId (robust against the
+    # abbreviated names stat_explorer sometimes carries, e.g. "J.Taylor"), then
+    # fall back to a suffix/accent-insensitive name key.
+    adv_idx_id   = {r.get("playerId"): r for r in _rows(adv) if r.get("playerId")}
+    adv_idx_norm = {_norm_player(r.get("playerName")): r for r in _rows(adv) if r.get("playerName")}
     rows: list[dict] = []
     for r in _rows(se):
-        a = adv_idx.get(r["player"], {})
+        ident = _identity(
+            resolver=resolver, position="rb", season=season,
+            player=r.get("player"), team=r.get("team"),
+            age=None, games=r.get("gp"),
+        )
+        a = adv_idx_id.get(ident.get("playerId")) or adv_idx_norm.get(_norm_player(r["player"])) or {}
         rows.append({
-            **_identity(
-                resolver=resolver, position="rb", season=season,
-                player=r.get("player"), team=r.get("team"),
-                age=None, games=r.get("gp"),
-            ),
+            **ident,
             "rushAttempts":                 r.get("carries"),
             "rushYards":                    r.get("yds"),
             "yardsPerCarry":                r.get("ypc"),
-            "yardsBeforeContactPerAttempt": r.get("ybc_per_carry") or a.get("yards_before_contact_per_att"),
-            "yardsAfterContactPerAttempt":  r.get("yac_per_carry") or a.get("yards_after_contact_per_att"),
-            "brokenTackles":                r.get("broken_tackles") or a.get("broken_tackles"),
-            "tacklesForLoss":               a.get("tfl"),
-            "tacklesForLossYards":          a.get("tfl_yds_lost"),
-            "rushes10Plus":                 a.get("runs_10_plus"),
-            "rushes20Plus":                 a.get("runs_20_plus"),
-            "rushes30Plus":                 a.get("runs_30_plus"),
-            "rushes40Plus":                 a.get("runs_40_plus"),
-            "rushes50Plus":                 a.get("runs_50_plus"),
-            "longestRush":                  r.get("long") or a.get("longest_run"),
-            "longestRushTouchdown":         a.get("longest_run_td"),
+            "yardsBeforeContactPerAttempt": r.get("ybc_per_carry") or a.get("yardsBeforeContactPerAttempt"),
+            "yardsAfterContactPerAttempt":  r.get("yac_per_carry") or a.get("yardsAfterContactPerAttempt"),
+            "brokenTackles":                r.get("broken_tackles") or a.get("brokenTackles"),
+            "tacklesForLoss":               a.get("tacklesForLoss"),
+            "tacklesForLossYards":          a.get("tacklesForLossYards"),
+            "rushes10Plus":                 a.get("rushes10Plus"),
+            "rushes20Plus":                 a.get("rushes20Plus"),
+            "rushes30Plus":                 a.get("rushes30Plus"),
+            "rushes40Plus":                 a.get("rushes40Plus"),
+            "rushes50Plus":                 a.get("rushes50Plus"),
+            "longestRush":                  r.get("long") or a.get("longestRush"),
+            "longestRushTouchdown":         a.get("longestRushTouchdown"),
             "targets":                      r.get("tgt"),
             "receptions":                   r.get("rec"),
             "redZoneTargets":               r.get("rz_tgt"),
-            "receivingYardsAfterCatch":     a.get("rec_yac"),
+            "receivingYardsAfterCatch":     a.get("receivingYardsAfterCatch"),
         })
     rows.sort(key=lambda x: -(x.get("rushYards") or 0))
     for i, r in enumerate(rows, 1):
@@ -648,33 +660,50 @@ def _project_wrte_stat_explorer(pos, resolver, season, lf):
     if not se:
         return None, []
     adv = _load(lf.get("advanced", "")) or {}
-    adv_idx = {r["player"]: r for r in _rows(adv)}
+    # WR advanced now uses camelCase keys + playerId/playerName identity; TE
+    # advanced still uses the legacy snake-case + "player" identity.  Index both
+    # ways and read each field with new-key-first / legacy-key fallback so this
+    # shared projection keeps working for both positions.
+    adv_idx_id   = {r.get("playerId"): r for r in _rows(adv) if r.get("playerId")}
+    adv_idx_name = {(r.get("playerName") or r.get("player")): r
+                    for r in _rows(adv) if (r.get("playerName") or r.get("player"))}
+    adv_idx_norm = {_norm_player(r.get("playerName") or r.get("player")): r
+                    for r in _rows(adv) if (r.get("playerName") or r.get("player"))}
     out: list[dict] = []
     for r in _rows(se):
-        a = adv_idx.get(r["player"], {})
+        ident = _identity(
+            resolver=resolver, position=pos, season=season,
+            player=r.get("player"), team=r.get("team"),
+            age=None, games=r.get("gp"),
+        )
+        a = (adv_idx_id.get(ident.get("playerId"))
+             or adv_idx_name.get(r["player"])
+             or adv_idx_norm.get(_norm_player(r["player"]))
+             or {})
+        receptions = r.get("rec") or a.get("receptions") or a.get("rec")
+        ybc_per_rec = a.get("yardsBeforeCatchPerReception") or a.get("ybc_per_rec")
+        ybc_total = a.get("ybc")
+        if ybc_total is None and ybc_per_rec is not None and receptions:
+            ybc_total = round(ybc_per_rec * receptions)
         out.append({
-            **_identity(
-                resolver=resolver, position=pos, season=season,
-                player=r.get("player"), team=r.get("team"),
-                age=None, games=r.get("gp"),
-            ),
-            "receptions":                   r.get("rec") or a.get("rec"),
-            "receivingYards":               r.get("rec_yds") or a.get("yds"),
-            "yardsPerReception":            r.get("ypr") or a.get("ypr"),
-            "yardsBeforeCatch":             a.get("ybc"),
-            "yardsBeforeCatchPerReception": a.get("ybc_per_rec"),
+            **ident,
+            "receptions":                   receptions,
+            "receivingYards":               r.get("rec_yds") or a.get("receivingYards") or a.get("yds"),
+            "yardsPerReception":            r.get("ypr") or a.get("yardsPerReception") or a.get("ypr"),
+            "yardsBeforeCatch":             ybc_total,
+            "yardsBeforeCatchPerReception": ybc_per_rec,
             "yardsAfterCatch":              r.get("yac") or a.get("yac"),
-            "yardsAfterCatchPerReception":  r.get("yac_per_rec") or a.get("yac_per_rec"),
-            "brokenTackles":                r.get("broken_tackles") or a.get("brktkl"),
-            "targets":                      r.get("tgt") or a.get("tgt"),
-            "targetSharePct":               a.get("target_share"),
-            "redZoneTargets":               r.get("rz_tgt") or a.get("rz_tgt"),
-            "receptions10Plus":             a.get("rec_10_plus"),
-            "receptions20Plus":             a.get("rec_20_plus"),
-            "receptions30Plus":             a.get("rec_30_plus"),
-            "receptions40Plus":             a.get("rec_40_plus"),
-            "receptions50Plus":             a.get("rec_50_plus"),
-            "longestReception":             r.get("long") or a.get("lng"),
+            "yardsAfterCatchPerReception":  r.get("yac_per_rec") or a.get("yardsAfterCatchPerReception") or a.get("yac_per_rec"),
+            "brokenTackles":                r.get("broken_tackles") or a.get("brokenTackles") or a.get("brktkl"),
+            "targets":                      r.get("tgt") or a.get("targets") or a.get("tgt"),
+            "targetSharePct":               a.get("targetSharePct") or a.get("target_share"),
+            "redZoneTargets":               r.get("rz_tgt") or a.get("redZoneTargets") or a.get("rz_tgt"),
+            "receptions10Plus":             a.get("receptions10Plus") or a.get("rec_10_plus"),
+            "receptions20Plus":             a.get("receptions20Plus") or a.get("rec_20_plus"),
+            "receptions30Plus":             a.get("receptions30Plus") or a.get("rec_30_plus"),
+            "receptions40Plus":             a.get("receptions40Plus") or a.get("rec_40_plus"),
+            "receptions50Plus":             a.get("receptions50Plus") or a.get("rec_50_plus"),
+            "longestReception":             r.get("long") or a.get("longestReception") or a.get("lng"),
         })
     out.sort(key=lambda x: -(x.get("receivingYards") or 0))
     for i, row in enumerate(out, 1):

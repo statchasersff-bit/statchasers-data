@@ -88,6 +88,11 @@ STATS_SEASON_COLUMNS = [
     "sacks_suffered", "sack_yards_lost", "sack_fumbles", "sack_fumbles_lost",
     "carries", "rushing_yards", "rushing_tds",
     "rushing_fumbles", "rushing_fumbles_lost",
+    # Receiving fields — used by the RB / WR Advanced Stats builders.
+    "receptions", "targets", "target_share",
+    "receiving_yards", "receiving_tds", "receiving_yards_after_catch",
+    "receiving_air_yards", "air_yards_share", "wopr", "racr",
+    "receiving_fumbles", "receiving_fumbles_lost",
     "fantasy_points", "fantasy_points_ppr",
 ]
 

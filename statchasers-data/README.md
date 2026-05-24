@@ -160,6 +160,59 @@ the same official-dropback (sacks-excluded) definition as the canonical
 efficiency tab, so a QB reports identical values across both datasets; `cpoe`
 is the season completion-percentage-over-expected from `passing_cpoe`.
 
+### RB Advanced Stats dataset
+`build_rb_advanced_stats.py` produces `output/rb_advanced_stats_{2023,2024,2025,all}.json`
+(+ `rb_advanced_stats.json` alias for 2025) — a volume / efficiency / elusiveness
+leaderboard covering every RB with ≥1 regular-season touch. Columns include the
+shared identity fields, rushing & receiving counting stats, usage (`snapPct`,
+`routes`, `redZoneOpportunities`, `goalLineCarries`, `endZoneTargets`,
+`targetSharePct`), efficiency (`epaPerPlay`, `explosiveRunPct`, `breakawayRunPct`,
+`yardsPerRouteRun`), distance buckets, and PFR contact/elusiveness metrics
+(`yardsBeforeContactPerAttempt`, `yardsAfterContactPerAttempt`, `brokenTackles`,
+`brokenTacklesPerAttempt`, `tackleEludedRate`). Notes:
+
+- `explosiveRunPct` (rush ≥10 yds), `breakawayRunPct` (rush ≥15 yds), broken
+  tackles and YBC/YAC per attempt use the same definitions as the canonical RB
+  efficiency tab, so values match across datasets.
+- `snapPct` is the true season snap share (mean of per-game `offense_pct` from
+  `nflverse_snap_counts`), not the play-participation approximation used by the
+  RB overview tab.
+- `epaPerPlay` is EPA over all plays the RB was involved in (carries + targets).
+- PFR provides no tackles-for-loss field for rushers, so `tacklesForLoss` /
+  `tacklesForLossYards` are derived from negative-yardage rushes in the
+  play-by-play and carry the same values as `rushAttForNegativeYards` /
+  `negativeYards`.
+- This file feeds the canonical RB stat_explorer tab (matched on `playerId`).
+
+### WR Advanced Stats dataset
+`build_wr_advanced_stats.py` produces `output/wr_advanced_stats_{2023,2024,2025,all}.json`
+(+ `wr_advanced_stats.json` alias for 2025) — a target-volume / efficiency /
+separation leaderboard covering every WR with ≥1 regular-season target. Columns
+include the shared identity fields, target & route usage (`snapPct`, `routes`,
+`targetsPerRouteRun`, `targetSharePct`, `airYardsSharePct`, `wopr`,
+`airYardsPerTarget`), receiving production, efficiency (`epaPerPlay`,
+`successRate`, `yardsPerRouteRun`, `yardsBefore/AfterCatchPerReception`),
+reception buckets, and PFR contact metrics (`brokenTackles`, `drops`, `dropPct`,
+`interceptionsWhenTargeted`). Notes:
+
+- `epaPerPlay` (EPA per target), `successRate`, `yardsPerRouteRun`,
+  `targetsPerRouteRun`, `yardsBeforeCatchPerReception` and `brokenTackles` use
+  the same definitions as the canonical WR efficiency tab. Counting totals come
+  from official season `player_stats`, so per-route/per-rec rates can differ
+  marginally from the efficiency tab's PBP-summed equivalents.
+- `snapPct` is the true season snap share (mean per-game `offense_pct`).
+- `routes` is participation-based (skill-position appearances on pass plays).
+- `contestedCatchRate` has **no source** in nflverse / PFR (it is a charting
+  metric) and is emitted as `null`.
+- This file feeds the canonical WR stat_explorer tab (matched on `playerId`).
+
+### TE Advanced Stats dataset
+`build_te_advanced_stats.py` produces `output/te_advanced_stats_{2023,2024,2025,all}.json`
+(+ `te_advanced_stats.json` alias for 2025) using the **same column set and
+definitions as the WR Advanced Stats dataset** (see above), filtered to TEs with
+≥1 regular-season target. Feeds the canonical TE stat_explorer tab (matched on
+`playerId`).
+
 ---
 
 ## Metrics Computed
