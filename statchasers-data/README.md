@@ -95,8 +95,11 @@ covering every QB with ≥1 regular-season pass attempt. Columns include passing
 rushing counting stats, distance buckets, deep-attempt %, fantasy points,
 efficiency metrics (`epaPerPlay`, `successRate`, `cpoe`), and PFR/NextGen
 pressure metrics (pocket time, time to throw, blitz/hurry/knockdown, pressure %).
-`epaPerPlay`/`successRate` use the official-dropback (sacks-excluded) definition;
-`cpoe` is the season completion-percentage-over-expected from `passing_cpoe`.
+`epaPerPlay` and `successRate` are computed over **all** of the QB's plays — every
+play where he is the passer or rusher (pass attempts, sacks, scrambles, designed
+runs and kneels), each counted once — which matches the standard public
+"QB EPA per play" denominator. `cpoe` is the season completion-percentage-over-expected
+from `passing_cpoe`.
 
 ### RB Advanced Stats
 `build_rb_advanced_stats.py` → `output/rb_advanced_stats_{2023,2024,2025,all}.json`

@@ -115,7 +115,7 @@ _SUM_FIELDS = [
     "blitzes", "hurries", "knockdowns",
     "throwaways", "battedPasses", "poorThrows", "passesDropped", "completedAirYards",
     "_deepAttempts", "_scrambles", "_scrambleYds", "_pbpAttempts",
-    "_officialAtt", "_epaSum", "_successPlays",
+    "_epaPlays", "_epaSum", "_successPlays",
 ]
 # Rate fields averaged across seasons weighted by pass attempts (cannot be
 # reconstructed from summed totals without the underlying weighting).
@@ -165,24 +165,24 @@ def _age_at_season(birth_date: Any, season: int) -> int | None:
 # Play-by-play aggregation (distance buckets, LNG, red zone, deep attempts)
 # ---------------------------------------------------------------------------
 
-def _aggregate_pbp(pbp_season: pd.DataFrame) -> dict[str, dict]:
-    """Per-passer (gsis id) PBP-derived stats for one season."""
-    passes = pbp_season[pbp_season["pass_attempt"] == 1].copy()
-    passes = passes[passes["passer_player_id"].notna()]
-    if passes.empty:
-        return {}
+def _aggregate_pbp(pbp_season: pd.DataFrame) -> tuple[dict[str, dict], dict[str, dict]]:
+    """Return (pass_stats, epa_stats) keyed by gsis id for one season.
 
-    out: dict[str, dict] = {}
+    pass_stats — per passer: completion distance buckets, longest pass, red-zone
+                 attempts, deep attempts (pass plays only).
+    epa_stats  — per QB: EPA/play and success rate over *all* plays the QB was
+                 involved in as passer OR rusher (pass attempts, sacks, scrambles,
+                 designed runs and kneels), each play counted once. This matches
+                 the standard public "QB EPA per play" denominator.
+    """
+    passes = pbp_season[(pbp_season["pass_attempt"] == 1) & pbp_season["passer_player_id"].notna()]
+
+    pass_stats: dict[str, dict] = {}
     for pid, grp in passes.groupby("passer_player_id"):
         comp = grp[grp["complete_pass"] == 1]
         comp_yds = comp["yards_gained"]
         air = grp["air_yards"]
-        # Official attempts = dropbacks minus sacks (matches the EPA/play and
-        # success-rate definition used in compute_player_metrics.py so the same
-        # QB reports identical values across the platform).
-        official = grp[grp["sack"] != 1] if "sack" in grp.columns else grp
-        official_att = int(len(official))
-        out[str(pid)] = {
+        pass_stats[str(pid)] = {
             "passes10Plus":  int((comp_yds >= 10).sum()),
             "passes20Plus":  int((comp_yds >= 20).sum()),
             "passes30Plus":  int((comp_yds >= 30).sum()),
@@ -192,11 +192,25 @@ def _aggregate_pbp(pbp_season: pd.DataFrame) -> dict[str, dict]:
             "redZoneAttempts": int((grp["yardline_100"] <= 20).sum()),
             "_deepAttempts": int((air >= 20).sum()),
             "_pbpAttempts":  int(len(grp)),
-            "_officialAtt":  official_att,
-            "_epaSum":       float(official["epa"].dropna().sum()),
-            "_successPlays": float(official["success"].dropna().sum()),
         }
-    return out
+
+    # EPA / success over all QB plays (passer or rusher) — disjoint per play
+    # (a pass play has a passer and no rusher; a run has a rusher and no passer).
+    pass_part = pbp_season.loc[pbp_season["passer_player_id"].notna(), ["passer_player_id", "epa", "success"]].rename(columns={"passer_player_id": "gid"})
+    rush_part = pbp_season.loc[pbp_season["rusher_player_id"].notna(), ["rusher_player_id", "epa", "success"]].rename(columns={"rusher_player_id": "gid"})
+    allp = pd.concat([pass_part, rush_part], ignore_index=True)
+
+    epa_stats: dict[str, dict] = {}
+    for gid, grp in allp.groupby("gid"):
+        epa = grp["epa"].dropna()
+        if epa.empty:
+            continue
+        epa_stats[str(gid)] = {
+            "_epaSum":       float(epa.sum()),
+            "_epaPlays":     int(len(epa)),
+            "_successPlays": float((grp["success"].dropna() > 0).sum()),
+        }
+    return pass_stats, epa_stats
 
 
 # ---------------------------------------------------------------------------
@@ -209,6 +223,7 @@ def build_season(
     pfr_by_gsis: dict[str, dict],
     ngs_by_gsis: dict[str, dict],
     pbp_by_gsis: dict[str, dict],
+    epa_by_gsis: dict[str, dict],
     birth_by_gsis: dict[str, str],
     resolver: PlayerIdResolver,
 ) -> list[dict]:
@@ -229,6 +244,7 @@ def build_season(
         pfr = pfr_by_gsis.get(gsis, {})
         ngs = ngs_by_gsis.get(gsis, {})
         pbp = pbp_by_gsis.get(gsis, {})
+        epa = epa_by_gsis.get(gsis, {})
 
         sacks = _int(s.get("sacks_suffered"))
         scrambles = _int(pfr.get("scrambles"))
@@ -240,13 +256,14 @@ def build_season(
         pbp_att  = pbp.get("_pbpAttempts")
         deep_pct = _round(deep_att / pbp_att * 100, 1) if deep_att is not None and pbp_att else None
 
-        # Efficiency metrics over official dropbacks (sacks excluded), matching
-        # the canonical efficiency-tab definitions. CPOE is a season-level mean.
-        official_att  = pbp.get("_officialAtt")
-        epa_sum       = pbp.get("_epaSum")
-        success_plays = pbp.get("_successPlays")
-        epa_per_play  = _round(epa_sum / official_att, 3) if epa_sum is not None and official_att else None
-        success_rate  = _round(success_plays / official_att * 100, 1) if success_plays is not None and official_att else None
+        # EPA/play and success rate over all QB plays (passer or rusher) — the
+        # standard public denominator (includes sacks, scrambles, designed runs,
+        # kneels). CPOE is a season-level mean.
+        epa_plays     = epa.get("_epaPlays")
+        epa_sum       = epa.get("_epaSum")
+        success_plays = epa.get("_successPlays")
+        epa_per_play  = _round(epa_sum / epa_plays, 3) if epa_sum is not None and epa_plays else None
+        success_rate  = _round(success_plays / epa_plays * 100, 1) if success_plays is not None and epa_plays else None
 
         sack_fumbles = s.get("sack_fumbles") or 0
         rush_fumbles = s.get("rushing_fumbles") or 0
@@ -315,7 +332,7 @@ def build_season(
             "_pbpAttempts":       pbp_att,
             "_scrambles":         scrambles,
             "_scrambleYds":       scramble_yds,
-            "_officialAtt":       official_att,
+            "_epaPlays":          epa_plays,
             "_epaSum":            epa_sum,
             "_successPlays":      success_plays,
         })
@@ -383,12 +400,12 @@ def _aggregate_combined(rows_with_season: list[dict]) -> list[dict]:
         c["completedAirYardsPerCompletion"] = round(comp_air / cmp, 2) if comp_air is not None and cmp else None
         c["fantasyPoints"] = round(c["fantasyPoints"], 1) if c.get("fantasyPoints") is not None else None
 
-        # EPA/play and success rate recomputed from summed official-dropback totals.
-        off_att = c.get("_officialAtt")
+        # EPA/play and success rate recomputed from summed all-QB-play totals.
+        epa_plays = c.get("_epaPlays")
         epa_sum = c.get("_epaSum")
         suc = c.get("_successPlays")
-        c["epaPerPlay"]  = round(epa_sum / off_att, 3) if epa_sum is not None and off_att else None
-        c["successRate"] = round(suc / off_att * 100, 1) if suc is not None and off_att else None
+        c["epaPerPlay"]  = round(epa_sum / epa_plays, 3) if epa_sum is not None and epa_plays else None
+        c["successRate"] = round(suc / epa_plays * 100, 1) if suc is not None and epa_plays else None
 
         lng = [r["longestPass"] for r in prows if r.get("longestPass") is not None]
         c["longestPass"] = max(lng) if lng else None
@@ -491,12 +508,12 @@ def main() -> None:
             if pd.notna(r.get("player_gsis_id"))
         }
 
-        pbp_by_gsis = _aggregate_pbp(pbp[pbp["season"] == season])
+        pbp_by_gsis, epa_by_gsis = _aggregate_pbp(pbp[pbp["season"] == season])
 
         week = int(pbp[pbp["season"] == season]["week"].max()) if not pbp[pbp["season"] == season].empty else None
 
         rows = build_season(
-            season, stats, pfr_by_gsis, ngs_by_gsis, pbp_by_gsis,
+            season, stats, pfr_by_gsis, ngs_by_gsis, pbp_by_gsis, epa_by_gsis,
             birth_by_gsis, resolver,
         )
         _validate(rows, str(season))
